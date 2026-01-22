@@ -11,34 +11,40 @@ const componentStore = useComponentStore()
 </script>
 
 <template>
-  <el-container>
+  <el-container class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
     <!-- left -->
-    <el-aside class="fixed top-0 left-0 h-full z-10 c-md:block c-sm:hidden c-xs:hidden" width="240px" v-show="!componentStore.leftCom">
-        <Left></Left>
+    <el-aside 
+      class="fixed top-0 left-0 h-full z-20 c-md:block c-sm:hidden c-xs:hidden
+             border-r border-slate-100 shadow-xl shadow-slate-200/50" 
+      width="260px" 
+      v-show="!componentStore.leftCom"
+    >
+      <Left></Left>
     </el-aside>
     <el-drawer 
       show-close
-      size="240px" 
+      size="260px" 
       :with-header="false" 
       v-model="componentStore.leftComDrawer" 
       direction="ltr"
-      >
+      class="!shadow-2xl"
+    >
       <Left></Left>
     </el-drawer>
 
     <!-- right -->
-    <el-container  :class="!componentStore.leftCom ? 'c-md:ml-[240px]' : ''">
-      <el-header>
+    <el-container :class="!componentStore.leftCom ? 'c-md:ml-[260px]' : ''" class="transition-all duration-300">
+      <el-header class="!p-0 !h-auto sticky top-0 z-30">
         <Header/>
       </el-header>
-      <el-main>
+      <el-main class="!p-3 md:!p-4 !pt-2">
         <router-view v-slot="{ Component, route }">
-          <transition name="animation" mode="out-in">
+          <transition name="page" mode="out-in">
             <component :is="Component" :key="route.path"></component>
           </transition>
         </router-view>
       </el-main>
-      <el-footer class="md:mb-6 mt-12 c-xs:mb-12">
+      <el-footer class="md:mb-4 mt-6 c-xs:mb-12 !h-auto">
         <Floor />
       </el-footer>
     </el-container>
@@ -47,20 +53,36 @@ const componentStore = useComponentStore()
 </template>
 
 <style scoped>
-/* 过度动画配置代码 */
-.animation-enter-from,
-.animation-leave-to {
-	transform: translateX(20px);
-	opacity: 0;
+/* 页面过渡动画 */
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
 }
-.animation-enter-to,
-.animation-leave-from {
-	opacity: 1;
+.page-enter-to {
+  opacity: 1;
+  transform: translateY(0);
 }
-.animation-enter-active {
-	transition: all 0.7s ease;
+.page-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
-.animation-leave-active {
-	transition: all 0.3s cubic-bezier(1, 0.6, 0.6, 1);
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.page-enter-active {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.page-leave-active {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 抽屉样式 */
+:deep(.el-drawer) {
+  border-radius: 0 20px 20px 0;
+}
+
+:deep(.el-drawer__body) {
+  padding: 0;
 }
 </style>

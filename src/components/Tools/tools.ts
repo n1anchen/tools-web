@@ -503,9 +503,21 @@ export function urlKeyMap() {
 //获取工具
 export function getTools(data: ToolsReqData) {
   //接收参数
-  const { cateId, title } = data
+  const { cateId, title, route } = data
   //获取工具list
   let list = toolsList()
+  
+  //路由筛选（精确匹配单个工具）
+  if (route && route != '') {
+    const tool = list.find(item => {
+      // 去掉末尾斜杠后比较
+      const itemUrl = item.url.replace(/\/$/, '')
+      const searchRoute = route.replace(/\/$/, '')
+      return itemUrl === searchRoute
+    })
+    return tool || {}
+  }
+  
   //标题筛选
   if (title != '') {
     list = list.filter(item => {
