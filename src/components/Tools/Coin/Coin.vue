@@ -27,7 +27,7 @@ const throwCoin = () => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white">
+    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div style="flex-grow: 3; display: flex; justify-content: center;">
 				<!-- coin -->
 				<div class="rotate-wrap" :class="[genStatus == true ? (isHeads == true ? 'rotate-wrap-ani-z' : 'rotate-wrap-ani-f') : '']">

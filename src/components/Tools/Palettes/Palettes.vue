@@ -47,7 +47,7 @@ const copyRes = async (resStr: string) => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="">
+    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="flex flex-col">
         <div v-for="(item, index) in info.palettes" :key="index" class="flex flex-col mb-3">
           <div class="flex h-28 rounded-lg overflow-hidden items-center">

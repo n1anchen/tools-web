@@ -85,7 +85,7 @@ const copyRes = async () => {
 <template>
   <div class="flex flex-col mt-3 ml-4 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
-    <div class="flex flex-col p-4 rounded-2xl bg-white">
+    <div class="flex flex-col p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="flex flex-direction">
         <el-text class="mr-2 w-12">现在</el-text>
         <el-button class="mr-3" link @click="copyRes()">{{ info.nowTime }} <el-icon class="ml-1 mr-1"><CopyDocument /></el-icon></el-button>

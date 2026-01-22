@@ -52,7 +52,7 @@ const saveImg = () => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="flex flex-col mb-3 h-[38rem] p-4 rounded-2xl bg-white">
+    <div class="flex flex-col mb-3 h-[38rem] p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="mb-3 flex flex-row-reverse">
         <!-- save -->
         <el-button type="primary" class="ml-2" @click="saveImg">保存</el-button>

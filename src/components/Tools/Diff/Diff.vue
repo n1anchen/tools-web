@@ -35,7 +35,7 @@ const unifiedDiff = computed(() => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="">
+    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
       <!-- 设置选项 -->
       <div class="mb-4 flex gap-6">
         <div class="flex items-center gap-2">

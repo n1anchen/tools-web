@@ -64,7 +64,7 @@ onMounted(() => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white">
+    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div>
         <el-radio-group v-model="info.checked" @change="changeCheckBox">
           <el-radio label="0" size="large">吃什么</el-radio>

@@ -58,7 +58,7 @@ onMounted(() => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white text-center">
+    <div class="p-4 rounded-2xl bg-white text-center border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
       <ul class="w-3/4">
         <li class='flex items-center mb-3'>
           <div class="w-36 text-right pr-3">选择颜色:</div>

@@ -58,7 +58,7 @@ onMounted(() => {
   <div>
     <DetailHeader :title="info.title"></DetailHeader>
     <div>
-      <div  class="p-4 rounded-2xl bg-white">
+      <div  class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
         <el-tabs v-model="info.activeName" class="demo-tabs" @tab-click="handleClick">
           <el-tab-pane label="长度" name="lengthTab">
             <Length/>

@@ -121,7 +121,7 @@ onMounted(() => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white">
+    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
       <el-text>密码组合</el-text>
       <div>
         <el-checkbox v-model="info.checkedNum" label="数字(0-9)"  @change="(val: any) => (changeCheckBox(val, 0))"/>

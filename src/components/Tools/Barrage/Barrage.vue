@@ -84,7 +84,7 @@ onBeforeMount(() => {
       </template>
     </vue-danmaku>
 
-    <div class="p-4 rounded-2xl bg-white">
+    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="flex mb-2">
         <el-text class="w-20">弹幕内容:</el-text>
         <div class="w-72"><el-input v-model="info.content" type="textarea" rows="3"></el-input></div>
