@@ -6,7 +6,7 @@ import { useRouter, useRoute } from "vue-router"
 const router = useRouter()
 const route = useRoute()
 
-const appName = ref(import.meta.env.VITE_APP_TITLE || '工具坊')
+const appName = ref(import.meta.env.VITE_APP_TITLE || '在线工具箱')
 const appNet = ref(import.meta.env.VITE_APP_DESC || '')
 //菜单选中
 const defaultActive = ref('')
@@ -65,7 +65,7 @@ onMounted(async () => {
       <!-- logo -->
       <div class="flex justify-center">
         <router-link class="flex flex-row h-24" to="/">
-          <img class="h-12 w-auto rounded-lg mr-2 mt-auto mb-auto" src="@/assets/logo.png" :alt="appNet">
+          <img class="h-12 w-auto rounded-lg mr-2 mt-auto mb-auto" src="@/assets/logo.jpg" :alt="appNet">
           <div class="flex flex-col  mt-auto mb-auto">
             <div class="text-2xl">{{ appName }}</div>
             <div class="text-sm text-gray-500">{{ appNet }}</div>

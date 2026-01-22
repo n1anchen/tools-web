@@ -72,16 +72,6 @@ export const constantRoute = [
     }
   },
   {
-    path: '/ip',
-    component: () => import('@/components/Tools/Ip/Ip.vue'),
-    name: 'ip',
-    meta: {
-      title: "IP查询",
-      keywords: 'ip,ip查询,ip地址查询,ip138,查ip,我的ip,公网ip,ip归属地查询',
-      description: '公网ip地址归属地查询',
-    }
-  },
-  {
     path: '/scaletran',
     component: () => import('@/components/Tools/ScaleTran/ScaleTran.vue'),
     name: 'scaletran',
@@ -149,16 +139,6 @@ export const constantRoute = [
       title: "手持弹幕",
       keywords: '手持弹幕，弹幕工具',
       description: '手持弹幕是一种新型的互动沟通工具，可以方便地为各种户外活动、演出嘉年华等活动增加趣味性和互动性。手持弹幕具有轻便、易携带、易操作等优点，可以让每个参与者都变成活动的一部分。同时，手持弹幕还可以通过预先编写的文本、表情等形式，表达参与者的情感和想法，实现沟通互动。在社交媒体时代，手持弹幕的使用也带来了更广泛的社交效应，增加了活动的互动性和传播度。无论是举办方还是参与者，手持弹幕都是一个非常有价值的互动工具。',
-    }
-  },
-  {
-    path: '/palettes',
-    component: () => import('@/components/Tools/Palettes/Palettes.vue'),
-    name: 'palettes',
-    meta: {
-      title: "色板",
-      keywords: '色板，颜色板',
-      description: '在线复制颜色，好看的颜色组合色板',
     }
   },
   {
@@ -239,26 +219,6 @@ export const constantRoute = [
       title: "markdown编辑器",
       keywords: '在线创建或编辑markdown, 实时预览，导出markdown',
       description: '在线markdown编辑器',
-    }
-  },
-  {
-    path: '/texttoimg',
-    component: () => import('@/components/Tools/TextToImg/TextToImg.vue'),
-    name: 'textToImg',
-    meta: {
-      title: "文本转图片",
-      keywords: '文本生成图片，文本生成长图，推广长图',
-      description: '把文本转换成图片，生成长图，具有超多个性文字排版',
-    }
-  },
-  {
-    path: '/webinfo',
-    component: () => import('@/components/Tools/WebInfo/WebInfo.vue'),
-    name: 'webInfo',
-    meta: {
-      title: "网站favicon获取",
-      keywords: '获取网站logo,获取网站icon,获取网站favicon,获取网站标题,获取网站关键词,获取网站描述',
-      description: '获取网站logo、icon、favicon、标题、关键词、描述等信息',
     }
   },
   {
@@ -438,7 +398,7 @@ export const constantRoute = [
     name: 'about',
     meta: {
       title: "关于",
-      keywords: '关于ranblogs,关于工具站',
+      keywords: '关于工具站',
       description: '',
     }
   },

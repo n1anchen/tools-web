@@ -31,9 +31,9 @@ router.afterEach((to) => {
   const detailTitle = title
   //设置title
   if (detailTitle) {
-    document.title = detailTitle + '-' + import.meta.env.VITE_APP_TITLE
+    document.title = detailTitle + ' - ' + import.meta.env.VITE_APP_TITLE
   } else {
-    document.title = import.meta.env.VITE_APP_TITLE + '-' + import.meta.env.VITE_APP_DESC
+    document.title = import.meta.env.VITE_APP_TITLE + ' - ' + import.meta.env.VITE_APP_DESC
   }
 
   //设置meta

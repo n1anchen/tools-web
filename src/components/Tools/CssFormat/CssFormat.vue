@@ -1,44 +1,47 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-import { copy } from '@/utils/string';
-import { Codemirror } from "vue-codemirror";
-import '@codemirror/search';
-import '@codemirror/state';
-import '@codemirror/commands';
-import * as prettier from "prettier/standalone";
-import * as parserCss from 'prettier/parser-postcss';
-import { ElMessage } from 'element-plus'
-import { minify } from "csso"
+import AceEditor from '@/components/Common/AceEditor.vue'
+import { copy } from '@/utils/string'
 
 const info = reactive({
   title: "css代码格式化/压缩",
   code: '',
   isParseErr: false,
   parseErr: '',
+  // 编辑器配置选项
+  showWhitespace: false,
+  showLineNumbers: true,
+  wordWrap: true
 })
 
-//格式化
-const formatCode = async () => {
-  try {
-    info.code = await prettier.format(info.code, { parser: "css", plugins: [parserCss]})
-  } catch (error) {
-    console.log(error)
-    ElMessage({
-      showClose: true,
-      message: '请填入正确代码格式',
-      type: 'error',
-    })
+// Ace 编辑器引用
+const aceEditorRef = ref<InstanceType<typeof AceEditor>>()
+
+const loadMinifier = async () => {
+  const { minify } = await import('csso')
+  return { minify }
+}
+
+//格式化 - 使用 Ace 编辑器自带的美化功能
+const formatCode = () => {
+  if (aceEditorRef.value) {
+    aceEditorRef.value.formatCode()
   }
 }
 
 //压缩
 const compress = async () => {
   try {
-    info.code = minify(info.code, {
+    const { minify } = await loadMinifier()
+    const compressed = minify(info.code, {
       restructure: true,
     }).css
+    info.code = compressed
+    if (aceEditorRef.value) {
+      aceEditorRef.value.setValue(compressed)
+    }
   } catch (error) {
     console.log(error)
   }
@@ -47,10 +50,47 @@ const compress = async () => {
 //清空输入框
 const clear = () => {
   info.code = ''
+  if (aceEditorRef.value) {
+    aceEditorRef.value.setValue('')
+  }
 }
 
 const copyRes = async () => {
   copy(info.code)
+}
+
+// 编辑器控制函数
+const toggleWhitespace = () => {
+  info.showWhitespace = !info.showWhitespace
+  if (aceEditorRef.value) {
+    aceEditorRef.value.toggleWhitespace()
+  }
+}
+
+const toggleLineNumbers = () => {
+  info.showLineNumbers = !info.showLineNumbers
+  if (aceEditorRef.value) {
+    aceEditorRef.value.toggleLineNumbers()
+  }
+}
+
+const toggleWordWrap = () => {
+  info.wordWrap = !info.wordWrap
+  if (aceEditorRef.value) {
+    aceEditorRef.value.toggleWordWrap()
+  }
+}
+
+const openSearchBox = () => {
+  if (aceEditorRef.value) {
+    aceEditorRef.value.openSearchBox()
+  }
+}
+
+const beautifyCode = () => {
+  if (aceEditorRef.value) {
+    aceEditorRef.value.formatCode()
+  }
 }
 </script>
 
@@ -61,21 +101,68 @@ const copyRes = async () => {
     <div class="p-4 rounded-2xl bg-white ">
       
       <div>
-        <codemirror
+        <AceEditor
+          ref="aceEditorRef"
           v-model="info.code"
-          placeholder="这里是代码..."
-          :style="{ height: '400px' }"
-          :autofocus="true"
-          :indent-with-tab="true" 
-          :tabSize="2"
+          mode="css"
+          :show-whitespace="info.showWhitespace"
+          :show-line-numbers="info.showLineNumbers"
+          :word-wrap="info.wordWrap"
+          height="400px"
         />
       </div>
       
       <div class="mt-4">
-        <el-button type="primary" @click="formatCode">格式化</el-button>
-        <el-button type="primary" @click="compress">压缩</el-button>
-        <el-button type="primary" @click="copyRes">复制</el-button>
-        <el-button type="primary" @click="clear">清空</el-button>
+        <!-- CSS 操作按钮 -->
+        <div class="mb-3">
+          <el-button type="primary" @click="formatCode">格式化 (Ctrl+Shift+F)</el-button>
+          <el-button type="primary" @click="compress">压缩</el-button>
+          <el-button type="primary" @click="copyRes">复制</el-button>
+          <el-button type="primary" @click="clear">清空</el-button>
+        </div>
+        
+        <!-- 编辑器控制按钮 -->
+        <div class="flex flex-wrap gap-2">
+          <el-button 
+            :type="info.showWhitespace ? 'success' : 'default'" 
+            @click="toggleWhitespace"
+            size="small"
+          >
+            {{ info.showWhitespace ? '隐藏' : '显示' }}空白字符
+          </el-button>
+          
+          <el-button 
+            :type="info.showLineNumbers ? 'success' : 'default'" 
+            @click="toggleLineNumbers"
+            size="small"
+          >
+            {{ info.showLineNumbers ? '隐藏' : '显示' }}行号
+          </el-button>
+          
+          <el-button 
+            :type="info.wordWrap ? 'success' : 'default'" 
+            @click="toggleWordWrap"
+            size="small"
+          >
+            {{ info.wordWrap ? '关闭' : '开启' }}自动换行
+          </el-button>
+          
+          <el-button 
+            @click="openSearchBox"
+            size="small"
+            type="info"
+          >
+            搜索 (Ctrl+F)
+          </el-button>
+          
+          <el-button 
+            @click="beautifyCode"
+            size="small"
+            type="warning"
+          >
+            美化代码
+          </el-button>
+        </div>
       </div>
 
       <div class="mt-3 min-h-md bg-red-100 p-3 mb-3" v-show="info.isParseErr">

@@ -6,7 +6,7 @@ import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import vueDanmaku  from 'vue3-danmaku'  //https://www.npmjs.com/package/vue3-danmaku
 const info = reactive({
   title: "手持弹幕",
-  content: '工具坊',
+  content: '在线工具箱',
   barrage: [] as string[],
   speed: 200,
   textSize: 500,

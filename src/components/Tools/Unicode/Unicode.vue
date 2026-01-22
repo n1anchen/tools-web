@@ -2,14 +2,11 @@
 import { reactive } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-import { Codemirror } from "vue-codemirror"
-// import { lineNumbers } from '@codemirror/view';
 import { copy } from '@/utils/string'
 
 
 const info = reactive({
   title: "Unicode转中文",
-  // extensions: [lineNumbers()],
   content: '',
   tranRes: '',
 })
@@ -56,13 +53,12 @@ const copyRes = async () => {
 
     <div  class="p-4 rounded-2xl bg-white">
       <div>
-        <codemirror
+        <el-input
           v-model="info.content"
+          type="textarea"
+          :rows="8"
           placeholder=""
-          :style="{ height: '200px' }"
-          :autofocus="true"
-          :indent-with-tab="true" 
-          :tabSize="2"
+          resize="vertical"
         />
       </div>
 

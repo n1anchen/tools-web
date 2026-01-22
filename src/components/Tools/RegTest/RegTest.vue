@@ -2,12 +2,9 @@
 import { reactive } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-import { Codemirror } from "vue-codemirror"
-// import { lineNumbers } from '@codemirror/view';
 
 const info = reactive({
   title: "正则表达式测试",
-  // extensions: [lineNumbers()],
   reg: '',
   content: `一些测试实例:
 邮箱1：demo@163.com
@@ -122,13 +119,12 @@ const execMatch = () => {
 
     <div class="p-4 rounded-2xl bg-white ">
       <div>
-        <codemirror
+        <el-input
           v-model="info.content"
+          type="textarea"
+          :rows="12"
           placeholder=""
-          :style="{ height: '300px' }"
-          :autofocus="true"
-          :indent-with-tab="true" 
-          :tabSize="2"
+          resize="vertical"
         />
       </div>
 

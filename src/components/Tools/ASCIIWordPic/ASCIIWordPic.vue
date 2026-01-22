@@ -7,7 +7,9 @@ import figlet from 'figlet';
 const info = reactive({
   title: "ASCII字形生成器",
 })
-figlet.defaults({ fontPath: '//unpkg.com/figlet@1.6.0/fonts/' });
+
+// 使用本地字体路径
+figlet.defaults({ fontPath: '/fonts/' });
 
 const content = ref('Tools-Web')
 const contentRes = ref('')
@@ -100,6 +102,11 @@ const options = ref([
 ])
 
 const gen = () => {
+  if (!content.value.trim()) {
+    contentRes.value = ''
+    return
+  }
+  
   figlet(content.value, 
   {
     font: fontStyle.value,
@@ -110,10 +117,11 @@ const gen = () => {
   }, 
   function (err, data) {
     if (err) {
-      console.log(';----', err)
+      console.error('生成ASCII字形失败:', err)
+      contentRes.value = '生成失败，请尝试选择其他字体风格'
       return;
     }
-    contentRes.value = data
+    contentRes.value = data || ''
   })
 }
 

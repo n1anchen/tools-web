@@ -4,54 +4,18 @@ import type { ToolsReqData } from '@/components/Tools/tools.type.ts'
 export function getToolsCate() {
   return [
     {
-      id: 2,
-      title: '开发运维',
+      id: 1,
+      title: '在线编辑',
       icon: '',
       list: [
         {
           id: 1,
-          title: '随机密码生成',
-          logo: '/images/logo/keywords.png',
-          desc: '密码生成器、随机字符串生成,批量生成',
-          url: '/randompassword/',
-          cateId: 2,
-          cate: '开发运维',
-        },
-        {
-          id: 1,
-          title: 'URL编码/解码',
-          logo: '/images/logo/url.png',
-          desc: 'URL在线编码解码工具（UrlEncode编码 和 UrlDecode解码）',
-          url: '/urlencode/',
-          cateId: 2,
-          cate: '开发运维',
-        },
-        {
-          id: 1,
-          title: 'UUID生成器',
-          logo: '/images/logo/uuid.png',
-          desc: '批量生成UUID',
-          url: '/uuid/',
-          cateId: 2,
-          cate: '开发运维',
-        },
-        {
-          id: 1,
-          title: '时间戳转换',
-          logo: '/images/logo/Time.png',
-          desc: '在线时间戳转换工具以及获取当前时间戳',
-          url: '/timetran/',
-          cateId: 2,
-          cate: '开发运维',
-        },
-        {
-          id: 1,
-          title: 'MD5在线加密',
-          logo: '/images/logo/md5.png',
-          desc: 'MD5在线加密,长度包含32位、16位',
-          url: '/md5/',
-          cateId: 2,
-          cate: '开发运维',
+          title: 'markdown编辑器',
+          logo: '/images/logo/file-markdown-fill.png',
+          desc: '在线创建或编辑markdown, 实时预览，导出markdown',
+          url: '/markdown/',
+          cateId: 1,
+          cate: '在线编辑'
         },
         {
           id: 1,
@@ -59,53 +23,8 @@ export function getToolsCate() {
           logo: '/images/logo/json.png',
           desc: '提供实时编辑和预览JSON 数据，语法高亮、校验、格式化、转义，去转义、压缩等功能，可以提高阅读修改的效率和准确性',
           url: '/json/',
-          cateId: 2,
-          cate: '开发运维',
-        },
-        {
-          id: 1,
-          title: '正则测试工具',
-          logo: '/images/logo/reg.png',
-          desc: '正则表达式测试工具, 常用正则表达式',
-          url: '/reg/',
-          cateId: 2,
-          cate: '开发运维',
-        },
-        {
-          id: 1,
-          title: 'Unicode转中文',
-          logo: '/images/logo/union.png',
-          desc: 'Unicode和中文的相互转换',
-          url: '/unicode/',
-          cateId: 2,
-          cate: '开发运维',
-        },
-        {
-          id: 1,
-          title: 'HTTP状态码',
-          logo: '/images/logo/http_code.png',
-          desc: 'http状态对应的名称和含义解释',
-          url: '/httpstatuscode/',
-          cateId: 2,
-          cate: '开发运维',
-        },
-        {
-          id: 1,
-          title: 'JWT解析',
-          logo: '/images/logo/jwt_parse.png',
-          desc: '解析和解码JSON Web Token（jwt）',
-          url: '/jwt/',
-          cateId: 2,
-          cate: '开发运维',
-        },
-        {
-          id: 1,
-          title: 'html实体转义',
-          logo: '/images/logo/HtmlEntity.png',
-          desc: 'html实体转义，实体转义成html',
-          url: '/htmlentity/',
-          cateId: 2,
-          cate: '开发运维',
+          cateId: 1,
+          cate: '在线编辑',
         },
         {
           id: 1,
@@ -113,8 +32,8 @@ export function getToolsCate() {
           logo: '/images/logo/JSForamt.png',
           desc: 'JS格式化/压缩工具,提供在线JS格式化、JS压缩、JS混淆、JS解密',
           url: '/jsforamt/',
-          cateId: 2,
-          cate: '开发运维',
+          cateId: 1,
+          cate: '在线编辑',
         },
         {
           id: 1,
@@ -122,8 +41,8 @@ export function getToolsCate() {
           logo: '/images/logo/HtmlFormat.png',
           desc: '提供在线html、xml格式化',
           url: '/htmlformat/',
-          cateId: 2,
-          cate: '开发运维',
+          cateId: 1,
+          cate: '在线编辑',
         },
         {
           id: 1,
@@ -131,13 +50,22 @@ export function getToolsCate() {
           logo: '/images/logo/CssFormat.png',
           desc: 'css格式化/压缩工具,提供在线css格式化、css压缩',
           url: '/cssformat/',
+          cateId: 1,
+          cate: '在线编辑',
+        },
+        {
+          id: 1,
+          title: '在线文本编辑/HTML获取',
+          logo: '/images/logo/richtextEditor.png',
+          desc: '在线富文本编辑, html实时预览，在线编辑文本，文本编辑获取html',
+          url: '/textedit/',
           cateId: 2,
-          cate: '开发运维',
-        }
+          cate: '文本处理'
+        },
       ]
     },
     {
-      id: 3,
+      id: 2,
       title: '文本处理',
       icon: '',
       list: [
@@ -147,16 +75,7 @@ export function getToolsCate() {
           logo: '/images/logo/diff.png',
           desc: '文本差异比对支持中文、英文、代码比对',
           url: '/diff/',
-          cateId: 3,
-          cate: '文本处理'
-        },
-        {
-          id: 1,
-          title: 'markdown编辑器',
-          logo: '/images/logo/file-markdown-fill.png',
-          desc: '在线创建或编辑markdown, 实时预览，导出markdown',
-          url: '/markdown/',
-          cateId: 3,
+          cateId: 2,
           cate: '文本处理'
         },
         {
@@ -165,7 +84,7 @@ export function getToolsCate() {
           logo: '/images/logo/wordCount.png',
           desc: '在线统计字符串的字数、段落、标点符号数量',
           url: '/wordcount/',
-          cateId: 3,
+          cateId: 2,
           cate: '文本处理',
         },
         {
@@ -174,7 +93,7 @@ export function getToolsCate() {
           logo: '/images/logo/textRemoveDuplicate.png',
           desc: '可以删除或去除文本或字符串中的重复行',
           url: '/textremoveduplicate/',
-          cateId: 3,
+          cateId: 2,
           cate: '文本处理',
         },
         {
@@ -183,23 +102,138 @@ export function getToolsCate() {
           logo: '/images/logo/ascii_word_pic.png',
           desc: '在线生成字形ASCII画',
           url: '/asciiwordpic/',
-          cateId: 3,
+          cateId: 2,
           cate: '文本处理',
-        },
-        {
-          id: 1,
-          title: '在线文本编辑/HTML获取',
-          logo: '/images/logo/richtextEditor.png',
-          desc: '在线富文本编辑, html实时预览，在线编辑文本，文本编辑获取html',
-          url: '/textedit/',
-          cateId: 3,
-          cate: '文本处理'
         },
       ]
     },
     {
+      id: 3,
+      title: '开发运维',
+      icon: '',
+      list: [
+        {
+          id: 1,
+          title: '随机密码生成',
+          logo: '/images/logo/keywords.png',
+          desc: '密码生成器、随机字符串生成,批量生成',
+          url: '/randompassword/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: 'URL编码/解码',
+          logo: '/images/logo/url.png',
+          desc: 'URL在线编码解码工具（UrlEncode编码 和 UrlDecode解码）',
+          url: '/urlencode/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: 'UUID生成器',
+          logo: '/images/logo/uuid.png',
+          desc: '批量生成UUID',
+          url: '/uuid/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: '时间戳转换',
+          logo: '/images/logo/Time.png',
+          desc: '在线时间戳转换工具以及获取当前时间戳',
+          url: '/timetran/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: 'MD5在线加密',
+          logo: '/images/logo/md5.png',
+          desc: 'MD5在线加密,长度包含32位、16位',
+          url: '/md5/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: '正则测试工具',
+          logo: '/images/logo/reg.png',
+          desc: '正则表达式测试工具, 常用正则表达式',
+          url: '/reg/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: 'Unicode转中文',
+          logo: '/images/logo/union.png',
+          desc: 'Unicode和中文的相互转换',
+          url: '/unicode/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: 'HTTP状态码',
+          logo: '/images/logo/http_code.png',
+          desc: 'http状态对应的名称和含义解释',
+          url: '/httpstatuscode/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: 'JWT解析',
+          logo: '/images/logo/jwt_parse.png',
+          desc: '解析和解码JSON Web Token（jwt）',
+          url: '/jwt/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: 'html实体转义',
+          logo: '/images/logo/HtmlEntity.png',
+          desc: 'html实体转义，实体转义成html',
+          url: '/htmlentity/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: '常用进制转换',
+          logo: '/images/logo/scaletran.png',
+          desc: '在线进制转换工具,可在2到64进制之间相互转换',
+          url: '/scaletran/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: 'ASCII码表',
+          logo: '/images/logo/ascii.png',
+          desc: 'ASCII码表,控制代码、标准ASCII字符和非标准ASCII字符对照表',
+          url: '/ascii/',
+          cateId: 3,
+          cate: '开发运维'
+        },
+        {
+          id: 1,
+          title: 'Color选择器',
+          logo: '/images/logo/color_picker.png',
+          desc: '颜色选择器、在各种颜色空间如十六进制、rgb、hsl、css等等之间转换颜色',
+          url: '/colorpicker/',
+          cateId: 3,
+          cate: '开发运维'
+        }
+      ]
+    },
+    {
       id: 4,
-      title: '教育学术',
+      title: '单位换算',
       icon: '',
       list: [
         {
@@ -209,34 +243,7 @@ export function getToolsCate() {
           desc: '在线重量、长度、面积、时间、角度、速度、温度、压力、热量、功率等换算',
           url: '/unit/',
           cateId: 4,
-          cate: '教育学术'
-        },
-        {
-          id: 1,
-          title: '摩斯电码',
-          logo: '/images/logo/medium.png',
-          desc: '支持中文的摩斯电码编码解码',
-          url: '/morse/',
-          cateId: 4,
-          cate: '教育学术'
-        },
-        {
-          id: 1,
-          title: '常用进制转换',
-          logo: '/images/logo/scaletran.png',
-          desc: '在线进制转换工具,可在2到64进制之间相互转换',
-          url: '/scaletran/',
-          cateId: 4,
-          cate: '教育学术',
-        },
-        {
-          id: 1,
-          title: 'ASCII码表',
-          logo: '/images/logo/ascii.png',
-          desc: 'ASCII码表,控制代码、标准ASCII字符和非标准ASCII字符对照表',
-          url: '/ascii/',
-          cateId: 4,
-          cate: '教育学术'
+          cate: '单位换算'
         },
         {
           id: 1,
@@ -245,7 +252,7 @@ export function getToolsCate() {
           desc: '长度转换工具-支持国际长度单位，中国传统长度单位，英制长度单位',
           url: '/unit/?active=length',
           cateId: 4,
-          cate: '教育学术'
+          cate: '单位换算'
         },
         {
           id: 1,
@@ -254,7 +261,7 @@ export function getToolsCate() {
           desc: '面积转换工具-支持国际面积单位，中国传统面积单位，英制面积单位',
           url: '/unit/?active=area',
           cateId: 4,
-          cate: '教育学术'
+          cate: '单位换算'
         },
         {
           id: 1,
@@ -263,7 +270,7 @@ export function getToolsCate() {
           desc: '重量转换工具-支持国际重量单位，中国传统重量单位，英制重量单位(常衡制和金衡制)',
           url: '/unit/?active=weight',
           cateId: 4,
-          cate: '教育学术'
+          cate: '单位换算'
         },
         {
           id: 1,
@@ -272,7 +279,7 @@ export function getToolsCate() {
           desc: '时间单位转换工具-支持国际时间单位',
           url: '/unit/?active=time',
           cateId: 4,
-          cate: '教育学术'
+          cate: '单位换算'
         },
         {
           id: 1,
@@ -281,7 +288,7 @@ export function getToolsCate() {
           desc: '温度单位转换工具-支持国际温度单位',
           url: '/unit/?active=temperature',
           cateId: 4,
-          cate: '教育学术'
+          cate: '单位换算'
         },
         {
           id: 1,
@@ -290,7 +297,7 @@ export function getToolsCate() {
           desc: '压力单位转换工具-Pa/kPa/hPa/MPa/bar/torr/psi等',
           url: '/unit/?active=pressure',
           cateId: 4,
-          cate: '教育学术'
+          cate: '单位换算'
         },
         {
           id: 1,
@@ -299,7 +306,7 @@ export function getToolsCate() {
           desc: '热量单位转换工具-Wh/mWh/kWh/MWh/J/kJ等',
           url: '/unit/?active=heat',
           cateId: 4,
-          cate: '教育学术'
+          cate: '单位换算'
         },
         {
           id: 1,
@@ -308,7 +315,7 @@ export function getToolsCate() {
           desc: '功率单位转换工具-W/mW/kW/MW/GW等',
           url: '/unit/?active=power',
           cateId: 4,
-          cate: '教育学术'
+          cate: '单位换算'
         },
       ]
     },
@@ -334,15 +341,6 @@ export function getToolsCate() {
           url: '/signimage/',
           cateId: 5,
           cate: '图片处理',
-        },
-        {
-          id: 1,
-          title: '文本转图片',
-          logo: '/images/logo/text_to_img.png',
-          desc: '把文本转换成图片，生成长图，具有超多个性文字排版',
-          url: '/texttoimg/',
-          cateId: 5,
-          cate: '图片处理'
         },
         {
           id: 1,
@@ -440,31 +438,6 @@ export function getToolsCate() {
         },
       ]
     },
-    // {
-    //   id: 6,
-    //   title: '查询相关',
-    //   icon: '',
-    //   list: [
-    //     {
-    //       id: 1,
-    //       title: 'IP查询',
-    //       logo: '/images/logo/IP.png',
-    //       desc: '在线查询ip地址、ip归属地',
-    //       url: '/ip',
-    //       cateId: 6,
-    //       cate: '查询相关',
-    //     },
-    //     {
-    //       id: 1,
-    //       title: '网站favicon获取',
-    //       logo: '/images/logo/text_to_img.png',
-    //       desc: '获取网站logo、icon、favicon、标题、关键词、描述等信息',
-    //       url: '/webInfo',
-    //       cateId: 6,
-    //       cate: '查询相关',
-    //     }
-    //   ]
-    // },
     {
       id: 7,
       title: '其他工具',
@@ -490,19 +463,10 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '色板',
-          logo: '/images/logo/palettes.png',
-          desc: '包含纯色、渐变与阶梯色和常用色彩组合',
-          url: '/palettes/',
-          cateId: 7,
-          cate: '其他工具'
-        },
-        {
-          id: 1,
-          title: 'Color选择器',
-          logo: '/images/logo/color_picker.png',
-          desc: '颜色选择器、在各种颜色空间如十六进制、rgb、hsl、css等等之间转换颜色',
-          url: '/colorpicker/',
+          title: '摩斯电码',
+          logo: '/images/logo/medium.png',
+          desc: '支持中文的摩斯电码编码解码',
+          url: '/morse/',
           cateId: 7,
           cate: '其他工具'
         }
