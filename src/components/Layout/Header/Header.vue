@@ -116,7 +116,7 @@ onMounted(() => {
       </router-link>
       
       <!-- 搜索框 -->
-      <div class="c-xs:flex-1 flex-1 max-w-2xl search-container">
+      <div class="c-xs:flex-1 flex-1 max-w-2xl search-container min-w-0">
         <el-select
           v-model="searchValue"
           filterable
@@ -233,6 +233,13 @@ onMounted(() => {
   max-width: min(672px, calc(100vw - 180px)) !important;
 }
 
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .search-dropdown.el-select__popper {
+    max-width: calc(100vw - 32px) !important;
+  }
+}
+
 .search-dropdown .el-scrollbar {
   max-width: 100% !important;
 }
@@ -326,6 +333,8 @@ onMounted(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
   line-height: 1.4;
+  max-width: 100%;
+  word-break: break-word;
 }
 
 .search-dropdown .search-option-desc {
@@ -335,6 +344,19 @@ onMounted(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
   line-height: 1.3;
+  max-width: 100%;
+  word-break: break-word;
+}
+
+/* 移动端文本截断 */
+@media (max-width: 480px) {
+  .search-dropdown .search-option-title {
+    font-size: 12px;
+  }
+  
+  .search-dropdown .search-option-desc {
+    font-size: 10px;
+  }
 }
 
 /* 空状态 */
