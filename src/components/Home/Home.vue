@@ -8,6 +8,11 @@ import { useRoute } from "vue-router"
 //store
 const toolsStore = useToolsStore()
 const route = useRoute()
+
+const isExternal = (path: string) => {
+  return /^(http|https):\/\//.test(path)
+}
+
 // const getToolsCate = async () => {
 //   try {
 //     await toolsStore.getToolCate()
@@ -41,10 +46,13 @@ onMounted(() => {
       </div>
       <!-- card -->
       <div class="grid gap-5 c-xs:grid-cols-1 c-sm:grid-cols-2 c-md:grid-cols-3 c-lg:grid-cols-4">
-          <router-link 
+          <component 
+            :is="isExternal(item.url) ? 'a' : 'router-link'" 
             v-for="(item, index) in cate.list" 
             :key="index" 
-            :to="item.url" 
+            :to="!isExternal(item.url) ? item.url : undefined" 
+            :href="isExternal(item.url) ? item.url : undefined"
+            :target="isExternal(item.url) ? '_blank' : undefined"
             class="group relative flex flex-col p-5 bg-white rounded-2xl border border-slate-100 
                    shadow-sm hover:shadow-xl hover:shadow-blue-100/50 hover:border-blue-200
                    transition-all duration-300 hover:-translate-y-2 overflow-hidden"
@@ -84,7 +92,7 @@ onMounted(() => {
                         transition-all duration-300">
               <ArrowRight class="w-4 h-4 text-blue-500" />
             </div>
-          </router-link>
+          </component>
       </div>
     </div>
 

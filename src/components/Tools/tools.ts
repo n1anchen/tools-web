@@ -4,6 +4,22 @@ import type { ToolsReqData } from '@/components/Tools/tools.type.ts'
 export function getToolsCate() {
   return [
     {
+      id: 0,
+      title: '独立工具',
+      icon: '',
+      list: [
+        {
+          id: 0,
+          title: '智能排座工具',
+          logo: '/images/logo/url.png',
+          desc: '智能排座工具，根据人员名单自动生成排座图，支持拖拽操作',
+          url: 'https://seat.nianchen.top',
+          cateId: 0,
+          cate: '独立工具'
+        }
+      ]
+    },
+    {
       id: 1,
       title: '在线编辑',
       icon: '',

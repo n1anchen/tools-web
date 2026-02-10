@@ -66,7 +66,11 @@ const searchTools = async (query: string) => {
 // }
 
 const optionClick = (url: string) => {
-  router.push(url)
+  if (/^(http|https):\/\//.test(url)) {
+    window.open(url, '_blank')
+  } else {
+    router.push(url)
+  }
   // 跳转后清空选中值，以便下次可以继续搜索
   searchValue.value = ''
   options.value = []

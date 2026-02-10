@@ -26,6 +26,10 @@ const clickCarousel = (url: string) => {
   w?.document.write(`<!DOCTYPE html><html><body ><img src='${url}'/></body></html>`)
 }
 
+const isExternal = (path: string) => {
+  return /^(http|https):\/\//.test(path)
+}
+
 onMounted(() => {
 })
 </script>
@@ -48,10 +52,18 @@ onMounted(() => {
     <div class="mt-3 border-solid rounded border-gray border p-3 c-xs:mr-3 c-xs:ml-3">
       <div class="text-xl text-gray-400 font-bold">随机推荐</div>
       <ul class="mt-3">
-        <RouterLink :to="item.url" class="flex items-center hover:bg-gray-200 p-1 rounded" v-for="(item, index) in toolsStore.recommends" :key="index">
+        <component
+          :is="isExternal(item.url) ? 'a' : 'router-link'"
+          :to="!isExternal(item.url) ? item.url : undefined"
+          :href="isExternal(item.url) ? item.url : undefined"
+          :target="isExternal(item.url) ? '_blank' : undefined"
+          class="flex items-center hover:bg-gray-200 p-1 rounded" 
+          v-for="(item, index) in toolsStore.recommends" 
+          :key="index"
+        >
           <el-icon class="mr-1"><Tools /></el-icon>
           <div>{{ item.title }}</div>
-        </RouterLink>
+        </component>
       </ul>
     </div>
   </div>
