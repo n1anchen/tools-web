@@ -11,7 +11,7 @@ export function getToolsCate() {
         {
           id: 0,
           title: '智能排座工具',
-          logo: '/images/logo/url.png',
+          logo: '',
           desc: '智能排座工具，根据人员名单自动生成排座图，支持拖拽操作',
           url: 'https://seat.nianchen.top',
           cateId: 0,
@@ -20,7 +20,7 @@ export function getToolsCate() {
         {
           id: 0,
           title: 'xicons图标库预览',
-          logo: '/images/logo/url.png',
+          logo: '',
           desc: 'xicons图标库前端页面，方便查看、搜索和选择图标',
           url: 'https://xicons.nianchen.top',
           cateId: 0,
