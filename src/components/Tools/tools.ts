@@ -16,6 +16,15 @@ export function getToolsCate() {
           url: 'https://seat.nianchen.top',
           cateId: 0,
           cate: '独立工具'
+        },
+        {
+          id: 0,
+          title: 'xicons图标库预览',
+          logo: '/images/logo/url.png',
+          desc: 'xicons图标库前端页面，方便查看、搜索和选择图标',
+          url: 'https://xicons.nianchen.top',
+          cateId: 0,
+          cate: '独立工具'
         }
       ]
     },
@@ -75,8 +84,8 @@ export function getToolsCate() {
           logo: '/images/logo/richtextEditor.png',
           desc: '在线富文本编辑, html实时预览，在线编辑文本，文本编辑获取html',
           url: '/textedit/',
-          cateId: 2,
-          cate: '文本处理'
+          cateId: 1,
+          cate: '在线编辑'
         },
       ]
     },
