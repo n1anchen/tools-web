@@ -2,6 +2,8 @@
 import {  ref } from 'vue';
 import { StarFilled } from '@element-plus/icons-vue'
 const appDesc = ref(import.meta.env.VITE_APP_DESC || '')
+const siteICP = ref(import.meta.env.VITE_SITE_ICP || '')
+const sitePRC = ref(import.meta.env.VITE_SITE_PRC || '')
 </script>
 
 <template>
@@ -20,6 +22,18 @@ const appDesc = ref(import.meta.env.VITE_APP_DESC || '')
         <a href="https://tools.nianchen.top" target="_blank" 
            class="text-blue-500 hover:text-blue-600 font-medium transition-colors">
           在线工具箱
+        </a>
+        . All rights reserved.
+      </div>
+      <div v-if="siteICP || sitePRC" class="flex items-center gap-3 text-slate-400 text-sm">
+        <a v-if="siteICP" href="https://beian.miit.gov.cn/" target="_blank"
+           class="hover:text-blue-500 transition-colors">
+          {{ siteICP }}
+        </a>
+        <span v-if="siteICP && sitePRC" class="w-1 h-1 rounded-full bg-slate-300"></span>
+        <a v-if="sitePRC" :href="`http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=${sitePRC}`" target="_blank"
+           class="hover:text-blue-500 transition-colors">
+          {{ sitePRC }}
         </a>
       </div>
     </div>
