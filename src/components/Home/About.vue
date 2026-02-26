@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col mt-8 flex-1 items-center bg-white rounded-md p-10">
+  <div class="flex flex-col mt-8 flex-1 items-center bg-white dark:bg-slate-800 rounded-md p-10">
     <div class="p-5 w-2/3">
       <h1 class="text-2xl font-bold">关于工具箱</h1>
       <p class="mt-6">

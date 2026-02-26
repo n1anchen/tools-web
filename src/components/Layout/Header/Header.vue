@@ -85,39 +85,39 @@ onMounted(() => {
   <header class="h-20 w-full flex justify-between items-center px-2 py-3 
                  bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800
                  c-xs:h-16 sticky top-0 z-50">
-    <div class="flex items-center w-full gap-3">
+    <div class="flex items-center flex-1 gap-3 mr-4">
       <!-- 移动端菜单按钮 -->
       <button 
         @click="componentStore.setleftComDrawerStatus(!componentStore.leftComDrawer)" 
-        class="p-2 rounded-xl hover:bg-slate-100 transition-colors duration-200 hidden c-sm:block c-md:hidden c-xs:block"
+        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200 hidden c-sm:block c-md:hidden c-xs:block"
       >
-        <More class="w-6 h-6 text-slate-600" />
+        <More class="w-6 h-6 text-slate-600 dark:text-slate-400" />
       </button>
 
       <!-- 桌面端菜单按钮 -->
-      <Transition name="fold" class="hidden c-md:block">
+      <Transition name="fold">
         <button 
           v-if="!componentStore.leftCom" 
           @click="componentStore.setLeftComStatus(true)" 
-          class="p-2 rounded-xl hover:bg-slate-100 transition-colors duration-200"
+          class="hidden c-md:flex w-10 h-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200"
         >
-          <Fold class="w-6 h-6 text-slate-600" />
+          <Fold class="w-5 h-5 text-slate-600 dark:text-slate-400" />
         </button>
         <button 
           v-else 
           @click="componentStore.setLeftComStatus(false)" 
-          class="p-2 rounded-xl hover:bg-slate-100 transition-colors duration-200"
+          class="hidden c-md:flex w-10 h-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200"
         >
-          <Expand class="w-6 h-6 text-slate-600" />
+          <Expand class="w-5 h-5 text-slate-600 dark:text-slate-400" />
         </button>
       </Transition>
 
       <!-- 首页图标 -->
       <router-link 
         to="/" 
-        class="p-2 rounded-xl hover:bg-blue-50 transition-all duration-200 group"
+        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-all duration-200 group"
       >
-        <HomeFilled class="w-5 h-5 text-slate-600 group-hover:scale-110 transition-transform" />
+        <HomeFilled class="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:scale-110 transition-transform" />
       </router-link>
       
       <!-- 搜索框 -->
@@ -167,8 +167,8 @@ onMounted(() => {
       <a 
         href="https://github.com/n1anchen/tools-web" 
         target="_blank"
-        class="flex items-center gap-2 px-3 py-2 rounded-xl 
-               hover:bg-slate-100 text-slate-600 hover:text-slate-900 
+        class="hidden c-sm:w-10 c-sm:h-10 c-sm:flex items-center justify-center rounded-full 
+               hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200
                transition-all duration-200"
       >
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -177,15 +177,16 @@ onMounted(() => {
       </a>
 
       <!-- 关于 -->
-      <ThemeSwitcher />
       <router-link 
         to="/about" 
-        class="hidden c-sm:flex items-center gap-2 px-3 py-2 rounded-xl 
-               hover:bg-blue-50 text-slate-600 hover:text-blue-600 
+        class="w-10 h-10 flex items-center justify-center rounded-full 
+               hover:bg-blue-50 dark:hover:bg-blue-900/40 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400
                transition-all duration-200"
       >
         <InfoFilled class="w-5 h-5" />
       </router-link>
+
+      <ThemeSwitcher />
     </div>
   </header>
 </template>

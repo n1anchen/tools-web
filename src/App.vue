@@ -89,7 +89,7 @@ onMounted(() => {
     <!-- left -->
     <el-aside 
       class="fixed top-0 left-0 h-full z-20 c-md:block c-sm:hidden c-xs:hidden
-             border-r border-slate-100 shadow-xl shadow-slate-200/50" 
+             border-r border-slate-100 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50" 
       width="260px" 
       v-show="!componentStore.leftCom"
     >
