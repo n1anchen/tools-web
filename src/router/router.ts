@@ -296,7 +296,7 @@ export const constantRoute = [
     component: () => import('@/components/Tools/ImgCut/ImgCut.vue'),
     name: 'imgCut',
     meta: {
-      title: "图片切割",
+      title: "图片分割",
       keywords: '图片分割,图片切割,四宫格,九宫格,十六宫格',
       description: '将图片分割成四宫格、九宫格、十六宫格，支持自定义行与列',
     }
