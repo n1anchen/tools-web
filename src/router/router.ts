@@ -342,6 +342,16 @@ export const constantRoute = [
     }
   },
   {
+    path: '/cron',
+    component: () => import('@/components/Tools/Cron/Cron.vue'),
+    name: 'cron',
+    meta: {
+      title: "CRON表达式",
+      keywords: 'cron,cron表达式,cron生成,cron解析',
+      description: 'CRON表达式生成与解析',
+    }
+  },
+  {
     path: '/asciiwordpic',
     component: () => import('@/components/Tools/ASCIIWordPic/ASCIIWordPic.vue'),
     name: 'asciiWordPic',

@@ -175,6 +175,15 @@ export function getToolsCate() {
         },
         {
           id: 1,
+          title: 'CRON表达式',
+          logo: '/images/logo/Time.png',
+          desc: 'CRON表达式生成与解析并列出后5次执行时间',
+          url: '/cron/',
+          cateId: 3,
+          cate: '开发运维'
+        },
+        {
+          id: 1,
           title: 'MD5在线加密',
           logo: '/images/logo/md5.png',
           desc: 'MD5在线加密,长度包含32位、16位',
