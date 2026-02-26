@@ -44,16 +44,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative overflow-hidden rounded-xl bg-gradient-to-r from-white via-white to-blue-50/50 
-              border border-slate-100 shadow-sm p-4 mb-4">
+  <div class="relative overflow-hidden rounded-xl bg-white dark:bg-slate-800 
+              border border-slate-100 dark:border-slate-700 shadow-sm p-4 mb-4">
     <!-- 装饰背景 -->
     <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-100/50 to-blue-100/50 
+                dark:from-blue-900/50 dark:to-blue-900/50
                 rounded-full -translate-y-16 translate-x-16 blur-2xl"></div>
     
     <div class="relative flex items-center gap-3">
       <!-- 工具图标 -->
-      <div class="w-10 h-10 rounded-lg overflow-hidden shadow-md shadow-blue-200/50 
-                  flex items-center justify-center bg-white border border-slate-100">
+      <div class="w-10 h-10 rounded-lg overflow-hidden shadow-md shadow-blue-200/50 dark:shadow-blue-900/50 
+                  flex items-center justify-center bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600">
         <el-image 
           v-if="toolInfo.logo" 
           :src="toolInfo.logo" 
@@ -74,10 +75,10 @@ onMounted(() => {
       </div>
       
       <div class="flex flex-col flex-1">
-        <h1 class="text-lg font-semibold text-slate-800">
+        <h1 class="text-lg font-semibold text-slate-800 dark:text-slate-200">
           {{ props.title }}
         </h1>
-        <p class="text-xs text-slate-400 mt-0.5 line-clamp-1">
+        <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">
           {{ toolInfo.desc || '在线工具 · 简单高效' }}
         </p>
       </div>
@@ -85,7 +86,7 @@ onMounted(() => {
       <!-- 分类标签 -->
       <div v-if="toolInfo.cate" class="hidden c-sm:flex items-center">
         <span class="px-2.5 py-0.5 rounded-full text-xs font-medium 
-                     bg-blue-50 text-blue-600 border border-blue-100">
+                     bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800">
           {{ toolInfo.cate }}
         </span>
       </div>

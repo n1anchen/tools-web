@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { More, Expand, Fold, HomeFilled, InfoFilled } from '@element-plus/icons-vue';
+import ThemeSwitcher from '@/components/ThemeSwitcher/ThemeSwitcher.vue';
 import { useToolsStore } from '@/store/modules/tools'
 import { useComponentStore } from '@/store/modules/component'
 import 'element-plus/theme-chalk/display.css'
@@ -82,7 +83,7 @@ onMounted(() => {
 
 <template>
   <header class="h-20 w-full flex justify-between items-center px-2 py-3 
-                 bg-white/80 backdrop-blur-md border-b border-slate-100 
+                 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800
                  c-xs:h-16 sticky top-0 z-50">
     <div class="flex items-center w-full gap-3">
       <!-- 移动端菜单按钮 -->
@@ -176,6 +177,7 @@ onMounted(() => {
       </a>
 
       <!-- 关于 -->
+      <ThemeSwitcher />
       <router-link 
         to="/about" 
         class="hidden c-sm:flex items-center gap-2 px-3 py-2 rounded-xl 
@@ -209,9 +211,19 @@ onMounted(() => {
   padding: 4px 12px;
 }
 
+.dark .search-input :deep(.el-select__wrapper) {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-color: #334155;
+}
+
 .search-input :deep(.el-select__wrapper:hover) {
   border-color: #93c5fd;
   box-shadow: 0 4px 6px -1px rgb(59 130 246 / 0.1);
+}
+
+.dark .search-input :deep(.el-select__wrapper:hover) {
+  border-color: #3b82f6;
+  box-shadow: none;
 }
 
 .search-input :deep(.el-select__wrapper.is-focused) {
@@ -219,8 +231,16 @@ onMounted(() => {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
+.dark .search-input :deep(.el-select__wrapper.is-focused) {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
 .search-input :deep(.el-select__placeholder) {
   color: #94a3b8;
+}
+
+.dark .search-input :deep(.el-select__placeholder) {
+  color: #64748b;
 }
 
 </style>

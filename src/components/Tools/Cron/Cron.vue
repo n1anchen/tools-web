@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-col mt-3 ml-4 flex-1">
+  <div class="flex flex-col mt-3 flex-1">
     <DetailHeader title="CRON表达式生成与解析"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-      <h3 class="text-lg font-semibold mb-4">生成器</h3>
+    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
+      <h3 class="text-lg font-semibold mb-4 dark:text-slate-200">生成器</h3>
       <el-form label-width="100px">
         <el-form-item label="执行周期">
           <el-select v-model="cronType" placeholder="请选择" @change="generateCron">

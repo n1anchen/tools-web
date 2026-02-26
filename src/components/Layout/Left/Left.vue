@@ -62,27 +62,28 @@ onMounted(async () => {
 
 <template>
   <!--  -->
-    <el-scrollbar class="h-full bg-gradient-to-b from-white to-slate-50">
+    <el-scrollbar class="h-full bg-white dark:bg-slate-900">
       <!-- logo -->
       <div class="flex justify-center pt-6 pb-4">
         <router-link class="flex flex-row items-center group" to="/">
           <img 
-            class="h-14 w-14 rounded-2xl shadow-lg shadow-blue-200/50 
-                   group-hover:shadow-xl group-hover:shadow-blue-300/50
+            class="h-14 w-14 rounded-2xl shadow-lg shadow-blue-200/50 dark:shadow-blue-800/50
+                   group-hover:shadow-xl group-hover:shadow-blue-300/50 dark:group-hover:shadow-blue-700/50
                    transition-all duration-300 group-hover:scale-105" 
             src="@/assets/logo.jpg" 
             :alt="appNet"
           >
           <div class="flex flex-col ml-4">
             <div class="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 
+                        dark:from-blue-500 dark:to-blue-600
                         bg-clip-text text-transparent">{{ appName }}</div>
-            <div class="text-xs text-slate-400 mt-0.5">{{ appNet }}</div>
+            <div class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{{ appNet }}</div>
           </div>
         </router-link>
       </div>
       
       <!-- 分割线 -->
-      <div class="mx-6 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent mb-4"></div>
+      <div class="mx-6 h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent mb-4"></div>
       
       <!-- menu -->
       <div class="px-4">
@@ -101,7 +102,7 @@ onMounted(async () => {
                             flex items-center justify-center shadow-sm">
                   <Management class="w-4 h-4 text-white" />
                 </div>
-                <span class="font-semibold text-slate-700">工具分类</span>
+                <span class="font-semibold text-slate-700 dark:text-slate-200">工具分类</span>
               </div>
             </template>
             <el-menu-item-group>
@@ -113,7 +114,7 @@ onMounted(async () => {
                   class="menu-item-custom"
                 >
                   <span class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600"></span>
                     {{ item.title }}
                   </span>
               </el-menu-item>
@@ -127,7 +128,7 @@ onMounted(async () => {
                             flex items-center justify-center shadow-sm">
                   <InfoFilled class="w-4 h-4 text-white" />
                 </div>
-                <span class="font-semibold text-slate-700">关于本站</span>
+                <span class="font-semibold text-slate-700 dark:text-slate-200">关于本站</span>
               </div>
             </template>
           </el-menu-item>
@@ -135,7 +136,7 @@ onMounted(async () => {
       </div>
       
       <!-- 底部装饰背景 -->
-      <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-blue-50/50 to-transparent pointer-events-none"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-blue-50/50 to-transparent dark:from-blue-900/20 pointer-events-none"></div>
     </el-scrollbar>
   <!-- </div> -->
 </template>
@@ -195,5 +196,24 @@ onMounted(async () => {
 /* 子菜单项间距 */
 .sidebar-menu :deep(.el-menu-item-group ul) {
   padding-left: 20px;
+}
+
+/* Dark Mode Styles */
+.dark .sidebar-menu :deep(.el-sub-menu__title:hover),
+.dark .sidebar-menu :deep(.el-sub-menu.is-opened > .el-sub-menu__title) {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.dark .menu-item-custom {
+  color: #94a3b8 !important;
+}
+
+.dark .menu-item-custom:hover {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+  color: #a5b4fc !important;
+}
+
+.dark .menu-item-custom.is-active {
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4) !important;
 }
 </style>

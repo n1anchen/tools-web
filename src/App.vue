@@ -4,14 +4,35 @@ import Left from '@/components/Layout/Left/Left.vue'
 import Floor from '@/components/Layout/Floor/Floor.vue'
 // import Right from '@/components/Layout/Right/Right.vue'
 import { useComponentStore } from '@/store/modules/component'
+import { useSettingStore } from '@/store/modules/setting'
+import { watch } from 'vue'
+import { storeToRefs } from 'pinia'
 
-//store
+// Pinia Stores
 const componentStore = useComponentStore()
+const settingStore = useSettingStore()
+const { isDark } = storeToRefs(settingStore)
 
+// Watch for theme changes and apply side effects
+watch(
+  isDark,
+  (newVal) => {
+    if (newVal) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    // Persist the change to localStorage
+    localStorage.setItem('isDark', JSON.stringify(newVal))
+  },
+  {
+    immediate: true, // Run on initial load
+  },
+)
 </script>
 
 <template>
-  <el-container class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+  <el-container class="min-h-screen bg-slate-50 dark:bg-slate-900">
     <!-- left -->
     <el-aside 
       class="fixed top-0 left-0 h-full z-20 c-md:block c-sm:hidden c-xs:hidden

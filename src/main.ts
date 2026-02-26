@@ -12,6 +12,7 @@ import router from './router'
 import './styles/tailwind.css'
 //element-plus css
 import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 //pinia
 import pinia from './store'
 //v-md-editor
