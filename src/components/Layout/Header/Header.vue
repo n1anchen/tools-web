@@ -257,6 +257,12 @@ onMounted(() => {
   max-width: min(672px, calc(100vw - 180px)) !important;
 }
 
+.dark .search-dropdown.el-select__popper {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3) !important;
+}
+
 /* 移动端适配 */
 @media (max-width: 768px) {
   .search-dropdown.el-select__popper {
@@ -294,6 +300,10 @@ onMounted(() => {
   background: #f1f5f9 !important;
 }
 
+.dark .search-dropdown .el-select-dropdown__item:hover {
+  background: #334155 !important;
+}
+
 .search-dropdown .el-select-dropdown__item.is-selected {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
 }
@@ -329,6 +339,10 @@ onMounted(() => {
   overflow: hidden;
 }
 
+.dark .search-dropdown .search-option-icon {
+  background: #1e293b;
+}
+
 .search-dropdown .search-option-icon img {
   width: 20px;
   height: 20px;
@@ -361,6 +375,10 @@ onMounted(() => {
   word-break: break-word;
 }
 
+.dark .search-dropdown .search-option-title {
+  color: #cbd5e1;
+}
+
 .search-dropdown .search-option-desc {
   font-size: 11px;
   color: #94a3b8;
@@ -370,6 +388,10 @@ onMounted(() => {
   line-height: 1.3;
   max-width: 100%;
   word-break: break-word;
+}
+
+.dark .search-dropdown .search-option-desc {
+  color: #64748b;
 }
 
 /* 移动端文本截断 */
