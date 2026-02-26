@@ -117,7 +117,7 @@ const beautifyCode = () => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       
       <div>
         <!-- 

@@ -353,10 +353,10 @@ onMounted(() => {
         </div>
         <!-- <div class="flex justify-center items-center"> -->
         <div class="flex justify-center items-center max-h-[500px] max-w-[1000px] overflow-auto">
-          <div id="main" class="bg-white"></div>
+          <div id="main" class="bg-white dark:bg-slate-800"></div>
         </div>
       </div>     
-      <div class="w-2/6 bg-white ml-3 rounded-lg p-3">
+      <div class="w-2/6 bg-white dark:bg-slate-800 ml-3 rounded-lg p-3">
         <div class="mb-3">
           <el-button class="w-full mb-3" type="primary" size="large" @click="downEchartsImg">下载图表</el-button>
           <div class="flex items-center ml-1">

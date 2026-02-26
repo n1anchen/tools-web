@@ -83,18 +83,18 @@ const copyRes = async () => {
 </script>
 
 <template>
-  <div class="flex flex-col mt-3 ml-4 flex-1">
+  <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
-    <div class="flex flex-col p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="flex flex-col p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="flex flex-direction">
-        <el-text class="mr-2 w-12">现在</el-text>
+        <el-text class="mr-2 w-12 dark:text-slate-200">现在</el-text>
         <el-button class="mr-3" link @click="copyRes()">{{ info.nowTime }} <el-icon class="ml-1 mr-1"><CopyDocument /></el-icon></el-button>
         <el-button v-if="info.isPlay" type="danger" link class="flex items-center" @click="isPlayChange()"><el-icon class="mr-1" size="16"><VideoPlay/></el-icon>停止</el-button>
         <el-button v-else="info.isPlay" type="primary" link class="flex items-center" @click="isPlayChange()"><el-icon class="mr-1" size="16"><VideoPause /></el-icon>开始</el-button>
       </div>
 
       <div class="flex flex-direction mt-4 justify-start">
-        <el-text class="mr-2 w-12">时间戳</el-text>
+        <el-text class="mr-2 w-12 dark:text-slate-200">时间戳</el-text>
         <el-input v-model="info.waitTimeStamp" class="h-8 mr-2 w-60 max-w-[30%]" placeholder="毫秒/秒">
         </el-input> 
         <el-button class="mr-2 max-w-[25%]" @click="timeTran('toDate')">转换</el-button>
@@ -102,7 +102,7 @@ const copyRes = async () => {
       </div>
 
       <div class="flex flex-direction mt-4 justify-start">
-        <el-text class="mr-2 w-12">时间</el-text>
+        <el-text class="mr-2 w-12 dark:text-slate-200">时间</el-text>
         <el-input v-model="info.waitDate" class="h-8 mr-2 w-60 max-w-[30%]"></el-input> 
         <el-button class="mr-2 max-w-[25%]" @click="timeTran('toStamp')">转换</el-button>
         <el-input v-model="info.tranTimeStamp" :value="info.tranTimeStamp == 0 ? '' : info.tranTimeStamp" class="h-8 w-72 mr-2 max-w-[30%]" placeholder="时间戳">

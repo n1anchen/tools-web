@@ -28,7 +28,7 @@ const copyRes = async (resStr: string) => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div>
         <el-input type="number" v-model="info.content" placeholder="请输入数字，最高13位数字"></el-input>
       </div>
@@ -39,7 +39,7 @@ const copyRes = async (resStr: string) => {
         <el-button type="danger" @click="clear">清空内容</el-button>
       </div>
 
-      <div class="mt-3 min-h-md bg-gray-100 p-3 mb-3">
+      <div class="mt-3 min-h-md bg-gray-100 dark:bg-slate-700 p-3 mb-3">
         <el-input type="textarea" :rows="8" v-model="info.tranRes"></el-input>
       </div>
     </div>

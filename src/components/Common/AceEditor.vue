@@ -2,12 +2,16 @@
   <div 
     ref="editorRef" 
     class="ace-editor" 
-    :style="{ height: height, width: '100%', border: '1px solid #dcdfe6', borderRadius: '4px' }"
+    :style="{ height: height, width: '100%' }"
   ></div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
+import { useSettingStore } from '@/store/modules/setting'
+
+const settingStore = useSettingStore()
+const isDark = computed(() => settingStore.isDark)
 
 interface Props {
   modelValue: string
@@ -65,7 +69,10 @@ const loadAceEditor = async () => {
   }
   
   // 加载主题
-  await import('ace-builds/src-noconflict/theme-monokai')
+  await Promise.all([
+    import('ace-builds/src-noconflict/theme-monokai'),
+    import('ace-builds/src-noconflict/theme-chrome')
+  ])
   
   // 按需加载扩展
   await Promise.all([
@@ -91,7 +98,7 @@ const initEditor = async () => {
     const ace = await loadAceEditor()
     
     editor = ace.edit(editorRef.value)
-    editor.setTheme(`ace/theme/${props.theme}`)
+    editor.setTheme(isDark.value ? 'ace/theme/monokai' : 'ace/theme/chrome')
     editor.session.setMode(`ace/mode/${props.mode}`)
     
     // 基础配置
@@ -171,6 +178,12 @@ watch(() => props.wordWrap, (value) => {
   }
 })
 
+watch(isDark, (dark) => {
+  if (editor) {
+    editor.setTheme(dark ? 'ace/theme/monokai' : 'ace/theme/chrome')
+  }
+})
+
 // 暴露编辑器方法
 const setValue = (value: string) => {
   if (editor) {
@@ -245,5 +258,11 @@ onUnmounted(() => {
 <style scoped>
 .ace-editor {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+}
+
+.dark .ace-editor {
+  border-color: #4c4d4f;
 }
 </style>

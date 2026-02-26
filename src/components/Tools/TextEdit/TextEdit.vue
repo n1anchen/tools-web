@@ -60,7 +60,7 @@ const copyRes = async (resStr: string) => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white h-[510px] border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 h-[510px] border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="border z-10 mt-3 h-96">
         <Toolbar
           class=""
@@ -80,7 +80,7 @@ const copyRes = async (resStr: string) => {
       
     </div>
 
-    <div class="p-4 mt-3 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="p-4 mt-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <el-button type="primary" @click="copyRes(html)">复制HTML</el-button>
       <el-input
         v-model="html"

@@ -35,11 +35,11 @@ const unifiedDiff = computed(() => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <!-- 设置选项 -->
       <div class="mb-4 flex gap-6">
         <div class="flex items-center gap-2">
-          <span class="text-sm font-medium">显示模式:</span>
+          <span class="text-sm font-medium dark:text-slate-200">显示模式:</span>
           <el-radio-group v-model="settings.outputFormat">
             <el-radio-button label="unified">混合</el-radio-button>
             <el-radio-button label="side-by-side">左右</el-radio-button>
@@ -47,7 +47,7 @@ const unifiedDiff = computed(() => {
           </el-radio-group>
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-sm font-medium">比较级别:</span>
+          <span class="text-sm font-medium dark:text-slate-200">比较级别:</span>
           <el-radio-group v-model="settings.diffLevel">
             <el-radio-button label="char">字符级</el-radio-button>
             <el-radio-button label="word">词组级</el-radio-button>
@@ -101,10 +101,15 @@ const unifiedDiff = computed(() => {
 <style scoped>
 .unified-diff-container {
   margin-top: 1rem;
-  border: 1px solid #404040;
+  border: 1px solid #e2e8f0;
   border-radius: 4px;
-  background-color: #1e1e1e;
+  background-color: #f8fafc;
   overflow: hidden;
+}
+
+.dark .unified-diff-container {
+  border-color: #334155;
+  background-color: #1e293b;
 }
 
 .unified-diff-content {
@@ -112,21 +117,34 @@ const unifiedDiff = computed(() => {
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   font-size: 14px;
   line-height: 1.6;
-  color: #d4d4d4;
+  color: #334155;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
 
+.dark .unified-diff-content {
+  color: #94a3b8;
+}
+
 .diff-removed {
-  background-color: rgba(255, 0, 0, 0.15);
-  color: #ff6b6b;
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #ef4444;
   text-decoration: line-through;
-  text-decoration-thickness: 2px;
+}
+
+.dark .diff-removed {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
 }
 
 .diff-added {
-  background-color: rgba(0, 255, 0, 0.15);
-  color: #51cf66;
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
   font-weight: 500;
+}
+
+.dark .diff-added {
+  background-color: rgba(52, 211, 153, 0.15);
+  color: #6ee7b7;
 }
 </style>

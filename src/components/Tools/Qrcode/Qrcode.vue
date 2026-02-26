@@ -59,7 +59,7 @@ const gen = () => {
   <div class="flex flex-col mt-3 ml-4 flex-1 mr-3">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="flex justify-between w-full p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="flex justify-between w-full p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="w-4/6 ">
         <div class="flex mb-3">
           <div class="w-16 mr-2"><el-text>内容</el-text></div>
@@ -106,7 +106,7 @@ const gen = () => {
             <el-text>前景色</el-text>
             <el-color-picker v-model="info.preColor" />
           </div> -->
-          <div class="w-16 flex flex-col items-center bg-gray-100 p-1 rounded-md">
+          <div class="w-16 flex flex-col items-center bg-gray-100 dark:bg-slate-700 p-1 rounded-md">
             <el-text>背景色</el-text>
             <el-color-picker v-model="info.bgColor" />
           </div>

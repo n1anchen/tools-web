@@ -196,7 +196,7 @@ const copyRes = async (index: any) => {
 <template>
   <div class="flex flex-col mt-3 flex-1 ">
     <DetailHeader :title="info.title"></DetailHeader>
-    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="flex">
         <div class="mr-2 w-full">
           <el-input v-model="info.content">
@@ -216,7 +216,7 @@ const copyRes = async (index: any) => {
         <el-button type="primary" @click="tran()">转换</el-button>
       </div>
 
-      <div class="mt-3 min-h-md bg-gray-100 p-3 mb-3 flex flex-col">
+      <div class="mt-3 min-h-md bg-gray-100 dark:bg-slate-700 p-3 mb-3 flex flex-col">
         <el-table :data="info.tranOptions" border style="width: 100%">
           <el-table-column prop="label" label="进制" width="120">
             <template #default="scope">

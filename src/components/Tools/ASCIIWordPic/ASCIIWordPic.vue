@@ -141,13 +141,13 @@ onMounted(() => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="mb-6">
         <el-input v-model="content" :rows="4" type="textarea" placeholder="请输入内容"></el-input>
         <div class="mt-3 flex items-center">
           <div class="flex items-center mr-3 w-36">
             <div class="w-10">
-              <el-text class="">风格</el-text>
+              <el-text class="dark:text-slate-200">风格</el-text>
             </div>
             <el-select
               v-model="fontStyle"
@@ -171,7 +171,7 @@ onMounted(() => {
       </div>
 
       <div>
-        <pre tabindex="0"><code>{{ contentRes }}</code></pre>
+        <pre tabindex="0" class="dark:text-slate-200"><code>{{ contentRes }}</code></pre>
       </div>
 
     </div>

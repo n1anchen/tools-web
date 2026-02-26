@@ -64,7 +64,7 @@ onMounted(() => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div>
         <el-radio-group v-model="info.checked" @change="changeCheckBox">
           <el-radio label="0" size="large">吃什么</el-radio>
@@ -76,7 +76,7 @@ onMounted(() => {
         <el-input type="textarea" v-model="info.scope" :rows="5"></el-input>
       </div>
 
-      <div class="text-5xl h-24 leading-[6rem]" v-if="info.randomVal != ''">
+      <div class="text-5xl h-24 leading-[6rem] dark:text-slate-200" v-if="info.randomVal != ''">
         {{ info.randomVal }}
         <!-- <el-text class=""></el-text> -->
       </div>

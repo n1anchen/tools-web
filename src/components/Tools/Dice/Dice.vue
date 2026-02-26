@@ -41,7 +41,7 @@ const resetDice = () => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <view class="grow-[1.5]"></view>
       <div class="flex justify-center grow-[3]">
         <div class="flex flex-wrap h-96 items-center">  

@@ -38,11 +38,11 @@ const changeContent = () => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div>
         <el-input type="textarea" :rows="16" v-model="info.content" @input="changeContent"></el-input>
       </div>
-      <div class="mt-3 min-h-md bg-gray-100 p-3 mb-3 flex">
+      <div class="mt-3 min-h-md bg-gray-100 dark:bg-slate-700 p-3 mb-3 flex">
         <div><el-text>总字数：{{ info.sum }}</el-text></div>
         <div class="ml-3"><el-text>汉字：{{ info.chinaCharNum }}</el-text></div>
         <div class="ml-3"><el-text>字母：{{ info.letterNum }}</el-text></div>

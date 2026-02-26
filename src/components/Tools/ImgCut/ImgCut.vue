@@ -5,7 +5,7 @@ import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
 const info = reactive({
-  title: "图片切割",
+  title: "图片分割",
 })
 
 const fileList = ref()
@@ -96,7 +96,7 @@ onMounted(() => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <el-upload
         v-model:file-list="fileList"
         class="dataFileRef flex"
