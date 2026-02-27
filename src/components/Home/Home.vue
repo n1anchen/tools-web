@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import { RouterLink } from "vue-router"
 import { ArrowRight, Top } from '@element-plus/icons-vue'
 import { useToolsStore } from '@/store/modules/tools'
@@ -8,6 +8,11 @@ import { useRoute } from "vue-router"
 //store
 const toolsStore = useToolsStore()
 const route = useRoute()
+
+// 计算所有工具的总数
+const totalToolsCount = computed(() => {
+  return toolsStore.cates.reduce((sum, cate) => sum + (cate.list?.length || 0), 0)
+})
 
 const isExternal = (path: string) => {
   return /^(http|https):\/\//.test(path)
@@ -22,18 +27,33 @@ const isExternal = (path: string) => {
 // }
 
 
+const HEADER_HEIGHT = 80
+const scrollToAnchor = (id: string, offset = HEADER_HEIGHT) => {
+  const el = document.getElementById(id)
+  if (!el) return
+  const top = el.getBoundingClientRect().top + window.scrollY - offset
+  window.scrollTo({ top, behavior: 'smooth' })
+}
+
 onMounted(() => {
   // getToolsCate()
   if (route.query && route.query.value) {//底部导航跳转过来的则定位到响应位置
-      document?.querySelector('#' + `${route.query.value}`)?.scrollIntoView();
+      scrollToAnchor(`${route.query.value}`)
   } else {//其他位置跳转过来不需要定位的则定位到顶部
-      document?.querySelector('#collect')?.scrollIntoView()
+      window.scrollTo({ top: 0, behavior: 'auto' })
   }
 })
 </script>
 
 <template>
   <div class="md:mr-6 c-xs:mr-0">
+    <!-- 工具总数统计 -->
+    <div class="mt-6 mb-2 flex items-center gap-2">
+      <span class="text-sm text-slate-500 dark:text-slate-400">本站目前共有</span>
+      <span class="px-2 py-0.5 rounded-full text-sm font-semibold bg-blue-50 text-blue-600 border border-blue-200
+                   dark:bg-blue-900/50 dark:text-blue-400 dark:border-blue-800">{{ totalToolsCount }}</span>
+      <span class="text-sm text-slate-500 dark:text-slate-400">个工具</span>
+    </div>
     <!-- list -->
     <div v-for="(cate, index) in toolsStore.cates" :key="index" class="mb-8">
       <!-- cate title -->
@@ -42,6 +62,8 @@ onMounted(() => {
         <h2 class="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 dark:from-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
           {{ cate.title }}
         </h2>
+        <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-500 border border-slate-200
+                     dark:bg-slate-700 dark:text-slate-400 dark:border-slate-600">{{ cate.list?.length || 0 }}</span>
         <div class="flex-1 h-px bg-gradient-to-r from-slate-200 dark:from-slate-700 to-transparent ml-4"></div>
       </div>
       <!-- card -->

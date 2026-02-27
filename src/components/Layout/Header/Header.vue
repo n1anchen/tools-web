@@ -89,7 +89,7 @@ onMounted(() => {
       <!-- 移动端菜单按钮 -->
       <button 
         @click="componentStore.setleftComDrawerStatus(!componentStore.leftComDrawer)" 
-        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200 hidden c-sm:block c-md:hidden c-xs:block"
+        class="w-10 h-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200 hidden c-sm:flex c-md:hidden c-xs:flex"
       >
         <More class="w-6 h-6 text-slate-600 dark:text-slate-400" />
       </button>

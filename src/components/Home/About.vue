@@ -2,8 +2,8 @@
 </script>
 
 <template>
-  <div class="flex flex-col mt-8 flex-1 items-center bg-white dark:bg-slate-800 rounded-md p-10">
-    <div class="p-5 w-2/3">
+  <div class="flex flex-col mt-8 flex-1 items-center bg-white dark:bg-slate-800 rounded-md p-6 sm:p-10">
+    <div class="p-3 sm:p-5 w-full sm:w-2/3">
       <h1 class="text-2xl font-bold">关于工具箱</h1>
       <p class="mt-6">
         <el-text><el-link href="https://github.com/n1anchen/tools-web" target="_blank" type="primary">Tools-Web</el-link> 是一款免费开源的轻量在线工具箱，包含开发、文本、媒体、图表、生活、查询等实用工具；如果对您有帮助，请将其分享给您的朋友，并且添加到收藏夹中！顺便再点个⭐️吧！</el-text>

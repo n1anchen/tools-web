@@ -89,9 +89,10 @@ onMounted(() => {
     <!-- left -->
     <el-aside 
       class="fixed top-0 left-0 h-full z-20 c-md:block c-sm:hidden c-xs:hidden
-             border-r border-slate-100 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50" 
+             border-r border-slate-100 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50
+             transition-transform duration-300 ease-in-out"
+      :class="componentStore.leftCom ? '-translate-x-full' : 'translate-x-0'" 
       width="260px" 
-      v-show="!componentStore.leftCom"
     >
       <Left></Left>
     </el-aside>
@@ -107,7 +108,7 @@ onMounted(() => {
     </el-drawer>
 
     <!-- right -->
-    <el-container :class="!componentStore.leftCom ? 'c-md:ml-[260px]' : ''" class="transition-all duration-300">
+    <el-container :class="!componentStore.leftCom ? 'c-md:ml-[260px]' : 'c-md:ml-0'" class="transition-all duration-300 ease-in-out">
       <el-header class="!p-0 !h-auto sticky top-0 z-30">
         <Header/>
       </el-header>

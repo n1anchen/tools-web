@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // import { Tools } from '@element-plus/icons-vue'
 import { Management, InfoFilled } from '@element-plus/icons-vue'
-import { onMounted, ref, reactive } from 'vue';
+import { onMounted, ref, reactive, nextTick } from 'vue';
 import { useToolsStore } from '@/store/modules/tools'
 import { useRouter, useRoute } from "vue-router"
 const router = useRouter()
@@ -15,6 +15,31 @@ const defaultActive = ref('')
 const defaultOpeneds = ['cate']
 //store
 const toolsStore = useToolsStore()
+
+// 滑动高亮块
+const menuListRef = ref<HTMLElement | null>(null)
+const sliderStyle = ref({ top: '0px', height: '0px', opacity: '0' })
+let sliderInited = false
+
+const updateSlider = () => {
+  nextTick(() => {
+    const container = menuListRef.value
+    if (!container) return
+    const active = container.querySelector('.el-menu-item.is-active') as HTMLElement | null
+    if (!active) {
+      sliderStyle.value = { ...sliderStyle.value, opacity: '0' }
+      return
+    }
+    const containerRect = container.getBoundingClientRect()
+    const activeRect = active.getBoundingClientRect()
+    const top = activeRect.top - containerRect.top
+    if (!sliderInited) {
+      // 首次不触发 transition，直接定位
+      sliderInited = true
+    }
+    sliderStyle.value = { top: `${top}px`, height: `${activeRect.height}px`, opacity: '1' }
+  })
+}
 //获取分类
 const getToolCates = async () => {
   try {
@@ -32,16 +57,22 @@ const handleClose = () => {
   
 }
 
+// 滚动到锚点，偏移 sticky header 高度
+const HEADER_HEIGHT = 80
+const scrollToAnchor = (anchor: string) => {
+  const el = document.getElementById(anchor)
+  if (!el) return
+  const top = el.getBoundingClientRect().top + window.scrollY - HEADER_HEIGHT
+  window.scrollTo({ top, behavior: 'smooth' })
+}
+
 //跳转锚点
 const query = reactive({ value: '' })
-const gotoAnchor = (anchor: string) => {
-  console.log(route.path)
+const gotoAnchor = (anchor: string, itemId: string) => {
+  defaultActive.value = itemId
+  updateSlider()
   if (route.path === '/') {
-    document?.getElementById(anchor)?.scrollIntoView({
-      behavior: "smooth", //smooth:平滑，auto：直接定位
-      block: "start",
-      inline: "start",
-    });
+    scrollToAnchor(anchor)
   } else {
     query.value = anchor
     router.push({
@@ -51,12 +82,14 @@ const gotoAnchor = (anchor: string) => {
   }
 }
 const gotoAbout = () => {
+  defaultActive.value = 'about'
+  updateSlider()
   router.push('about')
 }
 
 onMounted(async () => {
   await getToolCates()
-  
+  updateSlider()
 })
 </script>
 
@@ -87,52 +120,56 @@ onMounted(async () => {
       
       <!-- menu -->
       <div class="px-4">
-        <el-menu
-          class="sidebar-menu"
-          :default-active="defaultActive"
-          :default-openeds="defaultOpeneds"
-          background-color="transparent"
-          @open="handleOpen"
-          @close="handleClose"
-        >
-          <el-sub-menu index="cate">
-            <template #title>
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 
-                            flex items-center justify-center shadow-sm">
-                  <Management class="w-4 h-4 text-white" />
+        <div ref="menuListRef" class="relative">
+          <!-- 滑动高亮块 -->
+          <div class="menu-slider" :style="sliderStyle"></div>
+          <el-menu
+            class="sidebar-menu"
+            :default-active="defaultActive"
+            :default-openeds="defaultOpeneds"
+            background-color="transparent"
+            @open="handleOpen"
+            @close="handleClose"
+          >
+            <el-sub-menu index="cate">
+              <template #title>
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 
+                              flex items-center justify-center shadow-sm">
+                    <Management class="w-4 h-4 text-white" />
+                  </div>
+                  <span class="font-semibold text-slate-700 dark:text-slate-200">工具分类</span>
                 </div>
-                <span class="font-semibold text-slate-700 dark:text-slate-200">工具分类</span>
-              </div>
-            </template>
-            <el-menu-item-group>
-                <el-menu-item
-                  @click="gotoAnchor('cate_' + item.id)"
-                  :index="item.id.toString()"
-                  v-for="(item,index) in toolsStore.cates" 
-                  :key="index"
-                  class="menu-item-custom"
-                >
-                  <span class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600"></span>
-                    {{ item.title }}
-                  </span>
-              </el-menu-item>
-            </el-menu-item-group>
-          </el-sub-menu>
-          
-          <el-menu-item index="about" @click="gotoAbout" class="menu-item-custom mt-2">
-            <template #title>
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 
-                            flex items-center justify-center shadow-sm">
-                  <InfoFilled class="w-4 h-4 text-white" />
+              </template>
+              <el-menu-item-group>
+                  <el-menu-item
+                    @click="gotoAnchor('cate_' + item.id, item.id.toString())"
+                    :index="item.id.toString()"
+                    v-for="(item,index) in toolsStore.cates" 
+                    :key="index"
+                    class="menu-item-custom"
+                  >
+                    <span class="flex items-center gap-2">
+                      <span class="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+                      {{ item.title }}
+                    </span>
+                </el-menu-item>
+              </el-menu-item-group>
+            </el-sub-menu>
+            
+            <el-menu-item index="about" @click="gotoAbout" class="menu-item-custom mt-2">
+              <template #title>
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 
+                              flex items-center justify-center shadow-sm">
+                    <InfoFilled class="w-4 h-4 text-white" />
+                  </div>
+                  <span class="font-semibold text-slate-700 dark:text-slate-200">关于本站</span>
                 </div>
-                <span class="font-semibold text-slate-700 dark:text-slate-200">关于本站</span>
-              </div>
-            </template>
-          </el-menu-item>
-        </el-menu>
+              </template>
+            </el-menu-item>
+          </el-menu>
+        </div>
       </div>
       
       <!-- 底部装饰背景 -->
@@ -146,6 +183,8 @@ onMounted(async () => {
 .sidebar-menu {
   border: none !important;
   padding: 0 !important;
+  position: relative;
+  z-index: 1;
 }
 
 .sidebar-menu :deep(.el-sub-menu__title) {
@@ -156,11 +195,11 @@ onMounted(async () => {
 }
 
 .sidebar-menu :deep(.el-sub-menu__title:hover) {
-  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+  background: #eef2ff;
 }
 
 .sidebar-menu :deep(.el-sub-menu.is-opened > .el-sub-menu__title) {
-  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+  background: #eef2ff;
 }
 
 .sidebar-menu :deep(.el-menu-item-group__title) {
@@ -178,15 +217,15 @@ onMounted(async () => {
 }
 
 .menu-item-custom:hover {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  background: #f1f5f9 !important;
   color: #6366f1 !important;
   transform: translateX(4px);
 }
 
 .menu-item-custom.is-active {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+  background: transparent !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  box-shadow: none;
 }
 
 .menu-item-custom.is-active span .w-1\.5 {
@@ -198,22 +237,42 @@ onMounted(async () => {
   padding-left: 20px;
 }
 
+/* 滑动高亮块 */
+.menu-slider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: 10px;
+  background: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
 /* Dark Mode Styles */
 .dark .sidebar-menu :deep(.el-sub-menu__title:hover),
 .dark .sidebar-menu :deep(.el-sub-menu.is-opened > .el-sub-menu__title) {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  background: #1e293b;
 }
 
-.dark .menu-item-custom {
+.dark .menu-item-custom:not(.is-active) {
   color: #94a3b8 !important;
 }
 
-.dark .menu-item-custom:hover {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+.dark .menu-item-custom:not(.is-active):hover {
+  background: #1e293b !important;
   color: #a5b4fc !important;
 }
 
 .dark .menu-item-custom.is-active {
-  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.dark .menu-slider {
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
 }
 </style>
