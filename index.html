@@ -17,6 +17,27 @@
     <meta property="og:image" content="/src/assets/logo.jpg">
     <meta property="og:url" content="https://tools.nianchen.top"><!-- 可选：这里填写自己的访问地址 -->
     <title></title>
+    <script>
+      // GitHub Pages SPA 路由还原
+      // 配合 public/404.html 使用，将编码的路径还原为 history 路由
+      (function (location) {
+        var query = location.search.slice(1);
+        if (query.indexOf('p=/') === 0) {
+          var decoded = query
+            .slice(2)
+            .split('&')
+            .map(function (s) { return s.replace(/~and~/g, '&'); });
+          var path = decoded.shift();
+          var search = decoded.length > 0 ? '?' + decoded.join('&') : '';
+          // 用 replaceState 替换 URL，避免留下 ?p= 的历史记录
+          window.history.replaceState(
+            null,
+            null,
+            path + search + location.hash
+          );
+        }
+      })(window.location);
+    </script>
   </head>
   <body class="bg-[--base-gray]">
     <body>
