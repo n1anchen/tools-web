@@ -123,7 +123,6 @@
 import { ref } from 'vue';
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue';
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-import { ElMessage } from 'element-plus';
 import cronstrue from 'cronstrue/i18n';
 import 'cronstrue/locales/zh_CN';
 import { CronExpressionParser } from 'cron-parser';
@@ -190,7 +189,6 @@ const generateCron = () => {
 
 const copyToClipboard = (text: string) => {
   copy(text);
-  ElMessage.success('已复制到剪贴板');
 };
 
 
