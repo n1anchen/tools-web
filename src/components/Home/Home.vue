@@ -2,6 +2,7 @@
 import { onMounted, computed } from 'vue';
 import { RouterLink } from "vue-router"
 import { ArrowRight, Top } from '@element-plus/icons-vue'
+import ToolIcon from '@/components/Common/ToolIcon.vue'
 import { useToolsStore } from '@/store/modules/tools'
 // import { ElMessage } from 'element-plus'
 import { useRoute } from "vue-router"
@@ -85,22 +86,8 @@ onMounted(() => {
                         rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-500"></div>
             
             <div class="relative flex items-center border-b border-slate-100 dark:border-slate-700 pb-2.5">
-              <div class="relative">
-                <el-image 
-                  :src="item.logo" 
-                  class="w-9 h-9 min-h-[2.25rem] min-w-[2.25rem] rounded-lg shadow-sm 
-                         group-hover:shadow-md group-hover:scale-110 transition-all duration-300"
-                >
-                  <template #error>
-                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 
-                                dark:from-slate-700 dark:to-slate-600
-                                flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-400 dark:text-blue-500" viewBox="0 0 512 512" fill="currentColor">
-                        <path d="M501.1 395.7L384 278.6c-23.1-23.1-57.6-27.6-85.4-13.9L192 158.1V96L64 0L0 64l96 128h62.1l106.6 106.6c-13.6 27.8-9.2 62.3 13.9 85.4l117.1 117.1c14.6 14.6 38.2 14.6 52.7 0l52.7-52.7c14.5-14.6 14.5-38.2 0-52.7zM331.7 225c28.3 0 54.9 11 74.9 31l19.4 19.4c15.8-6.9 30.8-16.5 43.8-29.5c37.1-37.1 49.7-89.3 37.9-136.7c-2.2-9-13.5-12.1-20.1-5.5l-74.4 74.4l-67.9-11.3L334 98.9l74.4-74.4c6.6-6.6 3.4-17.9-5.7-20.2c-47.4-11.7-99.6.9-136.6 37.9c-28.5 28.5-41.9 66.1-41.2 103.6l82.1 82.1c8.1-1.9 16.5-2.9 24.7-2.9zm-103.9 82l-56.7-56.7L18.7 402.8c-25 25-25 65.5 0 90.5s65.5 25 90.5 0l123.6-123.6c-7.6-19.9-9.9-41.6-5-62.7zM64 472c-13.2 0-24-10.8-24-24c0-13.3 10.7-24 24-24s24 10.7 24 24c0 13.2-10.7 24-24 24z" fill="currentColor"></path>
-                      </svg>
-                    </div>
-                  </template>
-                </el-image>
+              <div class="relative group-hover:shadow-md group-hover:scale-110 transition-all duration-300">
+                <ToolIcon :logo="item.logo" :size="36" />
               </div>
               <div class="flex flex-col ml-2.5 flex-1 min-w-0">
                 <div class="flex items-center gap-1.5">

@@ -11,7 +11,7 @@ export function getToolsCate() {
         {
           id: 0,
           title: '智能排座工具',
-          logo: '',
+          logo: 'ThLarge',
           desc: '智能排座工具，根据人员名单自动生成排座图，支持拖拽操作',
           url: 'https://seat.nianchen.top',
           cateId: 0,
@@ -20,7 +20,7 @@ export function getToolsCate() {
         {
           id: 0,
           title: 'xicons图标库预览',
-          logo: '',
+          logo: 'Icons',
           desc: 'xicons图标库前端页面，方便查看、搜索和选择图标',
           url: 'https://xicons.nianchen.top',
           cateId: 0,
@@ -36,7 +36,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '字体在线预览',
-          logo: '',
+          logo: 'Font',
           desc: '在线预览本机字体，支持打开字体文件或读取系统已安装字体查看效果',
           url: '/fontpreview/',
           cateId: 1,
@@ -45,7 +45,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'markdown编辑器',
-          logo: '/images/logo/file-markdown-fill.png',
+          logo: 'Markdown',
           desc: '在线创建或编辑markdown, 实时预览，导出markdown',
           url: '/markdown/',
           cateId: 1,
@@ -63,7 +63,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'js代码格式化/压缩',
-          logo: '/images/logo/JSForamt.png',
+          logo: 'Js',
           desc: 'JS格式化/压缩工具,提供在线JS格式化、JS压缩、JS混淆、JS解密',
           url: '/jsforamt/',
           cateId: 1,
@@ -72,7 +72,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'Html代码格式化',
-          logo: '/images/logo/HtmlFormat.png',
+          logo: 'Html5',
           desc: '提供在线html、xml格式化',
           url: '/htmlformat/',
           cateId: 1,
@@ -81,7 +81,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'Css代码格式化/压缩',
-          logo: '/images/logo/CssFormat.png',
+          logo: 'Css3',
           desc: 'css格式化/压缩工具,提供在线css格式化、css压缩',
           url: '/cssformat/',
           cateId: 1,
@@ -90,7 +90,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '在线文本编辑/HTML获取',
-          logo: '/images/logo/richtextEditor.png',
+          logo: 'Edit',
           desc: '在线富文本编辑, html实时预览，在线编辑文本，文本编辑获取html',
           url: '/textedit/',
           cateId: 1,
@@ -185,7 +185,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'CRON表达式',
-          logo: '/images/logo/Time.png',
+          logo: 'Clock',
           desc: 'CRON表达式生成与解析并列出后5次执行时间',
           url: '/cron/',
           cateId: 3,

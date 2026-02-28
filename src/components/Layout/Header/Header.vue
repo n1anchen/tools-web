@@ -3,6 +3,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { Bars, AngleRight, AngleLeft, Home, InfoCircle, Github } from '@vicons/fa';
 import { Icon } from '@vicons/utils'
 import ThemeSwitcher from '@/components/ThemeSwitcher/ThemeSwitcher.vue';
+import ToolIcon from '@/components/Common/ToolIcon.vue';
 import { useToolsStore } from '@/store/modules/tools'
 import { useComponentStore } from '@/store/modules/component'
 import 'element-plus/theme-chalk/display.css'
@@ -186,7 +187,7 @@ onMounted(() => {
           >
             <div class="search-option-content">
               <div class="search-option-icon">
-                <img v-if="item.logo" :src="item.logo" :alt="item.title" />
+                <ToolIcon v-if="item.logo" :logo="item.logo" :size="24" rounded="rounded" />
                 <span v-else>{{ item.title.charAt(0) }}</span>
               </div>
               <div class="search-option-text">

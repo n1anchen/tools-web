@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // import { Star } from '@element-plus/icons-vue'
 import { Setting } from '@element-plus/icons-vue'
+import ToolIcon from '@/components/Common/ToolIcon.vue'
 import { onMounted, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router'
 import { useToolsStore } from '@/store/modules/tools'
@@ -55,19 +56,7 @@ onMounted(() => {
       <!-- 工具图标 -->
       <div class="w-10 h-10 rounded-lg overflow-hidden shadow-md shadow-blue-200/50 dark:shadow-blue-900/50 
                   flex items-center justify-center bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600">
-        <el-image 
-          v-if="toolInfo.logo" 
-          :src="toolInfo.logo" 
-          class="w-8 h-8 object-cover rounded"
-          fit="cover"
-        >
-          <template #error>
-            <div class="w-full h-full bg-gradient-to-br from-blue-500 to-blue-600 
-                        flex items-center justify-center">
-              <Setting class="w-4 h-4 text-white" />
-            </div>
-          </template>
-        </el-image>
+        <ToolIcon v-if="toolInfo.logo" :logo="toolInfo.logo" :size="32" rounded="rounded" />
         <div v-else class="w-full h-full bg-gradient-to-br from-blue-500 to-blue-600 
                           flex items-center justify-center">
           <Setting class="w-4 h-4 text-white" />
