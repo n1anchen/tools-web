@@ -13,6 +13,7 @@ import router from '@/router';
 const loading = ref(false)
 const options = ref<ToolsInfo[]>([])
 const searchValue = ref<string | number>('') // 用于 el-select 的 v-model
+const selectRef = ref()
 //store
 const toolsStore = useToolsStore()
 const componentStore = useComponentStore()
@@ -51,6 +52,18 @@ const searchTools = async (query: string) => {
   loading.value = false
 }
 
+// 解决/处理移动端输入法/兼容性问题导致无法搜索
+const handleMobileInput = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  // 如果是 compositionend 事件，或者 input 事件且不是正在组合输入
+  if (target && (e.type === 'compositionend' || (e.type === 'input' && !(e as any).isComposing))) {
+     // 这里加一个小延时，确保 value 已经是最新的，并且避免和 el-select 内部的逻辑冲突（虽然 internal logic 可能没触发）
+     setTimeout(() => {
+        searchTools(target.value)
+     }, 0)
+  }
+}
+
 //保存到桌面
 // const createUrlShortcut = async () => {
 //   try {
@@ -79,6 +92,21 @@ const optionClick = (url: string) => {
 }
 
 onMounted(() => {
+  // 针对移动端输入法的兼容处理
+  if (selectRef.value) {
+    const input = selectRef.value.$el.querySelector('input')
+    if (input) {
+      // 监听 compositionend 事件
+      input.addEventListener('compositionend', handleMobileInput)
+      // 监听 input 事件，处理非中文输入情况
+      input.addEventListener('input', (e: Event) => {
+        // 如果正在进行中文拼音输入，则忽略 input 事件，等待 compositionend
+        if (!(e as any).isComposing) {
+           handleMobileInput(e)
+        }
+      })
+    }
+  }
 })
 </script>
 
@@ -132,6 +160,7 @@ onMounted(() => {
       <!-- 搜索框 -->
       <div class="c-xs:flex-1 flex-1 max-w-2xl search-container min-w-0">
         <el-select
+          ref="selectRef"
           v-model="searchValue"
           filterable
           remote
