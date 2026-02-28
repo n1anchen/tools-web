@@ -422,7 +422,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '蔚蓝档案标题生成',
-          logo: '/images/bluearchive/halo.png',
+          logo: '/images/logo/bluearchive.png',
           desc: '生成类似于《蔚蓝档案》(Blue Archive) 游戏主标题 Logo 风格的图片。',
           url: '/bluearchive/',
           cateId: 6,
