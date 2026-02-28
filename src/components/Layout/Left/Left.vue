@@ -26,10 +26,24 @@ const updateSlider = () => {
     const container = menuListRef.value
     if (!container) return
     const active = container.querySelector('.el-menu-item.is-active') as HTMLElement | null
+    
+    // 检查是否在折叠的子菜单中
+    let isHidden = false
     if (!active) {
+      isHidden = true
+    } else {
+      // 检查父级 el-sub-menu 是否折叠
+      const subMenu = active.closest('.el-sub-menu')
+      if (subMenu && !subMenu.classList.contains('is-opened')) {
+        isHidden = true
+      }
+    }
+
+    if (isHidden || !active) {
       sliderStyle.value = { ...sliderStyle.value, opacity: '0' }
       return
     }
+
     const containerRect = container.getBoundingClientRect()
     const activeRect = active.getBoundingClientRect()
     const top = activeRect.top - containerRect.top
@@ -50,11 +64,15 @@ const getToolCates = async () => {
 }
 
 const handleOpen = () => {
-
+  setTimeout(updateSlider, 300)
 }
 
 const handleClose = () => {
-  
+  // 立即检查是否需要隐藏滑块
+  // Element Plus 在触发 close 事件时通常已经移除了 is-opened 类
+  updateSlider()
+  // 等待动画完成再次确认位置
+  setTimeout(updateSlider, 300)
 }
 
 // 滚动到锚点，偏移 sticky header 高度
@@ -235,6 +253,28 @@ onMounted(async () => {
 /* 子菜单项间距 */
 .sidebar-menu :deep(.el-menu-item-group ul) {
   padding-left: 20px;
+  margin: 0;
+  /* 增加 padding 来代替 margin，防止动画时 margin 折叠导致的跳动 */
+  padding-top: 4px; 
+  padding-bottom: 4px;
+  overflow: hidden; 
+}
+
+/* 修正 el-menu-item 的 margin */
+.sidebar-menu :deep(.el-menu-item-group .el-menu-item) {
+  /* 垂直 margin 设为 0，防止折叠和动画跳动 */
+  margin-top: 0 !important;
+  margin-bottom: 4px !important;
+}
+
+/* 最后一个元素不需要底部 margin，由容器 padding 提供 */
+.sidebar-menu :deep(.el-menu-item-group .el-menu-item:last-child) {
+  margin-bottom: 0 !important;
+}
+
+/* Element Plus Menu 折叠动画修正 */
+.sidebar-menu :deep(.el-menu-item-group) {
+    padding: 0; /* 确保分组容器没有额外内边距 */
 }
 
 /* 滑动高亮块 */
