@@ -78,7 +78,7 @@ onMounted(() => {
             :target="isExternal(item.url) ? '_blank' : undefined"
             class="group relative flex flex-col p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 
                    shadow-sm hover:shadow-lg hover:shadow-blue-100/50 dark:hover:shadow-blue-900/50 hover:border-blue-200 dark:hover:border-blue-700
-                   transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+                   transition-all duration-300 hover:-translate-y-1 overflow-hidden cursor-pointer"
           >
             <!-- 装饰背景 -->
             <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-50 
