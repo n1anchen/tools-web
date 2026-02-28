@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, type Component } from 'vue'
+import { computed, type Component } from 'vue'
 import { Icon } from '@vicons/utils'
+import * as FaIcons from '@vicons/fa'
 
 const props = withDefaults(defineProps<{
   /** 图标：图片路径（以 / 或 http 开头）或 @vicons/fa 图标名（如 "Download"） */
@@ -24,20 +25,15 @@ const isIconName = computed(() => {
   return props.logo !== '' && !isImageUrl.value
 })
 
-/** 动态加载 @vicons/fa 图标组件 */
+/** 同步获取 @vicons/fa 图标组件，避免 defineAsyncComponent 导致的闪烁 */
 const faIconComponent = computed<Component | null>(() => {
   if (!isIconName.value) return null
-  const name = props.logo
-  return defineAsyncComponent(() =>
-    import('@vicons/fa').then((mod) => {
-      const comp = (mod as Record<string, Component>)[name]
-      if (!comp) {
-        console.warn(`[ToolIcon] @vicons/fa 中未找到图标: "${name}"`)
-        return Promise.reject(new Error(`Icon "${name}" not found`))
-      }
-      return comp
-    })
-  )
+  const comp = (FaIcons as Record<string, Component>)[props.logo]
+  if (!comp) {
+    console.warn(`[ToolIcon] @vicons/fa 中未找到图标: "${props.logo}"`)
+    return null
+  }
+  return comp
 })
 
 const iconSize = computed(() => Math.round(props.size * 0.6))

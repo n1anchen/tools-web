@@ -78,7 +78,7 @@ onMounted(() => {
             :target="isExternal(item.url) ? '_blank' : undefined"
             class="group relative flex flex-col p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 
                    shadow-sm hover:shadow-lg hover:shadow-blue-100/50 dark:hover:shadow-blue-900/50 hover:border-blue-200 dark:hover:border-blue-700
-                   transition-all duration-300 hover:-translate-y-1 overflow-hidden cursor-pointer"
+                   transition-[transform,box-shadow,border-color] duration-300 translate-y-0 hover:-translate-y-1 overflow-hidden cursor-pointer"
           >
             <!-- 装饰背景 -->
             <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-50 
@@ -86,7 +86,8 @@ onMounted(() => {
                         rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-500"></div>
             
             <div class="relative flex items-center border-b border-slate-100 dark:border-slate-700 pb-2.5">
-              <div class="relative group-hover:shadow-md group-hover:scale-110 transition-all duration-300">
+              <div :class="['relative rounded-lg scale-100 will-change-transform group-hover:scale-110 transition-[transform,box-shadow] duration-300',
+                            !item.logo.startsWith('/') && !item.logo.startsWith('http') ? 'group-hover:shadow-md' : '']">
                 <ToolIcon :logo="item.logo" :size="36" />
               </div>
               <div class="flex flex-col ml-2.5 flex-1 min-w-0">
