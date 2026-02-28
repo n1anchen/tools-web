@@ -1,6 +1,5 @@
 {
   "name": "tools-web",
-  "entry": "./src/main.ts",
   "installCommand": "pnpm install",
   "buildCommand": "pnpm build:pro",
   "assets": {
