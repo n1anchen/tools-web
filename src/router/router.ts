@@ -302,6 +302,36 @@ export const constantRoute = [
     }
   },
   {
+    path: '/choyen5000',
+    component: () => import('@/components/Tools/Choyen5000/Choyen5000.vue'),
+    name: 'choyen5000',
+    meta: {
+      title: "5000兆円生成器",
+      keywords: '5000兆円,表情包生成,图片生成',
+      description: '生成经典的5000兆円欲しい!表情包，支持自定义文本内容和字体颜色。',
+    }
+  },
+  {
+    path: '/pornhublogo',
+    component: () => import('@/components/Tools/PornhubLogo/PornhubLogo.vue'),
+    name: 'pornhublogo',
+    meta: {
+      title: "P站风格Logo生成",
+      keywords: 'Pornhub风格,P站Logo,Logo生成,图片生成',
+      description: '生成P站风格的黑黄 Logo 图片，可自定义左右文字内容和背景形状。',
+    }
+  },
+  {
+    path: '/bluearchive',
+    component: () => import('@/components/Tools/BlueArchive/BlueArchive.vue'),
+    name: 'bluearchive',
+    meta: {
+      title: "蔚蓝档案标题生成",
+      keywords: 'BlueArchive,蔚蓝档案Logo,碧蓝档案,标题生成,图片生成',
+      description: '生成《蔚蓝档案》(Blue Archive) 游戏主标题Logo风格的图片。',
+    }
+  },
+  {
     path: '/httpstatuscode',
     component: () => import('@/components/Tools/HttpStatusCode/HttpStatusCode.vue'),
     name: 'HttpStatusCode',

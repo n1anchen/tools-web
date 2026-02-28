@@ -388,6 +388,40 @@ export function getToolsCate() {
       ]
     },
     {
+      id: 6,
+      title: '趣味工具',
+      icon: '',
+      list: [
+        {
+          id: 1,
+          title: 'P站风格Logo生成',
+          logo: '/images/logo/hub.png',
+          desc: '生成P站风格的黑黄 Logo 图片，可自定义左右文字内容和背景形状。',
+          url: '/pornhublogo/',
+          cateId: 6,
+          cate: '趣味工具',
+        },
+        {
+          id: 1,
+          title: '5000兆円生成器',
+          logo: '/images/logo/5000choyen.png',
+          desc: '生成5000兆円风格图片的工具。支持自定义文本内容和字体颜色。',
+          url: '/choyen5000/',
+          cateId: 6,
+          cate: '趣味工具',
+        },
+        {
+          id: 1,
+          title: '蔚蓝档案标题生成',
+          logo: '/images/bluearchive/halo.png',
+          desc: '生成类似于《蔚蓝档案》(Blue Archive) 游戏主标题 Logo 风格的图片。',
+          url: '/bluearchive/',
+          cateId: 6,
+          cate: '趣味工具',
+        },
+      ]
+    },
+    {
       id: 8,
       title: '数据图表',
       icon: '',

@@ -30,4 +30,5 @@ public/sitemap.txt
 
 # 自动复制的资源文件（构建时从 node_modules 复制）
 public/fonts/
+!public/fonts/bluearchive/
 public/ace/
