@@ -35,6 +35,15 @@ export function getToolsCate() {
       list: [
         {
           id: 1,
+          title: '字体在线预览',
+          logo: '',
+          desc: '在线预览本机字体，支持打开字体文件或读取系统已安装字体查看效果',
+          url: '/fontpreview/',
+          cateId: 1,
+          cate: '在线编辑'
+        },
+        {
+          id: 1,
           title: 'markdown编辑器',
           logo: '/images/logo/file-markdown-fill.png',
           desc: '在线创建或编辑markdown, 实时预览，导出markdown',

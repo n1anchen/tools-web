@@ -372,6 +372,16 @@ export const constantRoute = [
     }
   },
   {
+    path: '/fontpreview',
+    component: () => import('@/components/Tools/FontPreview/FontPreview.vue'),
+    name: 'fontPreview',
+    meta: {
+      title: "字体在线预览",
+      keywords: '字体预览,本地字体,字体查看,font preview,字体文件预览',
+      description: '在线本地字体预览工具，打开本地字体文件或读取系统已安装字体，查看字体显示效果',
+    }
+  },
+  {
     path: '/cron',
     component: () => import('@/components/Tools/Cron/Cron.vue'),
     name: 'cron',
