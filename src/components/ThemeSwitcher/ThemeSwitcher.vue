@@ -1,8 +1,12 @@
 <template>
   <button @click="toggleTheme" class="theme-toggle-button">
     <transition name="fade" mode="out-in">
-      <SunIcon v-if="!isDark" class="theme-icon" />
-      <MoonIcon v-else class="theme-icon" />
+      <Icon v-if="!isDark" size="20" class="theme-icon">
+        <SunIcon />
+      </Icon>
+      <Icon v-else size="18" class="theme-icon">
+        <MoonIcon />
+      </Icon>
     </transition>
   </button>
 </template>
@@ -11,7 +15,8 @@
 import { useSettingStore } from '@/store/modules/setting'
 import { storeToRefs } from 'pinia'
 import { inject } from 'vue'
-import { Sunny as SunIcon, Moon as MoonIcon } from '@element-plus/icons-vue'
+import { Sun as SunIcon, Moon as MoonIcon } from '@vicons/fa'
+import { Icon } from '@vicons/utils'
 
 const settingStore = useSettingStore()
 const { isDark } = storeToRefs(settingStore)
@@ -38,8 +43,6 @@ const toggleTheme = inject('toggleTheme') as (event: MouseEvent) => void
 }
 
 .theme-icon {
-  width: 1.25rem; /* 20px */
-  height: 1.25rem; /* 20px */
   color: #334155;
 }
 

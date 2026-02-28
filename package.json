@@ -16,6 +16,8 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
     "@kangc/v-md-editor": "^2.3.18",
+    "@vicons/fa": "^0.13.0",
+    "@vicons/utils": "^0.1.4",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
     "ace-builds": "^1.43.5",
