@@ -40,8 +40,8 @@ const options = ref([
     label: 'Bear',
   },
   {
-    value: 'Big Money-ne',
-    label: 'Big Money-ne',
+    value: 'Big-Money-ne',
+    label: 'Big-Money-ne',
   },
   {
     value: 'Big',

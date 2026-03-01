@@ -13,7 +13,8 @@ async function copyFigletFonts() {
   const sourceDir = path.join(projectRoot, 'node_modules/figlet/fonts')
   const targetDir = path.join(projectRoot, 'public/fonts')
   
-  // 需要复制的字体文件
+  // 需要复制的字体文件，支持 { src, dest } 格式以便重命名
+  // 文件名含空格会导致 URL 编码为 %20，部分 nginx/代理返回 400，统一用连字符替换
   const fontFiles = [
     'Alpha.flf',
     'Avatar.flf', 
@@ -22,7 +23,7 @@ async function copyFigletFonts() {
     'Basic.flf',
     'Bear.flf',
     'Big.flf',
-    'Big Money-ne.flf',
+    { src: 'Big Money-ne.flf', dest: 'Big-Money-ne.flf' },
     'Block.flf',
     'Epic.flf',
     'Ghost.flf',
@@ -43,15 +44,17 @@ async function copyFigletFonts() {
   
   console.log('📦 复制 figlet 字体文件...')
   
-  for (const fontFile of fontFiles) {
-    const sourcePath = path.join(sourceDir, fontFile)
-    const targetPath = path.join(targetDir, fontFile)
+  for (const entry of fontFiles) {
+    const srcName = typeof entry === 'string' ? entry : entry.src
+    const destName = typeof entry === 'string' ? entry : entry.dest
+    const sourcePath = path.join(sourceDir, srcName)
+    const targetPath = path.join(targetDir, destName)
     
     if (await fs.pathExists(sourcePath)) {
       await fs.copy(sourcePath, targetPath)
-      console.log(`✓ 复制: ${fontFile}`)
+      console.log(`✓ 复制: ${srcName}${srcName !== destName ? ` → ${destName}` : ''}`)
     } else {
-      console.warn(`⚠️  字体文件不存在: ${fontFile}`)
+      console.warn(`⚠️  字体文件不存在: ${srcName}`)
     }
   }
 }
