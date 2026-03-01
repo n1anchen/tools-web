@@ -26,7 +26,6 @@ const dismissOfflineReady = () => { offlineReady.value = false }
 // PWA 安装提示
 const deferredPrompt = ref<any>(null)
 window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault()
   deferredPrompt.value = e
 })
 window.addEventListener('appinstalled', () => { deferredPrompt.value = null })
