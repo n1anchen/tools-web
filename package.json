@@ -36,6 +36,7 @@
     "imorse": "^1.0.0",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.23",
+    "nprogress": "^0.2.0",
     "prismjs": "^1.30.0",
     "qrcode-vue3": "^1.7.1",
     "sass": "^1.97.3",
@@ -51,6 +52,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/nprogress": "^0.2.3",
     "@vitejs/plugin-vue": "^4.6.2",
     "autoprefixer": "^10.4.23",
     "fast-glob": "^3.3.3",

@@ -1,6 +1,12 @@
 //通过vue-router插件实现模板路由配置
 import { createRouter, createWebHistory } from 'vue-router'
 import { constantRoute } from './router'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+// 配置 NProgress：不显示右上角转圈
+NProgress.configure({ showSpinner: false, minimum: 0.2, speed: 300 })
+
 //创建路由器
 const router = createRouter({
   //路由模式hash
@@ -17,6 +23,7 @@ const router = createRouter({
 })
 // _form: ‘_’表示占位变量，可以不被使用
 router.beforeEach((to, _from, next) => {
+  NProgress.start()
   if (to.meta.title && to.meta.title != '') {
     let oldTitle = document.title
     document.title = <string>to.meta.title + '-' + oldTitle
@@ -25,6 +32,7 @@ router.beforeEach((to, _from, next) => {
 })
 //路由后置卫士
 router.afterEach((to) => {
+  NProgress.done()
   //填充mate元信息
   const { title , keywords, description } = to.meta
   //详情页标题

@@ -5,13 +5,20 @@ import Floor from '@/components/Layout/Floor/Floor.vue'
 // import Right from '@/components/Layout/Right/Right.vue'
 import { useComponentStore } from '@/store/modules/component'
 import { useSettingStore } from '@/store/modules/setting'
-import { provide, onMounted } from 'vue'
+import { provide, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 
 // Pinia Stores
 const componentStore = useComponentStore()
 const settingStore = useSettingStore()
 const { isDark } = storeToRefs(settingStore)
+const router = useRouter()
+
+// 路由加载状态
+const routeLoading = ref(false)
+router.beforeEach(() => { routeLoading.value = true })
+router.afterEach(() => { routeLoading.value = false })
 
 // Theme toggle function with ripple animation
 const toggleTheme = (event: MouseEvent) => {
@@ -112,7 +119,17 @@ onMounted(() => {
       <el-header class="!p-0 !h-auto sticky top-0 z-30">
         <Header/>
       </el-header>
-      <el-main class="!p-3 md:!p-4 !pt-2">
+      <el-main class="!p-3 md:!p-4 !pt-2 relative">
+        <!-- 路由切换加载遮罩 -->
+        <transition name="route-loading">
+          <div v-if="routeLoading" class="route-loading-mask"
+               :style="{ background: isDark ? 'rgba(15, 23, 42, 0.82)' : 'rgba(248, 250, 252, 0.82)' }">
+            <div class="route-loading-box">
+              <div class="route-loading-spinner"></div>
+              <span class="route-loading-text">少女祈祷中...</span>
+            </div>
+          </div>
+        </transition>
         <router-view v-slot="{ Component, route }">
           <transition name="page" mode="out-in">
             <component :is="Component" :key="route.path"></component>
@@ -150,6 +167,50 @@ onMounted(() => {
 }
 .page-leave-active {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 路由加载遮罩 */
+.route-loading-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(248, 250, 252, 0.75);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.route-loading-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.route-loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(59, 130, 246, 0.2);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: route-spin 0.7s linear infinite;
+}
+.route-loading-text {
+  font-size: 13px;
+  color: #3b82f6;
+  letter-spacing: 0.05em;
+}
+@keyframes route-spin {
+  to { transform: rotate(360deg); }
+}
+/* 遮罩淡入淡出 */
+.route-loading-enter-active,
+.route-loading-leave-active {
+  transition: opacity 0.2s ease;
+}
+.route-loading-enter-from,
+.route-loading-leave-to {
+  opacity: 0;
 }
 
 /* 抽屉样式 */
