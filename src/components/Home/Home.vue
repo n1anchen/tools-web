@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, computed } from 'vue';
-import { RouterLink } from "vue-router"
-import { ArrowRight, Top } from '@element-plus/icons-vue'
+import { ArrowRight } from '@element-plus/icons-vue'
 import ToolIcon from '@/components/Common/ToolIcon.vue'
+import BackToTop from '@/components/Common/BackToTop.vue'
 import { useToolsStore } from '@/store/modules/tools'
 // import { ElMessage } from 'element-plus'
 import { useRoute } from "vue-router"
@@ -119,11 +119,7 @@ onMounted(() => {
     </div>
 
     <!-- 返回顶部 -->
-    <el-backtop :right="20" :bottom="60" class="!bg-gradient-to-br !from-blue-500 !to-blue-600 !shadow-lg !shadow-blue-200 dark:!shadow-blue-800/50">
-      <div class="flex items-center justify-center w-full h-full text-white">
-        <Top class="w-5 h-5" />
-      </div>
-    </el-backtop>
+    <BackToTop :right="20" :bottom="60" />
   </div>
 </template>
 
