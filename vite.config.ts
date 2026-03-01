@@ -3,14 +3,22 @@ import vue from '@vitejs/plugin-vue'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
+import { execSync } from 'child_process'
 import { copyAssetsPlugin } from './scripts/vite-copy-assets-plugin.js'
+
+// 获取 git 提交号（7 位）
+let gitCommitHash = 'unknown'
+try {
+  gitCommitHash = execSync('git rev-parse --short HEAD').toString().trim()
+} catch {}
 
 // https://vitejs.dev/config/
 export default defineConfig(({command, mode}) => {
   let env = loadEnv(mode, process.cwd())
   return {
     define: {  
-      'process.env.NODE_ENV': JSON.stringify('production')  
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      '__GIT_COMMIT__': JSON.stringify(gitCommitHash)
     },
     plugins: [
       vue(),

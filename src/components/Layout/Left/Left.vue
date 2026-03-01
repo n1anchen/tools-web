@@ -9,6 +9,7 @@ const route = useRoute()
 
 const appName = ref(import.meta.env.VITE_APP_TITLE || '在线工具箱')
 const appNet = ref(import.meta.env.VITE_APP_DESC || '')
+const gitCommit = ref((__GIT_COMMIT__ as string) || 'unknown')
 //菜单选中
 const defaultActive = ref('')
 //默认展开的菜单
@@ -115,7 +116,7 @@ onMounted(async () => {
   <!--  -->
     <el-scrollbar class="h-full bg-white dark:bg-slate-900">
       <!-- logo -->
-      <div class="flex justify-center pt-6 pb-4">
+      <div class="flex flex-col items-center pt-6 pb-4 gap-2">
         <router-link class="flex flex-row items-center group" to="/">
           <img 
             class="h-14 w-14 rounded-2xl shadow-lg shadow-blue-200/50 dark:shadow-blue-800/50
@@ -131,6 +132,10 @@ onMounted(async () => {
             <div class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{{ appNet }}</div>
           </div>
         </router-link>
+        <span
+          class="text-[10px] font-mono text-slate-300 dark:text-slate-600 select-none tracking-wider"
+          :title="'构建版本: ' + gitCommit"
+        >rev.{{ gitCommit }}</span>
       </div>
       
       <!-- 分割线 -->
@@ -192,6 +197,7 @@ onMounted(async () => {
       
       <!-- 底部装饰背景 -->
       <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-blue-50/50 to-transparent dark:from-blue-900/20 pointer-events-none"></div>
+
     </el-scrollbar>
   <!-- </div> -->
 </template>
