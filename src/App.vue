@@ -157,7 +157,10 @@ onMounted(() => {
                text-sm text-slate-700 dark:text-slate-200 whitespace-nowrap"
       >
         <el-icon class="text-blue-500"><InfoFilled /></el-icon>
-        <span>检测到新版本，已自动在后台完成更新，下次打开生效</span>
+        <div class="flex flex-col gap-0.5">
+          <span class="font-medium">自动更新成功</span>
+          <span class="text-xs text-slate-400 dark:text-slate-500">新版本已后台更新，下次打开生效</span>
+        </div>
         <el-button type="primary" size="small" @click="handleUpdate">立即刷新</el-button>
         <el-button size="small" @click="dismissUpdate">稍后</el-button>
       </div>
