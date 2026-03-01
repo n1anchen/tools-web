@@ -9,15 +9,33 @@ import { provide, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-import { InfoFilled } from '@element-plus/icons-vue'
+import { InfoFilled, CircleCheckFilled, Download } from '@element-plus/icons-vue'
+import { watch } from 'vue'
 
 // PWA 更新提示
-const { needRefresh, updateServiceWorker } = useRegisterSW()
-const handleUpdate = () => {
-  updateServiceWorker(true)
-}
-const dismissUpdate = () => {
-  needRefresh.value = false
+const { needRefresh, offlineReady, updateServiceWorker } = useRegisterSW()
+const handleUpdate = () => { updateServiceWorker(true) }
+const dismissUpdate = () => { needRefresh.value = false }
+
+// 缓存就绪提示：8 秒后自动消失
+watch(offlineReady, (val) => {
+  if (val) setTimeout(() => { offlineReady.value = false }, 8000)
+})
+const dismissOfflineReady = () => { offlineReady.value = false }
+
+// PWA 安装提示
+const deferredPrompt = ref<any>(null)
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault()
+  deferredPrompt.value = e
+})
+window.addEventListener('appinstalled', () => { deferredPrompt.value = null })
+const installApp = async () => {
+  if (!deferredPrompt.value) return
+  deferredPrompt.value.prompt()
+  await deferredPrompt.value.userChoice
+  deferredPrompt.value = null
+  offlineReady.value = false
 }
 
 // Pinia Stores
@@ -103,21 +121,50 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- PWA 更新提示条 -->
-  <Transition name="pwa-toast">
-    <div
-      v-if="needRefresh"
-      class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999]
-             flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl
-             bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700
-             text-sm text-slate-700 dark:text-slate-200 whitespace-nowrap"
-    >
-      <el-icon class="text-blue-500"><InfoFilled /></el-icon>
-      <span>检测到新版本，刷新后生效</span>
-      <el-button type="primary" size="small" @click="handleUpdate">立即刷新</el-button>
-      <el-button size="small" @click="dismissUpdate">稍后</el-button>
-    </div>
-  </Transition>
+  <!-- PWA 通知容器：从底部向上堆叠 -->
+  <div class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center gap-2">
+
+    <!-- 缓存就绪提示（首次 SW 安装完成后显示） -->
+    <Transition name="pwa-toast">
+      <div
+        v-if="offlineReady"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl
+               bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700
+               text-sm text-slate-700 dark:text-slate-200 whitespace-nowrap"
+      >
+        <el-icon class="text-green-500 text-base"><CircleCheckFilled /></el-icon>
+        <div class="flex flex-col gap-0.5">
+          <span class="font-medium">缓存加载完成</span>
+          <span class="text-xs text-slate-400 dark:text-slate-500">大部分功能已可离线使用</span>
+        </div>
+        <el-button
+          v-if="deferredPrompt"
+          type="primary"
+          size="small"
+          @click="installApp"
+        >
+          <el-icon class="mr-1"><Download /></el-icon>安装为应用
+        </el-button>
+        <el-button size="small" @click="dismissOfflineReady">知道了</el-button>
+      </div>
+    </Transition>
+
+    <!-- 版本更新提示 -->
+    <Transition name="pwa-toast">
+      <div
+        v-if="needRefresh"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl
+               bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700
+               text-sm text-slate-700 dark:text-slate-200 whitespace-nowrap"
+      >
+        <el-icon class="text-blue-500"><InfoFilled /></el-icon>
+        <span>检测到新版本，刷新后生效</span>
+        <el-button type="primary" size="small" @click="handleUpdate">立即刷新</el-button>
+        <el-button size="small" @click="dismissUpdate">稍后</el-button>
+      </div>
+    </Transition>
+
+  </div>
 
   <el-container class="min-h-screen bg-slate-50 dark:bg-slate-900">
     <!-- left -->
@@ -280,14 +327,14 @@ onMounted(() => {
   animation: none !important;
 }
 
-/* PWA 更新提示条动画 */
+/* PWA 提示条动画（容器内子元素，无需 translateX） */
 .pwa-toast-enter-active,
 .pwa-toast-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 .pwa-toast-enter-from,
 .pwa-toast-leave-to {
   opacity: 0;
-  transform: translateX(-50%) translateY(20px);
+  transform: translateY(16px);
 }
 </style>
