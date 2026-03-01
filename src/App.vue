@@ -8,6 +8,17 @@ import { useSettingStore } from '@/store/modules/setting'
 import { provide, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
+import { useRegisterSW } from 'virtual:pwa-register/vue'
+import { InfoFilled } from '@element-plus/icons-vue'
+
+// PWA 更新提示
+const { needRefresh, updateServiceWorker } = useRegisterSW()
+const handleUpdate = () => {
+  updateServiceWorker(true)
+}
+const dismissUpdate = () => {
+  needRefresh.value = false
+}
 
 // Pinia Stores
 const componentStore = useComponentStore()
@@ -92,6 +103,22 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- PWA 更新提示条 -->
+  <Transition name="pwa-toast">
+    <div
+      v-if="needRefresh"
+      class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999]
+             flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl
+             bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700
+             text-sm text-slate-700 dark:text-slate-200 whitespace-nowrap"
+    >
+      <el-icon class="text-blue-500"><InfoFilled /></el-icon>
+      <span>检测到新版本，刷新后生效</span>
+      <el-button type="primary" size="small" @click="handleUpdate">立即刷新</el-button>
+      <el-button size="small" @click="dismissUpdate">稍后</el-button>
+    </div>
+  </Transition>
+
   <el-container class="min-h-screen bg-slate-50 dark:bg-slate-900">
     <!-- left -->
     <el-aside 
@@ -251,5 +278,16 @@ onMounted(() => {
 .theme-switching *::after {
   transition: none !important;
   animation: none !important;
+}
+
+/* PWA 更新提示条动画 */
+.pwa-toast-enter-active,
+.pwa-toast-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.pwa-toast-enter-from,
+.pwa-toast-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
 }
 </style>

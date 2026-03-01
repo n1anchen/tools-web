@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 import { copyAssetsPlugin } from './scripts/vite-copy-assets-plugin.js'
 
@@ -19,7 +20,78 @@ export default defineConfig(({command, mode}) => {
         // Specify symbolId format
         symbolId: 'icon-[dir]-[name]',
       }),
-      copyAssetsPlugin()
+      copyAssetsPlugin(),
+      VitePWA({
+        registerType: 'prompt',
+        // 预缓存 public 目录下的静态资源
+        includeAssets: ['favicon.ico', 'pwa-192x192.png', 'pwa-512x512.png', 'fonts/**/*', 'images/**/*'],
+        manifest: {
+          name: '在线工具箱',
+          short_name: '工具箱',
+          description: '一个轻量的在线工具箱，集成了多种实用的小工具',
+          theme_color: '#ffffff',
+          background_color: '#ffffff',
+          display: 'standalone',
+          start_url: '/',
+          icons: [
+            {
+              src: '/pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png'
+            },
+            {
+              src: '/pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any maskable'
+            },
+            {
+              src: '/favicon.ico',
+              sizes: '64x64 32x32 24x24 16x16',
+              type: 'image/x-icon'
+            }
+          ]
+        },
+        workbox: {
+          // 预缓存所有构建产物（带 hash 的 JS/CSS/HTML）
+          globPatterns: ['**/*.{js,css,html}'],          // vendors chunk 约 2.1MB，调高上限至 5MB
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,          // index.html 使用 network-first，保证用户第一时间拿到最新页面入口
+          navigateFallback: 'index.html',
+          navigateFallbackDenylist: [/^\/api\//],
+          runtimeCaching: [
+            {
+              // loli.net 谷歌字体镜像（Choyen5000 / BlueArchive / PornhubLogo 工具依赖）
+              urlPattern: /^https:\/\/fonts\.loli\.net\/.*/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'google-fonts-stylesheets',
+                expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 },
+                cacheableResponse: { statuses: [0, 200] }
+              }
+            },
+            {
+              // loli.net 字体文件 CDN（gstatic 镜像）
+              urlPattern: /^https:\/\/gstatic\.loli\.net\/.*/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'google-fonts-webfonts',
+                expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
+                cacheableResponse: { statuses: [0, 200] }
+              }
+            },
+            {
+              // public 目录下的图片和字体文件（.flf ASCII 字体等）
+              urlPattern: /\.(png|jpg|jpeg|svg|gif|webp|flf|woff2?|ttf|eot)$/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'static-assets',
+                expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 30 },
+                cacheableResponse: { statuses: [0, 200] }
+              }
+            }
+          ]
+        }
+      })
     ],
     resolve: {
       alias: {
