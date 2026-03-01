@@ -45,20 +45,45 @@ export default defineConfig(({command, mode}) => {
             {
               src: '/pwa-192x192.png',
               sizes: '192x192',
-              type: 'image/png'
+              type: 'image/png',
+              purpose: 'any'
+            },
+            {
+              // purpose 必须分开声明，不能合并为 "any maskable"
+              src: '/pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any'
             },
             {
               src: '/pwa-512x512.png',
               sizes: '512x512',
               type: 'image/png',
-              purpose: 'any maskable'
+              purpose: 'maskable'
             },
             {
+              // favicon.ico 实际尺寸 48x48
               src: '/favicon.ico',
-              sizes: '64x64 32x32 24x24 16x16',
+              sizes: '48x48',
               type: 'image/x-icon'
             }
-          ]
+          ],
+          screenshots: [
+            {
+              src: '/screenshots/desktop.jpg',
+              sizes: '1280x610',      // 按实际图片尺寸填写
+              type: 'image/jpeg',
+              form_factor: 'wide',    // 桌面端安装对话框使用
+              label: '在线工具箱 - 桌面版'
+            },
+            {
+              src: '/screenshots/mobile.jpg',
+              sizes: '360x780',       // 按实际图片尺寸填写
+              type: 'image/jpeg',
+              form_factor: 'narrow',  // 移动端安装对话框使用
+              label: '在线工具箱 - 移动版'
+            }
+          ],
         },
         workbox: {
           // 预缓存所有构建产物（带 hash 的 JS/CSS/HTML）
