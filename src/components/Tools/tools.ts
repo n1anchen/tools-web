@@ -428,6 +428,15 @@ export function getToolsCate() {
           cateId: 6,
           cate: '趣味工具',
         },
+        {
+          id: 1,
+          title: '光棱坦克工厂',
+          logo: 'LayerGroup',
+          desc: '将两张图片混合成一张光棱坦克图：白色背景下显现隐藏图，深色背景下显现表面图，支持解码还原',
+          url: '/miragetank/',
+          cateId: 6,
+          cate: '趣味工具',
+        },
       ]
     },
     {

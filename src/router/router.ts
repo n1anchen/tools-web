@@ -441,6 +441,16 @@ export const constantRoute = [
       description: '在线富文本编辑, html实时预览，在线编辑文本，文本编辑获取html',
     }
   },
+  {
+    path: '/miragetank',
+    component: () => import('@/components/Tools/MirageTank/MirageTank.vue'),
+    name: 'miragetank',
+    meta: {
+      title: "光棱坦克工厂",
+      keywords: '光棱坦克,幻影坦克,图片隐写,图片混合,图片还原',
+      description: '光棱坦克工厂：将两张图片混合成一张，在白色背景下显现隐藏图，在深色背景下显现表面图，支持解码还原',
+    }
+  },
   // 关于
   {
     path: '/about',
