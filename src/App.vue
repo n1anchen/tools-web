@@ -326,7 +326,6 @@ onMounted(() => {
 .theme-switching *::before,
 .theme-switching *::after {
   transition: none !important;
-  animation: none !important;
 }
 
 /* PWA 提示条动画（容器内子元素，无需 translateX） */

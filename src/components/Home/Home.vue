@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed, nextTick } from 'vue';
+import { onMounted, computed, nextTick, ref, onBeforeUnmount } from 'vue';
 import { ArrowRight } from '@element-plus/icons-vue'
 import { StarRegular } from '@vicons/fa'
 import { Icon } from '@vicons/utils'
@@ -20,6 +20,50 @@ const totalToolsCount = computed(() => {
 const isExternal = (path: string) => {
   return /^(http|https):\/\//.test(path)
 }
+
+// 外部工具跳转确认浮层
+const activeConfirmUrl = ref<string | null>(null)
+let confirmTimer: ReturnType<typeof setTimeout> | null = null
+const CONFIRM_TIMEOUT = 5000
+
+const clearConfirmTimer = () => {
+  if (confirmTimer !== null) {
+    clearTimeout(confirmTimer)
+    confirmTimer = null
+  }
+}
+
+const showExternalConfirm = (url: string, event: MouseEvent) => {
+  event.stopPropagation()
+  clearConfirmTimer()
+  activeConfirmUrl.value = url
+  confirmTimer = setTimeout(() => {
+    activeConfirmUrl.value = null
+  }, CONFIRM_TIMEOUT)
+}
+
+const cancelConfirm = () => {
+  clearConfirmTimer()
+  activeConfirmUrl.value = null
+}
+
+const goExternal = (url: string) => {
+  clearConfirmTimer()
+  activeConfirmUrl.value = null
+  window.open(url, '_blank')
+}
+
+const handleOutsideClick = () => {
+  if (activeConfirmUrl.value !== null) {
+    clearConfirmTimer()
+    activeConfirmUrl.value = null
+  }
+}
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleOutsideClick)
+  clearConfirmTimer()
+})
 
 // const getToolsCate = async () => {
 //   try {
@@ -45,6 +89,7 @@ onBeforeRouteLeave(() => {
 })
 
 onMounted(() => {
+  document.addEventListener('click', handleOutsideClick)
   // getToolsCate()
   if (route.query && route.query.value) {
     // 底部导航跳转过来的则定位到响应位置
@@ -90,18 +135,25 @@ onMounted(() => {
 
       <!-- 空状态提示 -->
       <div v-if="toolsStore.collect.length === 0"
-           class="flex flex-col items-center justify-center gap-2.5 py-6 px-6 rounded-xl
-                  border border-dashed border-slate-200 dark:border-slate-700
-                  bg-slate-50/50 dark:bg-slate-800/30 text-center animate-fade-in">
-        <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center animate-bounce-soft">
+           class="group flex flex-col items-center justify-center gap-2.5 py-6 px-6 rounded-xl
+                  border border-dashed border-slate-300 dark:border-slate-500
+                  bg-slate-100 dark:bg-slate-800 text-center animate-fade-in
+                  cursor-default
+                  transition-[transform,box-shadow,border-color,background-color] duration-300
+                  hover:-translate-y-1 hover:shadow-md hover:shadow-blue-100/60 dark:hover:shadow-blue-900/40
+                  hover:border-blue-300 dark:hover:border-blue-500
+                  hover:bg-white dark:hover:bg-slate-700/80">
+        <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-600 flex items-center justify-center
+                    transition-[transform,background-color] duration-300 group-hover:scale-110
+                    group-hover:bg-blue-100 dark:group-hover:bg-blue-900/60">
           <Icon size="18">
-            <StarRegular class="text-slate-400 dark:text-slate-500" />
+            <StarRegular class="text-slate-400 dark:text-slate-500 transition-colors duration-300 group-hover:text-blue-400 dark:group-hover:text-blue-400" />
           </Icon>
         </div>
         <div>
           <p class="text-sm font-medium text-slate-600 dark:text-slate-300">还没有收藏的工具</p>
           <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
-            进入任意工具页，点击右上角的
+            进入任意工具页（除独立工具外），点击右上角的
             <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-600
                          bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs align-middle mx-0.5">
               ☆ 收藏
@@ -112,14 +164,13 @@ onMounted(() => {
       </div>
 
       <!-- 收藏列表 -->
-      <div v-else class="grid gap-3 c-xs:grid-cols-2 c-sm:grid-cols-3 c-md:grid-cols-4 c-lg:grid-cols-5">
+      <div v-else class="grid gap-3 grid-cols-1 c-2xs:grid-cols-2 c-sm:grid-cols-3 c-md:grid-cols-4 c-lg:grid-cols-5">
         <component
-          :is="isExternal(item.url) ? 'a' : 'router-link'"
+          :is="isExternal(item.url) ? 'div' : 'router-link'"
           v-for="(item, index) in toolsStore.collect"
           :key="index"
           :to="!isExternal(item.url) ? item.url : undefined"
-          :href="isExternal(item.url) ? item.url : undefined"
-          :target="isExternal(item.url) ? '_blank' : undefined"
+          @click="isExternal(item.url) ? showExternalConfirm(item.url, $event) : undefined"
           class="group relative flex flex-col p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700
                  shadow-sm hover:shadow-lg hover:shadow-blue-100/50 dark:hover:shadow-blue-900/50 hover:border-blue-200 dark:hover:border-blue-700
                  transition-[transform,box-shadow,border-color] duration-300 translate-y-0 hover:-translate-y-1 overflow-hidden cursor-pointer"
@@ -154,6 +205,31 @@ onMounted(() => {
                       transition-all duration-300">
             <ArrowRight class="w-3 h-3 text-blue-500 dark:text-blue-400" />
           </div>
+
+          <!-- 外部工具跳转确认浮层 -->
+          <Transition name="confirm-fade">
+            <div v-if="isExternal(item.url) && activeConfirmUrl === item.url"
+                 class="absolute inset-0 rounded-xl bg-white/96 dark:bg-slate-800/96 backdrop-blur-sm
+                        flex flex-col items-center justify-center gap-2.5 p-3 z-10"
+                 @click.stop>
+              <div class="text-center px-1">
+                <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1">该工具为独立工具</p>
+                <p class="text-xs text-blue-500 break-all leading-relaxed line-clamp-2">{{ item.url }}</p>
+                <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">要离开本站吗？</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button @click.stop="cancelConfirm"
+                        class="px-3 py-1 text-xs rounded-lg border border-slate-200 dark:border-slate-600
+                               bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                  取消
+                </button>
+                <button @click.stop="goExternal(item.url)"
+                        class="px-3 py-1 text-xs rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors">
+                  跳转
+                </button>
+              </div>
+            </div>
+          </Transition>
         </component>
       </div>
     </div>
@@ -171,14 +247,13 @@ onMounted(() => {
         <div class="flex-1 h-px bg-gradient-to-r from-slate-200 dark:from-slate-700 to-transparent ml-4"></div>
       </div>
       <!-- card -->
-      <div class="grid gap-3 c-xs:grid-cols-2 c-sm:grid-cols-3 c-md:grid-cols-4 c-lg:grid-cols-5">
+      <div class="grid gap-3 grid-cols-1 c-2xs:grid-cols-2 c-sm:grid-cols-3 c-md:grid-cols-4 c-lg:grid-cols-5">
           <component 
-            :is="isExternal(item.url) ? 'a' : 'router-link'" 
+            :is="isExternal(item.url) ? 'div' : 'router-link'" 
             v-for="(item, index) in cate.list" 
             :key="index" 
-            :to="!isExternal(item.url) ? item.url : undefined" 
-            :href="isExternal(item.url) ? item.url : undefined"
-            :target="isExternal(item.url) ? '_blank' : undefined"
+            :to="!isExternal(item.url) ? item.url : undefined"
+            @click="isExternal(item.url) ? showExternalConfirm(item.url, $event) : undefined"
             class="group relative flex flex-col p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 
                    shadow-sm hover:shadow-lg hover:shadow-blue-100/50 dark:hover:shadow-blue-900/50 hover:border-blue-200 dark:hover:border-blue-700
                    transition-[transform,box-shadow,border-color] duration-300 translate-y-0 hover:-translate-y-1 overflow-hidden cursor-pointer"
@@ -217,6 +292,31 @@ onMounted(() => {
                         transition-all duration-300">
               <ArrowRight class="w-3 h-3 text-blue-500 dark:text-blue-400" />
             </div>
+
+            <!-- 外部工具跳转确认浮层 -->
+            <Transition name="confirm-fade">
+              <div v-if="isExternal(item.url) && activeConfirmUrl === item.url"
+                   class="absolute inset-0 rounded-xl bg-white/96 dark:bg-slate-800/96 backdrop-blur-sm
+                          flex flex-col items-center justify-center gap-2.5 p-3 z-10"
+                   @click.stop>
+                <div class="text-center px-1">
+                  <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1">该工具为独立工具</p>
+                  <p class="text-xs text-blue-500 break-all leading-relaxed line-clamp-2">{{ item.url }}</p>
+                  <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">要离开本站吗？</p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button @click.stop="cancelConfirm"
+                          class="px-3 py-1 text-xs rounded-lg border border-slate-200 dark:border-slate-600
+                                 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                    取消
+                  </button>
+                  <button @click.stop="goExternal(item.url)"
+                          class="px-3 py-1 text-xs rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors">
+                    跳转
+                  </button>
+                </div>
+              </div>
+            </Transition>
           </component>
       </div>
     </div>
@@ -228,4 +328,15 @@ onMounted(() => {
 
 <style scoped>
 /* 使用 CSS Grid 自动处理间距，无需额外占位元素 */
+
+/* 外部工具确认浮层过渡动画 */
+.confirm-fade-enter-active,
+.confirm-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.confirm-fade-enter-from,
+.confirm-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
 </style>
