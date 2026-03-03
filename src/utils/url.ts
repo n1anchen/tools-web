@@ -13,8 +13,23 @@ export function isUrl(str: string): boolean {
   return urlPattern.test(str);  
 }
 
+/**
+ * 移除 URL 中的所有 query string 参数（包含跟踪参数）
+ * 保留协议、域名、路径和 hash
+ */
+export function removeAllParams(url: string): string {
+  try {
+    const parsed = new URL(url)
+    parsed.search = ''
+    return parsed.href
+  } catch {
+    return url
+  }
+}
+
 const UrlUtils = {
-  isUrl
+  isUrl,
+  removeAllParams,
 }
 
 export default UrlUtils

@@ -271,6 +271,15 @@ export function getToolsCate() {
           url: '/colorpicker/',
           cateId: 3,
           cate: '开发运维'
+        },
+        {
+          id: 1,
+          title: '短链接解析',
+          logo: 'Link',
+          desc: '追踪短链接重定向，还原完整原始链接，并自动清除所有 URL 跟踪参数',
+          url: '/urlunshorten/',
+          cateId: 3,
+          cate: '开发运维'
         }
       ]
     },

@@ -462,6 +462,16 @@ export const constantRoute = [
       description: '',
     }
   },
+  {
+    path: '/urlunshorten',
+    component: () => import('@/components/Tools/UrlUnshorten/UrlUnshorten.vue'),
+    name: 'urlUnshorten',
+    meta: {
+      title: "短链接解析",
+      keywords: '短链接解析,短链接还原,URL还原,去跟踪参数,url追踪',
+      description: '输入短链接，自动追踪重定向并还原完整链接，同时清除所有URL参数（包含跟踪参数）',
+    }
+  },
   //其他路由
   {
     path: '/404',
