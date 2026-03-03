@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, reactive, onMounted } from 'vue'
+import {ref, reactive, onMounted, watch } from 'vue'
 import Spreadsheet from 'x-data-spreadsheet'
 import 'x-data-spreadsheet/dist/locale/zh-cn';
 import { UploadProps,UploadRawFile,genFileId } from 'element-plus'
@@ -9,9 +9,11 @@ import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { toEchartsData, toSpreadsheetData } from '@/utils/echarts'
 import * as echarts from 'echarts'
 import * as XLSX from 'xlsx'
+import { useSettingStore } from '@/store/modules/setting'
 const info = reactive({
   title: "柱状图",
 })
+const settingStore = useSettingStore()
 
 const chartDom = ref<HTMLElement|null>()
 const myChart = ref<echarts.ECharts>()
@@ -113,7 +115,7 @@ const canvasHandle = (type) => {
         })
       } else {
         myChart.value?.setOption({
-          backgroundColor: '#fff'
+          backgroundColor: 'transparent'
         })
       }
       break;
@@ -141,7 +143,7 @@ const colunmData = ref(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
 const valueData = ref(['23', '24', '18', '25', '27', '28', '25']);
 //选项
 const option = {
-  backgroundColor: '#fff',
+  backgroundColor: 'transparent',
   // backgroundColor: {
   //   // type: 'pattern',
   //   // image: canvas,
@@ -170,14 +172,20 @@ const option = {
 
 //重新加载画布
 const reloadCanvas = () => {
-  myChart.value = echarts.init(chartDom.value)
-  myChart.value.clear();
+  if (myChart.value) {
+    myChart.value.dispose()
+  }
+  myChart.value = echarts.init(chartDom.value, settingStore.isDark ? 'dark' : undefined)
   myChart.value.resize({
     width: widthCanvas.value,
     height: heightCanvas.value
   })
   myChart.value.setOption(option)
 }
+
+watch(() => settingStore.isDark, () => {
+  reloadCanvas()
+})
 
 //下载echarts图表图片
 const downEchartsImg = () => {
@@ -337,7 +345,7 @@ onMounted(() => {
   <div class="flex flex-col mt-3 flex-1">
     <DetailHeader :title="info.title"></DetailHeader>
 
-    <div class="p-4 rounded-2xl flex">
+    <div class="p-4 rounded-2xl flex bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="w-4/6">
         <div class="flex flex-row-reverse mb-4">
           <el-input-number v-model="sacleSize" :min="1" :max="100" :step="5" @change="canvasHandle('scale')" step-strictly/>
@@ -348,113 +356,109 @@ onMounted(() => {
           <div id="main" class="bg-white dark:bg-slate-800"></div>
         </div>
       </div>     
-      <div class="w-2/6 bg-white dark:bg-slate-800 ml-3 rounded-lg p-3">
-        <div class="mb-3">
-          <el-button class="w-full mb-3" type="primary" size="large" @click="downEchartsImg">下载图表</el-button>
-          <div class="flex items-center ml-1">
-            <el-text>文件类型</el-text>
-            <el-radio-group v-model="downType" class="ml-4">
-              <el-radio size="large" label="1">PNG</el-radio>
-              <el-radio size="large" label="2">JPEG</el-radio>
+      <div class="w-2/6 ml-3 flex flex-col rounded-lg border border-slate-100 dark:border-slate-700 overflow-hidden">
+        <!-- 操作区 -->
+        <div class="p-3 bg-slate-50 dark:bg-slate-700/60 border-b border-slate-100 dark:border-slate-700 space-y-2">
+          <el-button class="w-full" type="primary" size="large" @click="downEchartsImg">下载图表</el-button>
+          <div class="flex items-center justify-between">
+            <el-radio-group v-model="downType" size="small">
+              <el-radio-button value="1">PNG</el-radio-button>
+              <el-radio-button value="2">JPEG</el-radio-button>
             </el-radio-group>
-          </div>
-          <div class="flex w-full">
-            <el-tooltip
-              class="box-item"
-              effect="dark"
-              content="支持上传：xls, xlsx, csv文件"
-              placement="top-start"
-            >
-              <el-button class="w-1/2">
-                <el-upload
-                  v-model:file-list="fileList"
-                  class="dataFileRef flex"
-                  ref="dataFileRef"
-                  accept=".xls,.xlsx,.csv"
-                  :http-request="updateDataFile"
-                  :on-exceed="handleExceed"
-                  :limit="1"
-                >
-                上传数据
-                </el-upload>
-              </el-button>
-              
-            </el-tooltip>
-            <el-button class="w-1/2" @click="editData">编辑数据</el-button>
+            <div class="flex gap-1.5">
+              <el-tooltip content="支持上传：xls, xlsx, csv文件" placement="top" effect="dark">
+                <el-button size="small">
+                  <el-upload
+                    v-model:file-list="fileList"
+                    class="dataFileRef flex"
+                    ref="dataFileRef"
+                    accept=".xls,.xlsx,.csv"
+                    :http-request="updateDataFile"
+                    :on-exceed="handleExceed"
+                    :limit="1"
+                  >上传数据</el-upload>
+                </el-button>
+              </el-tooltip>
+              <el-button size="small" @click="editData">编辑数据</el-button>
+            </div>
           </div>
         </div>
-        <el-collapse v-model="setOptionName" @change="handleChange" accordion>
-          <el-collapse-item title="画布设置" name="1">
-            <div class="flex">
-              <el-text class="w-16 text-right">宽度</el-text>
-              <el-input-number
-                v-model="widthCanvas"
-                :min="1"
-                :max="4000"
-                :step="10"
-                controls-position="right"
-                class="h-8 w-60 max-w-[60%] ml-3"
-                @change="canvasHandle('size')"
-              />
+        <!-- 配置区 -->
+        <el-scrollbar class="flex-1 bg-white dark:bg-slate-800">
+          <div class="p-3 space-y-4">
+            <!-- 画布尺寸 -->
+            <div>
+              <div class="flex items-center gap-1.5 mb-2">
+                <div class="w-0.5 h-3.5 bg-blue-500 rounded-full"></div>
+                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">画布尺寸</span>
+              </div>
+              <div class="space-y-2 pl-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 w-7 shrink-0">宽</span>
+                  <el-input-number v-model="widthCanvas" :min="1" :max="4000" :step="10" controls-position="right" size="small" class="flex-1" @change="canvasHandle('size')" />
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 w-7 shrink-0">高</span>
+                  <el-input-number v-model="heightCanvas" :min="1" :max="4000" :step="10" controls-position="right" size="small" class="flex-1" @change="canvasHandle('size')" />
+                </div>
+              </div>
             </div>
-            <div class="flex mt-3">
-              <el-text class="w-16 text-right">高度</el-text>
-              <el-input-number
-                v-model="heightCanvas"
-                :min="1"
-                :max="4000"
-                :step="10"
-                controls-position="right"
-                class="h-8 w-60 max-w-[60%] ml-3"
-                @change="canvasHandle('size')"
-              />
+            <div class="border-t border-slate-100 dark:border-slate-700"></div>
+            <!-- 标题设置 -->
+            <div>
+              <div class="flex items-center gap-1.5 mb-2">
+                <div class="w-0.5 h-3.5 bg-emerald-500 rounded-full"></div>
+                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">标题设置</span>
+              </div>
+              <div class="space-y-2 pl-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 w-12 shrink-0">位置</span>
+                  <el-radio-group v-model="titlePos" size="small" @change="canvasHandle('title')">
+                    <el-radio-button value="left">左</el-radio-button>
+                    <el-radio-button value="center">中</el-radio-button>
+                    <el-radio-button value="right">右</el-radio-button>
+                  </el-radio-group>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 w-12 shrink-0">主标题</span>
+                  <el-switch v-model="titleSwitch" size="small" @change="canvasHandle('title')" />
+                  <el-input v-model="title" size="small" class="flex-1" @blur="canvasHandle('title')" :disabled="!titleSwitch" />
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 w-12 shrink-0">副标题</span>
+                  <el-switch v-model="subTitleSwitch" size="small" @change="canvasHandle('title')" />
+                  <el-input v-model="subTitle" size="small" class="flex-1" @blur="canvasHandle('title')" :disabled="!subTitleSwitch" />
+                </div>
+              </div>
             </div>
-          </el-collapse-item>
-          <el-collapse-item title="标题设置" name="2">
-            <div class="flex">
-              <el-text class="w-16 text-right">位置</el-text>
-              <el-radio-group v-model="titlePos" class="ml-3" @change="canvasHandle('title')">
-                <el-radio-button label="left" value="left">左</el-radio-button>
-                <el-radio-button label="center" value="center">中</el-radio-button>
-                <el-radio-button label="right" value="right">右</el-radio-button>
-              </el-radio-group>
+            <div class="border-t border-slate-100 dark:border-slate-700"></div>
+            <!-- 图形属性 -->
+            <div>
+              <div class="flex items-center gap-1.5 mb-2">
+                <div class="w-0.5 h-3.5 bg-purple-500 rounded-full"></div>
+                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">图形属性</span>
+              </div>
+              <div class="flex items-center gap-2 pl-2">
+                <span class="text-xs text-slate-500 dark:text-slate-400 w-12 shrink-0">颜色</span>
+                <el-color-picker v-model="attrColor" size="small" @change="canvasHandle('color')" />
+              </div>
             </div>
-            <el-divider content-position="left" class="pl-10">标题</el-divider>
-            <div class="flex">
-              <el-text class="w-16 text-right">显示</el-text>
-              <el-switch v-model="titleSwitch" class="ml-3" @change="canvasHandle('title')"/>
+            <div class="border-t border-slate-100 dark:border-slate-700"></div>
+            <!-- 水印设置 -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-1.5">
+                  <div class="w-0.5 h-3.5 bg-amber-500 rounded-full"></div>
+                  <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">水印设置</span>
+                </div>
+                <el-switch v-model="watermarkSwitch" size="small" @change="canvasHandle('watermark')" />
+              </div>
+              <div class="pl-2">
+                <el-input v-model="waterMarkText" size="small" placeholder="水印文字" :disabled="!watermarkSwitch" @change="canvasHandle('watermark')" />
+              </div>
             </div>
-            <div class="flex">
-              <el-text class="w-16 text-right">标题</el-text>
-              <el-input class="h-8 w-60 max-w-[60%] ml-3" v-model="title" @blur="canvasHandle('title')"></el-input>
-            </div>
-            <el-divider content-position="left">副标题</el-divider>
-            <div class="flex">
-              <el-text class="w-16 text-right">显示</el-text>
-              <el-switch v-model="subTitleSwitch" class="ml-3" @change="canvasHandle('title')"/>
-            </div>
-            <div class="flex">
-              <el-text class="w-16 text-right">副标题</el-text>
-              <el-input class="h-8 w-60 max-w-[60%] ml-3" v-model="subTitle"  @blur="canvasHandle('title')"></el-input>
-            </div>
-          </el-collapse-item>
-          <el-collapse-item title="图形属性" name="3">
-            <div class="flex">
-              <el-text class="w-16 text-right">颜色</el-text>
-              <el-color-picker v-model="attrColor" class="ml-3" @change="canvasHandle('color')"/>
-            </div>
-          </el-collapse-item>
-          <el-collapse-item title="水印设置" name="4">
-            <div class="flex">
-              <el-text class="w-16 text-right">显示</el-text>
-              <el-switch v-model="watermarkSwitch" class="ml-3" @change="canvasHandle('watermark')"/>
-            </div>
-            <div class="flex">
-              <el-text class="w-16 text-right">水印内容</el-text>
-              <el-input class="h-8 w-60 max-w-[60%] ml-3" v-model="waterMarkText" @change="canvasHandle('watermark')"></el-input>
-            </div>
-          </el-collapse-item>
-        </el-collapse>
+          </div>
+        </el-scrollbar>
       </div>
     </div>
     
