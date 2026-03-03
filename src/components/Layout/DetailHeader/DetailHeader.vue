@@ -1,11 +1,11 @@
 <script setup lang="ts">
-// import { Star } from '@element-plus/icons-vue'
 import { Setting } from '@element-plus/icons-vue'
+import { Star, StarRegular } from '@vicons/fa'
+import { Icon } from '@vicons/utils'
 import ToolIcon from '@/components/Common/ToolIcon.vue'
 import { onMounted, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router'
 import { useToolsStore } from '@/store/modules/tools'
-// import { ElMessageBox } from 'element-plus'
 import {rtrim} from '@/utils/string'
 const props = defineProps({
   title: String,
@@ -23,6 +23,16 @@ const toolsStore = useToolsStore()
 
 // 获取工具信息
 const toolInfo = computed(() => toolsStore.toolInfo)
+
+// 是否已收藏
+const favorited = computed(() => toolsStore.isFavorite(toolInfo.value.url))
+
+// 切换收藏
+const toggleFavorite = () => {
+  if (toolInfo.value.url) {
+    toolsStore.toggleFavorite(toolInfo.value)
+  }
+}
 
 //根据路由查询tool id
 const getToolInfo = async () => {
@@ -79,6 +89,25 @@ onMounted(() => {
           {{ toolInfo.cate }}
         </span>
       </div>
+
+      <!-- 收藏按钮 -->
+      <button
+        v-if="toolInfo.url"
+        @click="toggleFavorite"
+        :title="favorited ? '取消收藏' : '收藏此工具'"
+        :class="[
+          'flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-sm font-medium transition-all duration-200 select-none',
+          favorited
+            ? 'bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'
+            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-500 hover:text-slate-700 dark:hover:text-slate-200'
+        ]"
+      >
+        <Icon size="14">
+          <Star v-if="favorited" class="text-yellow-400" />
+          <StarRegular v-else />
+        </Icon>
+        <span class="inline c-xs:hidden">{{ favorited ? '已收藏' : '收藏' }}</span>
+      </button>
     </div>
   </div>
 </template>

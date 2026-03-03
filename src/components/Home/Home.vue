@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, computed, nextTick } from 'vue';
 import { ArrowRight } from '@element-plus/icons-vue'
+import { StarRegular } from '@vicons/fa'
+import { Icon } from '@vicons/utils'
 import ToolIcon from '@/components/Common/ToolIcon.vue'
 import BackToTop from '@/components/Common/BackToTop.vue'
 import { useToolsStore } from '@/store/modules/tools'
@@ -74,6 +76,89 @@ onMounted(() => {
       <span class="text-sm text-slate-500 dark:text-slate-400">个工具</span>
     </div>
     <!-- list -->
+    <!-- 收藏工具分组 -->
+    <div class="mb-8" id="cate_favorites">
+      <div class="mt-8 mb-5 flex items-center gap-3">
+        <div class="w-1.5 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+        <h2 class="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 dark:from-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
+          收藏工具
+        </h2>
+        <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-500 border border-slate-200
+                     dark:bg-slate-700 dark:text-slate-400 dark:border-slate-600">{{ toolsStore.collect.length }}</span>
+        <div class="flex-1 h-px bg-gradient-to-r from-slate-200 dark:from-slate-700 to-transparent ml-4"></div>
+      </div>
+
+      <!-- 空状态提示 -->
+      <div v-if="toolsStore.collect.length === 0"
+           class="flex flex-col items-center justify-center gap-2.5 py-6 px-6 rounded-xl
+                  border border-dashed border-slate-200 dark:border-slate-700
+                  bg-slate-50/50 dark:bg-slate-800/30 text-center animate-fade-in">
+        <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center animate-bounce-soft">
+          <Icon size="18">
+            <StarRegular class="text-slate-400 dark:text-slate-500" />
+          </Icon>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-slate-600 dark:text-slate-300">还没有收藏的工具</p>
+          <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
+            进入任意工具页，点击右上角的
+            <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-600
+                         bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs align-middle mx-0.5">
+              ☆ 收藏
+            </span>
+            按钮即可添加，收藏后会显示在这里
+          </p>
+        </div>
+      </div>
+
+      <!-- 收藏列表 -->
+      <div v-else class="grid gap-3 c-xs:grid-cols-2 c-sm:grid-cols-3 c-md:grid-cols-4 c-lg:grid-cols-5">
+        <component
+          :is="isExternal(item.url) ? 'a' : 'router-link'"
+          v-for="(item, index) in toolsStore.collect"
+          :key="index"
+          :to="!isExternal(item.url) ? item.url : undefined"
+          :href="isExternal(item.url) ? item.url : undefined"
+          :target="isExternal(item.url) ? '_blank' : undefined"
+          class="group relative flex flex-col p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700
+                 shadow-sm hover:shadow-lg hover:shadow-blue-100/50 dark:hover:shadow-blue-900/50 hover:border-blue-200 dark:hover:border-blue-700
+                 transition-[transform,box-shadow,border-color] duration-300 translate-y-0 hover:-translate-y-1 overflow-hidden cursor-pointer"
+        >
+          <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-50
+                      dark:from-slate-700 dark:to-slate-800
+                      rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-500"></div>
+
+          <div class="relative flex items-center border-b border-slate-100 dark:border-slate-700 pb-2.5">
+            <div :class="['relative rounded-lg scale-100 will-change-transform group-hover:scale-110 transition-[transform,box-shadow] duration-300',
+                          !item.logo.startsWith('/') && !item.logo.startsWith('http') ? 'group-hover:shadow-md' : '']">
+              <ToolIcon :logo="item.logo" :size="36" />
+            </div>
+            <div class="flex flex-col ml-2.5 flex-1 min-w-0">
+              <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-200 group-hover:text-blue-600
+                         transition-colors line-clamp-1">{{ item.title }}</h3>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <span class="px-1.5 py-0 rounded-full text-xs font-medium bg-blue-50 text-blue-600 border border-blue-200
+                             dark:bg-blue-900/50 dark:text-blue-400 dark:border-blue-800 truncate max-w-full">
+                  {{ item.cate }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between mt-2 flex-1">
+            <el-text line-clamp="2" class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">{{ item.desc }}</el-text>
+          </div>
+
+          <div class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center
+                      opacity-0 group-hover:opacity-100 transform translate-x-1 group-hover:translate-x-0
+                      transition-all duration-300">
+            <ArrowRight class="w-3 h-3 text-blue-500 dark:text-blue-400" />
+          </div>
+        </component>
+      </div>
+    </div>
+
+    <!-- 常规分类列表 -->
     <div v-for="(cate, index) in toolsStore.cates" :key="index" class="mb-8">
       <!-- cate title -->
       <div class="mt-8 mb-5 flex items-center gap-3" :id="'cate_' + cate.id">
