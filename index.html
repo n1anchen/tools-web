@@ -2,9 +2,16 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/src/assets/logo.jpg" />
-    <link rel="shortcut icon" type="image/svg+xml" href="/public/favicon.ico" />
-    <link rel="canonical" href="https://tools.ranblogs.com/">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="canonical" href="https://tools.nianchen.top/">
+
+    <!-- 外部字体 CDN 预连接：提前完成 DNS+TCP+TLS，减少字体工具首次渲染阻塞 -->
+    <!-- crossorigin 必须加：字体文件走 CORS，preconnect 需要匹配实际请求凭证模式 -->
+    <link rel="preconnect" href="https://fonts.loli.net" crossorigin>
+    <link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
+    <!-- dns-prefetch 作为不支持 preconnect 的旧浏览器降级方案 -->
+    <link rel="dns-prefetch" href="https://fonts.loli.net">
+    <link rel="dns-prefetch" href="https://gstatic.loli.net">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="renderer" content="webkit">
     <meta name="theme-color" content="#ffffff">
@@ -19,12 +26,25 @@
     <meta property="og:site_name" content="在线工具箱">
     <meta property="og:description" content="一个轻量的在线工具箱，集成了多种实用的小工具，帮助用户提高工作效率。">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="/src/assets/logo.jpg">
-    <meta property="og:url" content="https://tools.nianchen.top"><!-- 可选：这里填写自己的访问地址 -->
-    <title></title>
+    <meta property="og:image" content="https://tools.nianchen.top/pwa-512x512.png">
+    <meta property="og:url" content="https://tools.nianchen.top">
+    <title>在线工具箱</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "在线工具箱",
+      "url": "https://tools.nianchen.top",
+      "description": "一个轻量的在线工具箱，集成了多种实用的小工具，帮助用户提高工作效率。",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://tools.nianchen.top/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
   </head>
   <body class="bg-[--base-gray]">
-    <body>
     <!--[if lt IE 9]>
     <div class="notice chromeframe">您的浏览器版本<strong>很旧很旧</strong>，为了正常地访问网站，请升级您的浏览器</div>
     <![endif]-->
