@@ -2,9 +2,16 @@ import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { VitePWA } from 'vite-plugin-pwa'
+import sitemap from 'vite-plugin-sitemap'
 import path from 'path'
 import { execSync } from 'child_process'
 import { copyAssetsPlugin } from './scripts/vite-copy-assets-plugin.js'
+import { constantRoute } from './src/router/router'
+
+// 提取所有有效路由路径（排除 /404、通配符重定向以及首页 /，首页由插件自动扫描 index.html 处理）
+const sitemapRoutes = constantRoute
+  .filter(r => !r.path.includes(':') && r.path !== '/404' && r.path !== '/')
+  .map(r => r.path)
 
 // 获取 git 提交号（7 位）
 let gitCommitHash = 'unknown'
@@ -36,6 +43,17 @@ export default defineConfig(({command, mode}) => {
         symbolId: 'icon-[dir]-[name]',
       }),
       copyAssetsPlugin(),
+      sitemap({
+        hostname: 'https://tools.nianchen.top',
+        dynamicRoutes: sitemapRoutes,
+        // 首页优先级 1.0，其余页面 0.8，'*' 作为默认值
+        priority: { '*': 0.8, '/': 1.0 },
+        changefreq: 'monthly',
+        lastmod: new Date(),
+        // public/robots.txt 已手动维护，不自动生成
+        generateRobotsTxt: false,
+        readable: true,
+      }),
       VitePWA({
         registerType: 'prompt',
         // 预缓存 public 目录下的静态资源
@@ -97,7 +115,7 @@ export default defineConfig(({command, mode}) => {
           globPatterns: ['**/*.{js,css,html}'],          // vendors chunk 约 2.1MB，调高上限至 5MB
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,          // index.html 使用 network-first，保证用户第一时间拿到最新页面入口
           navigateFallback: 'index.html',
-          navigateFallbackDenylist: [/^\/api\//],
+          navigateFallbackDenylist: [/^\/api\//, /^\/robots\.txt$/, /^\/sitemap.*\.xml$/],
           runtimeCaching: [
             {
               // loli.net 谷歌字体镜像（Choyen5000 / BlueArchive / PornhubLogo 工具依赖）
