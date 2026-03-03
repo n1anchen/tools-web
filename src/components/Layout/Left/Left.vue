@@ -10,6 +10,7 @@ const route = useRoute()
 const appName = ref(import.meta.env.VITE_APP_TITLE || '在线工具箱')
 const appNet = ref(import.meta.env.VITE_APP_DESC || '')
 const gitCommit = ref((__GIT_COMMIT__ as string) || 'unknown')
+const gitCommitTime = ref((__GIT_COMMIT_TIME__ as string) || '')
 //菜单选中
 const defaultActive = ref('')
 //默认展开的菜单
@@ -132,10 +133,15 @@ onMounted(async () => {
             <div class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{{ appNet }}</div>
           </div>
         </router-link>
-        <span
-          class="text-[10px] font-mono text-slate-300 dark:text-slate-600 select-none tracking-wider"
-          :title="'构建版本: ' + gitCommit"
-        >rev.{{ gitCommit }}</span>
+        <span class="text-[10px] font-mono text-slate-300 dark:text-slate-600 select-none tracking-wider">
+          <a
+            :href="`https://github.com/n1anchen/tools-web/commit/${gitCommit}`"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-blue-400 dark:hover:text-blue-500 transition-colors duration-200"
+            :title="'查看提交: ' + gitCommit"
+          >rev.{{ gitCommit }}</a><template v-if="gitCommitTime"> · {{ gitCommitTime }}</template>
+        </span>
       </div>
       
       <!-- 分割线 -->

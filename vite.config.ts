@@ -12,13 +12,20 @@ try {
   gitCommitHash = execSync('git rev-parse --short HEAD').toString().trim()
 } catch {}
 
+// 获取 git 提交时间
+let gitCommitTime = 'unknown'
+try {
+  gitCommitTime = execSync('git log -1 --format=%cd --date=format:"%Y-%m-%d %H:%M"').toString().trim()
+} catch {}
+
 // https://vitejs.dev/config/
 export default defineConfig(({command, mode}) => {
   let env = loadEnv(mode, process.cwd())
   return {
     define: {  
       'process.env.NODE_ENV': JSON.stringify('production'),
-      '__GIT_COMMIT__': JSON.stringify(gitCommitHash)
+      '__GIT_COMMIT__': JSON.stringify(gitCommitHash),
+      '__GIT_COMMIT_TIME__': JSON.stringify(gitCommitTime)
     },
     plugins: [
       vue(),
