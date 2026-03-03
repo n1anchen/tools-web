@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, nextTick } from 'vue';
 import { ArrowRight } from '@element-plus/icons-vue'
 import ToolIcon from '@/components/Common/ToolIcon.vue'
 import BackToTop from '@/components/Common/BackToTop.vue'
 import { useToolsStore } from '@/store/modules/tools'
 // import { ElMessage } from 'element-plus'
-import { useRoute } from "vue-router"
+import { useRoute, onBeforeRouteLeave } from "vue-router"
 //store
 const toolsStore = useToolsStore()
 const route = useRoute()
@@ -36,12 +36,30 @@ const scrollToAnchor = (id: string, offset = HEADER_HEIGHT) => {
   window.scrollTo({ top, behavior: 'smooth' })
 }
 
+const SCROLL_KEY = 'home_scroll_y'
+
+onBeforeRouteLeave(() => {
+  sessionStorage.setItem(SCROLL_KEY, String(window.scrollY))
+})
+
 onMounted(() => {
   // getToolsCate()
-  if (route.query && route.query.value) {//底部导航跳转过来的则定位到响应位置
-      scrollToAnchor(`${route.query.value}`)
-  } else {//其他位置跳转过来不需要定位的则定位到顶部
+  if (route.query && route.query.value) {
+    // 底部导航跳转过来的则定位到响应位置
+    sessionStorage.removeItem(SCROLL_KEY)
+    scrollToAnchor(`${route.query.value}`)
+  } else {
+    const savedY = sessionStorage.getItem(SCROLL_KEY)
+    if (savedY !== null) {
+      // 恢复上次离开首页时的滚动位置
+      sessionStorage.removeItem(SCROLL_KEY)
+      nextTick(() => {
+        window.scrollTo({ top: Number(savedY), behavior: 'instant' })
+      })
+    } else {
+      // 其他情况回到顶部
       window.scrollTo({ top: 0, behavior: 'auto' })
+    }
   }
 })
 </script>

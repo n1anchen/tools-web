@@ -14,7 +14,9 @@ const router = createRouter({
   history: createWebHistory(),
   routes: constantRoute,
   //滚动行为
-  scrollBehavior() {
+  scrollBehavior(to) {
+    // 首页由组件自行控制滚动（用于恢复离开时的位置）
+    if (to.path === '/') return false
     return {
       left: 0,
       top: 0,
