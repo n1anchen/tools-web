@@ -11,7 +11,7 @@ import * as echarts from 'echarts'
 import * as XLSX from 'xlsx'
 import { useSettingStore } from '@/store/modules/setting'
 const info = reactive({
-  title: "折线图",
+  title: "折线图 / 面积图",
 })
 const settingStore = useSettingStore()
 
@@ -29,6 +29,8 @@ const heightCanvas = ref(400)
 const downType = ref('1')
 //图形属性颜色
 const attrColor = ref('#5470c6')
+//图形类型
+const lineType = ref<'line' | 'area'>('line')
 //标题位置
 const titlePos = ref('center')
 //标题
@@ -119,6 +121,9 @@ const canvasHandle = (type) => {
         })
       }
       break;
+    case "lineType":
+      reloadCanvas()
+      break;
     case "data":
       //更新数据
       myChart.value?.setOption({
@@ -142,33 +147,28 @@ const handleChange = () => {
 const colunmData = ref(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
 const valueData = ref(['23', '24', '18', '25', '27', '28', '25']);
 //选项
-const option = {
-  backgroundColor: 'transparent',
-  // backgroundColor: {
-  //   // type: 'pattern',
-  //   // image: canvas,
-  //   // repeat: 'repeat'
-  // },
-  title: {
-    text: title.value,
-    subtext: subTitle.value,
-    left: titlePos.value
-  },
-  xAxis: {
-    data: colunmData.value,
-  },
-  yAxis: {},
-  series: [
-    {
-      type: 'line',
-      data: valueData.value,
-      itemStyle: {
-        color: attrColor.value
-      }
-    }
-  ],
-  tooltip: {}
-};
+const buildOption = () => {
+  const seriesItem: any = {
+    type: 'line',
+    data: valueData.value,
+    itemStyle: { color: attrColor.value }
+  }
+  if (lineType.value === 'area') {
+    seriesItem.areaStyle = { opacity: 0.5 }
+  }
+  return {
+    backgroundColor: 'transparent',
+    title: {
+      text: title.value,
+      subtext: subTitle.value,
+      left: titlePos.value
+    },
+    xAxis: { data: colunmData.value },
+    yAxis: {},
+    series: [seriesItem],
+    tooltip: {}
+  }
+}
 
 //重新加载画布
 const reloadCanvas = () => {
@@ -180,7 +180,7 @@ const reloadCanvas = () => {
     width: widthCanvas.value,
     height: heightCanvas.value
   })
-  myChart.value.setOption(option)
+  myChart.value.setOption(buildOption())
 }
 
 watch(() => settingStore.isDark, () => {
@@ -444,6 +444,20 @@ onMounted(() => {
               </div>
             </div>
             <div class="border-t border-slate-100 dark:border-slate-700"></div>
+            <!-- 图形类型 -->
+            <div>
+              <div class="flex items-center gap-1.5 mb-2">
+                <div class="w-0.5 h-3.5 bg-sky-500 rounded-full"></div>
+                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">图形类型</span>
+              </div>
+              <div class="pl-2">
+                <el-radio-group v-model="lineType" size="small" @change="canvasHandle('lineType')">
+                  <el-radio-button value="line">折线图</el-radio-button>
+                  <el-radio-button value="area">面积图</el-radio-button>
+                </el-radio-group>
+              </div>
+            </div>
+            <div class="border-t border-slate-100 dark:border-slate-700"></div>
             <!-- 水印设置 -->
             <div>
               <div class="flex items-center justify-between mb-2">
@@ -468,9 +482,9 @@ onMounted(() => {
     <!-- desc -->
     <ToolDetail title="描述">
       <el-text>
-        折线图为日常最常用的图表之一，当必须呈现与时间相关的数据时，它是首选它最适合分析趋势。<br>
-        在线图表制作工具，在线制作折线图<br>
-        支持导入表格并在线编辑表格生成折线图，支持png和jpeg格式导出<br>
+        在线图表制作工具，在线制作折线图与面积图<br>
+        支持一键切换折线图与面积图两种模式，面积图在折线基础上增加面积填充，直观展示趋势与累积量<br>
+        支持导入表格并在线编辑表格生成图表，支持png和jpeg格式导出<br>
         支持超全的自定义配置，轻松实现你的个性化图表需求<br>
       </el-text> 
     </ToolDetail>

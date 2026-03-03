@@ -245,6 +245,9 @@ const editData = () => {
         let tmp = toEchartsData(data)
         colunmData.value = tmp[0]
         valueData.value = tmp[1]
+        seriesData.value = tranObjAndColumn([
+          colunmData.value, valueData.value
+        ], 'toCoord')
         canvasHandle('data')
       });
       // sheet.validate()

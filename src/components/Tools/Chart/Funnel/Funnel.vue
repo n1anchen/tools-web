@@ -5,13 +5,12 @@ import 'x-data-spreadsheet/dist/locale/zh-cn';
 import { UploadProps,UploadRawFile,genFileId } from 'element-plus'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-// import { copy } from '@/utils/string'
-import { toEchartsData, toSpreadsheetData } from '@/utils/echarts'
+import { toEchartsPieData, toSpreadsheetData, tranObjAndColumn } from '@/utils/echarts'
 import * as echarts from 'echarts'
 import * as XLSX from 'xlsx'
 import { useSettingStore } from '@/store/modules/setting'
 const info = reactive({
-  title: "柱状图 / 横向柱状图",
+  title: "漏斗图",
 })
 const settingStore = useSettingStore()
 
@@ -19,7 +18,6 @@ const chartDom = ref<HTMLElement|null>()
 const myChart = ref<echarts.ECharts>()
 const dataFileRef = ref()
 
-const setOptionName = ref(1)
 //缩放比例
 const sacleSize = ref(100)
 //画布宽高
@@ -29,8 +27,6 @@ const heightCanvas = ref(400)
 const downType = ref('1')
 //图形属性颜色
 const attrColor = ref('#5470c6')
-//图形方向
-const barDirection = ref<'vertical' | 'horizontal'>('vertical')
 //标题位置
 const titlePos = ref('center')
 //标题
@@ -41,6 +37,12 @@ const subTitle = ref('在线图表制作工具')
 const titleSwitch = ref(true)
 //显示副标题 - 开关
 const subTitleSwitch = ref(true)
+
+/** 漏斗图专有属性 */
+//排序方向
+const funnelSort = ref<'descending' | 'ascending' | 'none'>('descending')
+//标签位置
+const labelPos = ref<'inside' | 'outside' | 'left' | 'right'>('inside')
 
 /** 水印 */
 const watermarkSwitch = ref(false)  //开关
@@ -63,16 +65,13 @@ const createWatermark = () => {
 
 //操作图表
 const canvasHandle = (type) => {
-  // let element = document.getElementById('main')
   let element = chartDom.value
   switch(type) {
     case "scale":
-      //缩放画布
       let scale = sacleSize.value / 100
       element!.style.transform = `scale(${scale})`
       break
     case "size":
-      //图表尺寸
       element!.style.width = widthCanvas.value + 'px';
       element!.style.height = heightCanvas.value + 'px';
       reloadCanvas()
@@ -80,7 +79,6 @@ const canvasHandle = (type) => {
     case "title":
       let fakerTitle = ''
       let fakerSubTitle = ''
-      //修改标题相关配置
       if (titleSwitch.value === true) {
         fakerTitle = title.value
       }
@@ -96,7 +94,6 @@ const canvasHandle = (type) => {
       })
       break
     case "color":
-      //图表属性颜色
       myChart.value?.setOption({
         series: [
           {
@@ -108,7 +105,6 @@ const canvasHandle = (type) => {
       })
       break;
     case "watermark":
-      //水印
       if (watermarkSwitch.value === true) {
         myChart.value?.setOption({
           backgroundColor: {
@@ -121,53 +117,83 @@ const canvasHandle = (type) => {
         })
       }
       break;
-    case "barDirection":
-      reloadCanvas()
+    case "funnel":
+      myChart.value?.setOption({
+        series: [{
+          sort: funnelSort.value,
+          label: {
+            position: labelPos.value,
+          }
+        }]
+      })
       break;
     case "data":
-      //更新数据
-      if (barDirection.value === 'horizontal') {
-        myChart.value?.setOption({
-          yAxis: { data: colunmData.value },
-          series: [{ data: valueData.value }]
-        })
-      } else {
-        myChart.value?.setOption({
-          xAxis: { data: colunmData.value },
-          series: [{ data: valueData.value }]
-        })
-      }
+      myChart.value?.setOption({
+        series: [
+          {
+            data: seriesData.value,
+          }
+        ]
+      })
       break;
   }
 }
-const handleChange = () => {
-
-}
 
 //数据
-const colunmData = ref(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
-const valueData = ref(['23', '24', '18', '25', '27', '28', '25']);
+const colunmData = ref(['阶段A', '阶段B', '阶段C', '阶段D', '阶段E'] as string[]);
+const valueData = ref([100, 80, 60, 40, 20] as number[]);
+const seriesData = ref([] as Object[])
+
 //选项
-const buildOption = () => ({
+const option = {
   backgroundColor: 'transparent',
   title: {
     text: title.value,
     subtext: subTitle.value,
     left: titlePos.value
   },
-  xAxis: barDirection.value === 'horizontal' ? { type: 'value' } : { data: colunmData.value },
-  yAxis: barDirection.value === 'horizontal' ? { type: 'category', data: colunmData.value } : {},
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b} : {c}%'
+  },
   series: [
     {
-      type: 'bar',
-      data: valueData.value,
+      name: '漏斗图',
+      type: 'funnel',
+      left: '10%',
+      top: 60,
+      bottom: 60,
+      width: '80%',
+      min: 0,
+      max: 100,
+      minSize: '0%',
+      maxSize: '100%',
+      sort: funnelSort.value,
+      gap: 2,
+      label: {
+        show: true,
+        position: labelPos.value,
+      },
+      labelLine: {
+        length: 10,
+        lineStyle: {
+          width: 1,
+          type: 'solid'
+        }
+      },
       itemStyle: {
-        color: attrColor.value
-      }
+        borderColor: '#fff',
+        borderWidth: 1
+      },
+      emphasis: {
+        label: {
+          fontSize: 20
+        }
+      },
+      data: seriesData.value,
     }
   ],
-  tooltip: {}
-})
+};
 
 //重新加载画布
 const reloadCanvas = () => {
@@ -179,7 +205,8 @@ const reloadCanvas = () => {
     width: widthCanvas.value,
     height: heightCanvas.value
   })
-  myChart.value.setOption(buildOption())
+  myChart.value.setOption(option)
+  canvasHandle('data')
 }
 
 watch(() => settingStore.isDark, () => {
@@ -202,9 +229,7 @@ const downEchartsImg = () => {
   }
 }
 
-
 /** 上传、编辑数据 */
-//抽屉开关
 const drawer = ref(false)
 const rowsData = ref({})
 
@@ -213,19 +238,16 @@ const editData = () => {
     drawer.value = false
   } else {
     drawer.value = true
-    /** 在线excel */
     Spreadsheet.locale('zh-cn', (window.x_spreadsheet as any).$messages['zh-cn']);
-    //const sheet = new Spreadsheet("#x-spreadsheet", {
     new Spreadsheet("#x-spreadsheet", {
-      showToolbar: false, //隐藏顶部工具栏
-      showBottomBar: false,//隐藏底部工具栏,
+      showToolbar: false,
+      showBottomBar: false,
       view: {
         height: () => document.documentElement.clientHeight / 2,
         width: () => document.documentElement.clientWidth,
       }
     })
       .loadData({
-        //样式
         styles: [
           { 
             bgcolor: '#f4f5f8', 
@@ -239,18 +261,12 @@ const editData = () => {
             }, 
           }, 
         ], 
-        //数据
         rows: rowsData.value
-      }) // load data
+      })
       .change(data => {
-        //表格数据改变后触发
-        //规则: 获取第一列和第二列的数据
-        let tmp = toEchartsData(data)
-        colunmData.value = tmp[0]
-        valueData.value = tmp[1]
+        seriesData.value = toEchartsPieData(data)
         canvasHandle('data')
       });
-      // sheet.validate()
   }
 }
 
@@ -272,17 +288,13 @@ const updateDataFile = async (params) => {
       let tmpColumnData:any[] = [];
       let tmpValueData:any[] = [];
       for (let sheet in workbook.Sheets) {
-        //这里只需要第一个sheet
         if (useCount > 0) {
           continue;
         }
-        //循环读取每个文件
         const sheetArray = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], {header: ['0', '1']});
-        //若当前sheet没有数据，则continue
         if(sheetArray.length == 0){
           continue;
         }
-
         for(let item in sheetArray){
           if (sheetArray[item] != undefined) {
               let tmp1 = sheetArray as []
@@ -292,12 +304,12 @@ const updateDataFile = async (params) => {
         }
         useCount++
       }
-      //更新数据
       colunmData.value = tmpColumnData
       valueData.value = tmpValueData
-      //更新图表
+      seriesData.value = tranObjAndColumn([
+        colunmData.value, valueData.value
+      ])
       canvasHandle('data')
-      //更新表格
       rowsData.value = toSpreadsheetData([
         colunmData, valueData
       ])
@@ -309,8 +321,6 @@ const updateDataFile = async (params) => {
   fileReader.readAsArrayBuffer(_file)
 }
 
-//当超出限制时，执行的钩子函数
-//这里覆盖前一个文件
 const handleExceed: UploadProps['onExceed'] = (files) => {
   dataFileRef.value!.clearFiles()
   const file = files[0] as UploadRawFile
@@ -319,23 +329,15 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
   dataFileRef.value!.submit()
 }
 
-//copy
-// const copyRes = async (resStr: string) => {
-//   copy(resStr)
-// }
-
 onMounted(() => {
-  //init echart dom
+  seriesData.value = tranObjAndColumn([
+    colunmData.value, valueData.value
+  ])
   chartDom.value = document.getElementById('main')
-  //设置画布宽高
   canvasHandle('size')
-  //reload canvas
-  reloadCanvas()
-  //数据格式转换成
   rowsData.value = toSpreadsheetData([
     colunmData, valueData
   ])
-  // console.log(rowsData.value)
 })
 
 </script>
@@ -350,7 +352,6 @@ onMounted(() => {
           <el-input-number v-model="sacleSize" :min="1" :max="100" :step="5" @change="canvasHandle('scale')" step-strictly/>
           <el-text>缩放：</el-text>
         </div>
-        <!-- <div class="flex justify-center items-center"> -->
         <div class="flex justify-center items-center max-h-[500px] max-w-[1000px] overflow-auto">
           <div id="main" class="bg-white dark:bg-slate-800"></div>
         </div>
@@ -431,29 +432,30 @@ onMounted(() => {
               </div>
             </div>
             <div class="border-t border-slate-100 dark:border-slate-700"></div>
-            <!-- 图形属性 -->
+            <!-- 漏斗设置 -->
             <div>
               <div class="flex items-center gap-1.5 mb-2">
                 <div class="w-0.5 h-3.5 bg-purple-500 rounded-full"></div>
-                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">图形属性</span>
+                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">漏斗设置</span>
               </div>
-              <div class="flex items-center gap-2 pl-2">
-                <span class="text-xs text-slate-500 dark:text-slate-400 w-12 shrink-0">颜色</span>
-                <el-color-picker v-model="attrColor" size="small" @change="canvasHandle('color')" />
-              </div>
-            </div>
-            <div class="border-t border-slate-100 dark:border-slate-700"></div>
-            <!-- 图形类型 -->
-            <div>
-              <div class="flex items-center gap-1.5 mb-2">
-                <div class="w-0.5 h-3.5 bg-sky-500 rounded-full"></div>
-                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">图形类型</span>
-              </div>
-              <div class="pl-2">
-                <el-radio-group v-model="barDirection" size="small" @change="canvasHandle('barDirection')">
-                  <el-radio-button value="vertical">柱状图</el-radio-button>
-                  <el-radio-button value="horizontal">横向柱状图</el-radio-button>
-                </el-radio-group>
+              <div class="space-y-2 pl-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 w-12 shrink-0">排序</span>
+                  <el-radio-group v-model="funnelSort" size="small" @change="canvasHandle('funnel')">
+                    <el-radio-button value="descending">降序</el-radio-button>
+                    <el-radio-button value="ascending">升序</el-radio-button>
+                    <el-radio-button value="none">不排序</el-radio-button>
+                  </el-radio-group>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 w-12 shrink-0">标签位置</span>
+                  <el-radio-group v-model="labelPos" size="small" @change="canvasHandle('funnel')">
+                    <el-radio-button value="inside">内部</el-radio-button>
+                    <el-radio-button value="outside">外部</el-radio-button>
+                    <el-radio-button value="left">左侧</el-radio-button>
+                    <el-radio-button value="right">右侧</el-radio-button>
+                  </el-radio-group>
+                </div>
               </div>
             </div>
             <div class="border-t border-slate-100 dark:border-slate-700"></div>
@@ -481,11 +483,10 @@ onMounted(() => {
     <!-- desc -->
     <ToolDetail title="描述">
       <el-text>
-        在线图表制作工具，在线制作柱状图与横向柱状图（条形图）<br>
-        支持一键切换垂直柱状图与横向柱状图两种模式<br>
-        在线编辑表格生成柱状图，支持png和jpeg格式导出<br>
-        柱状图是采用垂直柱子，即矩形块的宽度一样，用高度来代表数值大小。横向柱状图则将 X/Y 轴互换，适合排行榜与长标签分类对比场景。<br>
-        无需任何基础即可上手，并且支持超全的自定义配置，轻松实现你的个性化图表需求<br>
+        漏斗图适用于业务流程比较规范、周期长、环节多的单流程单向分析，通过漏斗各环节业务数据的比较，能够直观地发现和说明问题所在。<br>
+        在线图表制作工具，在线制作漏斗图<br>
+        支持导入表格并在线编辑表格生成漏斗图，支持png和jpeg格式导出<br>
+        支持排序方向与标签位置等超全的自定义配置，轻松实现你的个性化图表需求<br>
       </el-text> 
     </ToolDetail>
   </div>

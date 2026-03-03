@@ -11,8 +11,11 @@ import * as echarts from 'echarts'
 import * as XLSX from 'xlsx'
 import { useSettingStore } from '@/store/modules/setting'
 const info = reactive({
-  title: "饵图",
+  title: "饼图 / 环形图",
 })
+
+// 图形类型：饼图 or 环形图
+const pieType = ref<'pie' | 'doughnut'>('pie')
 const settingStore = useSettingStore()
 
 const chartDom = ref<HTMLElement|null>()
@@ -125,6 +128,16 @@ const canvasHandle = (type) => {
         series: [
           {
             data: seriesData.value,
+          }
+        ]
+      })
+      break;
+    case "pieType":
+      //切换饼图 / 环形图
+      myChart.value?.setOption({
+        series: [
+          {
+            radius: pieType.value === 'doughnut' ? ['40%', '70%'] : '50%',
           }
         ]
       })
@@ -440,6 +453,20 @@ onMounted(() => {
               </div>
             </div>
             <div class="border-t border-slate-100 dark:border-slate-700"></div>
+            <!-- 图形类型 -->
+            <div>
+              <div class="flex items-center gap-1.5 mb-2">
+                <div class="w-0.5 h-3.5 bg-purple-500 rounded-full"></div>
+                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">图形类型</span>
+              </div>
+              <div class="pl-2">
+                <el-radio-group v-model="pieType" size="small" @change="canvasHandle('pieType')">
+                  <el-radio-button value="pie">饼图</el-radio-button>
+                  <el-radio-button value="doughnut">环形图</el-radio-button>
+                </el-radio-group>
+              </div>
+            </div>
+            <div class="border-t border-slate-100 dark:border-slate-700"></div>
             <!-- 水印设置 -->
             <div>
               <div class="flex items-center justify-between mb-2">
@@ -464,10 +491,10 @@ onMounted(() => {
     <!-- desc -->
     <ToolDetail title="描述">
       <el-text>
-        饼图是通过一个圆来展示数据，用圆内各扇形的角度来表示数据之间的占比关系。<br>
-        能够很好地展示不同分类的变量之间或单个分类变量与整体之间的占比情况，常用来强调某个突出的分类变量或表示表示占比关系。<br>
-        在线图表制作工具，在线制作饼图<br>
-        支持导入表格并在线编辑表格生成饼图，支持png和jpeg格式导出<br>
+        饼图通过圆内各扇形的角度展示数据占比关系，环形图（甜甜圈图）在饼图基础上添加内空，是现代 UI 中常见的数据可视化形式。<br>
+        可通过右侧"图形类型"一键切换饼图与环形图两种模式。<br>
+        在线图表制作工具，在线制作饼图与环形图<br>
+        支持导入表格并在线编辑表格生成图表，支持 PNG 和 JPEG 格式导出<br>
         支持超全的自定义配置，轻松实现你的个性化图表需求<br>
       </el-text> 
     </ToolDetail>

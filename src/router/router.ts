@@ -262,6 +262,106 @@ export const constantRoute = [
     }
   },
   {
+    path: '/funnel',
+    component: () => import('@/components/Tools/Chart/Funnel/Funnel.vue'),
+    name: 'funnel',
+    meta: {
+      title: "漏斗图",
+      keywords: '漏斗图,漏斗,在线图表',
+      description: '在线制作漏斗图，像做表格一样制作可视化图表，支持导出静态或动态图表',
+    }
+  },
+  {
+    path: '/radar',
+    component: () => import('@/components/Tools/Chart/Radar/Radar.vue'),
+    name: 'radar',
+    meta: {
+      title: "雷达图",
+      keywords: '雷达图,能力图,在线图表',
+      description: '在线制作雷达图，支持多维度数据对比分析，支持导出静态图表',
+    }
+  },
+  {
+    path: '/gauge',
+    component: () => import('@/components/Tools/Chart/Gauge/Gauge.vue'),
+    name: 'gauge',
+    meta: {
+      title: "仪表盘",
+      keywords: '仪表盘,进度指针,在线图表',
+      description: '在线制作仪表盘，直观展示关键指标的完成进度或当前状态，支持导出静态图表',
+    }
+  },
+  {
+    path: '/heatmap',
+    component: () => import('@/components/Tools/Chart/Heatmap/Heatmap.vue'),
+    name: 'heatmap',
+    meta: {
+      title: "热力图",
+      keywords: '热力图,在线图表,活跃度',
+      description: '在线制作热力图，通过色阶变化直观展示二维矩阵数据分布，支持导出静态图表',
+    }
+  },
+  {
+    path: '/candlestick',
+    component: () => import('@/components/Tools/Chart/Candlestick/Candlestick.vue'),
+    name: 'candlestick',
+    meta: {
+      title: "K线图",
+      keywords: 'K线图,蜡烛图,股票图表',
+      description: '在线制作 K 线图（蜡烛图），展示价格开收高低，支持导出静态图表',
+    }
+  },
+  {
+    path: '/stack',
+    component: () => import('@/components/Tools/Chart/Stack/Stack.vue'),
+    name: 'stack',
+    meta: {
+      title: "堆叠柱/线图",
+      keywords: '堆叠柱状图,堆叠折线图,多系列,在线图表',
+      description: '在线制作堆叠柱/线图，展示多系列数据的累积对比，支持柱图与折线图切换，支持导出静态图表',
+    }
+  },
+  {
+    path: '/treemap',
+    component: () => import('@/components/Tools/Chart/Treemap/Treemap.vue'),
+    name: 'treemap',
+    meta: {
+      title: "矩形树图",
+      keywords: '矩形树图,Treemap,层级占比,在线图表',
+      description: '在线制作矩形树图（Treemap），用嵌套矩形展示层级占比，支持导出静态图表',
+    }
+  },
+  {
+    path: '/sankey',
+    component: () => import('@/components/Tools/Chart/Sankey/Sankey.vue'),
+    name: 'sankey',
+    meta: {
+      title: "桑基图",
+      keywords: '桑基图,流量流向,Sankey,在线图表',
+      description: '在线制作桑基图，展示流量与流向关系，常用于网站流量分析、能源分布等场景，支持导出静态图表',
+    }
+  },
+  {
+    path: '/boxplot',
+    component: () => import('@/components/Tools/Chart/Boxplot/Boxplot.vue'),
+    name: 'boxplot',
+    meta: {
+      title: "箱线图",
+      keywords: '箱线图,Box Plot,统计分析,在线图表',
+      description: '在线制作箱线图，展示数据分布的最小值、Q1、中位数、Q3、最大值，适合统计分析，支持导出静态图表',
+    }
+  },
+  {
+    path: '/calendar',
+    component: () => import('@/components/Tools/Chart/Calendar/Calendar.vue'),
+    name: 'calendar',
+    meta: {
+      title: "日历图",
+      keywords: '日历图,活跃度,GitHub热图,在线图表',
+      description: '在线制作日历图，以日历形式展示时间序列数据，类似 GitHub 活跃度热图，支持导出静态图表',
+    }
+  },
+  {
     path: '/coin',
     component: () => import('@/components/Tools/Coin/Coin.vue'),
     name: 'coin',
