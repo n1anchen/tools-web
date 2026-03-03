@@ -141,6 +141,11 @@ export default defineConfig(({command, mode}) => {
     },
     build: {
       rollupOptions: {
+        onwarn(warning, warn) {
+          // 忽略 terser 内部 #__PURE__ 注释位置问题的误报警告
+          if (warning.code === 'INVALID_ANNOTATION') return
+          warn(warning)
+        },
         output: {
           manualChunks: {
             // 将 Ace 编辑器相关的代码打包成单独的 chunk

@@ -59,6 +59,7 @@
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.3",
     "less": "^4.5.1",
+    "lightningcss": "^1.31.1",
     "path": "^0.12.7",
     "pinia": "^2.3.1",
     "rimraf": "^6.1.2",
