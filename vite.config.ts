@@ -172,15 +172,30 @@ export default defineConfig(({command, mode}) => {
           }
         }
       },
-      chunkSizeWarningLimit: 1000 // 增加警告阈值到 1MB
+      chunkSizeWarningLimit: 1000, // 增加警告阈值到 1MB
+      // Vite 5: 使用 Lightning CSS 压缩，比 esbuild 更快且压缩率更高
+      cssMinify: 'lightningcss'
     },
     optimizeDeps: {
       include: [
         'ace-builds'
-      ]
+      ],
+      // Vite 5: 等待全部依赖扫描完成后再统一预构建，避免中途触发页面强刷
+      holdUntilCrawlEnd: true
     },
     server: {
       host: env.VITE_HOST,
+      // Vite 5: 预热常用模块，dev server 就绪后后台编译，首次访问秒开
+      warmup: {
+        clientFiles: [
+          './src/App.vue',
+          './src/components/Layout/**/*.vue',
+          './src/components/Home/Home.vue',
+          './src/components/Tools/TimeTran/TimeTran.vue',
+          './src/components/Tools/MD5/MD5.vue',
+          './src/components/Tools/JsonTran/JsonTran.vue',
+        ]
+      },
       proxy: {
         [env.VITE_APP_BASE_API] : {
           target: env.VITE_SERVE,
