@@ -67,8 +67,8 @@ onMounted(() => {
     <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div>
         <el-radio-group v-model="info.checked" @change="changeCheckBox">
-          <el-radio label="0" size="large">吃什么</el-radio>
-          <el-radio label="1" size="large">干什么</el-radio>
+          <el-radio value="0" size="large">吃什么</el-radio>
+          <el-radio value="1" size="large">干什么</el-radio>
         </el-radio-group>
       </div>
 
