@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
@@ -14,6 +14,8 @@ const isConfigured = computed(() => !!apiBase)
 
 // 表单状态
 const inputUrl = ref('')
+const inputError = ref(false) // 粘贴相关错误
+const isTouched = ref(false)  // 手动输入后 blur 过
 const enableFollow = ref(false)
 const maxHops = ref(5)
 const loading = ref(false)
@@ -23,22 +25,42 @@ const resultVisible = ref(false)
 const finalUrl = ref('')
 const chain = ref<string[]>([])
 
-const resolve = async () => {
-  if (!inputUrl.value.trim()) {
-    ElMessage.warning('请输入短链接')
-    return
-  }
-
-  // 简单的 URL 格式校验
+// URL 合法性校验（仅允许域名，不允许 IP 或带端口号）
+const isValidUrl = computed(() => {
+  const val = inputUrl.value.trim()
+  if (!val) return false
   try {
-    const u = new URL(inputUrl.value.trim())
-    if (!['http:', 'https:'].includes(u.protocol)) {
-      throw new Error()
-    }
+    const u = new URL(val)
+    if (!['http:', 'https:'].includes(u.protocol)) return false
+    // 不允许带端口号
+    if (u.port !== '') return false
+    const host = u.hostname
+    // 不允许 IPv4
+    if (/^(\d{1,3}\.){3}\d{1,3}$/.test(host)) return false
+    // 不允许 IPv6（hostname 形如 [::1] 或解析后为纯 IPv6 格式）
+    if (host.startsWith('[') || /^[0-9a-f:]+$/i.test(host)) return false
+    // 必须包含至少一个点（排除纯裸主机名）
+    if (!host.includes('.')) return false
+    return true
   } catch {
-    ElMessage.error('请输入合法的 http/https 链接')
-    return
+    return false
   }
+})
+
+// 输入内容变化时，若已合法或已清空则消除错误状态
+watch(inputUrl, (val) => {
+  if (!val || isValidUrl.value) {
+    inputError.value = false
+  }
+})
+
+// 统一的错误显示判断：有内容 + 不合法 + (粘贴出错 OR 已 blur)
+const showError = computed(() =>
+  !!inputUrl.value && !isValidUrl.value && (inputError.value || isTouched.value)
+)
+
+const resolve = async () => {
+  if (!isValidUrl.value) return
 
   loading.value = true
   resultVisible.value = false
@@ -72,11 +94,36 @@ const copyResult = () => {
   copy(finalUrl.value)
 }
 
-const clear = () => {
-  inputUrl.value = ''
+const onClear = () => {
   resultVisible.value = false
   finalUrl.value = ''
   chain.value = []
+  inputError.value = false
+  isTouched.value = false
+}
+
+// 粘贴按钮：从剪贴板提取合法网址
+const pasteFromClipboard = async () => {
+  try {
+    const text = await navigator.clipboard.readText()
+    if (!text) return
+    // 从文本中提取第一个 http/https URL
+    const urlRegex = /https?:\/\/[^\s"'<>\]\[）（]+/
+    const match = text.match(urlRegex)
+    if (match) {
+      inputUrl.value = match[0]
+      // 提取到 URL 形式字符串后，仍需严格校验（如含 IP、端口等）
+      inputError.value = !isValidUrl.value
+    } else {
+      inputUrl.value = text
+      inputError.value = true
+    }
+    resultVisible.value = false
+    finalUrl.value = ''
+    chain.value = []
+  } catch {
+    ElMessage.error('无法读取剪贴板，请检查浏览器权限')
+  }
 }
 </script>
 
@@ -97,32 +144,45 @@ const clear = () => {
 
     <!-- 输入区 -->
     <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
-      <div class="flex gap-2">
-        <el-input
-          v-model="inputUrl"
-          :disabled="!isConfigured"
-          placeholder="输入短链接，如 https://t.cn/xxxxxx"
-          size="large"
-          clearable
-          @keyup.enter="resolve"
-          class="flex-1"
-        />
-        <el-button
-          type="primary"
-          size="large"
-          :loading="loading"
-          :disabled="!isConfigured || !inputUrl.trim()"
-          @click="resolve"
-        >
-          解析
-        </el-button>
-        <el-button
-          size="large"
-          :disabled="!isConfigured"
-          @click="clear"
-        >
-          清空
-        </el-button>
+      <div class="flex flex-wrap gap-2 items-start">
+        <div class="flex-1 min-w-[200px] flex flex-col gap-1">
+          <el-input
+            v-model="inputUrl"
+            :disabled="!isConfigured"
+            :status="showError ? 'error' : ''"
+            placeholder="输入短链接，如 https://t.cn/xxxxxx"
+            size="large"
+            clearable
+            @clear="onClear"
+            @blur="isTouched = true"
+            @keyup.enter="resolve"
+          />
+          <Transition name="fade">
+            <div v-if="showError" class="text-xs text-red-500 pl-1">
+              {{ inputError && !isTouched ? '没有找到合法网址' : '请输入合法的域名链接（不支持 IP 和端口号）' }}
+            </div>
+          </Transition>
+        </div>
+        <div class="flex gap-2 w-full sm:w-auto">
+          <el-button
+            size="large"
+            :disabled="!isConfigured"
+            class="shrink-0"
+            @click="pasteFromClipboard"
+          >
+            粘贴
+          </el-button>
+          <el-button
+            type="primary"
+            size="large"
+            :loading="loading"
+            :disabled="!isConfigured || !isValidUrl"
+            class="flex-1 sm:flex-none"
+            @click="resolve"
+          >
+            解析
+          </el-button>
+        </div>
       </div>
 
       <!-- 多跳追踪开关 -->
