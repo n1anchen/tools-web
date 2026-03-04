@@ -603,6 +603,16 @@ export const constantRoute = [
       description: '将日语平假名/片假名输入，一键转换为平文式罗马音，支持复制结果',
     }
   },
+  {
+    path: '/memecaption',
+    component: () => import('@/components/Tools/MemeCaption/MemeCaption.vue'),
+    name: 'memecaption',
+    meta: {
+      title: '表情包配字',
+      keywords: '表情包,字幕,配字,meme,图片加字,字幕生成,搞笑图',
+      description: '上传图片后实时添加字幕文字，支持黑白透明背景、文字描边、字体大小调整及图片缩放，一键保存为 JPG 或 PNG',
+    }
+  },
   //其他路由
   {
     path: '/404',
