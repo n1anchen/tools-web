@@ -139,6 +139,15 @@ export function getToolsCate() {
           cateId: 2,
           cate: '文本处理',
         },
+        {
+          id: 1,
+          title: '日语转罗马音',
+          logo: 'Language',
+          desc: '将日语平假名/片假名转换为罗马音，支持一键复制',
+          url: '/romaji/',
+          cateId: 2,
+          cate: '文本处理',
+        },
       ]
     },
     {

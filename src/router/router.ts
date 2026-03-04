@@ -593,6 +593,16 @@ export const constantRoute = [
       description: '上传一张底图，拖拽凯露等角色的头像贴纸到画布合成有趣的图片，支持缩放、旋转、翻转、删除贴纸',
     }
   },
+  {
+    path: '/romaji',
+    component: () => import('@/components/Tools/Romaji/Romaji.vue'),
+    name: 'romaji',
+    meta: {
+      title: '日语转罗马音',
+      keywords: '日语罗马音,日文罗马音,假名转罗马音,平假名,片假名,罗马字,wanakana',
+      description: '将日语平假名/片假名输入，一键转换为平文式罗马音，支持复制结果',
+    }
+  },
   //其他路由
   {
     path: '/404',

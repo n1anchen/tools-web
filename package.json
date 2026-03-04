@@ -49,6 +49,7 @@
     "vue": "^3.5.27",
     "vue-clipboard3": "^2.0.0",
     "vue3-danmaku": "^1.6.7",
+    "wanakana": "^5.3.1",
     "workbox-window": "^7.4.0",
     "x-data-spreadsheet": "^1.1.9",
     "xlsx": "^0.18.5"

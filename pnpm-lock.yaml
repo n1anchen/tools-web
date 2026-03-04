@@ -113,6 +113,9 @@ importers:
       vue3-danmaku:
         specifier: ^1.6.7
         version: 1.6.7(vue@3.5.27(typescript@5.9.3))
+      wanakana:
+        specifier: ^5.3.1
+        version: 5.3.1
       workbox-window:
         specifier: ^7.4.0
         version: 7.4.0
@@ -4831,6 +4834,10 @@ packages:
 
   w3c-xmlserializer@3.0.0:
     resolution: {integrity: sha512-3WFqGEgSXIyGhOmAFtlicJNMjEps8b1MG31NCA0/vOF9+nKMUW1ckhi9cnNHmf88Rzw5V+dwIwsm2C7X8k9aQg==}
+    engines: {node: '>=12'}
+
+  wanakana@5.3.1:
+    resolution: {integrity: sha512-OSDqupzTlzl2LGyqTdhcXcl6ezMiFhcUwLBP8YKaBIbMYW1wAwDvupw2T9G9oVaKT9RmaSpyTXjxddFPUcFFIw==}
     engines: {node: '>=12'}
 
   web-worker@1.5.0:
@@ -10329,6 +10336,8 @@ snapshots:
     dependencies:
       xml-name-validator: 4.0.0
     optional: true
+
+  wanakana@5.3.1: {}
 
   web-worker@1.5.0: {}
 
