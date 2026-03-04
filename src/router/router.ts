@@ -583,6 +583,16 @@ export const constantRoute = [
       description: '输入短链接，自动追踪重定向并还原完整链接，同时清除所有URL参数（包含跟踪参数）',
     }
   },
+  {
+    path: '/head-sticker',
+    component: () => import('@/components/Tools/HeadSticker/HeadSticker.vue'),
+    name: 'headSticker',
+    meta: {
+      title: '接头霸王',
+      keywords: '接头霸王,凯露,贴纸,图片合成,哈基米,耄耋,趣味工具',
+      description: '上传一张底图，拖拽凯露等角色的头像贴纸到画布合成有趣的图片，支持缩放、旋转、翻转、删除贴纸',
+    }
+  },
   //其他路由
   {
     path: '/404',

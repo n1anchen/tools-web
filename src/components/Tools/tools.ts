@@ -454,6 +454,15 @@ export function getToolsCate() {
           url: '/electronicpatina/',
           cateId: 6,
           cate: '趣味工具',
+        },
+        {
+          id: 1,
+          title: '接头霸王',
+          logo: 'Smile',
+          desc: '上传底图，拖拽凯露等角色的头像贴纸合成趣味图片，支持缩放、旋转、翻转，一键下载成果',
+          url: '/head-sticker/',
+          cateId: 6,
+          cate: '趣味工具',
         }
       ]
     },
