@@ -32,3 +32,5 @@ public/sitemap.txt
 public/fonts/*
 !public/fonts/bluearchive/
 public/ace/
+
+.github/
