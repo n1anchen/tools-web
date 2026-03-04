@@ -446,6 +446,15 @@ export function getToolsCate() {
           cateId: 6,
           cate: '趣味工具',
         },
+        {
+          id: 1,
+          title: '电子包浆模拟器',
+          logo: 'Image',
+          desc: '图片做旧工具，生成电子包浆效果的图片，支持自定义参数和效果预览',
+          url: '/electronicpatina/',
+          cateId: 6,
+          cate: '趣味工具',
+        }
       ]
     },
     {

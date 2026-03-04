@@ -433,6 +433,16 @@ export const constantRoute = [
     }
   },
   {
+    path: '/electronicpatina',
+    component: () => import('@/components/Tools/ElectronicPatina/ElectronicPatina.vue'),
+    name: 'electronicpatina',
+    meta: {
+      title: "电子包浆模拟器",
+      keywords: '电子包浆,图片做旧,图片生成,图片处理',
+      description: '图片做旧工具，生成电子包浆效果的图片，支持自定义参数和效果预览',
+    }
+  },
+  {
     path: '/httpstatuscode',
     component: () => import('@/components/Tools/HttpStatusCode/HttpStatusCode.vue'),
     name: 'HttpStatusCode',
