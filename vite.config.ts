@@ -36,6 +36,21 @@ export default defineConfig(({command, mode}) => {
     },
     plugins: [
       vue(),
+      // 百度站点验证 meta 注入：仅当环境变量 VITE_BAIDU_SITE_CODE 非空时注入
+      {
+        name: 'baidu-site-verification',
+        transformIndexHtml() {
+          const code = env.VITE_BAIDU_SITE_CODE
+          if (!code) return []
+          return [
+            {
+              tag: 'meta',
+              attrs: { name: 'baidu-site-verification', content: `codeva-${code}` },
+              injectTo: 'head',
+            },
+          ]
+        },
+      },
       createSvgIconsPlugin({
         // Specify the icon folder to be cached
         iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
