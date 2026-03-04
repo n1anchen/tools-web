@@ -430,6 +430,15 @@ export function getToolsCate() {
           cateId: 5,
           cate: '图片处理',
         },
+        {
+          id: 1,
+          title: '图片拼接',
+          logo: 'Images',
+          desc: '上传多张图片，支持纵向、横向和影视台词拼接，可调节间距和背景色，实时预览，导出 JPG/PNG',
+          url: '/imgstitch/',
+          cateId: 5,
+          cate: '图片处理',
+        },
       ]
     },
     {

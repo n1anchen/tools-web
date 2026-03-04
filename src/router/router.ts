@@ -613,6 +613,16 @@ export const constantRoute = [
       description: '上传图片后实时添加字幕文字，支持黑白透明背景、文字描边、字体大小调整及图片缩放，一键保存为 JPG 或 PNG',
     }
   },
+  {
+    path: '/imgstitch',
+    component: () => import('@/components/Tools/ImgStitch/ImgStitch.vue'),
+    name: 'imgstitch',
+    meta: {
+      title: '图片拼接',
+      keywords: '图片拼接,纵向拼接,横向拼接,影视台词拼接,图片合并,拼图',
+      description: '上传多张图片，支持纵向、横向和影视台词三种拼接模式，可调节间距和背景色，实时预览并导出 JPG/PNG',
+    }
+  },
   //其他路由
   {
     path: '/404',
