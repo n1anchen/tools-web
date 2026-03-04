@@ -1,3 +1,131 @@
 html.dark {
   /* 自定义暗黑模式下的样式 */
+
+  /* ===== v-md-editor (Markdown 编辑器) 暗色主题 ===== */
+
+  /* 主容器背景 */
+  .v-md-editor {
+    background-color: #1e293b;
+    box-shadow: none;
+  }
+
+  /* 工具栏 */
+  .v-md-editor__toolbar {
+    border-bottom-color: #334155;
+  }
+
+  .v-md-editor__toolbar-item {
+    color: #cbd5e1;
+  }
+
+  .v-md-editor__toolbar-item:hover {
+    background: #334155;
+    color: #f1f5f9;
+  }
+
+  .v-md-editor__toolbar-item--active,
+  .v-md-editor__toolbar-item--active:hover {
+    background: #3b82f6;
+    color: #fff;
+  }
+
+  .v-md-editor__toolbar-divider::before {
+    border-left-color: #334155;
+  }
+
+  /* 下拉菜单 */
+  .v-md-editor__menu {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .v-md-editor__menu-item {
+    color: #cbd5e1;
+  }
+
+  .v-md-editor__menu-item:hover {
+    background-color: #334155;
+    color: #f1f5f9;
+  }
+
+  /* 左侧编辑区 */
+  .v-md-editor__left-area {
+    border-right-color: #334155;
+  }
+
+  .v-md-editor__left-area-title {
+    color: #e2e8f0;
+
+    &::after {
+      border-bottom-color: #334155;
+    }
+  }
+
+  /* 左侧 textarea 文字颜色 */
+  .v-md-textarea-editor pre,
+  .v-md-textarea-editor textarea {
+    color: #e2e8f0;
+    caret-color: #e2e8f0;
+  }
+
+  .v-md-textarea-editor textarea::placeholder {
+    color: #64748b;
+  }
+
+  /* 右侧预览区 */
+  .vuepress-markdown-body {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+
+    a { color: #60a5fa; }
+    a:hover { color: #93c5fd; }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: #f1f5f9;
+      border-bottom-color: #334155;
+    }
+
+    blockquote {
+      color: #94a3b8;
+      border-left-color: #3b82f6;
+      background-color: #0f172a;
+    }
+
+    table {
+      th, td {
+        border-color: #334155;
+      }
+      tr:nth-child(2n) {
+        background-color: #0f172a;
+      }
+    }
+
+    hr {
+      border-color: #334155;
+    }
+
+    code:not([class*="v-md-prism-"]) {
+      background-color: #0f172a;
+      color: #7dd3fc;
+    }
+  }
+
+  /* ===== wangEditor 暗色主题 ===== */
+  --w-e-textarea-bg-color: #1e293b;
+  --w-e-textarea-color: #e2e8f0;
+  --w-e-textarea-border-color: #475569;
+  --w-e-textarea-slight-border-color: #334155;
+  --w-e-textarea-slight-color: #64748b;
+  --w-e-textarea-slight-bg-color: #334155;
+  --w-e-textarea-selected-border-color: #3b82f6;
+  --w-e-textarea-handler-bg-color: #3b82f6;
+  --w-e-toolbar-color: #cbd5e1;
+  --w-e-toolbar-bg-color: #1e293b;
+  --w-e-toolbar-active-color: #f1f5f9;
+  --w-e-toolbar-active-bg-color: #334155;
+  --w-e-toolbar-disabled-color: #64748b;
+  --w-e-toolbar-border-color: #334155;
+  --w-e-modal-button-bg-color: #334155;
+  --w-e-modal-button-border-color: #475569;
 }

@@ -10,6 +10,7 @@ import 'virtual:svg-icons-register'
 import router from './router'
 //styles
 import './styles/tailwind.css'
+import './styles/dark.scss'
 //element-plus css
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
