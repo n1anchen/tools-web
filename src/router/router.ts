@@ -623,6 +623,16 @@ export const constantRoute = [
       description: '上传多张图片，支持纵向、横向和影视台词三种拼接模式，可调节间距和背景色，实时预览并导出 JPG/PNG',
     }
   },
+  {
+    path: '/riddleman',
+    component: () => import('@/components/Tools/RiddleMan/RiddleMan.vue'),
+    name: 'riddleman',
+    meta: {
+      title: '谜语人',
+      keywords: '谜语人,佛曰,如是我闻,与佛论禅,加密,编码,趣味',
+      description: '多种趣味编码语言互转：佛曰、如是我闻等，任意框输入自动同步所有语言',
+    }
+  },
   //其他路由
   {
     path: '/404',

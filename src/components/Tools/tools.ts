@@ -490,6 +490,15 @@ export function getToolsCate() {
           url: '/head-sticker/',
           cateId: 6,
           cate: '趣味工具',
+        },
+        {
+          id: 1,
+          title: '谜语人',
+          logo: 'CommentDots',
+          desc: '多种趣味编码语言互转：佛曰、如是我闻等，任意框修改即时同步转换',
+          url: '/riddleman/',
+          cateId: 6,
+          cate: '趣味工具',
         }
       ]
     },
