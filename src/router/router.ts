@@ -633,6 +633,16 @@ export const constantRoute = [
       description: '多种趣味编码语言互转：佛曰、如是我闻等，任意框输入自动同步所有语言',
     }
   },
+  {
+    path: '/exifviewer',
+    component: () => import('@/components/Tools/ExifViewer/ExifViewer.vue'),
+    name: 'exifviewer',
+    meta: {
+      title: '图片 EXIF 查看',
+      keywords: 'EXIF,照片信息,拍摄参数,GPS定位,去除EXIF,图片元数据,相机参数,光圈快门ISO',
+      description: '上传图片查看完整 EXIF 信息（拍摄参数、设备型号、GPS 坐标），支持地图定位，一键下载去除 EXIF 的原图',
+    }
+  },
   //其他路由
   {
     path: '/404',

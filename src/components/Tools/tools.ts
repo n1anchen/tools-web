@@ -439,6 +439,15 @@ export function getToolsCate() {
           cateId: 5,
           cate: '图片处理',
         },
+        {
+          id: 1,
+          title: '图片 EXIF 查看',
+          logo: 'Camera',
+          desc: '查看照片完整 EXIF 信息（拍摄参数、设备型号、GPS 坐标），支持地图定位，一键下载去除 EXIF 的原图',
+          url: '/exifviewer/',
+          cateId: 5,
+          cate: '图片处理',
+        },
       ]
     },
     {
