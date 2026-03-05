@@ -15,7 +15,7 @@ import { watch } from 'vue'
 
 // PWA 更新提示
 const { needRefresh, offlineReady, updateServiceWorker } = useRegisterSW()
-const handleUpdate = () => { updateServiceWorker(true) }
+const handleUpdate = () => { updateServiceWorker(true); needRefresh.value = false }
 const dismissUpdate = () => { needRefresh.value = false }
 
 // 缓存就绪提示：8 秒后自动消失
