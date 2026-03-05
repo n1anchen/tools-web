@@ -4,6 +4,7 @@ import Left from '@/components/Layout/Left/Left.vue'
 import Floor from '@/components/Layout/Floor/Floor.vue'
 // import Right from '@/components/Layout/Right/Right.vue'
 import ToastNotification from '@/components/Common/ToastNotification.vue'
+import PrivacyNotice from '@/components/Common/PrivacyNotice.vue'
 import { useComponentStore } from '@/store/modules/component'
 import { useSettingStore } from '@/store/modules/setting'
 import { provide, onMounted, ref } from 'vue'
@@ -121,6 +122,9 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- 隐私说明弹窗 -->
+  <PrivacyNotice />
+
   <!-- PWA 通知容器：从底部向上堆叠 -->
   <div class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center gap-2">
 
