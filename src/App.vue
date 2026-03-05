@@ -3,6 +3,7 @@ import Header from '@/components/Layout/Header/Header.vue'
 import Left from '@/components/Layout/Left/Left.vue'
 import Floor from '@/components/Layout/Floor/Floor.vue'
 // import Right from '@/components/Layout/Right/Right.vue'
+import ToastNotification from '@/components/Common/ToastNotification.vue'
 import { useComponentStore } from '@/store/modules/component'
 import { useSettingStore } from '@/store/modules/setting'
 import { provide, onMounted, ref } from 'vue'
@@ -124,47 +125,28 @@ onMounted(() => {
   <div class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center gap-2">
 
     <!-- 缓存就绪提示（首次 SW 安装完成后显示） -->
-    <Transition name="pwa-toast">
-      <div
-        v-if="offlineReady"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl
-               bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700
-               text-sm text-slate-700 dark:text-slate-200 whitespace-nowrap"
-      >
-        <el-icon class="text-green-500 text-base"><CircleCheckFilled /></el-icon>
-        <div class="flex flex-col gap-0.5">
-          <span class="font-medium">缓存加载完成</span>
-          <span class="text-xs text-slate-400 dark:text-slate-500">大部分功能已可离线使用</span>
-        </div>
-        <el-button
-          v-if="deferredPrompt"
-          type="primary"
-          size="small"
-          @click="installApp"
-        >
+    <ToastNotification v-model="offlineReady" icon-class="text-green-500">
+      <template #icon><el-icon class="text-base"><CircleCheckFilled /></el-icon></template>
+      <template #title>缓存加载完成</template>
+      <template #desc>大部分功能已可离线使用</template>
+      <template #actions>
+        <el-button v-if="deferredPrompt" type="primary" size="small" @click="installApp">
           <el-icon class="mr-1"><Download /></el-icon>安装为应用
         </el-button>
         <el-button size="small" @click="dismissOfflineReady">知道了</el-button>
-      </div>
-    </Transition>
+      </template>
+    </ToastNotification>
 
     <!-- 版本更新提示 -->
-    <Transition name="pwa-toast">
-      <div
-        v-if="needRefresh"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl
-               bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700
-               text-sm text-slate-700 dark:text-slate-200 whitespace-nowrap"
-      >
-        <el-icon class="text-blue-500"><InfoFilled /></el-icon>
-        <div class="flex flex-col gap-0.5">
-          <span class="font-medium">自动更新成功</span>
-          <span class="text-xs text-slate-400 dark:text-slate-500">新版本已后台更新，下次打开生效</span>
-        </div>
+    <ToastNotification v-model="needRefresh" icon-class="text-blue-500">
+      <template #icon><el-icon><InfoFilled /></el-icon></template>
+      <template #title>自动更新成功</template>
+      <template #desc>新版本已后台更新，下次打开生效</template>
+      <template #actions>
         <el-button type="primary" size="small" @click="handleUpdate">立即刷新</el-button>
         <el-button size="small" @click="dismissUpdate">稍后</el-button>
-      </div>
-    </Transition>
+      </template>
+    </ToastNotification>
 
   </div>
 
@@ -328,14 +310,5 @@ onMounted(() => {
   transition: none !important;
 }
 
-/* PWA 提示条动画（容器内子元素，无需 translateX） */
-.pwa-toast-enter-active,
-.pwa-toast-leave-active {
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-.pwa-toast-enter-from,
-.pwa-toast-leave-to {
-  opacity: 0;
-  transform: translateY(16px);
-}
+/* PWA 提示条动画由 ToastNotification 组件内部定义 */
 </style>

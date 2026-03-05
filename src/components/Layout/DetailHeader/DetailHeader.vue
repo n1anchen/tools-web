@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { Setting } from '@element-plus/icons-vue'
+import { Setting, StarFilled } from '@element-plus/icons-vue'
 import { Star, StarRegular } from '@vicons/fa'
 import { Icon } from '@vicons/utils'
 import ToolIcon from '@/components/Common/ToolIcon.vue'
-import { onMounted, reactive, computed } from 'vue';
+import ToastNotification from '@/components/Common/ToastNotification.vue'
+import { onMounted, reactive, computed, ref, nextTick } from 'vue';
 import { useRoute } from 'vue-router'
 import { useToolsStore } from '@/store/modules/tools'
 import {rtrim} from '@/utils/string'
@@ -27,10 +28,39 @@ const toolInfo = computed(() => toolsStore.toolInfo)
 // 是否已收藏
 const favorited = computed(() => toolsStore.isFavorite(toolInfo.value.url))
 
+// 浮窗提示
+const toast = ref(false)
+const toastType = ref<'add' | 'remove'>('add')
+const toastTimer = ref<ReturnType<typeof setTimeout> | null>(null)
+// 退出动画时长需与 ToastNotification 的 leave-active transition 一致
+const TOAST_LEAVE_DURATION = 350
+
+const showToast = (type: 'add' | 'remove') => {
+  if (toastTimer.value) clearTimeout(toastTimer.value)
+
+  const doShow = () => {
+    toastType.value = type
+    toast.value = true
+    toastTimer.value = setTimeout(() => {
+      toast.value = false
+    }, 3000)
+  }
+
+  if (toast.value) {
+    // 已在显示：先触发退出动画，动画结束后再显示新内容
+    toast.value = false
+    setTimeout(() => nextTick(doShow), TOAST_LEAVE_DURATION)
+  } else {
+    doShow()
+  }
+}
+
 // 切换收藏
 const toggleFavorite = () => {
   if (toolInfo.value.url) {
+    const wasFavorited = toolsStore.isFavorite(toolInfo.value.url)
     toolsStore.toggleFavorite(toolInfo.value)
+    showToast(wasFavorited ? 'remove' : 'add')
   }
 }
 
@@ -110,8 +140,16 @@ onMounted(() => {
       </button>
     </div>
   </div>
+
+  <!-- 收藏/取消收藏浮窗提示 -->
+  <div class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center">
+    <ToastNotification v-model="toast" :icon-class="toastType === 'add' ? 'text-yellow-500' : 'text-slate-400'">
+      <template #icon><el-icon class="text-base"><StarFilled /></el-icon></template>
+      <template #title>{{ toastType === 'add' ? '收藏成功' : '已取消收藏' }}</template>
+      <template #desc>{{ toastType === 'add' ? '可在首页的「收藏」分类中找到该工具' : '该工具已从收藏列表中移除' }}</template>
+    </ToastNotification>
+  </div>
 </template>
 
 <style scoped>
-
 </style>
