@@ -19,7 +19,7 @@ const dataFileRef = ref()
 
 const sacleSize = ref(100)
 const widthCanvas = ref(820)
-const heightCanvas = ref(200)
+const heightCanvas = ref(300)
 const downType = ref('1')
 const titlePos = ref('center')
 const title = ref('Tools-Web')
@@ -39,13 +39,14 @@ const createWatermark = () => {
   return canvas
 }
 
-// 生成示例数据（2025年全年）
+// 生成示例数据（当年全年）
 const generateSampleData = (): [string, number][] => {
   const data: [string, number][] = []
-  const now = new Date()
-  const year = now.getFullYear()
+  const year = new Date().getFullYear()
   for (let d = new Date(year, 0, 1); d.getFullYear() === year; d.setDate(d.getDate() + 1)) {
-    const ds = d.toISOString().slice(0, 10)
+    const mm = String(d.getMonth() + 1).padStart(2, '0')
+    const dd = String(d.getDate()).padStart(2, '0')
+    const ds = `${year}-${mm}-${dd}`
     data.push([ds, Math.round(Math.random() * 100)])
   }
   return data
@@ -74,32 +75,43 @@ const canvasHandle = (type) => {
     case "year":
       reloadCanvas()
       break
-    case "data":
+    case "data": {
+      const vals = calendarData.value.map(d => d[1])
+      const maxVal = vals.length > 0 ? Math.max(...vals) : 100
       myChart.value?.setOption({
+        visualMap: { max: maxVal },
         calendar: [{ range: calendarYear.value }],
         series: [{ data: calendarData.value }]
       })
       break
+    }
   }
 }
 
-const buildOption = () => ({
+const buildOption = () => {
+  const vals = calendarData.value.map(d => d[1])
+  const maxVal = vals.length > 0 ? Math.max(...vals) : 100
+  return {
   backgroundColor: 'transparent',
   title: { text: title.value, subtext: subTitle.value, left: titlePos.value },
   tooltip: { formatter: (p) => p.data?.[0] + '：' + (p.data?.[1] ?? '') },
   visualMap: {
     min: 0,
-    max: 100,
+    max: maxVal,
     calculable: true,
     orient: 'horizontal',
     left: 'center',
-    bottom: 8,
+    bottom: 12,
+    inRange: {
+      color: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127']
+    },
   },
   calendar: [{
-    top: 80,
+    top: 105,
     left: 30,
     right: 30,
-    cellSize: ['auto', 20],
+    bottom: 60,
+    cellSize: ['auto', 'auto'],
     range: calendarYear.value,
     itemStyle: { borderWidth: 0.5 },
     yearLabel: { show: false }
@@ -109,7 +121,7 @@ const buildOption = () => ({
     coordinateSystem: 'calendar',
     data: calendarData.value
   }]
-})
+}}
 
 const reloadCanvas = () => {
   if (myChart.value) myChart.value.dispose()
@@ -176,7 +188,7 @@ const updateDataFile = async (params) => {
       }
     } catch(e) { console.log('error', e) }
   }
-  fileReader.readAsArrayBuffer(_file)
+  fileReader.readAsBinaryString(_file)
 }
 
 const handleExceed: UploadProps['onExceed'] = (files) => {
@@ -187,11 +199,10 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
 
 onMounted(() => {
   chartDom.value = document.getElementById('main')
-  canvasHandle('size')
-  reloadCanvas()
   colunmData.value = calendarData.value.map(d => d[0])
   valueData.value = calendarData.value.map(d => d[1]) as any[]
   rowsData.value = toSpreadsheetData([{ value: colunmData.value }, { value: valueData.value }])
+  canvasHandle('size')
 })
 </script>
 
