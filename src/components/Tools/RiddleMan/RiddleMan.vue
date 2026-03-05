@@ -173,6 +173,7 @@ function copyValue(key: string) {
         <li>
           <b>如是我闻</b>：与佛论禅第二版（Tudou v2）——AES-256-CBC + ZIP/7-zip + 256字符映射；解码完全兼容原版网站（7-zip+LZMA）和 TudouCode C#（ZIP+LZMA），编码输出为 ZIP+Deflate 格式
         </li>
+        <li><b>兽语</b>：与兽音译者（兽语翻译）SDK 完全兼容，支持明文与兽语互转</li>
         <li><b>Base64</b>：标准 Base64 编解码，支持任意 UTF-8 文本</li>
         <li><b>MD5</b>：32位小写 MD5 哈希，单向不可逆，仅在输入明文时自动计算</li>
       </ul>

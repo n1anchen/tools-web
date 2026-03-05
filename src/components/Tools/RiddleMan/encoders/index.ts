@@ -9,8 +9,10 @@ import plain from './plain'
 import foYue from './foYue'
 import ruShiWoWen from './ruShiWoWen'
 import base64 from './base64'
+import base32 from './base32'
 import md5 from './md5'
+import beast from './beast'
 
-export const encoders = [plain, foYue, ruShiWoWen, base64, md5]
+export const encoders = [plain, foYue, ruShiWoWen, beast, base64, base32, md5]
 
 export type { Encoder } from './types'
