@@ -10,6 +10,15 @@ export function getToolsCate() {
       list: [
         {
           id: 0,
+          title: 'it-tools工具集',
+          logo: 'Tools',
+          desc: '各种IT相关的小工具，基于sharevb/it-tools构建',
+          url: 'https://it-tools.nianchen.top',
+          cateId: 0,
+          cate: '独立工具'
+        },
+        {
+          id: 0,
           title: '智能排座工具',
           logo: 'ThLarge',
           desc: '智能排座工具，根据人员名单自动生成排座图，支持拖拽操作',

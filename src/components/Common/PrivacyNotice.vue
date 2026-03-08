@@ -79,7 +79,7 @@ const handleNeverShow = () => {
         </span>
         <div class="min-w-0">
           <p class="font-semibold text-amber-700 dark:text-amber-300 mb-0.5">独立工具免责声明</p>
-          <p class="text-slate-600 dark:text-slate-400">"独立工具"分类中收录的外部工具为第三方站点，本项目仅提供链接导航，<strong class="text-slate-700 dark:text-slate-300">不对其内容、安全性或隐私政策负责</strong>。访问外部工具时请自行注意鉴别，谨慎输入敏感信息。</p>
+          <p class="text-slate-600 dark:text-slate-400">"独立工具"分类中收录的<strong class="text-slate-700 dark:text-slate-300">不以nianchen.top结尾</strong>的外部工具为第三方站点，本项目仅提供链接导航，<strong class="text-slate-700 dark:text-slate-300">不对其内容、安全性或隐私政策负责</strong>。访问时请自行注意鉴别，谨慎输入敏感信息。</p>
         </div>
       </div>
 
