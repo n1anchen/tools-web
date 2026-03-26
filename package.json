@@ -25,6 +25,7 @@
     "ace-builds": "^1.43.5",
     "axios": "^1.13.2",
     "colord": "^2.9.3",
+    "coordtransform": "^2.1.2",
     "cron-chinese": "^1.2.0",
     "cron-parser": "^5.5.0",
     "cronstrue": "^3.12.0",

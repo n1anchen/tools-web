@@ -653,6 +653,16 @@ export const constantRoute = [
       description: '上传图片后，一键生成多种尺寸的 PNG 和 ICO 图标，支持鼠标拖拽调整位置、缩放和圆角设置，并统一打包下载',
     }
   },
+  {
+    path: '/coordtransform',
+    component: () => import('@/components/Tools/CoordTransform/CoordTransform.vue'),
+    name: 'coordtransform',
+    meta: {
+      title: '地图坐标系互转',
+      keywords: '地图坐标系互转,WGS84,GCJ-02,BD-09,经纬度转换,地图选点',
+      description: '支持 WGS84、GCJ-02、BD-09 三种地图坐标系互转，提供地图选点、拖拽标记和坐标自动联动',
+    }
+  },
   //其他路由
   {
     path: '/404',
