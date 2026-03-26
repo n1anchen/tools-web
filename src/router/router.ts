@@ -659,8 +659,8 @@ export const constantRoute = [
     name: 'coordtransform',
     meta: {
       title: '地图坐标系互转',
-      keywords: '地图坐标系互转,WGS84,GCJ-02,BD-09,经纬度转换,地图选点',
-      description: '支持 WGS84、GCJ-02、BD-09 三种地图坐标系互转，提供地图选点、拖拽标记和坐标自动联动',
+      keywords: '地图坐标系互转,WGS84,CGCS2000,GCJ-02,BD-09,EPSG:3857,Web Mercator,经纬度转换,地图选点',
+      description: '支持 WGS84、CGCS2000、GCJ-02、BD-09、Web Mercator 五种坐标系互转，提供地图选点、拖拽标记和坐标自动联动',
     }
   },
   //其他路由

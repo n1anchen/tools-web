@@ -2,47 +2,114 @@
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref } from 'vue'
 import type { Map as LMap, Marker as LMarker } from 'leaflet'
 import { CopyDocument, RefreshRight } from '@element-plus/icons-vue'
-import coordtransform from 'coordtransform'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
+import {
+  buildCoordinateSet,
+  formatCoordinateValue,
+  fromCoordinatePair,
+  isMercatorSystem,
+  toCoordinatePair,
+  validateCoordinate,
+  type AnyCoordinate,
+  type CoordSystem,
+  type CoordinateSet,
+  type GeoCoordinate,
+} from '@/utils/coordTransformEngine'
 
-type CoordSystem = 'wgs84' | 'gcj02' | 'bd09'
-
-interface CoordinateValue {
-  lng: number
-  lat: number
+interface CoordinateFormValue {
+  primary: string
+  secondary: string
 }
 
-interface CoordinateForms {
-  wgs84: { lng: string; lat: string }
-  gcj02: { lng: string; lat: string }
-  bd09: { lng: string; lat: string }
+type CoordinateForms = Record<CoordSystem, CoordinateFormValue>
+
+interface SystemMetaItem {
+  key: CoordSystem
+  label: string
+  desc: string
+  tag: string
+  primaryLabel: string
+  secondaryLabel: string
+  primaryPlaceholder: string
+  secondaryPlaceholder: string
+  helper?: string
 }
 
 const title = '地图坐标系互转'
-const defaultGcj02: CoordinateValue = {
+const defaultGcj02: GeoCoordinate = {
   lng: 116.397428,
   lat: 39.90923,
 }
 
-const systemMeta: Array<{ key: CoordSystem; label: string; desc: string; tag: string }> = [
-  { key: 'wgs84', label: 'WGS84', desc: 'GPS 原始坐标，适合国际地图与设备定位。', tag: 'GPS' },
-  { key: 'gcj02', label: 'GCJ-02', desc: '火星坐标系，国内高德/腾讯地图常用。', tag: '地图' },
-  { key: 'bd09', label: 'BD-09', desc: '百度地图坐标系，适合百度地图接口。', tag: 'Baidu' },
+const systemMeta: SystemMetaItem[] = [
+  {
+    key: 'wgs84',
+    label: 'WGS84',
+    desc: 'GPS 原始坐标，适合国际地图与设备定位。',
+    tag: 'GPS',
+    primaryLabel: '经度',
+    secondaryLabel: '纬度',
+    primaryPlaceholder: '例如 116.397428',
+    secondaryPlaceholder: '例如 39.909230',
+  },
+  {
+    key: 'cgcs2000',
+    label: 'CGCS2000',
+    desc: '国家大地坐标系（EPSG:4490），适用于互联网地图场景的近似转换。',
+    tag: '国标',
+    primaryLabel: '经度',
+    secondaryLabel: '纬度',
+    primaryPlaceholder: '例如 116.397428',
+    secondaryPlaceholder: '例如 39.909230',
+  },
+  {
+    key: 'gcj02',
+    label: 'GCJ-02',
+    desc: '火星坐标系，国内高德/腾讯地图常用。',
+    tag: '地图',
+    primaryLabel: '经度',
+    secondaryLabel: '纬度',
+    primaryPlaceholder: '例如 116.403963',
+    secondaryPlaceholder: '例如 39.915119',
+  },
+  {
+    key: 'bd09',
+    label: 'BD-09',
+    desc: '百度地图坐标系，适合百度地图接口。',
+    tag: 'Baidu',
+    primaryLabel: '经度',
+    secondaryLabel: '纬度',
+    primaryPlaceholder: '例如 116.410369',
+    secondaryPlaceholder: '例如 39.921336',
+  },
+  {
+    key: 'mercator',
+    label: 'Web Mercator',
+    desc: '网络墨卡托投影（EPSG:3857），常用于瓦片地图与投影坐标。',
+    tag: '投影',
+    primaryLabel: 'X',
+    secondaryLabel: 'Y',
+    primaryPlaceholder: '例如 12957254.77',
+    secondaryPlaceholder: '例如 4852582.08',
+    helper: '单位为米，地图仍以 GCJ-02 结果进行展示。',
+  },
 ]
 
 const state = reactive<{
   forms: CoordinateForms
-  current: Record<CoordSystem, CoordinateValue> | null
+  current: CoordinateSet | null
   error: string
   lastSource: CoordSystem
   isOnline: boolean
 }>({
   forms: {
-    wgs84: { lng: '', lat: '' },
-    gcj02: { lng: '', lat: '' },
-    bd09: { lng: '', lat: '' },
+    wgs84: { primary: '', secondary: '' },
+    cgcs2000: { primary: '', secondary: '' },
+    gcj02: { primary: '', secondary: '' },
+    bd09: { primary: '', secondary: '' },
+    mercator: { primary: '', secondary: '' },
   },
   current: null,
   error: '',
@@ -57,18 +124,15 @@ let mapInstance: LMap | null = null
 let markerInstance: LMarker | null = null
 let leafletModule: (typeof import('leaflet'))['default'] | null = null
 
-const activeMeta = computed(() => systemMeta.find(item => item.key === activeSystem.value) ?? systemMeta[1])
-const lastSourceMeta = computed(() => systemMeta.find(item => item.key === state.lastSource) ?? systemMeta[1])
+const activeMeta = computed(() => systemMeta.find(item => item.key === activeSystem.value) ?? systemMeta[2])
+const lastSourceMeta = computed(() => systemMeta.find(item => item.key === state.lastSource) ?? systemMeta[2])
 const currentGcjPoint = computed(() => state.current?.gcj02 ?? null)
 const summaryText = computed(() => {
-  if (!state.current) return '点击地图或编辑右侧任意坐标，系统会自动完成三种坐标系换算。'
+  if (!state.current) return '点击地图或编辑右侧任意坐标，系统会自动完成五种坐标系换算。'
   const current = state.current[state.lastSource]
-  return `最近以 ${lastSourceMeta.value.label} 为基准完成同步，当前经度 ${formatCoordinate(current.lng)}，纬度 ${formatCoordinate(current.lat)}。`
+  const pair = getFormattedPair(state.lastSource, current)
+  return `最近以 ${lastSourceMeta.value.label} 为基准完成同步，当前 ${lastSourceMeta.value.primaryLabel} ${pair.primary}，${lastSourceMeta.value.secondaryLabel} ${pair.secondary}。`
 })
-
-function formatCoordinate(value: number) {
-  return value.toFixed(6)
-}
 
 function parseCoordinate(raw: string) {
   const normalized = raw.trim()
@@ -77,83 +141,57 @@ function parseCoordinate(raw: string) {
   return Number.isFinite(value) ? value : null
 }
 
-function isValidCoordinate(coord: CoordinateValue) {
-  return coord.lng >= -180 && coord.lng <= 180 && coord.lat >= -90 && coord.lat <= 90
-}
-
-function buildCoordinateSet(source: CoordSystem, coord: CoordinateValue): Record<CoordSystem, CoordinateValue> {
-  if (source === 'wgs84') {
-    const [gcjLng, gcjLat] = coordtransform.wgs84togcj02(coord.lng, coord.lat)
-    const [bdLng, bdLat] = coordtransform.gcj02tobd09(gcjLng, gcjLat)
-    return {
-      wgs84: coord,
-      gcj02: { lng: gcjLng, lat: gcjLat },
-      bd09: { lng: bdLng, lat: bdLat },
-    }
-  }
-
-  if (source === 'gcj02') {
-    const [wgsLng, wgsLat] = coordtransform.gcj02towgs84(coord.lng, coord.lat)
-    const [bdLng, bdLat] = coordtransform.gcj02tobd09(coord.lng, coord.lat)
-    return {
-      wgs84: { lng: wgsLng, lat: wgsLat },
-      gcj02: coord,
-      bd09: { lng: bdLng, lat: bdLat },
-    }
-  }
-
-  const [gcjLng, gcjLat] = coordtransform.bd09togcj02(coord.lng, coord.lat)
-  const [wgsLng, wgsLat] = coordtransform.gcj02towgs84(gcjLng, gcjLat)
+function getFormattedPair(system: CoordSystem, coordinate: AnyCoordinate) {
+  const pair = toCoordinatePair(system, coordinate)
   return {
-    wgs84: { lng: wgsLng, lat: wgsLat },
-    gcj02: { lng: gcjLng, lat: gcjLat },
-    bd09: coord,
+    primary: formatCoordinateValue(system, pair.primary),
+    secondary: formatCoordinateValue(system, pair.secondary),
   }
 }
 
 function syncForms() {
   if (!state.current) return
-  ;(['wgs84', 'gcj02', 'bd09'] as CoordSystem[]).forEach((system) => {
-    state.forms[system].lng = formatCoordinate(state.current![system].lng)
-    state.forms[system].lat = formatCoordinate(state.current![system].lat)
+  systemMeta.forEach((system) => {
+    const pair = getFormattedPair(system.key, state.current![system.key])
+    state.forms[system.key].primary = pair.primary
+    state.forms[system.key].secondary = pair.secondary
   })
 }
 
-async function applyCoordinate(source: CoordSystem, coord: CoordinateValue, shouldCenterMap = true) {
-  if (!isValidCoordinate(coord)) {
-    state.error = '经度范围需在 -180 到 180 之间，纬度范围需在 -90 到 90 之间。'
+async function applyCoordinate(source: CoordSystem, coordinate: AnyCoordinate, shouldCenterMap = true) {
+  const validationMessage = validateCoordinate(source, coordinate)
+  if (validationMessage) {
+    state.error = validationMessage
     return
   }
 
   state.error = ''
   state.lastSource = source
-  state.current = buildCoordinateSet(source, coord)
+  state.current = buildCoordinateSet(source, coordinate)
   syncForms()
   await updateMap(shouldCenterMap)
 }
 
 function updateFromInputs(system: CoordSystem) {
   activeSystem.value = system
-  const lng = parseCoordinate(state.forms[system].lng)
-  const lat = parseCoordinate(state.forms[system].lat)
+  const primary = parseCoordinate(state.forms[system].primary)
+  const secondary = parseCoordinate(state.forms[system].secondary)
 
-  if (lng === null || lat === null) {
-    state.error = state.forms[system].lng.trim() || state.forms[system].lat.trim()
+  if (primary === null || secondary === null) {
+    state.error = state.forms[system].primary.trim() || state.forms[system].secondary.trim()
       ? '请输入有效的数字坐标。'
       : ''
     return
   }
 
-  void applyCoordinate(system, { lng, lat })
+  void applyCoordinate(system, fromCoordinatePair(system, primary, secondary))
 }
 
 function clearCoordinates() {
-  state.forms.wgs84.lng = ''
-  state.forms.wgs84.lat = ''
-  state.forms.gcj02.lng = ''
-  state.forms.gcj02.lat = ''
-  state.forms.bd09.lng = ''
-  state.forms.bd09.lat = ''
+  systemMeta.forEach((system) => {
+    state.forms[system.key].primary = ''
+    state.forms[system.key].secondary = ''
+  })
   state.current = null
   state.error = ''
 
@@ -169,7 +207,7 @@ function clearCoordinates() {
 
 function copyPair(system: CoordSystem) {
   if (!state.current) return
-  copy(`${state.forms[system].lng}, ${state.forms[system].lat}`)
+  copy(`${state.forms[system].primary}, ${state.forms[system].secondary}`)
 }
 
 function handleOnline() {
@@ -183,12 +221,16 @@ function handleOffline() {
 
 function buildPopupHtml() {
   if (!state.current) return '<b>地图坐标</b>'
+
+  const popupLines = systemMeta.map((system) => {
+    const pair = getFormattedPair(system.key, state.current![system.key])
+    return `<div style="font-size:12px;line-height:1.6"><span style="color:#64748b">${system.label}</span> ${pair.primary}, ${pair.secondary}</div>`
+  })
+
   return [
-    '<div style="min-width:220px">',
+    '<div style="min-width:240px">',
     '<div style="font-weight:600;margin-bottom:6px">当前坐标</div>',
-    `<div style="font-size:12px;line-height:1.6"><span style="color:#64748b">WGS84</span> ${formatCoordinate(state.current.wgs84.lng)}, ${formatCoordinate(state.current.wgs84.lat)}</div>`,
-    `<div style="font-size:12px;line-height:1.6"><span style="color:#64748b">GCJ-02</span> ${formatCoordinate(state.current.gcj02.lng)}, ${formatCoordinate(state.current.gcj02.lat)}</div>`,
-    `<div style="font-size:12px;line-height:1.6"><span style="color:#64748b">BD-09</span> ${formatCoordinate(state.current.bd09.lng)}, ${formatCoordinate(state.current.bd09.lat)}</div>`,
+    ...popupLines,
     '</div>',
   ].join('')
 }
@@ -337,25 +379,26 @@ onUnmounted(() => {
                     <el-tag size="small" effect="plain">{{ item.tag }}</el-tag>
                   </div>
                   <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ item.desc }}</p>
+                  <p v-if="item.helper" class="mt-1 text-[11px] text-slate-400 dark:text-slate-500">{{ item.helper }}</p>
                 </div>
                 <el-button :icon="CopyDocument" circle @click="copyPair(item.key)" />
               </div>
 
               <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
-                  <label class="mb-1 block text-xs font-medium text-slate-500 dark:text-slate-400">经度</label>
+                  <label class="mb-1 block text-xs font-medium text-slate-500 dark:text-slate-400">{{ item.primaryLabel }}</label>
                   <el-input
-                    v-model="state.forms[item.key].lng"
-                    placeholder="例如 116.397428"
+                    v-model="state.forms[item.key].primary"
+                    :placeholder="item.primaryPlaceholder"
                     @focus="activeSystem = item.key"
                     @input="updateFromInputs(item.key)"
                   />
                 </div>
                 <div>
-                  <label class="mb-1 block text-xs font-medium text-slate-500 dark:text-slate-400">纬度</label>
+                  <label class="mb-1 block text-xs font-medium text-slate-500 dark:text-slate-400">{{ item.secondaryLabel }}</label>
                   <el-input
-                    v-model="state.forms[item.key].lat"
-                    placeholder="例如 39.909230"
+                    v-model="state.forms[item.key].secondary"
+                    :placeholder="item.secondaryPlaceholder"
                     @focus="activeSystem = item.key"
                     @input="updateFromInputs(item.key)"
                   />
@@ -388,9 +431,11 @@ onUnmounted(() => {
 
     <ToolDetail title="使用说明">
       <div class="space-y-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
-        <p>支持 WGS84、GCJ-02、BD-09 三种常见地图坐标系互转。你可以直接编辑任意一组经纬度，另外两组会自动同步。</p>
-        <p>地图区域使用 GCJ-02 显示，点击地图或拖拽标记后会立即回填全部坐标。移动端布局会自动切换为地图在上、输入区在下。</p>
-        <p>如果需要粘贴到其他系统，可点击每个坐标系卡片右上角的复制按钮，一次复制“经度, 纬度”格式。</p>
+        <p>支持 WGS84、CGCS2000、GCJ-02、BD-09、Web Mercator 五种常见坐标系互转。你可以直接编辑任意一组坐标，其余四组会自动同步。</p>
+        <p>地图区域使用 GCJ-02 显示，点击地图或拖拽标记后会立即回填全部坐标。</p>
+        <p>Web Mercator 使用 X、Y 投影坐标，单位为米。</p>
+        <p><b>CGCS2000 在本工具中按互联网地图场景进行近似处理，不作为测绘级严谨转换结果。</b></p>
+        <p>复制按钮会将对应坐标系的经纬度/XY 以逗号分隔的形式复制到剪贴板，方便粘贴到其他工具或接口中使用。</p>
       </div>
     </ToolDetail>
   </div>

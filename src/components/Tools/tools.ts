@@ -303,7 +303,7 @@ export function getToolsCate() {
           id: 1,
           title: '地图坐标系互转',
           logo: 'MapMarkedAlt',
-          desc: 'WGS84、GCJ-02、BD-09 坐标互转，支持地图选点、拖拽定位和坐标自动同步',
+          desc: 'WGS84、CGCS2000、GCJ-02、BD-09、Web Mercator 五种坐标系互转，支持地图选点与拖拽定位',
           url: '/coordtransform/',
           cateId: 3,
           cate: '开发运维'
