@@ -457,6 +457,15 @@ export function getToolsCate() {
           cateId: 5,
           cate: '图片处理',
         },
+        {
+          id: 1,
+          title: 'ICO图标工具',
+          logo: 'Icons',
+          desc: '上传图片后一键生成多尺寸 PNG / ICO 图标，支持拖拽调整位置、缩放和圆角设置',
+          url: '/icotool/',
+          cateId: 5,
+          cate: '图片处理',
+        },
       ]
     },
     {

@@ -643,6 +643,16 @@ export const constantRoute = [
       description: '上传图片查看完整 EXIF 信息（拍摄参数、设备型号、GPS 坐标），支持地图定位，一键下载去除 EXIF 的原图',
     }
   },
+  {
+    path: '/icotool',
+    component: () => import('@/components/Tools/IcoTool/IcoTool.vue'),
+    name: 'icotool',
+    meta: {
+      title: 'ICO图标工具',
+      keywords: 'ico图标生成,favicon生成,图标尺寸转换,png转ico,应用图标,圆角图标',
+      description: '上传图片后，一键生成多种尺寸的 PNG 和 ICO 图标，支持鼠标拖拽调整位置、缩放和圆角设置，并统一打包下载',
+    }
+  },
   //其他路由
   {
     path: '/404',
