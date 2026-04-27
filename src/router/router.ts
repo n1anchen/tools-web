@@ -663,6 +663,16 @@ export const constantRoute = [
       description: '支持 WGS84、CGCS2000、GCJ-02、BD-09、Web Mercator 五种坐标系互转，提供地图选点、拖拽标记和坐标自动联动',
     }
   },
+  {
+    path: '/ipcalc',
+    component: () => import('@/components/Tools/IPCalc/IPCalc.vue'),
+    name: 'ipcalc',
+    meta: {
+      title: 'IP 计算器',
+      keywords: 'IP计算器,子网掩码,CIDR,网络地址,广播地址,IP进制转换,子网划分',
+      description: '快速计算 IP 段、子网掩码、网络地址、广播地址及可用主机数，支持 IP 进制转换与子网掩码换算',
+    }
+  },
   //其他路由
   {
     path: '/404',

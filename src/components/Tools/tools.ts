@@ -307,6 +307,15 @@ export function getToolsCate() {
           url: '/coordtransform/',
           cateId: 3,
           cate: '开发运维'
+        },
+        {
+          id: 1,
+          title: 'IP 计算器',
+          logo: 'NetworkWired',
+          desc: '计算子网掩码、网络地址、广播地址、可用主机数，支持 IP 进制转换与子网掩码换算',
+          url: '/ipcalc/',
+          cateId: 3,
+          cate: '开发运维'
         }
       ]
     },
