@@ -122,7 +122,7 @@ const mapContainerRef = ref<HTMLElement | null>(null)
 
 let mapInstance: LMap | null = null
 let markerInstance: LMarker | null = null
-let leafletModule: (typeof import('leaflet'))['default'] | null = null
+let leafletModule: typeof import('leaflet') | null = null
 
 const activeMeta = computed(() => systemMeta.find(item => item.key === activeSystem.value) ?? systemMeta[2])
 const lastSourceMeta = computed(() => systemMeta.find(item => item.key === state.lastSource) ?? systemMeta[2])
@@ -170,6 +170,20 @@ async function applyCoordinate(source: CoordSystem, coordinate: AnyCoordinate, s
   state.current = buildCoordinateSet(source, coordinate)
   syncForms()
   await updateMap(shouldCenterMap)
+}
+
+const debounceTimers = new Map<CoordSystem, ReturnType<typeof setTimeout>>()
+
+function debouncedUpdateFromInputs(system: CoordSystem) {
+  const existing = debounceTimers.get(system)
+  if (existing !== undefined) clearTimeout(existing)
+  debounceTimers.set(
+    system,
+    setTimeout(() => {
+      debounceTimers.delete(system)
+      updateFromInputs(system)
+    }, 400),
+  )
 }
 
 function updateFromInputs(system: CoordSystem) {
@@ -239,7 +253,7 @@ async function ensureMap() {
   if (!state.isOnline || !mapContainerRef.value) return
 
   if (!leafletModule) {
-    leafletModule = (await import('leaflet')).default
+    leafletModule = await import('leaflet')
     await import('leaflet/dist/leaflet.css')
   }
 
@@ -391,7 +405,7 @@ onUnmounted(() => {
                     v-model="state.forms[item.key].primary"
                     :placeholder="item.primaryPlaceholder"
                     @focus="activeSystem = item.key"
-                    @input="updateFromInputs(item.key)"
+                    @input="debouncedUpdateFromInputs(item.key)"
                   />
                 </div>
                 <div>
@@ -400,7 +414,7 @@ onUnmounted(() => {
                     v-model="state.forms[item.key].secondary"
                     :placeholder="item.secondaryPlaceholder"
                     @focus="activeSystem = item.key"
-                    @input="updateFromInputs(item.key)"
+                    @input="debouncedUpdateFromInputs(item.key)"
                   />
                 </div>
               </div>
