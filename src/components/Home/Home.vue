@@ -21,6 +21,15 @@ const isExternal = (path: string) => {
   return /^(http|https):\/\//.test(path)
 }
 
+const isTrustedDomain = (url: string) => {
+  try {
+    const hostname = new URL(url).hostname
+    return hostname === 'nianchen.top' || hostname.endsWith('.nianchen.top')
+  } catch {
+    return false
+  }
+}
+
 // 外部工具跳转确认浮层
 const activeConfirmUrl = ref<string | null>(null)
 let confirmTimer: ReturnType<typeof setTimeout> | null = null
@@ -35,6 +44,10 @@ const clearConfirmTimer = () => {
 
 const showExternalConfirm = (url: string, event: MouseEvent) => {
   event.stopPropagation()
+  if (isTrustedDomain(url)) {
+    window.open(url, '_blank')
+    return
+  }
   clearConfirmTimer()
   activeConfirmUrl.value = url
   confirmTimer = setTimeout(() => {
