@@ -541,7 +541,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '传图取色',
-          logo: 'Eyedropper',
+          logo: 'EyeDropper',
           desc: '上传图片后点击任意像素即可取色，同时显示 HEX、RGB、HSL 三种颜色格式',
           url: '/imagecolorpicker/',
           cateId: 5,
