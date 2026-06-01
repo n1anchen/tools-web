@@ -126,8 +126,12 @@ const handleNeverShow = () => {
 </template>
 
 <style>
-.privacy-notice-dialog .el-dialog {
+.privacy-notice-dialog {
   border-radius: 1rem;
-  overflow: hidden;
+}
+
+.privacy-notice-dialog .el-dialog__body {
+  max-height: calc(90vh - 160px);
+  overflow-y: auto;
 }
 </style>
