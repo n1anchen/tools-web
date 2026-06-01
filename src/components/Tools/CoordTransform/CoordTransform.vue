@@ -9,7 +9,6 @@ import {
   buildCoordinateSet,
   formatCoordinateValue,
   fromCoordinatePair,
-  isMercatorSystem,
   toCoordinatePair,
   validateCoordinate,
   type AnyCoordinate,
@@ -152,6 +151,7 @@ function getFormattedPair(system: CoordSystem, coordinate: AnyCoordinate) {
 function syncForms() {
   if (!state.current) return
   systemMeta.forEach((system) => {
+    if (system.key === state.lastSource) return
     const pair = getFormattedPair(system.key, state.current![system.key])
     state.forms[system.key].primary = pair.primary
     state.forms[system.key].secondary = pair.secondary
@@ -170,20 +170,6 @@ async function applyCoordinate(source: CoordSystem, coordinate: AnyCoordinate, s
   state.current = buildCoordinateSet(source, coordinate)
   syncForms()
   await updateMap(shouldCenterMap)
-}
-
-const debounceTimers = new Map<CoordSystem, ReturnType<typeof setTimeout>>()
-
-function debouncedUpdateFromInputs(system: CoordSystem) {
-  const existing = debounceTimers.get(system)
-  if (existing !== undefined) clearTimeout(existing)
-  debounceTimers.set(
-    system,
-    setTimeout(() => {
-      debounceTimers.delete(system)
-      updateFromInputs(system)
-    }, 400),
-  )
 }
 
 function updateFromInputs(system: CoordSystem) {
@@ -405,7 +391,7 @@ onUnmounted(() => {
                     v-model="state.forms[item.key].primary"
                     :placeholder="item.primaryPlaceholder"
                     @focus="activeSystem = item.key"
-                    @input="debouncedUpdateFromInputs(item.key)"
+                    @input="updateFromInputs(item.key)"
                   />
                 </div>
                 <div>
@@ -414,7 +400,7 @@ onUnmounted(() => {
                     v-model="state.forms[item.key].secondary"
                     :placeholder="item.secondaryPlaceholder"
                     @focus="activeSystem = item.key"
-                    @input="debouncedUpdateFromInputs(item.key)"
+                    @input="updateFromInputs(item.key)"
                   />
                 </div>
               </div>
