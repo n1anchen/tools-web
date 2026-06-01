@@ -66,6 +66,9 @@ const loadAceEditor = async () => {
     case 'json':
       await import('ace-builds/src-noconflict/mode-json')
       break
+    case 'sql':
+      await import('ace-builds/src-noconflict/mode-sql')
+      break
   }
   
   // 加载主题

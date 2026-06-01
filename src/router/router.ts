@@ -673,6 +673,126 @@ export const constantRoute = [
       description: '快速计算 IP 段、子网掩码、网络地址、广播地址及可用主机数，支持 IP 进制转换与子网掩码换算',
     }
   },
+  {
+    path: '/base64',
+    component: () => import('@/components/Tools/Base64/Base64.vue'),
+    name: 'base64',
+    meta: {
+      title: 'Base64 加解密',
+      keywords: 'Base64,编码,解码,加密,解密,在线工具',
+      description: '在线 Base64 编码与解码工具，支持 Unicode 文字，一键复制结果',
+    }
+  },
+  {
+    path: '/hashcalculator',
+    component: () => import('@/components/Tools/HashCalculator/HashCalculator.vue'),
+    name: 'hashcalculator',
+    meta: {
+      title: '哈希计算器',
+      keywords: '哈希,MD5,SHA1,SHA256,SHA512,HMAC,散列,摘要',
+      description: '在线哈希值计算工具，支持 MD5、SHA-1、SHA-256、SHA-512 及 HMAC 系列算法',
+    }
+  },
+  {
+    path: '/sqlformat',
+    component: () => import('@/components/Tools/SqlFormat/SqlFormat.vue'),
+    name: 'sqlformat',
+    meta: {
+      title: 'SQL 格式化',
+      keywords: 'SQL,格式化,美化,压缩,MySQL,PostgreSQL,SQLite,T-SQL',
+      description: '在线 SQL 格式化与压缩工具，支持 MySQL、PostgreSQL、SQLite、T-SQL 等多种方言',
+    }
+  },
+  {
+    path: '/storageconverter',
+    component: () => import('@/components/Tools/StorageConverter/StorageConverter.vue'),
+    name: 'storageconverter',
+    meta: {
+      title: '存储单位换算',
+      keywords: '存储,单位换算,bit,字节,KB,MB,GB,TB,PB,EB',
+      description: '在线数据存储单位换算工具，支持 bit、B、KB、MB、GB、TB、PB、EB 互转',
+    }
+  },
+  {
+    path: '/textreplace',
+    component: () => import('@/components/Tools/TextReplace/TextReplace.vue'),
+    name: 'textreplace',
+    meta: {
+      title: '文本替换',
+      keywords: '文本,替换,查找,正则,批量替换',
+      description: '在线文本查找替换工具，支持普通文本和正则表达式，实时预览替换结果',
+    }
+  },
+  {
+    path: '/wordfrequency',
+    component: () => import('@/components/Tools/WordFrequency/WordFrequency.vue'),
+    name: 'wordfrequency',
+    meta: {
+      title: '词频统计',
+      keywords: '词频,统计,文本分析,关键词,词频分析',
+      description: '在线词频统计工具，分析文本中各词出现频率，适合关键词提取和文本分析',
+    }
+  },
+  {
+    path: '/imagecolorpicker',
+    component: () => import('@/components/Tools/ImageColorPicker/ImageColorPicker.vue'),
+    name: 'imagecolorpicker',
+    meta: {
+      title: '传图取色',
+      keywords: '取色,颜色提取,图片颜色,HEX,RGB,HSL,滴管',
+      description: '上传图片后点击任意像素即可取色，同时显示 HEX、RGB、HSL 三种颜色格式',
+    }
+  },
+  {
+    path: '/imagewatermark',
+    component: () => import('@/components/Tools/ImageWatermark/ImageWatermark.vue'),
+    name: 'imagewatermark',
+    meta: {
+      title: '图片水印',
+      keywords: '水印,图片,文字水印,加水印,在线工具',
+      description: '在线为图片添加文字水印，支持自定义位置、字号、颜色、透明度，本地处理保护隐私',
+    }
+  },
+  {
+    path: '/wordcloud',
+    component: () => import('@/components/Tools/WordCloud/WordCloud.vue'),
+    name: 'wordcloud',
+    meta: {
+      title: '词云图',
+      keywords: '词云,词频,可视化,文字云,ECharts',
+      description: '在线词云生成工具，自动统计词频并生成美观的词云图，支持多种形状和配色',
+    }
+  },
+  {
+    path: '/reactiontest',
+    component: () => import('@/components/Tools/ReactionTest/ReactionTest.vue'),
+    name: 'reactiontest',
+    meta: {
+      title: '反应速度测试',
+      keywords: '反应速度,测试,游戏,反应时间,手速',
+      description: '趣味反应速度测试，屏幕变绿立即点击，记录反应时间并统计最佳成绩',
+    }
+  },
+  {
+    path: '/m3u8player',
+    component: () => import('@/components/Tools/M3U8Player/M3U8Player.vue'),
+    name: 'm3u8player',
+    meta: {
+      title: 'M3U8 播放器',
+      keywords: 'M3U8,HLS,直播,视频播放,在线播放器',
+      description: '在线 M3U8/HLS 视频流播放器，基于 hls.js 实现，支持直播和点播',
+    }
+  },
+  {
+    path: '/emoji',
+    component: () => import('@/components/Tools/Emoji/Emoji.vue'),
+    name: 'emoji',
+    meta: {
+      title: 'Emoji 大全',
+      keywords: 'Emoji,表情,符号,大全,复制',
+      description: '完整的 Emoji 表情大全，按分类浏览，支持搜索，点击一键复制',
+    }
+  },
   //其他路由
   {
     path: '/404',

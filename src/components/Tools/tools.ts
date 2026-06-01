@@ -105,6 +105,15 @@ export function getToolsCate() {
           cateId: 1,
           cate: '在线编辑'
         },
+        {
+          id: 1,
+          title: 'SQL 格式化',
+          logo: 'Database',
+          desc: '在线 SQL 格式化与压缩工具，支持 MySQL、PostgreSQL、SQLite、T-SQL 等多种方言',
+          url: '/sqlformat/',
+          cateId: 1,
+          cate: '在线编辑',
+        },
       ]
     },
     {
@@ -154,6 +163,24 @@ export function getToolsCate() {
           logo: 'Language',
           desc: '将日语平假名/片假名转换为罗马音，支持一键复制',
           url: '/romaji/',
+          cateId: 2,
+          cate: '文本处理',
+        },
+        {
+          id: 1,
+          title: '文本替换',
+          logo: 'Search',
+          desc: '在线文本查找替换工具，支持普通文本和正则表达式，实时预览替换结果',
+          url: '/textreplace/',
+          cateId: 2,
+          cate: '文本处理',
+        },
+        {
+          id: 1,
+          title: '词频统计',
+          logo: 'SortAmountDown',
+          desc: '在线词频统计工具，分析文本中各词出现频率，适合关键词提取和文本分析',
+          url: '/wordfrequency/',
           cateId: 2,
           cate: '文本处理',
         },
@@ -316,7 +343,25 @@ export function getToolsCate() {
           url: '/ipcalc/',
           cateId: 3,
           cate: '开发运维'
-        }
+        },
+        {
+          id: 1,
+          title: 'Base64 编解码',
+          logo: 'Lock',
+          desc: '在线 Base64 编码与解码工具，支持 Unicode 文字，一键复制结果',
+          url: '/base64/',
+          cateId: 3,
+          cate: '开发运维',
+        },
+        {
+          id: 1,
+          title: '哈希计算器',
+          logo: 'Key',
+          desc: '在线哈希值计算工具，支持 MD5、SHA-1、SHA-256、SHA-512 及 HMAC 系列算法',
+          url: '/hashcalculator/',
+          cateId: 3,
+          cate: '开发运维',
+        },
       ]
     },
     {
@@ -405,6 +450,15 @@ export function getToolsCate() {
           cateId: 4,
           cate: '单位换算'
         },
+        {
+          id: 1,
+          title: '存储单位换算',
+          logo: 'Hdd',
+          desc: '在线数据存储单位换算工具，支持 bit、B、KB、MB、GB、TB、PB、EB 互转',
+          url: '/storageconverter/',
+          cateId: 4,
+          cate: '单位换算',
+        },
       ]
     },
     {
@@ -484,6 +538,24 @@ export function getToolsCate() {
           cateId: 5,
           cate: '图片处理',
         },
+        {
+          id: 1,
+          title: '传图取色',
+          logo: 'Eyedropper',
+          desc: '上传图片后点击任意像素即可取色，同时显示 HEX、RGB、HSL 三种颜色格式',
+          url: '/imagecolorpicker/',
+          cateId: 5,
+          cate: '图片处理',
+        },
+        {
+          id: 1,
+          title: '图片水印',
+          logo: 'Stamp',
+          desc: '在线为图片添加文字水印，支持自定义位置、字号、颜色、透明度，本地处理保护隐私',
+          url: '/imagewatermark/',
+          cateId: 5,
+          cate: '图片处理',
+        },
       ]
     },
     {
@@ -542,6 +614,15 @@ export function getToolsCate() {
           logo: 'CommentDots',
           desc: '多种趣味编码语言互转：佛曰、如是我闻等，任意框修改即时同步转换',
           url: '/riddleman/',
+          cateId: 6,
+          cate: '趣味工具',
+        },
+        {
+          id: 1,
+          title: '反应速度测试',
+          logo: 'Bolt',
+          desc: '趣味反应速度测试，屏幕变绿立即点击，记录反应时间并统计最佳成绩',
+          url: '/reactiontest/',
           cateId: 6,
           cate: '趣味工具',
         }
@@ -676,6 +757,15 @@ export function getToolsCate() {
           url: '/calendar/',
           cateId: 8,
           cate: '数据图表',
+        },
+        {
+          id: 1,
+          title: '词云图',
+          logo: 'Cloud',
+          desc: '在线词云生成工具，自动统计词频并生成美观的词云图，支持多种形状和配色',
+          url: '/wordcloud/',
+          cateId: 8,
+          cate: '数据图表',
         }
       ]
     },
@@ -753,6 +843,24 @@ export function getToolsCate() {
           url: '/morse/',
           cateId: 7,
           cate: '其他工具'
+        },
+        {
+          id: 1,
+          title: 'M3U8 播放器',
+          logo: 'Play',
+          desc: '在线 M3U8/HLS 视频流播放器，基于 hls.js 实现，支持直播和点播',
+          url: '/m3u8player/',
+          cateId: 7,
+          cate: '其他工具',
+        },
+        {
+          id: 1,
+          title: 'Emoji 大全',
+          logo: 'Smile',
+          desc: '完整的 Emoji 表情大全，按分类浏览，支持搜索，点击一键复制',
+          url: '/emoji/',
+          cateId: 7,
+          cate: '其他工具',
         }
       ]
     }
