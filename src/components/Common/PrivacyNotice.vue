@@ -68,7 +68,7 @@ const handleNeverShow = () => {
         </span>
         <div class="min-w-0">
           <p class="font-semibold text-blue-700 dark:text-blue-300 mb-0.5">数据完全本地处理</p>
-          <p class="text-slate-600 dark:text-slate-400">本项目为<strong class="text-slate-700 dark:text-slate-300">纯前端应用</strong>，所有操作均在浏览器本地完成，数据不会上传至任何服务器。工具中所提及的"上传"，实际含义是将文件<strong class="text-slate-700 dark:text-slate-300">加载到浏览器内存</strong>处理，不涉及任何网络传输。</p>
+          <p class="text-slate-600 dark:text-slate-400">本项目为<strong class="text-slate-700 dark:text-slate-300">纯前端应用</strong>，所有操作（除“短链接解析”使用了云函数）均在浏览器本地完成，数据不会上传至任何服务器。工具中所提及的"上传"，实际含义是将文件<strong class="text-slate-700 dark:text-slate-300">加载到浏览器内存</strong>处理，不涉及任何网络传输。</p>
         </div>
       </div>
 
