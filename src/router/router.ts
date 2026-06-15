@@ -614,6 +614,16 @@ export const constantRoute = [
     }
   },
   {
+    path: '/japaneselyrics',
+    component: () => import('@/components/Tools/JapaneseLyrics/JapaneseLyrics.vue'),
+    name: 'japaneselyrics',
+    meta: {
+      title: '日语歌词学习工具',
+      keywords: '日语歌词,歌词学习,LRC歌词,日语罗马音,日语助词,日语活用,双语歌词',
+      description: '输入日语歌词或 LRC 歌词，自动展示时间轴、日语分词标注、罗马音歌词和双语翻译，辅助日语听歌学习',
+    }
+  },
+  {
     path: '/memecaption',
     component: () => import('@/components/Tools/MemeCaption/MemeCaption.vue'),
     name: 'memecaption',

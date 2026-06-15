@@ -177,6 +177,15 @@ export function getToolsCate() {
         },
         {
           id: 1,
+          title: '日语歌词学习工具',
+          logo: 'Music',
+          desc: '输入日语歌词或 LRC，自动展示时间轴、罗马音、双语翻译，并用颜色标注助词、活用语尾和片假名词',
+          url: '/japaneselyrics/',
+          cateId: 2,
+          cate: '文本处理',
+        },
+        {
+          id: 1,
           title: '文本替换',
           logo: 'Search',
           desc: '在线文本查找替换工具，支持普通文本和正则表达式，实时预览替换结果',
