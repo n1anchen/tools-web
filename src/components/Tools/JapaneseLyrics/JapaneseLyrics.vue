@@ -53,12 +53,17 @@ interface StatItem {
 }
 
 const title = '日语歌词学习工具'
+const LYRIC_FONT_SIZE_STORAGE_KEY = 'japaneseLyricsFontSize'
+const DEFAULT_LYRIC_FONT_SIZE = 16
+const MIN_LYRIC_FONT_SIZE = 14
+const MAX_LYRIC_FONT_SIZE = 32
 const sourceText = ref('')
 const urlInput = ref('')
 const fileInput = ref<HTMLInputElement | null>(null)
 const loadingUrl = ref(false)
 const preciseReading = ref(localStorage.getItem('japaneseLyricsPreciseReading') === 'true')
 const cacheDictionary = ref(readCacheDictionaryPreference())
+const lyricFontSize = ref(readLyricFontSize())
 const analyzingPrecise = ref(false)
 const cacheBusy = ref(false)
 const analyzerError = ref('')
@@ -236,6 +241,9 @@ const katakanaStats = computed(() => topStats('katakana'))
 
 const canFetchUrl = computed(() => isHttpUrl(urlInput.value.trim()))
 const canCopy = computed(() => hasLyrics.value)
+const lyricReadingFontSize = computed(() => Math.max(10, Math.round(lyricFontSize.value * 0.62)))
+const lyricRomajiFontSize = computed(() => Math.max(11, Math.round(lyricFontSize.value * 0.68)))
+const lyricTokenMinWidth = computed(() => Math.max(40, Math.round(lyricFontSize.value * 2.5)))
 
 watch([lyricLines, preciseReading], () => {
   refreshPreciseAnalysis()
@@ -243,6 +251,10 @@ watch([lyricLines, preciseReading], () => {
 
 watch(preciseReading, (value) => {
   localStorage.setItem('japaneseLyricsPreciseReading', String(value))
+})
+
+watch(lyricFontSize, (value) => {
+  localStorage.setItem(LYRIC_FONT_SIZE_STORAGE_KEY, String(clampLyricFontSize(value)))
 })
 
 watch(cacheDictionary, async (value) => {
@@ -272,6 +284,16 @@ function readCacheDictionaryPreference() {
 
   return localStorage.getItem('japaneseLyricsCacheDictionary') === 'true'
     || localStorage.getItem('japaneseRomajiCacheDictionary') === 'true'
+}
+
+function readLyricFontSize() {
+  const value = Number(localStorage.getItem(LYRIC_FONT_SIZE_STORAGE_KEY))
+  if (!Number.isFinite(value)) return DEFAULT_LYRIC_FONT_SIZE
+  return clampLyricFontSize(value)
+}
+
+function clampLyricFontSize(value: number) {
+  return Math.min(MAX_LYRIC_FONT_SIZE, Math.max(MIN_LYRIC_FONT_SIZE, Math.round(value)))
 }
 
 function isHttpUrl(value: string) {
@@ -921,6 +943,23 @@ function copyResult() {
             </button>
           </div>
 
+          <div class="rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 p-3 space-y-2">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="text-sm font-medium text-slate-700 dark:text-slate-200">歌词字号</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400">调整分词歌词显示大小</div>
+              </div>
+              <span class="shrink-0 text-sm font-medium text-slate-700 dark:text-slate-200">{{ lyricFontSize }}px</span>
+            </div>
+            <el-slider
+              v-model="lyricFontSize"
+              :min="MIN_LYRIC_FONT_SIZE"
+              :max="MAX_LYRIC_FONT_SIZE"
+              :step="1"
+              :show-tooltip="false"
+            />
+          </div>
+
           <div class="rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 p-3 space-y-3">
             <div class="flex items-center justify-between gap-3">
               <div>
@@ -1055,16 +1094,26 @@ function copyResult() {
                 v-for="(token, tokenIndex) in line.tokens"
                 :key="`${token.text}-${tokenIndex}`"
                 :class="tokenClass(token)"
+                :style="{ minWidth: token.type === 'space' || token.type === 'punctuation' ? undefined : `${lyricTokenMinWidth}px` }"
                 :title="token.note"
               >
                 <template v-if="token.type !== 'space'">
-                  <span class="min-h-[12px] text-[10px] leading-none text-slate-500 dark:text-slate-400">
+                  <span
+                    class="min-h-[12px] leading-none text-slate-500 dark:text-slate-400"
+                    :style="{ fontSize: `${lyricReadingFontSize}px` }"
+                  >
                     {{ token.reading }}
                   </span>
-                  <span class="text-base font-medium leading-tight">
+                  <span
+                    class="font-medium leading-tight"
+                    :style="{ fontSize: `${lyricFontSize}px` }"
+                  >
                     {{ token.text }}
                   </span>
-                  <span class="min-h-[14px] text-[11px] leading-tight text-slate-500 dark:text-slate-400">
+                  <span
+                    class="min-h-[14px] leading-tight text-slate-500 dark:text-slate-400"
+                    :style="{ fontSize: `${lyricRomajiFontSize}px` }"
+                  >
                     {{ tokenRomaji(token, line.tokens[tokenIndex + 1]) }}
                   </span>
                 </template>
@@ -1073,7 +1122,10 @@ function copyResult() {
           </div>
 
           <div v-if="line.translation">
-            <div class="border-l-2 border-emerald-200 pl-3 text-sm leading-relaxed text-slate-700 dark:border-emerald-400/40 dark:text-slate-200">
+            <div
+              class="border-l-2 border-emerald-200 pl-3 leading-relaxed text-slate-700 dark:border-emerald-400/40 dark:text-slate-200"
+              :style="{ fontSize: `${Math.max(13, lyricFontSize - 2)}px` }"
+            >
               {{ line.translation }}
             </div>
           </div>
