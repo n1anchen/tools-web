@@ -1,5 +1,6 @@
 import * as wanakana from 'wanakana'
 import type { KuromojiToken, Tokenizer } from 'kuromoji'
+import zlibGunzipUrl from 'zlibjs/bin/gunzip.min.js?url'
 
 export interface JapaneseAnalysisToken {
   surface: string
@@ -31,6 +32,7 @@ const DICT_FILES = [
 ]
 
 let tokenizerPromise: Promise<Tokenizer> | null = null
+let zlibScriptPromise: Promise<void> | null = null
 
 export function getKuromojiTokenizer() {
   if (!tokenizerPromise) {
@@ -44,16 +46,13 @@ async function buildBrowserTokenizer() {
   const [
     tokenizerModule,
     dictionaryLoaderModule,
-    zlibModule,
   ] = await Promise.all([
     import('kuromoji/src/Tokenizer'),
     import('kuromoji/src/loader/DictionaryLoader'),
-    import('zlibjs/bin/gunzip.min.js'),
   ])
 
   const TokenizerClass = getDefaultExport(tokenizerModule)
   const DictionaryLoaderClass = getDefaultExport(dictionaryLoaderModule)
-  const zlib = getDefaultExport(zlibModule)
 
   class BrowserDictionaryLoader extends DictionaryLoaderClass {
     constructor(dicPath: string) {
@@ -66,8 +65,8 @@ async function buildBrowserTokenizer() {
           if (!response.ok) throw new Error(response.statusText || `HTTP ${response.status}`)
           return response.arrayBuffer()
         })
-        .then(arrayBuffer => {
-          callback(null, gunzipIfNeeded(arrayBuffer, zlib))
+        .then(async arrayBuffer => {
+          callback(null, await gunzipIfNeeded(arrayBuffer))
         })
         .catch(error => callback(error, null))
     }
@@ -183,15 +182,57 @@ function isPunctuation(token: JapaneseAnalysisToken) {
   return token.pos === '記号' || /^[、。！？!?…・「」『』（）()[\]♪,.]+$/.test(token.surface)
 }
 
-function gunzipIfNeeded(arrayBuffer: ArrayBuffer, zlib: any) {
+async function gunzipIfNeeded(arrayBuffer: ArrayBuffer) {
   const bytes = new Uint8Array(arrayBuffer)
 
   if (bytes[0] !== 0x1f || bytes[1] !== 0x8b) {
     return arrayBuffer
   }
 
-  const gunzip = new zlib.Zlib.Gunzip(bytes)
-  return gunzip.decompress().buffer
+  const DecompressionStreamClass = (globalThis as any).DecompressionStream
+
+  if (DecompressionStreamClass) {
+    const stream = new Blob([bytes])
+      .stream()
+      .pipeThrough(new DecompressionStreamClass('gzip'))
+    return new Response(stream).arrayBuffer()
+  }
+
+  const zlib = await loadZlibGunzip()
+  const gunzip = new zlib.Gunzip(bytes)
+  const decompressed = gunzip.decompress()
+  return decompressed.buffer.slice(
+    decompressed.byteOffset,
+    decompressed.byteOffset + decompressed.byteLength,
+  )
+}
+
+async function loadZlibGunzip() {
+  const existing = (globalThis as any).Zlib
+  if (existing?.Gunzip) return existing
+
+  if (!zlibScriptPromise) {
+    zlibScriptPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = zlibGunzipUrl
+      script.async = true
+      script.onload = () => resolve()
+      script.onerror = () => {
+        zlibScriptPromise = null
+        reject(new Error('zlibjs gunzip 加载失败'))
+      }
+      document.head.appendChild(script)
+    })
+  }
+
+  await zlibScriptPromise
+
+  const zlib = (globalThis as any).Zlib
+  if (!zlib?.Gunzip) {
+    throw new Error('zlibjs gunzip 初始化失败')
+  }
+
+  return zlib
 }
 
 function getDefaultExport<T>(module: T): any {
