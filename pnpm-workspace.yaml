@@ -1,2 +1,12 @@
+allowBuilds:
+  '@parcel/watcher': true
+  canvas: true
+  core-js: true
+  es5-ext: true
+  esbuild: true
+  less: true
+  v-code-diff: true
+  vue-demi: true
+  x-data-spreadsheet: true
 onlyBuiltDependencies:
   - esbuild

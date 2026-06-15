@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { onMounted, computed, nextTick, ref, onBeforeUnmount } from 'vue';
-import { ArrowRight } from '@element-plus/icons-vue'
+import { ArrowRight, Setting } from '@element-plus/icons-vue'
 import { StarRegular } from '@vicons/fa'
 import { Icon } from '@vicons/utils'
 import ToolIcon from '@/components/Common/ToolIcon.vue'
 import BackToTop from '@/components/Common/BackToTop.vue'
+import ResourceManagerDialog from '@/components/Home/ResourceManagerDialog.vue'
 import { useToolsStore } from '@/store/modules/tools'
+import { ensureDefaultManagedResourceCaches } from '@/utils/resourceManager'
 // import { ElMessage } from 'element-plus'
 import { useRoute, onBeforeRouteLeave } from "vue-router"
 //store
 const toolsStore = useToolsStore()
 const route = useRoute()
+const resourceManagerVisible = ref(false)
 
 // 计算所有工具的总数
 const totalToolsCount = computed(() => {
@@ -103,6 +106,7 @@ onBeforeRouteLeave(() => {
 
 onMounted(() => {
   document.addEventListener('click', handleOutsideClick)
+  ensureDefaultManagedResourceCaches().catch(() => {})
   // getToolsCate()
   if (route.query && route.query.value) {
     // 底部导航跳转过来的则定位到响应位置
@@ -127,11 +131,23 @@ onMounted(() => {
 <template>
   <div class="md:mr-6 c-xs:mr-0">
     <!-- 工具总数统计 -->
-    <div class="mt-6 mb-2 flex items-center gap-2">
-      <span class="text-sm text-slate-500 dark:text-slate-400">本站目前共有</span>
-      <span class="px-2 py-0.5 rounded-full text-sm font-semibold bg-blue-50 text-blue-600 border border-blue-200
-                   dark:bg-blue-900/50 dark:text-blue-400 dark:border-blue-800">{{ totalToolsCount }}</span>
-      <span class="text-sm text-slate-500 dark:text-slate-400">个工具</span>
+    <div class="mt-6 mb-2 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="text-sm text-slate-500 dark:text-slate-400">本站目前共有</span>
+        <span class="px-2 py-0.5 rounded-full text-sm font-semibold bg-blue-50 text-blue-600 border border-blue-200
+                     dark:bg-blue-900/50 dark:text-blue-400 dark:border-blue-800">{{ totalToolsCount }}</span>
+        <span class="text-sm text-slate-500 dark:text-slate-400">个工具</span>
+      </div>
+      <el-button
+        size="small"
+        :icon="Setting"
+        class="!h-9 !rounded-full !border-blue-200 !bg-blue-600 !px-4 !text-white !shadow-md !shadow-blue-200/70
+               hover:!border-blue-500 hover:!bg-blue-500 hover:!shadow-lg hover:!shadow-blue-200/80
+               dark:!border-blue-500/50 dark:!bg-blue-500 dark:!shadow-blue-950/50 dark:hover:!bg-blue-400"
+        @click="resourceManagerVisible = true"
+      >
+        资源管理
+      </el-button>
     </div>
     <!-- list -->
     <!-- 收藏工具分组 -->
@@ -336,6 +352,7 @@ onMounted(() => {
 
     <!-- 返回顶部 -->
     <BackToTop :right="20" :bottom="60" />
+    <ResourceManagerDialog v-model="resourceManagerVisible" />
   </div>
 </template>
 

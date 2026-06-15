@@ -1,0 +1,199 @@
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import { ElMessage } from 'element-plus'
+import { Delete, Download, Refresh } from '@element-plus/icons-vue'
+import {
+  MANAGED_RESOURCE_GROUPS,
+  cacheManagedResourceGroup,
+  clearManagedResourceGroup,
+  formatResourceBytes,
+  getManagedResourceStatuses,
+  type ManagedResourceId,
+  type ManagedResourceStatus,
+} from '@/utils/resourceManager'
+
+const visible = defineModel<boolean>({ default: false })
+
+const loading = ref(false)
+const busyId = ref<ManagedResourceId | null>(null)
+const statuses = ref<Partial<Record<ManagedResourceId, ManagedResourceStatus>>>({})
+
+const resourceRows = computed(() => {
+  return MANAGED_RESOURCE_GROUPS.map(group => ({
+    group,
+    status: statuses.value[group.id],
+  }))
+})
+
+watch(visible, value => {
+  if (value) refreshStatuses()
+})
+
+const refreshStatuses = async () => {
+  loading.value = true
+  try {
+    statuses.value = await getManagedResourceStatuses()
+  } catch {
+    ElMessage.error('资源缓存状态读取失败')
+  } finally {
+    loading.value = false
+  }
+}
+
+const toggleResource = async (id: ManagedResourceId, enabled: boolean) => {
+  const group = MANAGED_RESOURCE_GROUPS.find(item => item.id === id)
+  if (!group) return
+
+  busyId.value = id
+  try {
+    if (enabled) {
+      await cacheManagedResourceGroup(group)
+      ElMessage.success(`${group.title}已缓存`)
+    } else {
+      await clearManagedResourceGroup(group)
+      ElMessage.success(`${group.title}缓存已清理`)
+    }
+    await refreshStatuses()
+  } catch {
+    ElMessage.error(enabled ? `${group.title}缓存失败` : `${group.title}清理失败`)
+  } finally {
+    busyId.value = null
+  }
+}
+
+const clearRuntimeCache = async (id: ManagedResourceId) => {
+  const group = MANAGED_RESOURCE_GROUPS.find(item => item.id === id)
+  if (!group) return
+
+  busyId.value = id
+  try {
+    await clearManagedResourceGroup(group)
+    ElMessage.success(`${group.title}已清理`)
+    await refreshStatuses()
+  } catch {
+    ElMessage.error(`${group.title}清理失败`)
+  } finally {
+    busyId.value = null
+  }
+}
+
+const progressPercentage = (status?: ManagedResourceStatus) => {
+  if (!status?.totalCount) return status?.cachedCount ? 100 : 0
+  return Math.round(status.cachedCount / status.totalCount * 100)
+}
+
+const statusText = (status?: ManagedResourceStatus) => {
+  if (!status?.supported) return '当前浏览器不支持'
+  if (status.complete) return '已完整缓存'
+  if (status.partial) return '部分缓存'
+  return '未缓存'
+}
+
+const statusTagType = (status?: ManagedResourceStatus) => {
+  if (!status?.supported) return 'info'
+  if (status.complete) return 'success'
+  if (status.partial) return 'warning'
+  return 'info'
+}
+</script>
+
+<template>
+  <el-dialog
+    v-model="visible"
+    title="资源管理"
+    width="720px"
+    class="resource-manager-dialog"
+  >
+    <div class="flex flex-col gap-3" v-loading="loading">
+      <div class="flex items-start justify-between gap-3 rounded-lg border border-blue-100 bg-blue-50 px-4 py-3
+                  dark:border-blue-900/70 dark:bg-blue-950/40">
+        <div>
+          <div class="text-sm font-semibold text-slate-800 dark:text-slate-100">离线资源缓存</div>
+          <div class="mt-1 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+            可将大型可选资源提前缓存到本机，也可以清理不常用资源释放空间。
+          </div>
+        </div>
+        <el-button size="small" :icon="Refresh" :loading="loading" @click="refreshStatuses">
+          刷新
+        </el-button>
+      </div>
+
+      <div
+        v-for="{ group, status } in resourceRows"
+        :key="group.id"
+        class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800"
+      >
+        <div class="flex flex-col gap-3 c-sm:flex-row c-sm:items-start c-sm:justify-between">
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100">{{ group.title }}</h3>
+              <el-tag size="small" :type="statusTagType(status)">{{ statusText(status) }}</el-tag>
+              <el-tag v-if="group.cacheable" size="small" type="info" effect="plain">
+                {{ formatResourceBytes(status?.estimatedBytes || group.estimatedBytes || 0) }}
+              </el-tag>
+            </div>
+            <p class="mt-1 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+              {{ group.description }}
+            </p>
+          </div>
+
+          <div class="flex shrink-0 items-center gap-2">
+            <template v-if="group.cacheable">
+              <span class="text-xs text-slate-500 dark:text-slate-400">离线缓存</span>
+              <el-switch
+                :model-value="Boolean(status?.enabled)"
+                :loading="busyId === group.id"
+                :disabled="!status?.supported"
+                @change="value => toggleResource(group.id, Boolean(value))"
+              />
+            </template>
+            <el-button
+              v-else
+              size="small"
+              :icon="Delete"
+              :loading="busyId === group.id"
+              :disabled="!status?.supported || !status?.cachedCount"
+              @click="clearRuntimeCache(group.id)"
+            >
+              清理
+            </el-button>
+          </div>
+        </div>
+
+        <div class="mt-3 flex flex-col gap-2 c-sm:flex-row c-sm:items-center">
+          <el-progress
+            class="min-w-0 flex-1"
+            :percentage="progressPercentage(status)"
+            :stroke-width="8"
+            :show-text="false"
+          />
+          <div class="flex items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 c-sm:w-48">
+            <span v-if="status?.totalCount">
+              {{ status.cachedCount }} / {{ status.totalCount }} 项
+            </span>
+            <span v-else>
+              {{ status?.cachedCount || 0 }} 项
+            </span>
+            <span>{{ formatResourceBytes(status?.estimatedCachedBytes || 0) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <template #footer>
+      <div class="flex justify-between gap-3">
+        <div class="hidden items-center gap-1 text-xs text-slate-400 dark:text-slate-500 c-sm:flex">
+          <el-icon><Download /></el-icon>
+          <span>运行时缓存可能会在访问相关工具后重新生成</span>
+        </div>
+        <el-button @click="visible = false">关闭</el-button>
+      </div>
+    </template>
+  </el-dialog>
+</template>
+
+<style scoped>
+:deep(.resource-manager-dialog) {
+  max-width: calc(100vw - 24px);
+}
+</style>

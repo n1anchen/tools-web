@@ -73,7 +73,7 @@ export default defineConfig(({command, mode}) => {
       VitePWA({
         registerType: 'prompt',
         // 预缓存 public 目录下的静态资源
-        includeAssets: ['favicon.ico', 'pwa-192x192.png', 'pwa-512x512.png', 'fonts/**/*', 'images/**/*'],
+        includeAssets: ['favicon.ico', 'pwa-192x192.png', 'pwa-512x512.png', 'images/**/*'],
         manifest: {
           name: '在线工具箱',
           short_name: '工具箱',
@@ -128,7 +128,10 @@ export default defineConfig(({command, mode}) => {
         },
         workbox: {
           // 预缓存所有构建产物（带 hash 的 JS/CSS/HTML）
-          globPatterns: ['**/*.{js,css,html}'],          // vendors chunk 约 2.1MB，调高上限至 5MB
+          globPatterns: ['**/*.{js,css,html}'],
+          // 可选大型资源改由首页「资源管理」入口按需缓存
+          globIgnores: ['ace/worker-*.js'],
+          // vendors chunk 约 2.1MB，调高上限至 5MB
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,          // index.html 使用 network-first，保证用户第一时间拿到最新页面入口
           navigateFallback: 'index.html',
           navigateFallbackDenylist: [/^\/api\//, /^\/robots\.txt$/, /^\/sitemap.*\.xml$/],
@@ -164,8 +167,8 @@ export default defineConfig(({command, mode}) => {
               }
             },
             {
-              // public 目录下的图片和字体文件（.flf ASCII 字体等）
-              urlPattern: /\.(png|jpg|jpeg|svg|gif|webp|flf|woff2?|ttf|eot)$/i,
+              // public 目录下的图片文件
+              urlPattern: /\.(png|jpg|jpeg|svg|gif|webp)$/i,
               handler: 'CacheFirst',
               options: {
                 cacheName: 'static-assets',
