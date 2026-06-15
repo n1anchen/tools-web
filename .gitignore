@@ -32,5 +32,6 @@ dist-ssr
 public/fonts/*
 !public/fonts/bluearchive/
 public/ace/
+public/dicts/
 
 ref/

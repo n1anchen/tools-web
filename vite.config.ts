@@ -153,6 +153,16 @@ export default defineConfig(({command, mode}) => {
               }
             },
             {
+              // kuromoji 日语词典：仅在进入日语工具并开启精准读音时访问
+              urlPattern: /^\/dicts\/kuromoji\/.*\.dat\.gz$/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'japanese-kuromoji-dict',
+                expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 },
+                cacheableResponse: { statuses: [0, 200] }
+              }
+            },
+            {
               // public 目录下的图片和字体文件（.flf ASCII 字体等）
               urlPattern: /\.(png|jpg|jpeg|svg|gif|webp|flf|woff2?|ttf|eot)$/i,
               handler: 'CacheFirst',
@@ -213,6 +223,10 @@ export default defineConfig(({command, mode}) => {
             'minifiers': [
               'csso',
               'terser'
+            ],
+            // 日语精准读音分析，进入相关功能并启用后才加载
+            'japanese-kuromoji': [
+              'kuromoji'
             ]
           }
         }

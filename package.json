@@ -10,7 +10,7 @@
     "build:check": "vue-tsc --noEmit --skipLibCheck && node --max_old_space_size=8192 node_modules/vite/bin/vite.js build --mode development",
     "preview": "vite preview",
     "copy-assets": "node scripts/copy-assets.js",
-    "clean-assets": "rimraf public/fonts public/ace",
+    "clean-assets": "rimraf public/fonts public/ace public/dicts",
     "postinstall": "npm run copy-assets"
   },
   "dependencies": {
@@ -43,6 +43,7 @@
     "html2canvas": "^1.4.1",
     "imorse": "^1.0.0",
     "jwt-decode": "^4.0.0",
+    "kuromoji": "0.1.2",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.23",
     "lzma": "^2.3.2",
@@ -62,7 +63,8 @@
     "wanakana": "^5.3.1",
     "workbox-window": "^7.4.0",
     "x-data-spreadsheet": "^1.1.9",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "zlibjs": "0.3.1"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",

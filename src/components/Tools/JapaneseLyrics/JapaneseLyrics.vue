@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import * as wanakana from 'wanakana'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
+import {
+  analyzeJapaneseText,
+  cacheKuromojiDictionary,
+  clearKuromojiDictionaryCache,
+  KUROMOJI_DICTIONARY_CACHE_PREFERENCE_KEY,
+  type JapaneseAnalysisToken,
+} from '@/utils/japaneseAnalyzer'
 
 type TokenType = 'word' | 'kana' | 'katakana' | 'okurigana' | 'particle' | 'ending' | 'auxiliary' | 'punctuation' | 'space' | 'latin'
 
@@ -12,6 +19,9 @@ interface LyricToken {
   text: string
   type: TokenType
   note: string
+  reading?: string
+  pos?: string
+  baseForm?: string
 }
 
 interface RawLine {
@@ -47,6 +57,12 @@ const sourceText = ref('')
 const urlInput = ref('')
 const fileInput = ref<HTMLInputElement | null>(null)
 const loadingUrl = ref(false)
+const preciseReading = ref(localStorage.getItem('japaneseLyricsPreciseReading') === 'true')
+const cacheDictionary = ref(readCacheDictionaryPreference())
+const analyzingPrecise = ref(false)
+const cacheBusy = ref(false)
+const analyzerError = ref('')
+const preciseLineMap = ref<Record<string, Pick<LyricLine, 'tokens' | 'romaji'>>>({})
 
 const sampleLyrics = `[00:12.40]君の知らない物語
 [00:18.20]いつもどおりのある日の事
@@ -202,10 +218,17 @@ const PROTECTED_PARTS = [
 
 const parsed = computed<ParseResult>(() => parseLyrics(sourceText.value))
 const lyricLines = computed(() => parsed.value.lines)
+const displayLines = computed(() => {
+  if (!preciseReading.value) return lyricLines.value
+  return lyricLines.value.map(line => {
+    const precise = preciseLineMap.value[line.id]
+    return precise ? { ...line, ...precise } : line
+  })
+})
 const hasLyrics = computed(() => lyricLines.value.length > 0)
-const japaneseLineCount = computed(() => lyricLines.value.filter(line => line.japanese).length)
-const translationLineCount = computed(() => lyricLines.value.filter(line => line.translation).length)
-const tokenCount = computed(() => lyricLines.value.reduce((sum, line) => sum + line.tokens.filter(token => token.type !== 'space' && token.type !== 'punctuation').length, 0))
+const japaneseLineCount = computed(() => displayLines.value.filter(line => line.japanese).length)
+const translationLineCount = computed(() => displayLines.value.filter(line => line.translation).length)
+const tokenCount = computed(() => displayLines.value.reduce((sum, line) => sum + line.tokens.filter(token => token.type !== 'space' && token.type !== 'punctuation').length, 0))
 
 const particleStats = computed(() => topStats('particle'))
 const endingStats = computed(() => topStats('ending'))
@@ -213,6 +236,43 @@ const katakanaStats = computed(() => topStats('katakana'))
 
 const canFetchUrl = computed(() => isHttpUrl(urlInput.value.trim()))
 const canCopy = computed(() => hasLyrics.value)
+
+watch([lyricLines, preciseReading], () => {
+  refreshPreciseAnalysis()
+}, { immediate: true })
+
+watch(preciseReading, (value) => {
+  localStorage.setItem('japaneseLyricsPreciseReading', String(value))
+})
+
+watch(cacheDictionary, async (value) => {
+  localStorage.setItem(KUROMOJI_DICTIONARY_CACHE_PREFERENCE_KEY, String(value))
+  localStorage.removeItem('japaneseLyricsCacheDictionary')
+  localStorage.removeItem('japaneseRomajiCacheDictionary')
+  cacheBusy.value = true
+  try {
+    if (value) {
+      await cacheKuromojiDictionary()
+      ElMessage.success('日语词典已加入离线缓存')
+    } else {
+      await clearKuromojiDictionaryCache()
+      ElMessage.success('日语词典缓存已清理')
+    }
+  } catch (error) {
+    ElMessage.error(value ? '词典缓存失败，请稍后重试' : '词典缓存清理失败')
+    cacheDictionary.value = !value
+  } finally {
+    cacheBusy.value = false
+  }
+})
+
+function readCacheDictionaryPreference() {
+  const sharedPreference = localStorage.getItem(KUROMOJI_DICTIONARY_CACHE_PREFERENCE_KEY)
+  if (sharedPreference !== null) return sharedPreference === 'true'
+
+  return localStorage.getItem('japaneseLyricsCacheDictionary') === 'true'
+    || localStorage.getItem('japaneseRomajiCacheDictionary') === 'true'
+}
 
 function isHttpUrl(value: string) {
   return /^https?:\/\/\S+$/i.test(value)
@@ -226,10 +286,6 @@ function isJapaneseLike(value: string) {
   return hasKana(value) || /[々〆〤]/.test(value)
 }
 
-function isCjk(value: string) {
-  return /[\u3400-\u9fff]/.test(value)
-}
-
 function isKanjiText(value: string) {
   return /^[\u3400-\u9fff々〆〤]+$/.test(value)
 }
@@ -240,6 +296,10 @@ function isHiraganaText(value: string) {
 
 function isKatakanaText(value: string) {
   return /^[\u30a0-\u30ffー]+$/.test(value)
+}
+
+function hasCjk(value: string) {
+  return /[\u3400-\u9fff々〆〤]/.test(value)
 }
 
 function parseTimeToMs(value: string) {
@@ -558,6 +618,17 @@ function toRomajiLine(tokens: LyricToken[]) {
       parts.push(' ')
     } else if (token.type === 'punctuation') {
       parts.push(token.text)
+    } else if (token.reading) {
+      const nextReading = nextToken ? readableKana(nextToken) : ''
+      if (token.reading.endsWith('っ') && nextReading) {
+        parts.push(wanakana.toRomaji(`${token.reading}${nextReading}`))
+        index += 1
+      } else if (nextToken?.type === 'ending' && nextToken.text === 'う') {
+        parts.push(wanakana.toRomaji(`${token.reading}う`))
+        index += 1
+      } else {
+        parts.push(wanakana.toRomaji(token.reading))
+      }
     } else if (token.text === 'っ' && nextToken && /[\u3040-\u30ff]/.test(nextToken.text)) {
       parts.push(wanakana.toRomaji(`${token.text}${nextToken.text}`))
       index += 1
@@ -572,6 +643,12 @@ function toRomajiLine(tokens: LyricToken[]) {
     .replace(/\s+([、。！？!?…・」』）),.])/g, '$1')
     .replace(/([「『（])\s+/g, '$1')
     .trim()
+}
+
+function readableKana(token: LyricToken) {
+  if (token.reading) return token.reading
+  if (/[\u3040-\u30ff]/.test(token.text)) return wanakana.toHiragana(token.text)
+  return ''
 }
 
 function tokenClass(token: LyricToken) {
@@ -590,7 +667,7 @@ function tokenClass(token: LyricToken) {
 
 function topStats(type: TokenType) {
   const map = new Map<string, number>()
-  for (const line of lyricLines.value) {
+  for (const line of displayLines.value) {
     for (const token of line.tokens) {
       if (token.type !== type) continue
       map.set(token.text, (map.get(token.text) || 0) + 1)
@@ -637,6 +714,81 @@ async function fetchUrlLyrics() {
   }
 }
 
+async function refreshPreciseAnalysis() {
+  const currentLines = lyricLines.value
+  const runId = currentLines.map(line => `${line.id}:${line.japanese}`).join('|')
+
+  if (!preciseReading.value) {
+    preciseLineMap.value = {}
+    analyzerError.value = ''
+    analyzingPrecise.value = false
+    return
+  }
+
+  const japaneseLines = currentLines.filter(line => line.japanese)
+  if (japaneseLines.length === 0) {
+    preciseLineMap.value = {}
+    analyzerError.value = ''
+    analyzingPrecise.value = false
+    return
+  }
+
+  analyzingPrecise.value = true
+  analyzerError.value = ''
+
+  try {
+    if (cacheDictionary.value) {
+      await cacheKuromojiDictionary()
+    }
+
+    const entries = await Promise.all(japaneseLines.map(async line => {
+      const analyzed = await analyzeJapaneseText(line.japanese)
+      const tokens = analyzed.map(toPreciseToken)
+      return [line.id, { tokens, romaji: toRomajiLine(tokens) }] as const
+    }))
+
+    const latestRunId = lyricLines.value.map(line => `${line.id}:${line.japanese}`).join('|')
+    if (runId !== latestRunId || !preciseReading.value) return
+
+    preciseLineMap.value = Object.fromEntries(entries)
+  } catch (error) {
+    analyzerError.value = '精准读音加载失败，请检查网络或稍后重试'
+    preciseLineMap.value = {}
+  } finally {
+    analyzingPrecise.value = false
+  }
+}
+
+function toPreciseToken(token: JapaneseAnalysisToken): LyricToken {
+  const type = preciseTokenType(token)
+  const details = [token.pos, token.posDetail, token.conjugatedForm].filter(Boolean).join(' / ')
+  const reading = hasCjk(token.surface) && token.reading ? token.reading : ''
+  return {
+    text: token.surface,
+    type,
+    reading,
+    pos: details,
+    baseForm: token.basicForm,
+    note: [
+      details || '形态素',
+      token.basicForm && token.basicForm !== token.surface ? `原形：${token.basicForm}` : '',
+      reading ? `读音：${reading}` : '',
+    ].filter(Boolean).join('\n'),
+  }
+}
+
+function preciseTokenType(token: JapaneseAnalysisToken): TokenType {
+  if (/^\s+$/.test(token.surface)) return 'space'
+  if (/^[、。！？!?…・「」『』（）()[\]♪,.]+$/.test(token.surface) || token.pos === '記号') return 'punctuation'
+  if (token.pos === '助詞') return 'particle'
+  if (token.pos === '助動詞') return 'ending'
+  if (token.pos === '接尾') return 'ending'
+  if (token.pos === '動詞' && token.conjugatedForm) return 'word'
+  if (isKatakanaText(token.surface)) return 'katakana'
+  if (isHiraganaText(token.surface)) return 'kana'
+  return hasCjk(token.surface) ? 'word' : 'latin'
+}
+
 function openFilePicker() {
   fileInput.value?.click()
 }
@@ -658,7 +810,7 @@ function handleFileChange(event: Event) {
 }
 
 function copyResult() {
-  const result = lyricLines.value
+  const result = displayLines.value
     .map(line => {
       const parts = [
         line.timeText ? `[${line.timeText}] ${line.japanese || line.translation}` : (line.japanese || line.translation),
@@ -741,6 +893,29 @@ function copyResult() {
             </button>
           </div>
 
+          <div class="rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 p-3 space-y-3">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="text-sm font-medium text-slate-700 dark:text-slate-200">精准汉字读音</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400">按需加载 kuromoji 词典</div>
+              </div>
+              <el-switch v-model="preciseReading" :loading="analyzingPrecise" />
+            </div>
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="text-sm font-medium text-slate-700 dark:text-slate-200">离线缓存词典</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400">与罗马音工具共用缓存</div>
+              </div>
+              <el-switch v-model="cacheDictionary" :loading="cacheBusy" />
+            </div>
+            <div v-if="analyzingPrecise" class="text-xs text-blue-600 dark:text-blue-300">
+              正在加载日语词典并分析读音...
+            </div>
+            <div v-if="analyzerError" class="text-xs text-rose-600 dark:text-rose-300">
+              {{ analyzerError }}
+            </div>
+          </div>
+
           <button
             :disabled="!canCopy"
             @click="copyResult"
@@ -768,6 +943,10 @@ function copyResult() {
             </div>
           </div>
         </aside>
+      </div>
+
+      <div class="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm text-blue-800 dark:border-blue-400/30 dark:bg-blue-400/10 dark:text-blue-100">
+        「离线缓存词典」会缓存同一份 kuromoji 词典，日语歌词学习工具和日语转罗马音工具共用；在任一工具中关闭该开关都会清理这份共享词典缓存。
       </div>
 
       <div
@@ -814,7 +993,7 @@ function copyResult() {
       class="mt-3 space-y-3"
     >
       <section
-        v-for="(line, index) in lyricLines"
+        v-for="(line, index) in displayLines"
         :key="line.id"
         class="rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden"
       >
@@ -851,7 +1030,13 @@ function copyResult() {
                 :class="tokenClass(token)"
                 :title="token.note"
               >
-                {{ token.type === 'space' ? '' : token.text }}
+                <ruby v-if="token.reading" class="leading-none">
+                  {{ token.text }}
+                  <rt class="text-[10px] text-slate-500 dark:text-slate-400">{{ token.reading }}</rt>
+                </ruby>
+                <template v-else>
+                  {{ token.type === 'space' ? '' : token.text }}
+                </template>
               </span>
             </div>
           </div>
@@ -877,7 +1062,7 @@ function copyResult() {
       <el-text>
         支持粘贴纯文本歌词、LRC 歌词、歌词 URL，或上传 .lrc / .txt 文件。LRC 的 [mm:ss.xx] 时间戳会显示为 0:12.40 这类更易读的时间标记。<br />
         若歌词是双语格式，工具会尝试识别「同时间戳的下一行翻译」「日语行后紧跟翻译行」以及「日语 / 翻译」这类同行写法。<br />
-        彩色标记会辅助拆分助词、常见动词/形容词活用语尾、补助表达和片假名词；罗马音基于假名转换，含汉字且未标假名的部分会保留原文。
+        彩色标记会辅助拆分助词、常见动词/形容词活用语尾、补助表达和片假名词；默认轻量模式只转换假名，开启「精准汉字读音」后会按需加载 kuromoji 词典，为汉字词显示假名读音并改进罗马音。
       </el-text>
     </ToolDetail>
   </div>

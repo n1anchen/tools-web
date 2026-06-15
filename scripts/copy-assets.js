@@ -93,6 +93,31 @@ async function copyAceWorkers() {
 }
 
 /**
+ * 复制 kuromoji 词典文件
+ */
+async function copyKuromojiDict() {
+  const sourceDir = path.join(projectRoot, 'node_modules/kuromoji/dict')
+  const targetDir = path.join(projectRoot, 'public/dicts/kuromoji')
+
+  if (!await fs.pathExists(sourceDir)) {
+    console.warn('⚠️  kuromoji 词典目录不存在，跳过复制')
+    return
+  }
+
+  await fs.ensureDir(targetDir)
+
+  console.log('📦 复制 kuromoji 日语词典文件...')
+
+  const dictFiles = (await fs.readdir(sourceDir)).filter(file => file.endsWith('.dat.gz'))
+  for (const dictFile of dictFiles) {
+    const sourcePath = path.join(sourceDir, dictFile)
+    const targetPath = path.join(targetDir, dictFile)
+    await fs.copy(sourcePath, targetPath)
+    console.log(`✓ 复制: ${dictFile}`)
+  }
+}
+
+/**
  * 主复制函数
  */
 export async function copyAssets() {
@@ -101,7 +126,8 @@ export async function copyAssets() {
     
     await Promise.all([
       copyFigletFonts(),
-      copyAceWorkers()
+      copyAceWorkers(),
+      copyKuromojiDict()
     ])
     
     console.log('✅ 所有资源文件复制完成!')

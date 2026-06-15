@@ -25,7 +25,8 @@ export function copyAssetsPlugin() {
       // 监听文件变化，如果 node_modules 中的源文件发生变化，重新复制
       server.watcher.add([
         'node_modules/figlet/fonts/*.flf',
-        'node_modules/ace-builds/src-noconflict/worker-*.js'
+        'node_modules/ace-builds/src-noconflict/worker-*.js',
+        'node_modules/kuromoji/dict/*.dat.gz'
       ])
     }
   }
