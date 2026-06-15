@@ -101,7 +101,8 @@ const statusTagType = (status?: ManagedResourceStatus) => {
   <el-dialog
     v-model="visible"
     title="资源管理"
-    width="720px"
+    width="min(720px, calc(100vw - 24px))"
+    top="4vh"
     class="resource-manager-dialog"
   >
     <div class="flex flex-col gap-3" v-loading="loading">
@@ -195,5 +196,42 @@ const statusTagType = (status?: ManagedResourceStatus) => {
 <style scoped>
 :deep(.resource-manager-dialog) {
   max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 8vh);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+:deep(.resource-manager-dialog .el-dialog__body) {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+}
+
+:deep(.resource-manager-dialog .el-dialog__footer) {
+  flex-shrink: 0;
+  padding: 12px 20px 16px;
+  border-top: 1px solid var(--el-border-color-lighter);
+}
+
+@media (max-width: 640px) {
+  :deep(.resource-manager-dialog) {
+    max-height: calc(100dvh - 24px);
+    margin-top: 12px !important;
+  }
+
+  :deep(.resource-manager-dialog .el-dialog__header) {
+    padding: 14px 16px 8px;
+  }
+
+  :deep(.resource-manager-dialog .el-dialog__body) {
+    padding: 12px;
+  }
+
+  :deep(.resource-manager-dialog .el-dialog__footer) {
+    padding: 10px 12px 12px;
+  }
 }
 </style>
