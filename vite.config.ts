@@ -31,6 +31,7 @@ export default defineConfig(({command, mode}) => {
   return {
     define: {  
       'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.platform': JSON.stringify('browser'),
       '__GIT_COMMIT__': JSON.stringify(gitCommitHash),
       '__GIT_COMMIT_TIME__': JSON.stringify(gitCommitTime)
     },
