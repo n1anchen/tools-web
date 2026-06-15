@@ -651,10 +651,38 @@ function readableKana(token: LyricToken) {
   return ''
 }
 
+function tokenRomaji(token: LyricToken, nextToken?: LyricToken) {
+  if (token.type === 'space' || token.type === 'punctuation') return ''
+  const kana = tokenKanaForRomaji(token)
+  if (!kana && hasCjk(token.text)) return ''
+
+  if (kana.endsWith('っ') && nextToken) {
+    const nextKana = tokenKanaForRomaji(nextToken)
+    if (nextKana) {
+      const merged = wanakana.toRomaji(`${kana}${nextKana}`)
+      const nextRomaji = wanakana.toRomaji(nextKana)
+      return nextRomaji && merged.endsWith(nextRomaji)
+        ? merged.slice(0, -nextRomaji.length)
+        : merged
+    }
+  }
+
+  return wanakana.toRomaji(kana || token.text)
+}
+
+function tokenKanaForRomaji(token: LyricToken) {
+  if (token.type === 'particle') {
+    if (token.text === 'は') return 'わ'
+    if (token.text === 'へ') return 'え'
+    if (token.text === 'を') return 'お'
+  }
+  return readableKana(token)
+}
+
 function tokenClass(token: LyricToken) {
-  const base = 'inline-flex items-center rounded-md border px-2 py-1 text-sm leading-tight transition-colors'
-  if (token.type === 'space') return 'inline-block w-1'
-  if (token.type === 'punctuation') return 'inline-flex items-center px-0.5 py-1 text-slate-500 dark:text-slate-300'
+  const base = 'inline-flex min-w-[2.5rem] flex-col items-center justify-center gap-0.5 rounded-md border px-2 py-1.5 text-center text-sm leading-tight transition-colors'
+  if (token.type === 'space') return 'inline-block w-2'
+  if (token.type === 'punctuation') return 'inline-flex min-w-[1rem] flex-col items-center justify-center px-0.5 py-1.5 text-slate-500 dark:text-slate-300'
   if (token.type === 'particle') return `${base} border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-200`
   if (token.type === 'ending') return `${base} border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-400/30 dark:bg-rose-400/10 dark:text-rose-200`
   if (token.type === 'auxiliary') return `${base} border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200`
@@ -1022,35 +1050,30 @@ function copyResult() {
 
         <div class="p-4 space-y-3">
           <div v-if="line.japanese">
-            <div class="mb-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">日语歌词</div>
-            <div class="flex flex-wrap items-center gap-1.5 text-base leading-8">
+            <div class="flex flex-wrap items-stretch gap-1.5 text-base leading-none select-all">
               <span
                 v-for="(token, tokenIndex) in line.tokens"
                 :key="`${token.text}-${tokenIndex}`"
                 :class="tokenClass(token)"
                 :title="token.note"
               >
-                <ruby v-if="token.reading" class="leading-none">
-                  {{ token.text }}
-                  <rt class="text-[10px] text-slate-500 dark:text-slate-400">{{ token.reading }}</rt>
-                </ruby>
-                <template v-else>
-                  {{ token.type === 'space' ? '' : token.text }}
+                <template v-if="token.type !== 'space'">
+                  <span class="min-h-[12px] text-[10px] leading-none text-slate-500 dark:text-slate-400">
+                    {{ token.reading }}
+                  </span>
+                  <span class="text-base font-medium leading-tight">
+                    {{ token.text }}
+                  </span>
+                  <span class="min-h-[14px] text-[11px] leading-tight text-slate-500 dark:text-slate-400">
+                    {{ tokenRomaji(token, line.tokens[tokenIndex + 1]) }}
+                  </span>
                 </template>
               </span>
             </div>
           </div>
 
-          <div v-if="line.romaji">
-            <div class="mb-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">罗马音歌词</div>
-            <div class="rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 px-3 py-2 text-sm leading-relaxed text-slate-700 dark:text-slate-200 select-all">
-              {{ line.romaji }}
-            </div>
-          </div>
-
           <div v-if="line.translation">
-            <div class="mb-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">翻译</div>
-            <div class="text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+            <div class="border-l-2 border-emerald-200 pl-3 text-sm leading-relaxed text-slate-700 dark:border-emerald-400/40 dark:text-slate-200">
               {{ line.translation }}
             </div>
           </div>
