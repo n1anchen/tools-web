@@ -168,6 +168,15 @@ export function getToolsCate() {
         },
         {
           id: 1,
+          title: '日语动词变化',
+          logo: 'Language',
+          desc: '输入日语动词任意常见形式，展示对应的辞书形、ます形、て形、可能形、被动形、使役形等活用',
+          url: '/japaneseverb/',
+          cateId: 2,
+          cate: '文本处理',
+        },
+        {
+          id: 1,
           title: '文本替换',
           logo: 'Search',
           desc: '在线文本查找替换工具，支持普通文本和正则表达式，实时预览替换结果',

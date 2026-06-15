@@ -604,6 +604,16 @@ export const constantRoute = [
     }
   },
   {
+    path: '/japaneseverb',
+    component: () => import('@/components/Tools/JapaneseVerb/JapaneseVerb.vue'),
+    name: 'japaneseverb',
+    meta: {
+      title: '日语动词变化',
+      keywords: '日语动词变化,日语动词活用,日语变形,五段动词,一段动词,サ变动词,カ变动词',
+      description: '输入日语动词的任意常见形式，自动推断辞书形并展示ます形、て形、た形、ない形、可能形、被动形、使役形等活用形式',
+    }
+  },
+  {
     path: '/memecaption',
     component: () => import('@/components/Tools/MemeCaption/MemeCaption.vue'),
     name: 'memecaption',
