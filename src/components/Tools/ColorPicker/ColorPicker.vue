@@ -39,7 +39,6 @@ const change = () => {
   lch.value = colorObj.toLchString()
   cmyk.value = colorObj.toCmykString()
   name.value = colorObj.toName({ closest: true }) //{ closest: true } 接近的
-  console.log(colorObj.toHslString())
 }
 
 //copy

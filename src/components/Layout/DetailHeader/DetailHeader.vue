@@ -4,7 +4,8 @@ import { Star, StarRegular } from '@vicons/fa'
 import { Icon } from '@vicons/utils'
 import ToolIcon from '@/components/Common/ToolIcon.vue'
 import ToastNotification from '@/components/Common/ToastNotification.vue'
-import { onMounted, reactive, computed, ref, nextTick } from 'vue';
+import { onMounted, onBeforeUnmount, reactive, computed, ref, nextTick } from 'vue';
+import { ElMessage } from 'element-plus'
 import { useRoute } from 'vue-router'
 import { useToolsStore } from '@/store/modules/tools'
 import {rtrim} from '@/utils/string'
@@ -59,7 +60,11 @@ const showToast = (type: 'add' | 'remove') => {
 const toggleFavorite = () => {
   if (toolInfo.value.url) {
     const wasFavorited = toolsStore.isFavorite(toolInfo.value.url)
-    toolsStore.toggleFavorite(toolInfo.value)
+    const persisted = toolsStore.toggleFavorite(toolInfo.value)
+    if (!persisted) {
+      ElMessage.error('收藏保存失败，请检查浏览器存储权限')
+      return
+    }
     showToast(wasFavorited ? 'remove' : 'add')
   }
 }
@@ -80,6 +85,10 @@ const getToolInfo = async () => {
 
 onMounted(() => {
   getToolInfo()
+})
+
+onBeforeUnmount(() => {
+  if (toastTimer.value) clearTimeout(toastTimer.value)
 })
 
 </script>

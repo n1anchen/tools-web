@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref,reactive } from 'vue'
+import { onBeforeUnmount, ref,reactive } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import { secureRandomInt } from '@/utils/random'
 // import { copy } from '@/utils/string'
 const info = reactive({
   title: "抛硬币",
@@ -9,14 +10,20 @@ const info = reactive({
 
 const genStatus = ref(false)
 const isHeads = ref(true)
+let resetTimer: ReturnType<typeof setTimeout> | null = null
 
 const throwCoin = () => {
   genStatus.value = true
-  isHeads.value = Math.random() < 0.5;
-  setTimeout(() => {
+  isHeads.value = secureRandomInt(0, 1) === 0
+  resetTimer = setTimeout(() => {
     genStatus.value = false;
-  }, 2500); // 休眠5秒，5000毫秒
+    resetTimer = null
+  }, 2500)
 }
+
+onBeforeUnmount(() => {
+  if (resetTimer) clearTimeout(resetTimer)
+})
 //copy
 // const copyRes = async (resStr: string) => {
 //   copy(resStr)
@@ -82,10 +89,10 @@ const throwCoin = () => {
 	left: 0;
 	bottom: 0;
 	right: 0;
-	background-image: url('/public/images/coin/dollar.png');
+	background-image: url('/images/coin/dollar.png');
 }
 .rotate-wrap .reverse{
-	background-image: url('/public/images/coin/xingxing.png');
+	background-image: url('/images/coin/xingxing.png');
 }
 
 .circle{

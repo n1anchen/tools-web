@@ -224,7 +224,6 @@ const parseCron = () => {
     let finalError = '无效的CRON表达式: ' + e;
     try {
       const chineseResult = humanizeCronInChinese(cronToParse.value);
-      console.log('chineseResult:', chineseResult);
       if (typeof chineseResult === 'string') {
         finalError = `${chineseResult.replace('undefined', '?')}\n${finalError}`;
       }

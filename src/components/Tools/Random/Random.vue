@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { onBeforeUnmount, reactive } from 'vue'
+import { ElMessage } from 'element-plus'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import { secureRandomInt } from '@/utils/random'
 // import { copy } from '@/utils/string'
 const info = reactive({
   title: "生成随机数",
@@ -11,18 +13,29 @@ const info = reactive({
   genStatus: false,
 })
 
+let genInterval: ReturnType<typeof setInterval> | null = null
+
 const random = () => {
+  if (info.startNum > info.endNum) {
+    ElMessage.warning('起始值不能大于结束值')
+    return
+  }
   info.genStatus = true
   let count = 0
-  const genInterval = setInterval(() => {
-      info.resNum = Math.floor(Math.random() * (info.endNum - info.startNum + 1)) + info.startNum; 
+  genInterval = setInterval(() => {
+      info.resNum = secureRandomInt(info.startNum, info.endNum)
       count++
       if (count > 10) {
-        clearTimeout(genInterval)
+        if (genInterval) clearInterval(genInterval)
+        genInterval = null
         info.genStatus = false
       }
   }, 50)
 }
+
+onBeforeUnmount(() => {
+  if (genInterval) clearInterval(genInterval)
+})
 
 //copy
 // const copyRes = async (resStr: string) => {

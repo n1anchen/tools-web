@@ -1,8 +1,6 @@
 import * as wanakana from 'wanakana'
 import type { KuromojiToken, Tokenizer } from 'kuromoji'
 import zlibGunzipUrl from 'zlibjs/bin/gunzip.min.js?url'
-import { KUROMOJI_DICTIONARY_CACHE_PREFERENCE_KEY } from '@/utils/resourceManager'
-
 export { KUROMOJI_DICTIONARY_CACHE_PREFERENCE_KEY } from '@/utils/resourceManager'
 
 export interface JapaneseAnalysisToken {

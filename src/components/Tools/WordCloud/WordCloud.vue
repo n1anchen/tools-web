@@ -9,6 +9,7 @@ import { ElMessage } from 'element-plus'
 const title = '词云图'
 const chartEl = ref<HTMLDivElement | null>(null)
 let chart: echarts.ECharts | null = null
+const resizeChart = () => chart?.resize()
 const inputText = ref('')
 const minLength = ref(2)
 const colorScheme = ref('blue')
@@ -70,11 +71,12 @@ const download = () => {
 
 onMounted(() => {
   if (chartEl.value) chart = echarts.init(chartEl.value)
-  window.addEventListener('resize', () => chart?.resize())
+  window.addEventListener('resize', resizeChart)
 })
 onBeforeUnmount(() => {
   chart?.dispose()
-  window.removeEventListener('resize', () => chart?.resize())
+  chart = null
+  window.removeEventListener('resize', resizeChart)
 })
 </script>
 

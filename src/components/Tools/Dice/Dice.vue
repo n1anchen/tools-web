@@ -15,19 +15,11 @@ const resetDiceKey = ref(0)
 
 const shake = async () => {
   genStatus.value = true
-  
-  let res = await new Promise((resolve) => {
-    for (let i = 0; i < diceNum.value; i++) {
-      diceRef.value[i].throwDice()
-    }
-    resolve(true)
-  })
-
-  //等待执行完成
-  setTimeout(() => {  
-    console.log(res)
+  try {
+    await Promise.all(diceRef.value.map((die: { throwDice: () => Promise<void> }) => die.throwDice()))
+  } finally {
     genStatus.value = false
-  }, 1200)
+  }
 }
 
 //重置骰子点数
@@ -46,7 +38,7 @@ const resetDice = () => {
       <div class="flex justify-center grow-[3]">
         <div class="flex flex-wrap h-96 items-center">  
           <!-- 骰子组件 -->
-          <DiceCore ref="diceRef" v-for="i in diceNum" :key="resetDiceKey" :class="[diceNum == 1 ? 'dice_full' : '', diceNum == 3 && i == 1 ? 'dice_full' : 'dice_default', diceNum == 5 && i == 3 ? 'dice_full' : 'dice_default']"/>
+          <DiceCore ref="diceRef" v-for="i in diceNum" :key="`${resetDiceKey}-${i}`" :class="[diceNum == 1 ? 'dice_full' : '', diceNum == 3 && i == 1 ? 'dice_full' : 'dice_default', diceNum == 5 && i == 3 ? 'dice_full' : 'dice_default']"/>
         </div>
       </div>
       <div class="">

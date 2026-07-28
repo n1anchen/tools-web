@@ -3,6 +3,7 @@ import { reactive } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
+import { ElMessage } from 'element-plus'
 
 const info = reactive({
   title: "URL编码/解码",
@@ -19,8 +20,12 @@ const toEncode = () => {
 
 //解码
 const toDecode = () => {
-  info.tranRes = ''
-  info.tranRes = decodeURIComponent(info.content)
+  try {
+    info.tranRes = decodeURIComponent(info.content)
+  } catch {
+    info.tranRes = ''
+    ElMessage.error('解码失败：输入包含无效的 URL 编码')
+  }
 }
 
 //clear

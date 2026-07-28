@@ -1,5 +1,6 @@
 import { ElMessage } from 'element-plus';
 import clipboard3 from 'vue-clipboard3'
+import { secureRandomInt } from '@/utils/random'
 
 /**
  * 转义特殊字符
@@ -22,7 +23,7 @@ export function transferred(str: string, reg: string = "`~!@#$^&*()=|{}':;',\\[\
  * @param resStr 文本内容
  * @returns 
  */
-export function copy(resStr: string) {
+export async function copy(resStr: string) {
   try {
     //check
     if (resStr == '') {
@@ -31,22 +32,24 @@ export function copy(resStr: string) {
         type: "warning",
         duration: 1500
       })
-      return
+      return false
     }
     //copy
     const {toClipboard} = clipboard3()
-    toClipboard(resStr)
+    await toClipboard(resStr)
     ElMessage({
       message: "复制成功",
       type: "success",
       duration: 1500
     })
-  } catch (error) {
+    return true
+  } catch {
     ElMessage({
       message: "复制失败",
       type: "error",
       duration: 1500
     })
+    return false
   }
 }
 
@@ -58,9 +61,10 @@ export function copy(resStr: string) {
  * @returns 
  */
 export function genRandomStrByChars(chars: string, length: number): string {
+  if (!chars.length || !Number.isInteger(length) || length < 1) return ''
   let password = '';  
   for (let i = 0; i < length; i++) {  
-    const randomIndex = Math.floor(Math.random() * chars.length);  
+    const randomIndex = secureRandomInt(0, chars.length - 1)
     password += chars[randomIndex];  
   }  
   return password;  
@@ -72,45 +76,58 @@ export function genRandomStrByChars(chars: string, length: number): string {
  * @returns 
  */
 export function numberToChinese(num: number): string {
-  // const units = ['', '拾', '佰', '仟', '万', '亿'];  
-  const units = ['', '拾', '佰', '仟', '万', '拾', '佰', '仟', '亿', '拾', '佰', '仟', '万'];  
-  const chars = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];  
-  let numStr = num.toString()
-  let len = numStr.length
-  if (len > 13) {
+  if (!Number.isSafeInteger(num) || num < 0 || num > 9_999_999_999_999) {
     ElMessage({
-      message: "金额太大无法转换",
+      message: "请输入不超过 13 位的非负整数",
       type: "error",
       duration: 1500
     })
     return ''
   }
-  let isZero = false;  
-  let zeroCount = 0;  
-  let chinese = ''
+  if (num === 0) return '零'
 
-  for (let i = 0; i < len; i++) {  
-    let n = parseInt(numStr[i]);  
-    if (n === 0) {  
-      isZero = true;  
-      zeroCount++;  
-    } else {  
-      if (isZero) {  
-        chinese += chars[0];  
-      }  
-      chinese += chars[n] + units[len - i - 1];  
-      isZero = false;  
-      zeroCount = 0;  
-    }  
-    // debugger
+  const digits = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
+  const smallUnits = ['', '拾', '佰', '仟']
+  const groupUnits = ['', '万', '亿', '万亿']
+
+  const convertGroup = (value: number) => {
+    let result = ''
+    let pendingZero = false
+
+    for (let position = 3; position >= 0; position -= 1) {
+      const divisor = 10 ** position
+      const digit = Math.floor(value / divisor) % 10
+      if (digit === 0) {
+        if (result) pendingZero = true
+        continue
+      }
+      if (pendingZero) result += digits[0]
+      result += digits[digit] + smallUnits[position]
+      pendingZero = false
+    }
+    return result
   }
 
+  const groups: number[] = []
+  let remaining = num
+  while (remaining > 0) {
+    groups.push(remaining % 10_000)
+    remaining = Math.floor(remaining / 10_000)
+  }
 
-  if (chinese.endsWith(chars[0])) {  
-    chinese = chinese.substring(0, chinese.length - 1);  
-  }  
-  
-  return chinese;  
+  let result = ''
+  let skippedGroup = false
+  for (let index = groups.length - 1; index >= 0; index -= 1) {
+    const group = groups[index]
+    if (group === 0) {
+      if (result) skippedGroup = true
+      continue
+    }
+    if (result && (skippedGroup || group < 1000)) result += digits[0]
+    result += convertGroup(group) + groupUnits[index]
+    skippedGroup = false
+  }
+  return result
 }
 
 //rtrim: 删除右侧指定字符， 默认删除空格

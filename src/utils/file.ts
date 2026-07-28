@@ -27,11 +27,15 @@ export function autoDown(url: string, filename: string) {
     const downloadLink = document.createElement('a');
     downloadLink.href = url;  
     downloadLink.target = '_blank';
+    downloadLink.rel = 'noopener noreferrer';
     downloadLink.download = filename; // 指定下载的文件名  
     // 将下载链接添加到 DOM 中并模拟点击下载  
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
+    if (url.startsWith('blob:')) {
+      setTimeout(() => URL.revokeObjectURL(url), 1000)
+    }
 }
 
 /**

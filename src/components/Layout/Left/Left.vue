@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // import { Tools } from '@element-plus/icons-vue'
 import { Management, InfoFilled } from '@element-plus/icons-vue'
-import { onMounted, ref, reactive, nextTick } from 'vue';
+import { onMounted, onBeforeUnmount, ref, reactive, nextTick } from 'vue';
 import { useToolsStore } from '@/store/modules/tools'
 import { useRouter, useRoute } from "vue-router"
 const router = useRouter()
@@ -22,6 +22,15 @@ const toolsStore = useToolsStore()
 const menuListRef = ref<HTMLElement | null>(null)
 const sliderStyle = ref({ top: '0px', height: '0px', opacity: '0' })
 let sliderInited = false
+let sliderTimer: ReturnType<typeof setTimeout> | null = null
+
+const scheduleSliderUpdate = () => {
+  if (sliderTimer) clearTimeout(sliderTimer)
+  sliderTimer = setTimeout(() => {
+    sliderTimer = null
+    updateSlider()
+  }, 300)
+}
 
 const updateSlider = () => {
   nextTick(() => {
@@ -66,7 +75,7 @@ const getToolCates = async () => {
 }
 
 const handleOpen = () => {
-  setTimeout(updateSlider, 300)
+  scheduleSliderUpdate()
 }
 
 const handleClose = () => {
@@ -74,7 +83,7 @@ const handleClose = () => {
   // Element Plus 在触发 close 事件时通常已经移除了 is-opened 类
   updateSlider()
   // 等待动画完成再次确认位置
-  setTimeout(updateSlider, 300)
+  scheduleSliderUpdate()
 }
 
 // 滚动到锚点，偏移 sticky header 高度
@@ -104,12 +113,16 @@ const gotoAnchor = (anchor: string, itemId: string) => {
 const gotoAbout = () => {
   defaultActive.value = 'about'
   updateSlider()
-  router.push('about')
+  router.push('/about')
 }
 
 onMounted(async () => {
   await getToolCates()
   updateSlider()
+})
+
+onBeforeUnmount(() => {
+  if (sliderTimer) clearTimeout(sliderTimer)
 })
 </script>
 

@@ -614,7 +614,7 @@ function openInAmap() {
   const lat = gpsInfo.gcjLat ?? gpsInfo.lat!
   const lon = gpsInfo.gcjLon ?? gpsInfo.lon!
   const url = `https://uri.amap.com/marker?position=${lon},${lat}&name=拍摄位置&coordinate=gaode`
-  window.open(url, '_blank')
+  window.open(url, '_blank', 'noopener,noreferrer')
 }
 
 // ──────────────────────────────────────────────

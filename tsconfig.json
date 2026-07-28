@@ -26,11 +26,11 @@
     "baseUrl": "./",  
     //路径映射，相对于baseUrl
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "qrcode-vue3": ["src/types/qrcode-vue3.d.ts"]
     },
     "allowJs": true,
-    "noImplicitAny": false,
+    "noImplicitAny": false
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.ts*", "src/**/*.vue"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

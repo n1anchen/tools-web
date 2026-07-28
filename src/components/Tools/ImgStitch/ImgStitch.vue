@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, watch, nextTick } from 'vue'
+import { onBeforeUnmount, ref, reactive, watch, nextTick } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { autoDown } from '@/utils/file'
@@ -94,6 +94,8 @@ function clearAll() {
   images.value.forEach(item => URL.revokeObjectURL(item.objectUrl))
   images.value = []
 }
+
+onBeforeUnmount(clearAll)
 
 // ── Canvas 绘制 ─────────────────────────────────────────────────────────────
 function drawPlaceholder() {

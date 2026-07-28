@@ -8,5 +8,17 @@ allowBuilds:
   v-code-diff: true
   vue-demi: true
   x-data-spreadsheet: true
+confirmModulesPurge: false
+ignoredOptionalDependencies:
+  - canvas
+  - jsdom
 onlyBuiltDependencies:
   - esbuild
+overrides:
+  form-data: ^4.0.6
+  minimist: ^1.2.8
+  node-fetch: ^2.7.0
+  picomatch: ^4.0.4
+  tmp: ^0.2.4
+patchedDependencies:
+  x-data-spreadsheet@1.1.9: patches/x-data-spreadsheet@1.1.9.patch

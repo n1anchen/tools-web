@@ -4,13 +4,20 @@ import { ElMessage } from 'element-plus'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
-import { removeAllParams } from '@/utils/url'
+import { removeTrackingParams } from '@/utils/url'
 
 const title = '短链接解析'
 
 // 云函数 API 地址（通过环境变量配置）
-const apiBase = import.meta.env.VITE_UNSHORTEN_API as string | undefined
-const isConfigured = computed(() => !!apiBase)
+const apiBase = (import.meta.env.VITE_UNSHORTEN_API as string | undefined)?.trim()
+const isConfigured = computed(() => {
+  if (!apiBase) return false
+  try {
+    return ['http:', 'https:'].includes(new URL(apiBase).protocol)
+  } catch {
+    return false
+  }
+})
 
 // 表单状态
 const inputUrl = ref('')
@@ -59,6 +66,15 @@ const showError = computed(() =>
   !!inputUrl.value && !isValidUrl.value && (inputError.value || isTouched.value)
 )
 
+const normalizeResultUrl = (value: unknown) => {
+  if (typeof value !== 'string') throw new Error('接口返回了无效链接')
+  const parsed = new URL(value)
+  if (!['http:', 'https:'].includes(parsed.protocol)) {
+    throw new Error('接口返回了不安全的链接')
+  }
+  return parsed.href
+}
+
 const resolve = async () => {
   if (!isValidUrl.value) return
 
@@ -72,16 +88,19 @@ const resolve = async () => {
       maxHops: String(maxHops.value),
     })
 
-    const resp = await fetch(`${apiBase}?${params.toString()}`)
+    const endpoint = new URL(apiBase!)
+    params.forEach((value, key) => endpoint.searchParams.set(key, value))
+    const resp = await fetch(endpoint)
     const data = await resp.json()
 
     if (!resp.ok) {
       throw new Error(data.error || `请求失败 (${resp.status})`)
     }
 
-    // 清理最终 URL 的所有参数
-    finalUrl.value = removeAllParams(data.finalUrl)
-    chain.value = data.chain || []
+    finalUrl.value = removeTrackingParams(normalizeResultUrl(data.finalUrl))
+    chain.value = Array.isArray(data.chain)
+      ? data.chain.map(normalizeResultUrl)
+      : []
     resultVisible.value = true
   } catch (err: any) {
     ElMessage.error(err.message || '解析失败，请稍后重试')
@@ -285,7 +304,7 @@ const pasteFromClipboard = async () => {
     <!-- 描述区 -->
     <ToolDetail title="描述">
       <el-text>
-        输入短链接，自动追踪 HTTP 重定向，获取完整的原始链接，并移除所有 URL 参数（包含跟踪参数）。
+        输入短链接，自动追踪 HTTP 重定向，获取完整的原始链接，并移除常见营销跟踪参数（保留链接正常访问所需的业务参数）。
         支持多跳追踪模式，可查看完整跳转链路。
       </el-text>
     </ToolDetail>

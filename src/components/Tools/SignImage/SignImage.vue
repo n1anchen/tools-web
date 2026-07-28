@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue"
+import { onBeforeUnmount, ref, reactive } from "vue"
 import  SignImageCore  from './SignImageCore.vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { UploadProps, UploadInstance, UploadRawFile, genFileId } from 'element-plus'
 import { autoDown } from '@/utils/file'
 import { Jh_getTimeStamp } from '@/utils/time'
+import { ElMessage } from 'element-plus'
+
+const MAX_IMAGE_BYTES = 20 * 1024 * 1024
+const ALLOWED_IMAGE_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/gif'])
 
 // 图片处理
 const info = reactive({
   title:"在线编辑图片",
   //图片地址
-  previewsImgUrl:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg", 
+  previewsImgUrl:"/pwa-512x512.png",
   //获取处理完的图片
   getNewImg:(url: string) => {
     //下载
@@ -25,11 +29,24 @@ const info = reactive({
 const upload = ref<UploadInstance>()
 //使用 SignImageCore ref
 const refSignImageCore = ref<any>()
+let uploadedImageUrl: string | null = null
 
 //上传文件发生变化
 const uploadChange: UploadProps['onChange'] = (file) => {
+  if (!file.raw || !ALLOWED_IMAGE_TYPES.has(file.raw.type)) {
+    ElMessage.error('仅支持 PNG、JPEG、WebP 或 GIF 图片')
+    upload.value?.clearFiles()
+    return
+  }
+  if (file.raw.size > MAX_IMAGE_BYTES) {
+    ElMessage.error('图片不能超过 20 MB')
+    upload.value?.clearFiles()
+    return
+  }
+  if (uploadedImageUrl) URL.revokeObjectURL(uploadedImageUrl)
   //UploadFile转换url
-  info.previewsImgUrl = URL.createObjectURL(file.raw!)
+  uploadedImageUrl = URL.createObjectURL(file.raw)
+  info.previewsImgUrl = uploadedImageUrl
   // 更新组件
   info.cKey++
 }
@@ -46,6 +63,10 @@ const uploadExceed: UploadProps['onExceed'] = (files) => {
 const saveImg = () => {
   refSignImageCore.value!.save()
 }
+
+onBeforeUnmount(() => {
+  if (uploadedImageUrl) URL.revokeObjectURL(uploadedImageUrl)
+})
 </script>
 
 <template>
@@ -61,7 +82,7 @@ const saveImg = () => {
           ref="upload"
           :limit="1"
           @exceed="uploadExceed"
-          accept="image/*"
+          accept="image/png,image/jpeg,image/webp,image/gif"
           @change="uploadChange"
           :auto-upload="false"
           :show-file-list="false"
@@ -94,4 +115,3 @@ const saveImg = () => {
 
 <style scoped>
 </style>
-

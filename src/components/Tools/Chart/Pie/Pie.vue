@@ -22,7 +22,6 @@ const chartDom = ref<HTMLElement|null>()
 const myChart = ref<echarts.ECharts>()
 const dataFileRef = ref()
 
-const setOptionName = ref(1)
 //缩放比例
 const sacleSize = ref(100)
 //画布宽高
@@ -144,10 +143,6 @@ const canvasHandle = (type) => {
       break;
   }
 }
-const handleChange = () => {
-
-}
-
 //数据
 const colunmData = ref(['Search Engine', 'Direct', 'Email', 'Union Ads', 'Video Ads'] as string[]);
 const valueData = ref([1048, 735, 580, 484, 300] as number[]);

@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-import { ElMessage } from 'element-plus'
 import { copy } from '@/utils/string'
 
 const title = '文本替换'

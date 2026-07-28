@@ -7,12 +7,16 @@ import ToastNotification from '@/components/Common/ToastNotification.vue'
 import PrivacyNotice from '@/components/Common/PrivacyNotice.vue'
 import { useComponentStore } from '@/store/modules/component'
 import { useSettingStore } from '@/store/modules/setting'
-import { provide, onMounted, ref } from 'vue'
+import { provide, onMounted, onUnmounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { InfoFilled, CircleCheckFilled, Download } from '@element-plus/icons-vue'
-import { watch } from 'vue'
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>
+}
 
 // PWA 更新提示
 const { needRefresh, offlineReady, updateServiceWorker } = useRegisterSW()
@@ -20,17 +24,24 @@ const handleUpdate = () => { updateServiceWorker(true); needRefresh.value = fals
 const dismissUpdate = () => { needRefresh.value = false }
 
 // 缓存就绪提示：8 秒后自动消失
+let offlineReadyTimer: ReturnType<typeof setTimeout> | null = null
 watch(offlineReady, (val) => {
-  if (val) setTimeout(() => { offlineReady.value = false }, 8000)
+  if (offlineReadyTimer) clearTimeout(offlineReadyTimer)
+  offlineReadyTimer = val
+    ? setTimeout(() => { offlineReady.value = false }, 8000)
+    : null
 })
 const dismissOfflineReady = () => { offlineReady.value = false }
 
 // PWA 安装提示
-const deferredPrompt = ref<any>(null)
-window.addEventListener('beforeinstallprompt', (e) => {
-  deferredPrompt.value = e
-})
-window.addEventListener('appinstalled', () => { deferredPrompt.value = null })
+const deferredPrompt = ref<BeforeInstallPromptEvent | null>(null)
+const handleBeforeInstallPrompt = (event: Event) => {
+  event.preventDefault()
+  deferredPrompt.value = event as BeforeInstallPromptEvent
+}
+const handleAppInstalled = () => { deferredPrompt.value = null }
+window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+window.addEventListener('appinstalled', handleAppInstalled)
 const installApp = async () => {
   if (!deferredPrompt.value) return
   deferredPrompt.value.prompt()
@@ -47,8 +58,8 @@ const router = useRouter()
 
 // 路由加载状态
 const routeLoading = ref(false)
-router.beforeEach(() => { routeLoading.value = true })
-router.afterEach(() => { routeLoading.value = false })
+const removeBeforeGuard = router.beforeEach(() => { routeLoading.value = true })
+const removeAfterGuard = router.afterEach(() => { routeLoading.value = false })
 
 // Theme toggle function with ripple animation
 const toggleTheme = (event: MouseEvent) => {
@@ -56,9 +67,8 @@ const toggleTheme = (event: MouseEvent) => {
 
   // Fallback for browsers that don't support View Transitions
   if (!document.startViewTransition) {
-    settingStore.isDark = !isDarkNow
+    settingStore.setDark(!isDarkNow)
     document.documentElement.classList.toggle('dark', !isDarkNow)
-    localStorage.setItem('isDark', JSON.stringify(!isDarkNow))
     return
   }
 
@@ -78,9 +88,8 @@ const toggleTheme = (event: MouseEvent) => {
   document.documentElement.classList.add('theme-switching')
 
   const transition = document.startViewTransition(() => {
-    settingStore.isDark = !isDarkNow
+    settingStore.setDark(!isDarkNow)
     document.documentElement.classList.toggle('dark', !isDarkNow)
-    localStorage.setItem('isDark', JSON.stringify(!isDarkNow))
   })
 
   transition.ready.then(() => {
@@ -118,6 +127,14 @@ onMounted(() => {
   } else {
     document.documentElement.classList.remove('dark')
   }
+})
+
+onUnmounted(() => {
+  if (offlineReadyTimer) clearTimeout(offlineReadyTimer)
+  window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+  window.removeEventListener('appinstalled', handleAppInstalled)
+  removeBeforeGuard()
+  removeAfterGuard()
 })
 </script>
 

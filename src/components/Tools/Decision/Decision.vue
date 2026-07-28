@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { reactive, onMounted,ref } from 'vue'
+import { reactive, onMounted, onBeforeUnmount, ref } from 'vue'
+import { ElMessage } from 'element-plus'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import { secureRandomInt } from '@/utils/random'
 // import { copy } from '@/utils/string'
 const info = reactive({
   title: "帮我决定",
@@ -13,6 +15,7 @@ const info = reactive({
 })
 
 const chooseStatus = ref(false)
+let chooseInterval: ReturnType<typeof setInterval> | null = null
 
 const changeCheckBox = (val: any) => {
   switch(val) {
@@ -34,15 +37,20 @@ const init = () => {
 
 //选择
 const choose = () => {
+  const scopeList = info.scope.split(',').map(item => item.trim()).filter(Boolean)
+  if (!scopeList.length) {
+    ElMessage.warning('请至少输入一个选项')
+    return
+  }
   chooseStatus.value = true
   let count = 0
-  let scopeList = info.scope.split(',')
-  const chooseInterval = setInterval(() => {
-      const randomNum = Math.floor(Math.random() * scopeList.length); 
+  chooseInterval = setInterval(() => {
+      const randomNum = secureRandomInt(0, scopeList.length - 1)
       info.randomVal = scopeList[randomNum]
       count++
       if (count > 10) {
-        clearTimeout(chooseInterval)
+        if (chooseInterval) clearInterval(chooseInterval)
+        chooseInterval = null
         chooseStatus.value = false
       }
   }, 50)
@@ -57,6 +65,10 @@ const clear = () => {
 
 onMounted(() => {
   init()
+})
+
+onBeforeUnmount(() => {
+  if (chooseInterval) clearInterval(chooseInterval)
 })
 </script>
 

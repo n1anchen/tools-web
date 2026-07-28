@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { Tools } from '@element-plus/icons-vue'
-import { reactive, onMounted } from 'vue';
+import { reactive } from 'vue';
 import { useToolsStore } from '@/store/modules/tools'
 const info = reactive({
-  feedbackUrl: import.meta.env.VITE_FEEDBACK_URL || 'javascript:void(0)',
   advShow: import.meta.env.VITE_ADV_SHOW || 'false',
   advList: [
     {
@@ -22,16 +21,13 @@ const toolsStore = useToolsStore()
 
 //点击走马灯
 const clickCarousel = (url: string) => {
-  let w = window.open('')
-  w?.document.write(`<!DOCTYPE html><html><body ><img src='${url}'/></body></html>`)
+  window.open(url, '_blank', 'noopener,noreferrer')
 }
 
 const isExternal = (path: string) => {
   return /^(http|https):\/\//.test(path)
 }
 
-onMounted(() => {
-})
 </script>
 
 <template>
@@ -57,6 +53,7 @@ onMounted(() => {
           :to="!isExternal(item.url) ? item.url : undefined"
           :href="isExternal(item.url) ? item.url : undefined"
           :target="isExternal(item.url) ? '_blank' : undefined"
+          :rel="isExternal(item.url) ? 'noopener noreferrer' : undefined"
           class="flex items-center hover:bg-gray-200 p-1 rounded" 
           v-for="(item, index) in toolsStore.recommends" 
           :key="index"

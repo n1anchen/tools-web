@@ -1,4 +1,13 @@
+.git
+.github
+.idea
+.vscode
 node_modules
 dist
-.env.development
-.env.production
+dist-ssr
+output
+ref
+*.log
+.DS_Store
+.env*
+!.env.example

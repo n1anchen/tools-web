@@ -8,10 +8,9 @@
  */
 
 import http from 'node:http'
+import { resolveRedirectChain, validatePublicHttpUrl } from './core.js'
 
 const PORT = 3100
-const MAX_HOPS_LIMIT = 10
-const HOP_TIMEOUT_MS = 5000
 
 const server = http.createServer(async (req, res) => {
   const origin = req.headers['origin'] || ''
@@ -27,6 +26,11 @@ const server = http.createServer(async (req, res) => {
     res.end()
     return
   }
+  if (req.method !== 'GET') {
+    res.writeHead(405)
+    res.end(JSON.stringify({ error: 'Method not allowed' }))
+    return
+  }
 
   const reqUrl = new URL(req.url, `http://localhost:${PORT}`)
   const targetUrl = reqUrl.searchParams.get('url')
@@ -38,73 +42,26 @@ const server = http.createServer(async (req, res) => {
   }
 
   try {
-    new URL(targetUrl)
-  } catch {
+    validatePublicHttpUrl(targetUrl)
+  } catch (error) {
     res.writeHead(400)
-    res.end(JSON.stringify({ error: 'Invalid URL' }))
+    res.end(JSON.stringify({ error: error.message || 'Invalid URL' }))
     return
   }
 
   const follow = reqUrl.searchParams.get('follow') === 'true'
   const maxHopsParam = parseInt(reqUrl.searchParams.get('maxHops') || '5', 10)
-  const maxHops = Math.min(isNaN(maxHopsParam) ? 5 : maxHopsParam, MAX_HOPS_LIMIT)
+  const maxHops = Number.isNaN(maxHopsParam) ? 5 : maxHopsParam
 
   try {
-    const chain = []
-    let currentUrl = targetUrl
-
-    if (follow) {
-      for (let i = 0; i < maxHops; i++) {
-        const next = await resolveOneHop(currentUrl)
-        chain.push(currentUrl)
-        if (!next || next === currentUrl) break
-        currentUrl = next
-      }
-      if (!chain.includes(currentUrl)) chain.push(currentUrl)
-    } else {
-      chain.push(currentUrl)
-      const next = await resolveOneHop(currentUrl)
-      if (next && next !== currentUrl) {
-        currentUrl = next
-        chain.push(currentUrl)
-      }
-    }
-
+    const result = await resolveRedirectChain(targetUrl, { follow, maxHops })
     res.writeHead(200)
-    res.end(JSON.stringify({ chain, finalUrl: currentUrl }))
+    res.end(JSON.stringify(result))
   } catch (err) {
     res.writeHead(502)
     res.end(JSON.stringify({ error: err.message || 'Failed to resolve URL' }))
   }
 })
-
-async function resolveOneHop(url) {
-  const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), HOP_TIMEOUT_MS)
-
-  try {
-    const resp = await fetch(url, {
-      method: 'HEAD',
-      redirect: 'manual',
-      signal: controller.signal,
-    })
-    clearTimeout(timer)
-
-    if (resp.status >= 300 && resp.status < 400) {
-      const location = resp.headers.get('location')
-      if (!location) return null
-      try {
-        return new URL(location, url).href
-      } catch {
-        return null
-      }
-    }
-    return null
-  } catch {
-    clearTimeout(timer)
-    return null
-  }
-}
 
 server.listen(PORT, () => {
   console.log(`[mock] ESA 边缘函数 mock 服务已启动: http://localhost:${PORT}`)

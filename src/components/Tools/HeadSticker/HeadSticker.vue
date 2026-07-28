@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
-import { fabric } from 'fabric'
+import {
+  Canvas,
+  Control,
+  FabricImage,
+  FabricObject,
+  util,
+  type Transform,
+} from 'fabric'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
@@ -52,7 +59,7 @@ function groupIconSrc(group: HeadGroup): string {
 
 // ── Canvas 相关 ─────────────────────────────────────────────
 const canvasEl = ref<HTMLCanvasElement | null>(null)
-let fc: fabric.Canvas | null = null
+let fc: Canvas | null = null
 
 // 删除图标 (内联 base64，避免外部依赖)
 const DELETE_ICON =
@@ -66,56 +73,59 @@ function renderCtrlIcon(iconSrc: string) {
   const img = new Image()
   img.src = iconSrc
   return function (
-    this: fabric.Control,
+    this: Control,
     ctx: CanvasRenderingContext2D,
     left: number,
     top: number,
     _: unknown,
-    fabricObject: fabric.Object
+    fabricObject: FabricObject
   ) {
-    const size = (this as any).cornerSize as number
+    const size = 24
     ctx.save()
     ctx.translate(left, top)
-    ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle ?? 0))
+    ctx.rotate(util.degreesToRadians(fabricObject.angle ?? 0))
     ctx.drawImage(img, -size / 2, -size / 2, size, size)
     ctx.restore()
   }
 }
 
-function setupCustomControls() {
-  // 删除控制点（右上角）
-  ;(fabric.Object.prototype as any).controls.deleteCtrl = new fabric.Control({
-    x: 0.5,
-    y: -0.5,
-    offsetX: 8,
-    offsetY: -8,
-    cursorStyle: 'pointer',
-    mouseUpHandler: (_: unknown, transform: fabric.Transform) => {
-      const obj = transform.target
-      obj.canvas?.remove(obj)
-      obj.canvas?.requestRenderAll()
-      return true
-    },
-    render: renderCtrlIcon(DELETE_ICON),
-    cornerSize: 24,
-  })
+let stickerControls: Record<string, Control> | null = null
 
-  // 翻转控制点（左上角）
-  ;(fabric.Object.prototype as any).controls.flipCtrl = new fabric.Control({
-    x: -0.5,
-    y: -0.5,
-    offsetX: -8,
-    offsetY: -8,
-    cursorStyle: 'pointer',
-    mouseUpHandler: (_: unknown, transform: fabric.Transform) => {
-      const obj = transform.target
-      obj.set('flipX', !obj.flipX)
-      obj.canvas?.requestRenderAll()
-      return true
-    },
-    render: renderCtrlIcon(FLIP_ICON),
-    cornerSize: 24,
-  })
+function setupCustomControls() {
+  if (stickerControls) return
+
+  // 删除控制点（右上角）
+  stickerControls = {
+    deleteCtrl: new Control({
+      x: 0.5,
+      y: -0.5,
+      offsetX: 8,
+      offsetY: -8,
+      cursorStyle: 'pointer',
+      mouseUpHandler: (_: unknown, transform: Transform) => {
+        const obj = transform.target
+        obj.canvas?.remove(obj)
+        obj.canvas?.requestRenderAll()
+        return true
+      },
+      render: renderCtrlIcon(DELETE_ICON),
+    }),
+    // 翻转控制点（左上角）
+    flipCtrl: new Control({
+      x: -0.5,
+      y: -0.5,
+      offsetX: -8,
+      offsetY: -8,
+      cursorStyle: 'pointer',
+      mouseUpHandler: (_: unknown, transform: Transform) => {
+        const obj = transform.target
+        obj.set('flipX', !obj.flipX)
+        obj.canvas?.requestRenderAll()
+        return true
+      },
+      render: renderCtrlIcon(FLIP_ICON),
+    }),
+  }
 }
 
 // ── 底图相关 ─────────────────────────────────────────────────
@@ -135,16 +145,17 @@ function handleFileUpload(event: Event) {
       const scale = img.width > maxW - 40 ? (maxW - 40) / img.width : 1
       const w = Math.round(img.width * scale)
       const h = Math.round(img.height * scale)
-      fc!.setWidth(w)
-      fc!.setHeight(h)
+      fc!.setDimensions({ width: w, height: h })
 
-      const fabImg = new fabric.Image(img, {
+      const fabImg = new FabricImage(img, {
         scaleX: scale,
         scaleY: scale,
         selectable: false,
         evented: false,
       })
-      fc!.setBackgroundImage(fabImg, fc!.renderAll.bind(fc!))
+      fabImg.canvas = fc!
+      fc!.backgroundImage = fabImg
+      fc!.requestRenderAll()
       hasBackground.value = true
     }
     img.src = reader.result as string
@@ -194,20 +205,17 @@ function onHeadClick(src: string) {
   addStickerAt(src, (fc.getWidth() ?? 200) / 2, (fc.getHeight() ?? 200) / 2)
 }
 
-function addStickerAt(src: string, x: number, y: number) {
-  fabric.Image.fromURL(
-    src,
-    (img) => {
-      img.set({
-        left: x - (img.width ?? 60) / 2,
-        top: y - (img.height ?? 60) / 2,
-      })
-      fc!.add(img)
-      fc!.setActiveObject(img)
-      fc!.requestRenderAll()
-    },
-    { crossOrigin: 'anonymous' }
-  )
+async function addStickerAt(src: string, x: number, y: number) {
+  const img = await FabricImage.fromURL(src, { crossOrigin: 'anonymous' })
+  if (!fc) return
+  img.set({
+    left: x - (img.width ?? 60) / 2,
+    top: y - (img.height ?? 60) / 2,
+  })
+  img.controls = { ...img.controls, ...stickerControls }
+  fc.add(img)
+  fc.setActiveObject(img)
+  fc.requestRenderAll()
 }
 
 // ── 下载 ─────────────────────────────────────────────────────
@@ -230,7 +238,7 @@ function clearStickers() {
 // ── 生命周期 ─────────────────────────────────────────────────
 onMounted(() => {
   setupCustomControls()
-  fc = new fabric.Canvas(canvasEl.value!, {
+  fc = new Canvas(canvasEl.value!, {
     selection: false,
     width: 600,
     height: 400,

@@ -136,7 +136,6 @@ function ichidanSeries(base: string) {
 function generateGodanRows(dictionary: string): FormRow[] {
   const stem = godanStem(dictionary)
   const ending = godanEnding(dictionary)
-  const row = GODAN_ROWS[ending]
   const te = isIkuException(dictionary)
     ? `${stem}って`
     : ending === 'く'

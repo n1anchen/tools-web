@@ -18,25 +18,33 @@ const clearRes = () => {
 //to zh
 //值转换中文
 const toZH = () => {
-  //clear
   clearRes()
-  let str = info.content
-  str = str.replace(/\\/g, "%");
-  // 转换中文
-  str = unescape(str);
-  info.tranRes = str
+  info.tranRes = info.content
+    .replace(/\\u\{([0-9a-f]{1,6})\}/gi, (_, hex: string) => {
+      const codePoint = Number.parseInt(hex, 16)
+      return codePoint <= 0x10ffff ? String.fromCodePoint(codePoint) : _
+    })
+    .replace(/\\u([0-9a-f]{4})/gi, (_, hex: string) =>
+      String.fromCharCode(Number.parseInt(hex, 16)),
+    )
 }
 //to unicode
 const toUnicode = () => {
   //clear
   clearRes()
-  //只转换中文
-  for (let i = 0; i < info.content.length; i++) {
-    if (/^[\u4E00-\u9FA5\uF900-\uFA2D]+$/.test(info.content[i])) {
-      let code = info.content.charCodeAt(i).toString(16)
-      info.tranRes += '\\u' + code
+  for (const char of info.content) {
+    const codePoint = char.codePointAt(0)!
+    if (codePoint > 0x7f) {
+      if (codePoint <= 0xffff) {
+        info.tranRes += `\\u${codePoint.toString(16).padStart(4, '0')}`
+      } else {
+        const offset = codePoint - 0x10000
+        const high = 0xd800 + (offset >> 10)
+        const low = 0xdc00 + (offset & 0x3ff)
+        info.tranRes += `\\u${high.toString(16)}\\u${low.toString(16)}`
+      }
     } else {
-      info.tranRes += info.content[i]
+      info.tranRes += char
     }
   }
 }

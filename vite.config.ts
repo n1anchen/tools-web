@@ -27,10 +27,19 @@ try {
 
 // https://vitejs.dev/config/
 export default defineConfig(({command, mode}) => {
-  let env = loadEnv(mode, process.cwd())
+  const env = loadEnv(mode, process.cwd())
+  const proxy = env.VITE_APP_BASE_API && env.VITE_SERVE
+    ? {
+        [env.VITE_APP_BASE_API]: {
+          target: env.VITE_SERVE,
+          changeOrigin: true,
+        },
+      }
+    : undefined
+
   return {
     define: {  
-      'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.NODE_ENV': JSON.stringify(command === 'serve' ? 'development' : 'production'),
       'process.platform': JSON.stringify('browser'),
       '__GIT_COMMIT__': JSON.stringify(gitCommitHash),
       '__GIT_COMMIT_TIME__': JSON.stringify(gitCommitTime)
@@ -73,7 +82,7 @@ export default defineConfig(({command, mode}) => {
       VitePWA({
         registerType: 'prompt',
         // 预缓存 public 目录下的静态资源
-        includeAssets: ['favicon.ico', 'pwa-192x192.png', 'pwa-512x512.png', 'images/**/*'],
+        includeAssets: ['favicon.ico', 'pwa-192x192.png', 'pwa-512x512.png'],
         manifest: {
           name: '在线工具箱',
           short_name: '工具箱',
@@ -132,7 +141,8 @@ export default defineConfig(({command, mode}) => {
           // 可选大型资源改由首页「资源管理」入口按需缓存
           globIgnores: ['ace/worker-*.js'],
           // vendors chunk 约 2.1MB，调高上限至 5MB
-          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,          // index.html 使用 network-first，保证用户第一时间拿到最新页面入口
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+          // index.html 使用 network-first，保证用户第一时间拿到最新页面入口
           navigateFallback: 'index.html',
           navigateFallbackDenylist: [/^\/api\//, /^\/robots\.txt$/, /^\/sitemap.*\.xml$/],
           runtimeCaching: [
@@ -220,9 +230,9 @@ export default defineConfig(({command, mode}) => {
               'element-plus',
               'vue',
               'vue-router',
-              'pinia',
-              'echarts'
+              'pinia'
             ],
+            'charts': ['echarts'],
             // 压缩相关库
             'minifiers': [
               'csso',
@@ -247,7 +257,7 @@ export default defineConfig(({command, mode}) => {
       holdUntilCrawlEnd: true
     },
     server: {
-      host: env.VITE_HOST,
+      host: env.VITE_HOST || '127.0.0.1',
       // Vite 5: 预热常用模块，dev server 就绪后后台编译，首次访问秒开
       warmup: {
         clientFiles: [
@@ -259,18 +269,7 @@ export default defineConfig(({command, mode}) => {
           './src/components/Tools/JsonTran/JsonTran.vue',
         ]
       },
-      proxy: {
-        [env.VITE_APP_BASE_API] : {
-          target: env.VITE_SERVE,
-          changeOrigin: true,
-          // bypass(req, res, options) {
-          //   const proxyUrl = new URL(options.rewrite(req.url) || '', (options.target) as string)?.href || ''
-          //   req.headers['x-req-proxyUrl'] = proxyUrl;
-          //   res.setHeader("x-res-proxyUrl", proxyUrl)
-          // }
-        },
-        
-      }
+      ...(proxy ? { proxy } : {}),
     }
   }
 })

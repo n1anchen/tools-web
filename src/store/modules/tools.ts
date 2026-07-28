@@ -1,6 +1,6 @@
 //创建tools相关的小工具
 import { defineStore } from 'pinia'
-import { getTools, getToolsCate } from '@/components/Tools/tools.ts'
+import { getTools, getToolsCate, toolsList } from '@/components/Tools/tools.ts'
 import type { ToolsReqData, ToolsInfo } from '@/components/Tools/tools.type.ts'
 
 const FAVORITES_KEY = 'tools_favorites'
@@ -8,9 +8,28 @@ const FAVORITES_KEY = 'tools_favorites'
 const loadFavorites = (): ToolsInfo[] => {
   try {
     const raw = localStorage.getItem(FAVORITES_KEY)
-    return raw ? JSON.parse(raw) : []
+    if (!raw) return []
+
+    const parsed: unknown = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return []
+
+    const favoriteUrls = new Set(
+      parsed
+        .map(item => typeof item === 'string' ? item : item?.url)
+        .filter((url): url is string => typeof url === 'string'),
+    )
+    return toolsList().filter(tool => favoriteUrls.has(tool.url))
   } catch {
     return []
+  }
+}
+
+const persistFavorites = (favorites: ToolsInfo[]) => {
+  try {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites.map(tool => tool.url)))
+    return true
+  } catch {
+    return false
   }
 }
 
@@ -22,7 +41,6 @@ export const useToolsStore = defineStore('tools', {
     cates: [] as any[],
     recommends: [] as ToolsInfo[],
     collect: loadFavorites() as ToolsInfo[],
-    collectIds: [] as number[],
   }),
   //getter
   getters: {
@@ -59,7 +77,15 @@ export const useToolsStore = defineStore('tools', {
       } else {
         this.collect.splice(idx, 1)
       }
-      localStorage.setItem(FAVORITES_KEY, JSON.stringify(this.collect))
+      if (!persistFavorites(this.collect)) {
+        if (idx === -1) {
+          this.collect.pop()
+        } else {
+          this.collect.splice(idx, 0, tool)
+        }
+        return false
+      }
+      return true
     },
   }
 })

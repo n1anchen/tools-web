@@ -1,5 +1,5 @@
 <script setup> 
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import 'tui-image-editor/dist/tui-image-editor.css'
 // import 'tui-color-picker/dist/tui-color-picker.css'
 import { base64ToBlod } from '@/utils/file'
@@ -180,6 +180,7 @@ const props = defineProps({
 });
 const emit = defineEmits()
 const instance = ref()
+const editorContainer = ref()
 
 onMounted(() => {
   nextTick(() => {
@@ -189,7 +190,8 @@ onMounted(() => {
 
 
 const init = ()=> {
-  instance.value = new ImageEditor(document.querySelector('#tui-image-editor'), {
+  if (!editorContainer.value) return
+  instance.value = new ImageEditor(editorContainer.value, {
     includeUI: {
       loadImage: {
         path: props.imgUrl,
@@ -204,10 +206,10 @@ const init = ()=> {
     cssMaxWidth: 400, // canvas 最大宽度
     cssMaxHeight: 500 // canvas 最大高度
   })
-  document.getElementsByClassName('tui-image-editor-main')[0].style.top = '0' // 调整图片显示位置
-  document.getElementsByClassName(
-    'tie-btn-reset tui-image-editor-item help'
-  )[0].style.display = 'none' // 隐藏顶部重置按钮
+  const main = editorContainer.value.querySelector('.tui-image-editor-main')
+  if (main) main.style.top = '0'
+  const reset = editorContainer.value.querySelector('.tie-btn-reset')
+  if (reset) reset.style.display = 'none'
 }
 
 // 保存图片，并上传
@@ -223,12 +225,16 @@ const save = () => {
 defineExpose({
   save
 })
+
+onBeforeUnmount(() => {
+  instance.value?.destroy?.()
+  instance.value = null
+})
 </script>
 
 <template>
- <div id="tui-image-editor"></div>
+ <div ref="editorContainer"></div>
 </template>
 
 <style lang="scss" scoped>
 </style>
-

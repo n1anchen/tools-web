@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive,ref,onMounted } from 'vue'
+import { reactive,ref } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { escape, unescape } from 'lodash';
@@ -27,10 +27,6 @@ const clear = () => {
   cleanContent.value = ''
 }
 
-
-onMounted(() => {
-})
-
 </script>
 
 <template>
@@ -39,7 +35,7 @@ onMounted(() => {
 
     <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="mb-6">
-        <el-input v-model="content" :rows="10" type="textarea" placeholder="请输入内容" @change="parser"></el-input>
+        <el-input v-model="content" :rows="10" type="textarea" placeholder="请输入内容"></el-input>
         <div class="mt-3">
           <el-button type="primary" @click="parser('toEntity')">HTML转实体</el-button>
           <el-button type="primary" @click="parser('toHTML')">实体转HTML</el-button>
@@ -49,7 +45,7 @@ onMounted(() => {
       </div>
 
       <div>
-        <el-input v-html="cleanContent" v-model="cleanContent" :rows="10" type="textarea" placeholder="" @change="parser"></el-input>
+        <el-input v-model="cleanContent" :rows="10" type="textarea" readonly></el-input>
       </div>
 
 

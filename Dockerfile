@@ -1,11 +1,15 @@
 # build stage
-FROM node:18-alpine3.19 AS build-stage
-# Set environment variables for non-interactive npm installs
-ENV NPM_CONFIG_LOGLEVEL warn
+FROM node:22-alpine AS build-stage
 WORKDIR /app
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY scripts ./scripts
+COPY patches ./patches
+RUN corepack enable \
+    && corepack prepare pnpm@10.33.3 --activate \
+    && pnpm install --frozen-lockfile
+
 COPY . .
-COPY .env.example .env.development
-RUN npm install -g pnpm && pnpm i
 RUN pnpm build
 
 # production stage

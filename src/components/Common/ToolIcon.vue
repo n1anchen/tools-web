@@ -1,7 +1,91 @@
 <script setup lang="ts">
 import { computed, type Component } from 'vue'
 import { Icon } from '@vicons/utils'
-import * as FaIcons from '@vicons/fa'
+import {
+  Bolt,
+  BoxOpen,
+  Bullseye,
+  CalendarAlt,
+  Camera,
+  ChartLine,
+  Clock,
+  Cloud,
+  CommentDots,
+  Css3,
+  Database,
+  Edit,
+  EyeDropper,
+  Filter,
+  Fire,
+  Font,
+  Hdd,
+  Html5,
+  Icons,
+  Image,
+  Images,
+  Js,
+  Key,
+  Language,
+  LayerGroup,
+  Link,
+  Lock,
+  MapMarkedAlt,
+  Markdown,
+  Music,
+  NetworkWired,
+  Play,
+  ProjectDiagram,
+  Search,
+  Smile,
+  SortAmountDown,
+  Stamp,
+  TachometerAlt,
+  ThLarge,
+  Tools,
+} from '@vicons/fa'
+
+const faIcons: Record<string, Component> = {
+  Bolt,
+  BoxOpen,
+  Bullseye,
+  CalendarAlt,
+  Camera,
+  ChartLine,
+  Clock,
+  Cloud,
+  CommentDots,
+  Css3,
+  Database,
+  Edit,
+  EyeDropper,
+  Filter,
+  Fire,
+  Font,
+  Hdd,
+  Html5,
+  Icons,
+  Image,
+  Images,
+  Js,
+  Key,
+  Language,
+  LayerGroup,
+  Link,
+  Lock,
+  MapMarkedAlt,
+  Markdown,
+  Music,
+  NetworkWired,
+  Play,
+  ProjectDiagram,
+  Search,
+  Smile,
+  SortAmountDown,
+  Stamp,
+  TachometerAlt,
+  ThLarge,
+  Tools,
+}
 
 const props = withDefaults(defineProps<{
   /** 图标：图片路径（以 / 或 http 开头）或 @vicons/fa 图标名（如 "Download"） */
@@ -28,7 +112,7 @@ const isIconName = computed(() => {
 /** 同步获取 @vicons/fa 图标组件，避免 defineAsyncComponent 导致的闪烁 */
 const faIconComponent = computed<Component | null>(() => {
   if (!isIconName.value) return null
-  const comp = (FaIcons as Record<string, Component>)[props.logo]
+  const comp = faIcons[props.logo]
   if (!comp) {
     console.warn(`[ToolIcon] @vicons/fa 中未找到图标: "${props.logo}"`)
     return null

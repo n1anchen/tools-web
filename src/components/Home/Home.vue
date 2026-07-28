@@ -48,7 +48,7 @@ const clearConfirmTimer = () => {
 const showExternalConfirm = (url: string, event: MouseEvent) => {
   event.stopPropagation()
   if (isTrustedDomain(url)) {
-    window.open(url, '_blank')
+    window.open(url, '_blank', 'noopener,noreferrer')
     return
   }
   clearConfirmTimer()
@@ -66,7 +66,7 @@ const cancelConfirm = () => {
 const goExternal = (url: string) => {
   clearConfirmTimer()
   activeConfirmUrl.value = null
-  window.open(url, '_blank')
+  window.open(url, '_blank', 'noopener,noreferrer')
 }
 
 const handleOutsideClick = () => {

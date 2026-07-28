@@ -24,31 +24,36 @@ const router = createRouter({
   },
 })
 // _form: ‘_’表示占位变量，可以不被使用
-router.beforeEach((_to, _from, next) => {
+router.beforeEach(() => {
   NProgress.start()
-  next()
+  return true
 })
+router.onError(() => NProgress.done())
 //路由后置卫士
 router.afterEach((to) => {
   NProgress.done()
   //填充mate元信息
-  const { title , keywords, description } = to.meta
-  //详情页标题
-  const detailTitle = title
+  const { title, keywords, description } = to.meta
+  const appTitle = import.meta.env.VITE_APP_TITLE || '在线工具箱'
+  const appDescription = import.meta.env.VITE_APP_DESC || '一个轻量的在线工具箱'
+  const detailTitle = typeof title === 'string' ? title : ''
+  const pageDescription = typeof description === 'string' ? description : appDescription
   //设置title
   if (detailTitle) {
-    document.title = detailTitle + ' - ' + import.meta.env.VITE_APP_TITLE
+    document.title = detailTitle + ' - ' + appTitle
   } else {
-    document.title = import.meta.env.VITE_APP_TITLE + ' - ' + import.meta.env.VITE_APP_DESC
+    document.title = appTitle + ' - ' + appDescription
   }
 
   //设置meta
-  document.querySelector('meta[name="keywords"]')?.setAttribute("content", `${keywords}`)
-  document.querySelector('meta[name="description"]')?.setAttribute("content", `${description}`)
+  if (typeof keywords === 'string') {
+    document.querySelector('meta[name="keywords"]')?.setAttribute('content', keywords)
+  }
+  document.querySelector('meta[name="description"]')?.setAttribute('content', pageDescription)
   //设置meta og
-  document.querySelector('meta[property="og:title"]')?.setAttribute("content", `${document.title}`)
-  document.querySelector('meta[property="og:site_name"]')?.setAttribute("content", `${document.title}`)
-  document.querySelector('meta[property="og:description"]')?.setAttribute("content", `${description}`)
+  document.querySelector('meta[property="og:title"]')?.setAttribute('content', document.title)
+  document.querySelector('meta[property="og:site_name"]')?.setAttribute('content', appTitle)
+  document.querySelector('meta[property="og:description"]')?.setAttribute('content', pageDescription)
   //动态更新 canonical 和 og:url
   const siteBase = 'https://tools.nianchen.top'
   const canonicalUrl = siteBase + to.path

@@ -19,7 +19,6 @@ const chartDom = ref<HTMLElement|null>()
 const myChart = ref<echarts.ECharts>()
 const dataFileRef = ref()
 
-const setOptionName = ref(1)
 //缩放比例
 const sacleSize = ref(100)
 //画布宽高
@@ -140,10 +139,6 @@ const canvasHandle = (type) => {
       break;
   }
 }
-const handleChange = () => {
-
-}
-
 //数据
 const colunmData = ref(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
 const valueData = ref(['23', '24', '18', '25', '27', '28', '25']);

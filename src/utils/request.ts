@@ -1,8 +1,12 @@
 import axios from "axios";
 import { ElMessage } from "element-plus";
+
+const baseApi = import.meta.env.VITE_APP_BASE_API || ''
+const server = import.meta.env.VITE_SERVE || ''
+
 //创建axios实例
-let request = axios.create({
-    baseURL: import.meta.env.VITE_IS_MOCK == 'true' ? import.meta.env.VITE_APP_BASE_API :  import.meta.env.VITE_SERVE + import.meta.env.VITE_APP_BASE_API,
+const request = axios.create({
+    baseURL: import.meta.env.VITE_IS_MOCK === 'true' ? baseApi : server + baseApi,
     timeout: 5000
 });  
 
@@ -12,20 +16,23 @@ request.interceptors.request.use(config => {
 });
 //响应拦截器
 request.interceptors.response.use((response) => {
-    if (response.data.code == 401) {
+    if (response.data?.code === 401) {
         //登录过期
-        localStorage.setItem('TOKEN', '')
+        try {
+            localStorage.removeItem('TOKEN')
+        } catch {
+            // Ignore storage failures; the page reload still clears app state.
+        }
         location.reload()
     }
     return response.data;
 }, (error) => {
-    if (error.code == 'ERR_CANCELED') {
-        //拒绝响应
-        return Promise.race([]);
+    if (axios.isCancel(error) || error.code === 'ERR_CANCELED') {
+        return Promise.reject(error);
     }
     //处理网络错误
-    let msg = '';
-    let status = error.response.status;
+    let msg = '网络请求失败';
+    const status = error.response?.status;
     switch (status) {
         case 401:
             //msg = "token过期";
@@ -41,7 +48,7 @@ request.interceptors.response.use((response) => {
             msg = "服务器出现问题";
             break;
         default:
-            msg = "无网络";
+            msg = error.code === 'ECONNABORTED' ? '请求超时' : '网络连接失败';
 
     }
     ElMessage({

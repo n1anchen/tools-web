@@ -14,7 +14,6 @@ const info = reactive({
   waitDate: Jh_timeStampToTime(Jh_getTimeStamp(), '{y}-{m}-{d} {h}:{i}:{s}'),  //待转换时间
   tranDate: '', //转换后时间
   chooseTranStampOption: '0',
-  chooseTranDateOption: '0',
   tranOptions: [
     {
       value: '0',
@@ -90,7 +89,7 @@ const copyRes = async () => {
         <el-text class="mr-2 w-12 dark:text-slate-200">现在</el-text>
         <el-button class="mr-3" link @click="copyRes()">{{ info.nowTime }} <el-icon class="ml-1 mr-1"><CopyDocument /></el-icon></el-button>
         <el-button v-if="info.isPlay" type="danger" link class="flex items-center" @click="isPlayChange()"><el-icon class="mr-1" size="16"><VideoPlay/></el-icon>停止</el-button>
-        <el-button v-else="info.isPlay" type="primary" link class="flex items-center" @click="isPlayChange()"><el-icon class="mr-1" size="16"><VideoPause /></el-icon>开始</el-button>
+        <el-button v-else type="primary" link class="flex items-center" @click="isPlayChange()"><el-icon class="mr-1" size="16"><VideoPause /></el-icon>开始</el-button>
       </div>
 
       <div class="flex flex-direction mt-4 justify-start">

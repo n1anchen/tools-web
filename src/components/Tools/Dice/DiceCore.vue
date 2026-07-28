@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
+import { secureRandomInt } from '@/utils/random'
 
 //定义emit
 const emit = defineEmits(['throwEnd'])
@@ -32,14 +33,9 @@ const diceImages = ref({
 //当前掷筛子掷到的点数（默认1点）
 const currentPoint = ref(1)
 //定时器
-const timer = ref(0)
+let timer: ReturnType<typeof setInterval> | null = null
 
-const getDicePoint = async () => {
-  let point = 1;
-  //从1~6随机一个数
-  point = Math.floor(Math.random() * 6 + 1);
-  return point;
-}
+const getDicePoint = () => secureRandomInt(1, 6)
 //掷骰子
 const throwDice = async () => {
   //如果当前骰子正在滚动则不能掷骰子
@@ -47,7 +43,7 @@ const throwDice = async () => {
     return
   }
   //从接口获取点数
-  currentPoint.value = await getDicePoint();
+  currentPoint.value = getDicePoint();
   //开启骰子动画
   await startAnimation();
   //动画完毕之后可以通知父组件当前掷到的点数
@@ -61,7 +57,7 @@ const startAnimation = async () => {
     //记录动画次数
     let num = 0;
     //每隔100毫秒来回切换一张“动”图形成掷骰子的动画
-    timer.value = setInterval(() => {
+    timer = setInterval(() => {
       let index = aniIndex.value;
       index++;
       if (index >= diceAnimationImages.value.length) {
@@ -72,7 +68,8 @@ const startAnimation = async () => {
       //差不多执行1.2秒钟的时候可以停止了
       if (num > 12) {
         //关闭定时器
-        clearInterval(timer.value);
+        if (timer) clearInterval(timer)
+        timer = null
         //设置骰子停止
         isDicing.value = false;
         //返回结果
@@ -84,7 +81,7 @@ const startAnimation = async () => {
 
 onBeforeUnmount(() => {
   //组件销毁之前清除定时器
-  clearInterval(timer.value);
+  if (timer) clearInterval(timer)
 })
 
 defineExpose({
@@ -94,7 +91,7 @@ defineExpose({
 
 <template>
 	<!-- 骰子组件 -->
-	<div class="dice-wrap" @tap="throwDice">
+	<div class="dice-wrap" @click="throwDice">
 		<!-- 筛子运动时候的展示的图片 -->
 		<el-image v-if="isDicing" :src="diceAnimationImages[aniIndex]" class="dice-icon" loading="lazy"></el-image>
 		<!-- 筛子静止时候的显示的对应点数的图片 -->

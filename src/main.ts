@@ -16,10 +16,6 @@ import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 //pinia
 import pinia from './store'
-//v-md-editor
-import { setupMdEditor } from './plugins/v-md-editor'
-
-
 const app = createApp(App)
 //安装仓库
 app.use(pinia)
@@ -27,5 +23,4 @@ app.use(router)
 app.use(ElementPlus, {
   locale: zhCn
 })
-setupMdEditor(app)
 app.mount('#app')

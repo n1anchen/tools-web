@@ -17,9 +17,10 @@ const parser = () => {
   try {
     decodePayload.value = JSON.stringify(jwtDecode(info.token), null, '\t')
     decodeHeader.value = JSON.stringify(jwtDecode(info.token, {header: true}), null, '\t')
-  } catch (e) {
-
-    console.log('Invalid token', e)
+    invalidToken.value = false
+  } catch {
+    decodeHeader.value = ''
+    decodePayload.value = ''
     invalidToken.value = true
   }  
 }
@@ -29,6 +30,7 @@ const clear = () => {
   info.token = ''
   decodeHeader.value = ''
   decodePayload.value = ''
+  invalidToken.value = false
 }
 
 onMounted(() => {

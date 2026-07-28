@@ -98,7 +98,6 @@ export function toText(morse: string) {
 export function chineseToMorse(chinese: string): string {
   //先转换成ascii码
   let asciiCode = chinese.charCodeAt(0).toString()
-  console.log(asciiCode)
   //转换
   return asciiCode.split('').map(char => morseCodeMap[char] || '').join('');  
 }

@@ -40,8 +40,8 @@ const days  = ['周六','周五','周四','周三','周二','周一','周日']
 
 const generateDefault = () => {
   const data: any[] = []
-  hours.forEach((h, hi) => {
-    days.forEach((d, di) => {
+  hours.forEach((_h, hi) => {
+    days.forEach((_d, di) => {
       data.push([hi, di, Math.floor(Math.random() * 10)])
     })
   })

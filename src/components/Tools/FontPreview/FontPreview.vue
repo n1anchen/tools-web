@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { Upload } from '@element-plus/icons-vue'
@@ -37,6 +37,7 @@ const fontFamilies = computed(() => {
 // 上传的自定义字体
 const customFontName = ref('')
 const customFontUrl = ref('')
+let customFontFace: FontFace | null = null
 
 // 是否显示全部字体预览
 const showAllFonts = ref(false)
@@ -100,8 +101,16 @@ const openFontFile = () => {
   input.onchange = async (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0]
     if (!file) return
+    if (file.size > 20 * 1024 * 1024) {
+      ElMessage.error('字体文件不能超过 20 MB')
+      return
+    }
 
     // 清理之前的自定义字体
+    if (customFontFace) {
+      document.fonts.delete(customFontFace)
+      customFontFace = null
+    }
     if (customFontUrl.value) {
       URL.revokeObjectURL(customFontUrl.value)
     }
@@ -113,6 +122,7 @@ const openFontFile = () => {
       const font = new FontFace(fontName, `url(${url})`)
       await font.load()
       document.fonts.add(font)
+      customFontFace = font
 
       customFontName.value = fontName
       customFontUrl.value = url
@@ -152,6 +162,10 @@ const viewAllFonts = () => {
 const clearAll = () => {
   selectedFont.value = ''
   customFontName.value = ''
+  if (customFontFace) {
+    document.fonts.delete(customFontFace)
+    customFontFace = null
+  }
   if (customFontUrl.value) {
     URL.revokeObjectURL(customFontUrl.value)
     customFontUrl.value = ''
@@ -166,6 +180,11 @@ const clearAll = () => {
   fontStyle.value = 'normal'
   fontColor.value = '#000000'
 }
+
+onBeforeUnmount(() => {
+  if (customFontFace) document.fonts.delete(customFontFace)
+  if (customFontUrl.value) URL.revokeObjectURL(customFontUrl.value)
+})
 
 </script>
 

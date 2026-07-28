@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
+import { MdEditor, type ToolbarNames } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import { useSettingStore } from '@/store/modules/setting'
+
 const info = reactive({
   title: "在线markdown编辑器",
   content: '',
 })
-
-
-//copy
-// const copyRes = async (resStr: string) => {
-//   copy(resStr)
-// }
+const settingStore = useSettingStore()
+const editorTheme = computed(() => settingStore.isDark ? 'dark' : 'light')
+const unavailableToolbars: ToolbarNames[] = ['mermaid', 'katex', 'prettier', 'fullscreen']
 </script>
 
 <template>
@@ -19,7 +20,19 @@ const info = reactive({
     <DetailHeader :title="info.title"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
-      <v-md-editor v-model="info.content" height="500px"></v-md-editor>
+      <MdEditor
+        v-model="info.content"
+        :theme="editorTheme"
+        :style="{ height: '500px' }"
+        language="zh-CN"
+        no-highlight
+        no-prettier
+        no-upload-img
+        no-mermaid
+        no-katex
+        no-echarts
+        :toolbars-exclude="unavailableToolbars"
+      />
     </div>
 
     <!-- desc -->
@@ -32,6 +45,4 @@ const info = reactive({
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

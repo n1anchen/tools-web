@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { Bars, AngleRight, AngleLeft, Home, InfoCircle, Github } from '@vicons/fa';
 import { Icon } from '@vicons/utils'
 import ThemeSwitcher from '@/components/ThemeSwitcher/ThemeSwitcher.vue';
@@ -46,11 +46,14 @@ const searchParam = reactive({
 const searchTools = async (query: string) => {
   loading.value = true
   options.value = []
-  if (query) {
-    searchParam.title = query
-    options.value = await toolsStore.getTools(searchParam)
+  try {
+    if (query) {
+      searchParam.title = query
+      options.value = await toolsStore.getTools(searchParam)
+    }
+  } finally {
+    loading.value = false
   }
-  loading.value = false
 }
 
 // 解决/处理移动端输入法/兼容性问题导致无法搜索
@@ -83,7 +86,7 @@ const handleMobileInput = (e: Event) => {
 
 const optionClick = (url: string) => {
   if (/^(http|https):\/\//.test(url)) {
-    window.open(url, '_blank')
+    window.open(url, '_blank', 'noopener,noreferrer')
   } else {
     router.push(url)
   }
@@ -92,22 +95,28 @@ const optionClick = (url: string) => {
   options.value = []
 }
 
+let mobileInput: HTMLInputElement | null = null
+const handleNativeInput = (e: Event) => {
+  if (!(e as InputEvent).isComposing) handleMobileInput(e)
+}
+
 onMounted(() => {
   // 针对移动端输入法的兼容处理
   if (selectRef.value) {
     const input = selectRef.value.$el.querySelector('input')
     if (input) {
+      mobileInput = input
       // 监听 compositionend 事件
       input.addEventListener('compositionend', handleMobileInput)
       // 监听 input 事件，处理非中文输入情况
-      input.addEventListener('input', (e: Event) => {
-        // 如果正在进行中文拼音输入，则忽略 input 事件，等待 compositionend
-        if (!(e as any).isComposing) {
-           handleMobileInput(e)
-        }
-      })
+      input.addEventListener('input', handleNativeInput)
     }
   }
+})
+
+onBeforeUnmount(() => {
+  mobileInput?.removeEventListener('compositionend', handleMobileInput)
+  mobileInput?.removeEventListener('input', handleNativeInput)
 })
 </script>
 
@@ -179,9 +188,9 @@ onMounted(() => {
         >
           <el-option
             v-for="item in options"
-            :key="item.id"
+            :key="item.url"
             :label="item.title"
-            :value="item.id"
+            :value="item.url"
             @click="optionClick(item.url)"
             class="search-option"
           >
@@ -206,6 +215,7 @@ onMounted(() => {
       <a 
         href="https://github.com/n1anchen/tools-web" 
         target="_blank"
+        rel="noopener noreferrer"
         class="hidden c-sm:w-10 c-sm:h-10 c-sm:flex items-center justify-center rounded-full 
                hover:bg-blue-50 dark:hover:bg-blue-900/40 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400
                transition-all duration-200"

@@ -10,8 +10,8 @@ const info = reactive({
 })
 
 const tran = () => {
-  //数字转中文
-  info.tranRes = numberToChinese(parseInt(info.content))
+  const value = info.content.trim()
+  info.tranRes = numberToChinese(value ? Number(value) : Number.NaN)
 }
 
 const clear = () => {

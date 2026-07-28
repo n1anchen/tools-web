@@ -36,7 +36,8 @@ const gen = () => {
   }
 
   //生成长度验证
-  if (info.pwLen > 100) {
+  const passwordLength = Number(info.pwLen)
+  if (!Number.isInteger(passwordLength) || passwordLength < 1 || passwordLength > 100) {
     ElMessage({
       message: "生成长度范围在1~100",
       type: "warning",
@@ -46,7 +47,8 @@ const gen = () => {
   }
 
   //生成数量验证
-  if (info.pwNum > 100) {
+  const passwordCount = Number(info.pwNum)
+  if (!Number.isInteger(passwordCount) || passwordCount < 1 || passwordCount > 100) {
     ElMessage({
       message: "生成数量范围在1~100",
       type: "warning",
@@ -59,12 +61,12 @@ const gen = () => {
   info.resStr = ''
 
   //按数量生成密码
-  for (let i = 1; i <= info.pwNum; i++) {
+  for (let i = 1; i <= passwordCount; i++) {
     let ext = '\n'
-    if (i == info.pwNum) {
+    if (i === passwordCount) {
       ext = ''
     }
-    info.resStr += genRandomStrByChars(info.char, info.pwLen) + ext
+    info.resStr += genRandomStrByChars(info.char, passwordLength) + ext
   }
 }
 

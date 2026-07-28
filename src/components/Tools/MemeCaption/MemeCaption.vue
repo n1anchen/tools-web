@@ -132,9 +132,14 @@ watch(
 
 // ── 图片上传处理 ───────────────────────────────────────────────────────────────
 const handleUploadChange: UploadProps['onChange'] = (file) => {
+  if (!file.raw || !['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(file.raw.type)) {
+    return
+  }
+  if (file.raw.size > 20 * 1024 * 1024) return
   const url = URL.createObjectURL(file.raw!)
   const img = new Image()
   img.onload = () => {
+    URL.revokeObjectURL(url)
     state.srcImage = img
     hasImage.value = true
     state.offsetBottom = 0
@@ -142,6 +147,7 @@ const handleUploadChange: UploadProps['onChange'] = (file) => {
     state.fontSize = Math.min(120, Math.max(12, Math.round(img.naturalHeight / state.scale * 0.1)))
     nextTick(redraw)
   }
+  img.onerror = () => URL.revokeObjectURL(url)
   img.src = url
 }
 
