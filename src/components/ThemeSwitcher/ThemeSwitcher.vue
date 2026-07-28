@@ -1,5 +1,10 @@
 <template>
-  <button @click="toggleTheme" class="theme-toggle-button">
+  <button
+    type="button"
+    class="theme-toggle-button"
+    :aria-label="isDark ? '切换到亮色主题' : '切换到暗色主题'"
+    @click="toggleTheme"
+  >
     <transition name="fade" mode="out-in">
       <Icon v-if="!isDark" size="20" class="theme-icon">
         <SunIcon />

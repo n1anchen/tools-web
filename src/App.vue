@@ -61,6 +61,37 @@ const routeLoading = ref(false)
 const removeBeforeGuard = router.beforeEach(() => { routeLoading.value = true })
 const removeAfterGuard = router.afterEach(() => { routeLoading.value = false })
 
+const getThemeTransitionOrigin = (event: MouseEvent) => {
+  // `clientX/clientY` can be 0 or synthetic for keyboard/touch generated clicks.
+  // Keep the exact pointer position when it is inside the switch; otherwise use
+  // the real button center instead of an unrelated viewport coordinate.
+  if (event.currentTarget instanceof HTMLElement) {
+    const rect = event.currentTarget.getBoundingClientRect()
+    const isInsideButton = (
+      Number.isFinite(event.clientX)
+      && Number.isFinite(event.clientY)
+      && event.clientX >= rect.left
+      && event.clientX <= rect.right
+      && event.clientY >= rect.top
+      && event.clientY <= rect.bottom
+    )
+
+    if (isInsideButton) {
+      return { x: event.clientX, y: event.clientY }
+    }
+
+    return {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    }
+  }
+
+  return {
+    x: Number.isFinite(event.clientX) ? event.clientX : window.innerWidth / 2,
+    y: Number.isFinite(event.clientY) ? event.clientY : 0,
+  }
+}
+
 // Theme toggle function with ripple animation
 const toggleTheme = (event: MouseEvent) => {
   const isDarkNow = settingStore.isDark
@@ -72,12 +103,22 @@ const toggleTheme = (event: MouseEvent) => {
     return
   }
 
-  const x = event.clientX
-  const y = event.clientY
-  const endRadius = Math.hypot(
-    Math.max(x, window.innerWidth - x),
-    Math.max(y, window.innerHeight - y),
-  )
+  const { x, y } = getThemeTransitionOrigin(event)
+  const viewportWidth = document.documentElement.clientWidth || window.innerWidth
+  const viewportHeight = document.documentElement.clientHeight || window.innerHeight
+  const xPercent = Math.min(100, Math.max(0, x / viewportWidth * 100))
+  const yPercent = Math.min(100, Math.max(0, y / viewportHeight * 100))
+  const farthestX = Math.max(xPercent, 100 - xPercent) / 100 * viewportWidth
+  const farthestY = Math.max(yPercent, 100 - yPercent) / 100 * viewportHeight
+  // circle() resolves a percentage radius against the reference box's scaled
+  // diagonal. Keeping both origin and radius percentage-based avoids absolute
+  // unit mismatches in scaled View Transition snapshot layers.
+  const scaledDiagonal = Math.hypot(viewportWidth, viewportHeight) / Math.SQRT2
+  const endRadiusPercent = (
+    Math.hypot(farthestX, farthestY)
+    / scaledDiagonal
+    * 100
+  ) + 0.1
 
   // 打上方向标记，CSS 通过此 class 区分 z-index，避免伪元素选择器语法问题
   const directionClass = isDarkNow ? 'theme-to-light' : 'theme-to-dark'
@@ -98,8 +139,8 @@ const toggleTheme = (event: MouseEvent) => {
     document.documentElement.animate(
       {
         clipPath: [
-          `circle(0px at ${x}px ${y}px)`,
-          `circle(${endRadius}px at ${x}px ${y}px)`,
+          `circle(0% at ${xPercent}% ${yPercent}%)`,
+          `circle(${endRadiusPercent}% at ${xPercent}% ${yPercent}%)`,
         ],
       },
       {
