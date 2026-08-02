@@ -831,6 +831,22 @@ export function getToolsCate() {
       ]
     },
     {
+      id: 10,
+      title: '生活财务',
+      icon: '',
+      list: [
+        {
+          id: 1,
+          title: '房贷计算器',
+          logo: 'ChartLine',
+          desc: '支持商业贷、公积金和组合贷，对比等额本息与等额本金，并模拟利率变化、提前还款等情景',
+          url: '/mortgage/',
+          cateId: 10,
+          cate: '生活财务',
+        },
+      ]
+    },
+    {
       id: 7,
       title: '其他工具',
       icon: '',

@@ -813,6 +813,16 @@ export const constantRoute = [
       description: '完整的 Emoji 表情大全，按分类浏览，支持搜索，点击一键复制',
     }
   },
+  {
+    path: '/mortgage',
+    component: () => import('@/components/Tools/MortgageCalculator/MortgageCalculator.vue'),
+    name: 'mortgage',
+    meta: {
+      title: '房贷计算器',
+      keywords: '房贷计算器,组合贷,商业贷款,公积金贷款,等额本息,等额本金,提前还款,月供计算',
+      description: '在线房贷计算器，支持商业贷、公积金和组合贷，同时对比等额本息与等额本金，并模拟利率变化、提前还款、每月多还及房价变化',
+    }
+  },
   //其他路由
   {
     path: '/404',
