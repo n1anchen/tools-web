@@ -823,6 +823,16 @@ export const constantRoute = [
       description: '在线房贷计算器，支持商业贷、公积金和组合贷，同时对比等额本息与等额本金，并模拟利率变化、提前还款、每月多还及房价变化',
     }
   },
+  {
+    path: '/retirement',
+    component: () => import('@/components/Tools/RetirementCalculator/RetirementCalculator.vue'),
+    name: 'retirement',
+    meta: {
+      title: '延迟退休计算器',
+      keywords: '延迟退休计算器,法定退休年龄,退休年龄对照表,弹性退休,退休时间,最低缴费年限',
+      description: '根据出生年月和人员类别计算渐进式延迟退休后的法定退休年龄、退休年月、延迟月数、弹性退休区间及最低缴费年限',
+    }
+  },
   //其他路由
   {
     path: '/404',

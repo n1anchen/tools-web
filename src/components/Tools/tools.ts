@@ -844,6 +844,15 @@ export function getToolsCate() {
           cateId: 10,
           cate: '生活财务',
         },
+        {
+          id: 1,
+          title: '延迟退休计算器',
+          logo: 'Clock',
+          desc: '根据出生年月和人员类别计算改革后法定退休年龄、退休年月、延迟月数及弹性退休区间',
+          url: '/retirement/',
+          cateId: 10,
+          cate: '生活财务',
+        },
       ]
     },
     {
