@@ -1,74 +1,531 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+import { Collection, CopyDocument, DataLine, Files, InfoFilled } from '@element-plus/icons-vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 
-const title = '数据存储单位换算'
-const inputValue = ref('')
-const fromUnit = ref('B')
+type Standard = 'binary' | 'decimal'
 
-const units = [
-  { label: 'bit（比特）', value: 'bit', bits: 1 },
-  { label: 'B（字节）', value: 'B', bits: 8 },
-  { label: 'KB（千字节）', value: 'KB', bits: 8 * 1024 },
-  { label: 'MB（兆字节）', value: 'MB', bits: 8 * 1024 ** 2 },
-  { label: 'GB（吉字节）', value: 'GB', bits: 8 * 1024 ** 3 },
-  { label: 'TB（太字节）', value: 'TB', bits: 8 * 1024 ** 4 },
-  { label: 'PB（拍字节）', value: 'PB', bits: 8 * 1024 ** 5 },
-  { label: 'EB（艾字节）', value: 'EB', bits: 8 * 1024 ** 6 },
+const title = '数据存储单位换算'
+const inputValue = ref('1024')
+const fromUnit = ref('B')
+const standard = ref<Standard>('binary')
+
+const unitDefinitions = [
+  { label: 'bit', name: '比特', value: 'bit', exponent: -1 },
+  { label: 'B', name: '字节', value: 'B', exponent: 0 },
+  { label: 'KB', name: '千字节', value: 'KB', exponent: 1 },
+  { label: 'MB', name: '兆字节', value: 'MB', exponent: 2 },
+  { label: 'GB', name: '吉字节', value: 'GB', exponent: 3 },
+  { label: 'TB', name: '太字节', value: 'TB', exponent: 4 },
+  { label: 'PB', name: '拍字节', value: 'PB', exponent: 5 },
+  { label: 'EB', name: '艾字节', value: 'EB', exponent: 6 },
 ]
 
-const fmt = (v: number) => {
-  if (v === 0) return '0'
-  if (Number.isInteger(v)) return v.toString()
-  const abs = Math.abs(v)
-  // 计算小数点后有多少个前导零，以此确定需要的小数位数（保留6位有效数字）
-  const leadingZeros = abs < 1 ? Math.max(0, Math.floor(-Math.log10(abs))) : 0
-  const decimals = Math.min(leadingZeros + 6, 20)
-  return v.toFixed(decimals).replace(/\.?0+$/, '')
+const presets = [
+  { label: '1 KB', value: '1', unit: 'KB' },
+  { label: '1 MB', value: '1', unit: 'MB' },
+  { label: '4.7 GB', value: '4.7', unit: 'GB' },
+  { label: '1 TB', value: '1', unit: 'TB' },
+]
+
+const base = computed(() => standard.value === 'binary' ? 1024 : 1000)
+const standardLabel = computed(() => standard.value === 'binary' ? '二进制（1024）' : '十进制（1000）')
+const rawNumber = computed(() => Number(inputValue.value))
+const hasValidInput = computed(() => inputValue.value.trim() !== '' && Number.isFinite(rawNumber.value) && rawNumber.value >= 0)
+
+function unitBytes(unit: typeof unitDefinitions[number]) {
+  if (unit.value === 'bit') return 1 / 8
+  return base.value ** unit.exponent
+}
+
+function formatValue(value: number) {
+  if (value === 0) return '0'
+  const absolute = Math.abs(value)
+  if (absolute >= 1e15 || absolute < 1e-7) return value.toExponential(6).replace(/\.0+e/, 'e')
+  return new Intl.NumberFormat('zh-CN', {
+    maximumFractionDigits: absolute < 1 ? 10 : absolute < 100 ? 8 : 4,
+    useGrouping: true,
+  }).format(value)
 }
 
 const results = computed(() => {
-  const raw = parseFloat(inputValue.value)
-  if (!inputValue.value || isNaN(raw)) return []
-  const fromBits = units.find(u => u.value === fromUnit.value)!.bits
-  const totalBits = raw * fromBits
-  return units.map(u => ({ label: u.label, value: fmt(totalBits / u.bits) }))
+  if (!hasValidInput.value) return []
+  const source = unitDefinitions.find(unit => unit.value === fromUnit.value) ?? unitDefinitions[1]
+  const totalBytes = rawNumber.value * unitBytes(source)
+  return unitDefinitions.map(unit => ({
+    ...unit,
+    numericValue: totalBytes / unitBytes(unit),
+    formattedValue: formatValue(totalBytes / unitBytes(unit)),
+  }))
 })
+
+const bestResult = computed(() => {
+  const byteUnits = results.value.filter(item => item.value !== 'bit')
+  const readable = byteUnits.filter(item => item.numericValue >= 1)
+  return readable[readable.length - 1] ?? byteUnits[0]
+})
+
+const sourceLabel = computed(() => unitDefinitions.find(unit => unit.value === fromUnit.value)?.label ?? 'B')
+
+function usePreset(preset: typeof presets[number]) {
+  inputValue.value = preset.value
+  fromUnit.value = preset.unit
+}
+
+function copyAll() {
+  if (!results.value.length) return
+  copy(results.value.map(item => `${item.formattedValue} ${item.label}`).join('\n'))
+}
 </script>
 
 <template>
-  <div class="flex flex-col mt-3 flex-1">
+  <div class="storage-page flex flex-col mt-3 flex-1">
     <DetailHeader :title="title" />
-    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300 space-y-4">
-      <div class="flex flex-wrap gap-3 items-center">
-        <el-input v-model="inputValue" type="number" placeholder="输入数值" style="max-width:200px" />
-        <el-select v-model="fromUnit" style="width:180px">
-          <el-option v-for="u in units" :key="u.value" :label="u.label" :value="u.value" />
-        </el-select>
-        <el-button @click="inputValue = ''">清空</el-button>
+
+    <section class="workspace-card">
+      <div class="section-heading">
+        <div class="heading-icon"><el-icon><Files /></el-icon></div>
+        <div>
+          <h2>设置原始容量</h2>
+          <p>输入一次，同时查看 bit 到 EB 的全部换算结果</p>
+        </div>
       </div>
-      <div v-if="results.length" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <div
-          v-for="r in results" :key="r.label"
-          class="flex items-center justify-between rounded-lg border border-slate-100 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2"
+
+      <div class="control-grid">
+        <label class="field-block value-field">
+          <span>数值</span>
+          <el-input v-model="inputValue" size="large" type="number" min="0" inputmode="decimal" placeholder="输入非负数值" />
+        </label>
+        <label class="field-block">
+          <span>原始单位</span>
+          <el-select v-model="fromUnit" size="large">
+            <el-option
+              v-for="unit in unitDefinitions"
+              :key="unit.value"
+              :label="`${unit.label}（${unit.name}）`"
+              :value="unit.value"
+            />
+          </el-select>
+        </label>
+        <label class="field-block">
+          <span>换算标准</span>
+          <el-segmented
+            v-model="standard"
+            :options="[
+              { label: '二进制 1024', value: 'binary' },
+              { label: '十进制 1000', value: 'decimal' },
+            ]"
+          />
+        </label>
+      </div>
+
+      <div class="preset-row">
+        <span>常用容量</span>
+        <button v-for="preset in presets" :key="preset.label" type="button" @click="usePreset(preset)">
+          {{ preset.label }}
+        </button>
+      </div>
+    </section>
+
+    <section class="results-card">
+      <div class="result-header">
+        <div class="section-heading">
+          <div class="heading-icon green"><el-icon><DataLine /></el-icon></div>
+          <div>
+            <h2>换算结果</h2>
+            <p>{{ standardLabel }} · 自动保留有效小数</p>
+          </div>
+        </div>
+        <el-button :icon="CopyDocument" :disabled="!results.length" @click="copyAll">复制全部</el-button>
+      </div>
+
+      <div v-if="results.length && bestResult" class="result-summary">
+        <span>{{ inputValue || 0 }} {{ sourceLabel }} 约等于</span>
+        <strong>{{ bestResult.formattedValue }} <small>{{ bestResult.label }}</small></strong>
+      </div>
+
+      <div v-if="results.length" class="result-grid">
+        <button
+          v-for="item in results"
+          :key="item.value"
+          type="button"
+          class="result-item"
+          :class="{ highlighted: item.value === bestResult?.value }"
+          :title="`复制 ${item.label} 结果`"
+          @click="copy(`${item.formattedValue} ${item.label}`)"
         >
-          <span class="text-sm text-slate-600 dark:text-slate-300">{{ r.label }}</span>
-          <div class="flex items-center gap-2">
-            <span class="font-mono text-sm font-semibold text-slate-800 dark:text-slate-100">{{ r.value }}</span>
-            <el-button size="small" text @click="copy(r.value)">复制</el-button>
+          <div class="unit-badge">{{ item.label }}</div>
+          <div class="result-value">{{ item.formattedValue }}</div>
+          <div class="result-name">{{ item.name }} · 点击复制</div>
+        </button>
+      </div>
+
+      <div v-else class="empty-state">
+        <el-icon><InfoFilled /></el-icon>
+        <p>请输入有效的非负数值</p>
+      </div>
+    </section>
+
+    <ToolDetail title="换算标准与参考">
+      <div class="detail-layout">
+        <div class="reference-card">
+          <el-icon><Collection /></el-icon>
+          <div>
+            <h4>二进制标准</h4>
+            <p>1 KB = 1024 B，常见于操作系统、内存容量和传统文件大小显示。</p>
+          </div>
+        </div>
+        <div class="reference-card">
+          <el-icon><Collection /></el-icon>
+          <div>
+            <h4>十进制标准</h4>
+            <p>1 KB = 1000 B，常见于硬盘厂商标称容量、网络速率和国际单位制表达。</p>
+          </div>
+        </div>
+        <div class="reference-card">
+          <el-icon><InfoFilled /></el-icon>
+          <div>
+            <h4>为什么容量会不同？</h4>
+            <p>同一字节数采用 1000 与 1024 进位时显示值不同，这通常不是设备容量丢失。</p>
           </div>
         </div>
       </div>
-      <div v-else class="text-center text-slate-400 dark:text-slate-500 py-6">输入数值后显示换算结果</div>
-    </div>
-    <ToolDetail title="使用说明">
-      <p>在线数据存储单位换算工具，输入数值和源单位后，自动换算所有常用存储单位。</p>
-      <ul class="list-disc list-inside mt-1 space-y-1">
-        <li>支持 bit、B、KB、MB、GB、TB、PB、EB</li>
-        <li>基于 1 KB = 1024 B（二进制换算）</li>
-      </ul>
     </ToolDetail>
   </div>
 </template>
+
+<style scoped>
+.storage-page {
+  gap: 18px;
+}
+
+.workspace-card,
+.results-card {
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
+}
+
+.section-heading,
+.result-header,
+.preset-row,
+.reference-card {
+  display: flex;
+  align-items: center;
+}
+
+.section-heading {
+  gap: 12px;
+}
+
+.heading-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border-radius: 13px;
+  color: #2563eb;
+  background: #eff6ff;
+  font-size: 20px;
+}
+
+.heading-icon.green {
+  color: #059669;
+  background: #ecfdf5;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 18px;
+}
+
+.section-heading p {
+  margin: 3px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.control-grid {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.1fr) minmax(190px, 0.8fr) minmax(280px, 1fr);
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.field-block > span {
+  display: block;
+  margin-bottom: 8px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.field-block :deep(.el-input),
+.field-block :deep(.el-select),
+.field-block :deep(.el-segmented) {
+  width: 100%;
+}
+
+.preset-row {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.preset-row > span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.preset-row button {
+  padding: 6px 12px;
+  border: 1px solid #dbeafe;
+  border-radius: 999px;
+  color: #2563eb;
+  background: #eff6ff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.preset-row button:hover {
+  border-color: #60a5fa;
+  background: #dbeafe;
+}
+
+.result-header {
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.result-summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 20px 22px;
+  border: 1px solid #bfdbfe;
+  border-radius: 16px;
+  color: #475569;
+  background: linear-gradient(135deg, #eff6ff, #f8fbff);
+}
+
+.result-summary strong {
+  color: #1d4ed8;
+  font-size: clamp(25px, 3vw, 36px);
+  white-space: nowrap;
+}
+
+.result-summary small {
+  font-size: 15px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.result-item {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  color: inherit;
+  background: #f8fafc;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.result-item:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.08);
+  transform: translateY(-2px);
+}
+
+.result-item.highlighted {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.unit-badge {
+  display: inline-flex;
+  min-width: 34px;
+  height: 25px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 7px;
+  border-radius: 8px;
+  color: #2563eb;
+  background: #dbeafe;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.highlighted .unit-badge {
+  color: #047857;
+  background: #d1fae5;
+}
+
+.result-value {
+  margin-top: 13px;
+  color: #0f172a;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.result-name {
+  margin-top: 5px;
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.empty-state {
+  display: grid;
+  min-height: 180px;
+  margin-top: 18px;
+  place-items: center;
+  align-content: center;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  color: #94a3b8;
+  background: #f8fafc;
+}
+
+.empty-state .el-icon {
+  font-size: 28px;
+}
+
+.empty-state p {
+  margin: 8px 0 0;
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.reference-card {
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.reference-card > .el-icon {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: #2563eb;
+  font-size: 18px;
+}
+
+.reference-card h4 {
+  margin: 0 0 5px;
+  color: #1e293b;
+}
+
+.reference-card p {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+:global(html.dark .storage-page .workspace-card),
+:global(html.dark .storage-page .results-card) {
+  border-color: #334155;
+  background: #0f172a;
+  box-shadow: none;
+}
+
+:global(html.dark .storage-page .section-heading h2),
+:global(html.dark .storage-page .field-block > span),
+:global(html.dark .storage-page .reference-card h4) {
+  color: #f1f5f9;
+}
+
+:global(html.dark .storage-page .section-heading p),
+:global(html.dark .storage-page .reference-card p) {
+  color: #94a3b8;
+}
+
+:global(html.dark .storage-page .result-summary) {
+  border-color: #1e3a5f;
+  color: #94a3b8;
+  background: linear-gradient(135deg, #0d1d33, #111c2f);
+}
+
+:global(html.dark .storage-page .result-summary strong) {
+  color: #60a5fa;
+}
+
+:global(html.dark .storage-page .result-item),
+:global(html.dark .storage-page .empty-state) {
+  border-color: #334155;
+  color: #cbd5e1;
+  background: #111c2f;
+}
+
+:global(html.dark .storage-page .result-item.highlighted) {
+  border-color: #14532d;
+  background: #082f2a;
+}
+
+:global(html.dark .storage-page .result-value) {
+  color: #e2e8f0;
+}
+
+@media (max-width: 900px) {
+  .control-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .control-grid .field-block:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .result-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .workspace-card,
+  .results-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .control-grid,
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .control-grid .field-block:last-child {
+    grid-column: auto;
+  }
+
+  .result-header,
+  .result-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .result-header :deep(.el-button) {
+    width: 100%;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

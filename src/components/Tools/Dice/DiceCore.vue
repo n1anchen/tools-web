@@ -91,19 +91,27 @@ defineExpose({
 
 <template>
 	<!-- 骰子组件 -->
-	<div class="dice-wrap" @click="throwDice">
+	<button type="button" class="dice-wrap" aria-label="单独重掷这个骰子" :disabled="isDicing" @click="throwDice">
 		<!-- 筛子运动时候的展示的图片 -->
 		<el-image v-if="isDicing" :src="diceAnimationImages[aniIndex]" class="dice-icon" loading="lazy"></el-image>
 		<!-- 筛子静止时候的显示的对应点数的图片 -->
 		<el-image v-else :src="diceImages[currentPoint]" class="dice-icon" loading="lazy"></el-image>
-	</div>
+	</button>
 </template>
 
 <style scoped>
 .dice-wrap {
 	width: 100px;
 	height: 100px;
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  cursor: pointer;
 }
+
+.dice-wrap:focus-visible { outline: 3px solid rgba(59, 130, 246, .35); outline-offset: 3px; }
+.dice-wrap:disabled { cursor: wait; }
 
 .dice-icon {
   width: 100px;
