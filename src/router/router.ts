@@ -27,9 +27,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/MD5/MD5.vue'),
     name: 'MD5',
     meta: {
-      title: "MD5在线加密",
-      keywords: 'md5加密，md5在线加密，md5',
-      description: '在线md5加密，一键生成md5加密字符串，可生成16位或32位md5加密字符串，md5双重加密',
+      title: "MD5 摘要计算",
+      keywords: 'MD5摘要,MD5校验,文件校验,哈希计算',
+      description: '在线计算文本或文件的 MD5 摘要，支持16位与32位格式、大小写转换和摘要比对。',
     }
   },
   {

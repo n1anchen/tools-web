@@ -1,145 +1,125 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { computed, ref } from 'vue'
+import { CopyDocument, Search } from '@element-plus/icons-vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-// import { copy } from '@/utils/string'
-const info = reactive({
-  title: "HTTP状态码",
-})
-// ascii: https://ascii.co.uk/table
-const tableDataControlOne = reactive([
-  {code:"100 Continue",desc:"请求者应当继续提出请求。 服务器返回此代码表示已收到请求的第一部分，正在等待其余部分"},
-  {code:"101 Switching Protocols",desc:"请求者已要求服务器切换协议，服务器已确认并准备切换"},
-  {code:"102 Processing",desc:"由WebDAV（RFC 2518）扩展的状态码，代表处理将被继续执行。"},
-])
+import { copy } from '@/utils/string'
+import { filterHttpStatuses } from '@/utils/developerTools'
+import {
+  HTTP_STATUS_CATEGORIES,
+  HTTP_STATUS_CODES,
+  type HttpStatusCategory,
+  type HttpStatusCode,
+} from '@/data/httpStatusCodes'
 
-const tableDataControlTwo = reactive([
-  {code:"200 OK",desc:"服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页"},
-  {code:"201 Created",desc:"请求成功并且服务器创建了新的资源"},
-  {code:"202 Accepted",desc:"服务器已接受请求，但尚未处理"},
-  {code:"203 Non-Authoritative Information",desc:"服务器已成功处理了请求，但返回的信息可能来自另一来源"},
-  {code:"204 No Content",desc:"服务器成功处理了请求，但没有返回任何内容"},
-  {code:"205 Reset Content",desc:"服务器成功处理了请求，且没有返回任何内容。但是与204响应不同，返回此状态码的响应要求请求者重置文档视图。该响应主要是被用于接受用户输入后，立即重置表单，以便用户能够轻松地开始另一次输入"},
-  {code:"206 Partial Content",desc:"服务器成功处理了部分 GET 请求"},
-  {code:"207 Multi-Status",desc:"由WebDAV(RFC 2518)扩展的状态码，代表之后的消息体将是一个XML消息，并且可能依照之前子请求数量的不同，包含一系列独立的响应代码"},
-  {code:"208 Already Reported",desc:"一个DAV的绑定成员被前一个请求枚举，并且没有被再一次包括"},
-  {code:"226 IM Used",desc:"服务器已经满足了请求所要的资源，并且响应是一个或者多个实例操作应用于当前实例的结果"},
-])
+type CategorySelection = 'all' | HttpStatusCategory
 
-const tableDataControlThree = reactive([
-  {code:"300 Multiple Choices",desc:"针对请求，服务器可执行多种操作。 服务器可根据请求者 (user agent) 选择一项操作，或提供操作列表供请求者选择。"},
-  {code:"301 Moved Permanently",desc:"请求的网页已永久移动到新位置。 服务器返回此响应（对 GET 或 HEAD 请求的响应）时，会自动将请求者转到新位置。"},
-  {code:"302 Move Temporarily",desc:"服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求"},
-  {code:"303 See Other",desc:"请求者应当对不同的位置使用单独的 GET 请求来检索响应时，服务器返回此代码。"},
-  {code:"304 Not Modified",desc:"自从上次请求后，请求的网页未修改过。 服务器返回此响应时，不会返回网页内容。"},
-  {code:"305 Use Proxy",desc:"请求者只能使用代理访问请求的网页。 如果服务器返回此响应，还表示请求者应使用代理"},
-  {code:"306 Switch Proxy",desc:"在最新版的规范中，306状态码已经不再被使用"},
-  {code:"307 Temporary Redirect",desc:"服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。"},
-  {code:"308 Permanent Redirect",desc:"这个请求和以后的请求都应该被另一个URI地址重新发送。307、308和302、301有相同的表现，但是不允许HTTP方法改变。例如，请求表单到一个永久转移的资源将会继续顺利地执行。"},
-])
+const query = ref('')
+const category = ref<CategorySelection>('all')
+const commonOnly = ref(true)
+const selected = ref<HttpStatusCode>(HTTP_STATUS_CODES.find(status => status.code === 404)!)
 
-const tableDataControlFour = reactive([
-  {code:"400 Bad Request",desc:"服务器不理解请求的语法"},
-  {code:"401 Unauthorized",desc:"请求要求身份验证。 对于需要登录的网页，服务器可能返回此响应"},
-  {code:"402 Payment Required",desc:"该状态码是为了将来可能的需求而预留的"},
-  {code:"403 Forbidden",desc:"请求有效，但服务器拒绝操作。用户可能没有资源的必要权限。"},
-  {code:"404 Not Found",desc:"服务器找不到请求的网页"},
-  {code:"405 Method Not Allowed",desc:"禁用请求中指定的方法"},
-  {code:"406 Not Acceptable",desc:"无法使用请求的内容特性响应请求的网页"},
-  {code:"407 Proxy Authentication Required",desc:"此状态代码与 401（未授权）类似，但指定请求者应当授权使用代理"},
-  {code:"408 Request Timeout",desc:"服务器等候请求时发生超时"},
-  {code:"409 Conflict",desc:"服务器在完成请求时发生冲突。 服务器必须在响应中包含有关冲突的信息"},
-  {code:"410 Gone",desc:"如果请求的资源已永久删除，服务器就会返回此响应"},
-  {code:"411 Length Required",desc:"服务器不接受不含有效内容长度标头字段的请求"},
-  {code:"412 Precondition Failed",desc:"服务器未满足请求者在请求中设置的其中一个前提条件"},
-  {code:"413 Request Entity Too Large",desc:"服务器无法处理请求，因为请求实体过大，超出服务器的处理能力"},
-  {code:"414 Request-URI Too Long",desc:"请求的 URI（通常为网址）过长，服务器无法处理"},
-  {code:"415 Unsupported Media Type",desc:"请求的格式不受请求页面的支持"},
-  {code:"416 Requested Range Not Satisfiable",desc:"如果页面无法提供请求的范围，则服务器会返回此状态代码"},
-  {code:"417 Expectation Failed",desc:"服务器未满足”期望“请求标头字段的要求"},
-  {code:"418 I'm a teapot",desc:"这个代码是在1998年作为传统的IETF April Fools‘ jokes被定义的在RFC2324，超文本咖啡罐控制协议，但是并没有被实际的HTTP服务器实现。RFC指定了这个代码应该是由茶罐返回给速溶咖啡"},
-  {code:"421 Misdirected Request",desc:"请求被指向到无法生成响应的服务器（比如由于连接重复使用）"},
-  {code:"422 Unprocessable Entity",desc:"请求格式正确，但是由于含有语义错误，无法响应。（RFC 4918 WebDAV）"},
-  {code:"423 Locked",desc:"当前资源被锁定"},
-  {code:"424 Failed Dependency",desc:"由于之前的某个请求发生的错误，导致当前请求失败，例如 PROPPATCH"},
-  {code:"425 Too Early",desc:"状态码 425 Too Early 代表服务器不愿意冒风险来处理该请求，原因是处理该请求可能会被“重放”，从而造成潜在的重放攻击。"},
-  {code:"426 Upgrade Required",desc:"客户端应当切换到TLS/1.0"},
-  {code:"429 Too Many Requests",desc:"用户在给定的时间内发送了太多请求"},
-  {code:"431 Request Header Fields Too Large",desc:"服务器不愿意处理请求，因为单个报头字段或所有报头字段都太大了。"},
-  {code:"449 Retry With",desc:"由微软扩展，代表请求应当在执行完适当的操作后进行重试。"},
-  {code:"451 Unavailable For Legal Reasons",desc:"该请求因法律原因不可用"},
-])
+const results = computed(() => filterHttpStatuses(HTTP_STATUS_CODES, query.value, category.value, commonOnly.value))
+const commonStatuses = HTTP_STATUS_CODES.filter(status => status.common)
+const selectedCategory = computed(() => HTTP_STATUS_CATEGORIES.find(item => item.value === selected.value.category)!)
 
-const tableDataControlFive = reactive([
-  {code:"500 Internal Server Error",desc:"服务器遇到错误，无法完成请求；一般来说，这个问题都会在服务器端的源代码出现错误时出现。"},
-  {code:"501 Not Implemented",desc:"服务器不支持当前请求所需要的某个功能。当服务器无法识别请求的方法，并且无法支持其对任何资源的请求。"},
-  {code:"502 Bad Gateway",desc:"作为网关或者代理工作的服务器尝试执行请求时，从上游服务器接收到无效的响应"},
-  {code:"503 Service Unavailable",desc:"服务器目前无法使用（由于超载或停机维护）。 通常，这只是暂时状态"},
-  {code:"504 Gateway Timeout",desc:"服务器作为网关或代理，但是没有及时从上游服务器收到请求"},
-  {code:"505 HTTP Version Not Supported",desc:"服务器不支持请求中所用的 HTTP 协议版本"},
-  {code:"506 Variant Also Negotiates",desc:"由《透明内容协商协议》（RFC 2295）扩展，代表服务器存在内部配置错误：被请求的协商变元资源被配置为在透明内容协商中使用自己，因此在一个协商处理中不是一个合适的重点"},
-  {code:"507 Insufficient Storage",desc:"服务器无法存储完成请求所必须的内容。这个状况被认为是临时的"},
-  {code:"509 Bandwidth Limit Exceeded",desc:"服务器达到带宽限制。这不是一个官方的状态码，但是仍被广泛使用。"},
-  {code:"510 Not Extended",desc:"获取资源所需要的策略并没有被满足"},
-  {code:"511 Network Authentication Required",desc:"客户端需要进行身份验证才能获得网络访问权限。"},
-])
+function chooseCategory(value: CategorySelection) {
+  category.value = value
+  if (value !== 'all') commonOnly.value = false
+}
 
-//copy
-// const copyRes = async (resStr: string) => {
-//   copy(resStr)
-// }
+function selectStatus(status: HttpStatusCode) {
+  selected.value = status
+}
 </script>
 
 <template>
-  <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+  <div class="http-page flex flex-col mt-3 flex-1">
+    <DetailHeader title="HTTP 状态码" />
 
-    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
-      <el-table :data="tableDataControlOne" class="w-full mb-3">
-        <el-table-column label="1xx 信息，表示临时响应并需要请求者继续执行操作" align="center">
-          <el-table-column prop="code" label="状态码" width="270" />
-          <el-table-column prop="desc" label="含义解释" />
-        </el-table-column>
-      </el-table>
+    <section class="hero-card">
+      <div><span class="eyebrow">HTTP STATUS EXPLORER</span><h2>先理解响应，再定位问题</h2><p>搜索状态码、英文名称或中文场景，快速找到含义与处理建议。</p></div>
+      <a href="https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml" target="_blank" rel="noopener noreferrer">IANA 登记表 · 2025-09-15</a>
+    </section>
 
-      <el-table :data="tableDataControlTwo" class="w-full mb-3">
-        <el-table-column label="2xx 成功，操作被成功接收并处理" align="center">
-          <el-table-column prop="code" label="状态码" width="270" />
-          <el-table-column prop="desc" label="含义解释"/>
-        </el-table-column>
-      </el-table>
+    <section class="category-grid">
+      <button v-for="item in HTTP_STATUS_CATEGORIES" :key="item.value" :class="[item.tone, { active: category === item.value }]" @click="chooseCategory(item.value)">
+        <strong>{{ item.value }}xx</strong><div><b>{{ item.label }}</b><span>{{ item.summary }}</span></div><small>{{ HTTP_STATUS_CODES.filter(status => status.category === item.value).length }} 项</small>
+      </button>
+    </section>
 
-      <el-table :data="tableDataControlThree" class="w-full mb-3">
-        <el-table-column label="3xx 表示要完成请求，需要进一步操作。 通常，这些状态代码用来重定向" align="center">
-          <el-table-column prop="code" label="状态码" width="270" />
-          <el-table-column prop="desc" label="含义解释"/>
-        </el-table-column>
-      </el-table>
+    <section class="search-card">
+      <div class="search-box"><el-icon><Search /></el-icon><el-input v-model="query" size="large" placeholder="搜索 404、Not Found、缓存、限流……" clearable /></div>
+      <div class="filter-row">
+        <div class="category-tabs">
+          <button :class="{ active: category === 'all' }" @click="chooseCategory('all')">全部</button>
+          <button v-for="item in HTTP_STATUS_CATEGORIES" :key="item.value" :class="{ active: category === item.value }" @click="chooseCategory(item.value)">{{ item.value }}xx</button>
+        </div>
+        <el-switch v-model="commonOnly" active-text="仅看常用" />
+      </div>
+    </section>
 
-      <el-table :data="tableDataControlFour" class="w-full mb-3">
-        <el-table-column label="4xx 客户端错误，请求包含语法错误或无法完成请求" align="center">
-          <el-table-column prop="code" label="状态码" width="270" />
-          <el-table-column prop="desc" label="含义解释"/>
-        </el-table-column>
-      </el-table>
+    <section class="selected-card" :class="`tone-${selected.category}`">
+      <div class="selected-code"><span>{{ selected.code }}</span><small>{{ selectedCategory.label }}</small></div>
+      <div class="selected-main">
+        <div class="selected-heading"><div><span class="eyebrow">SELECTED STATUS</span><h3>{{ selected.name }}</h3></div><el-button link type="primary" :icon="CopyDocument" @click="copy(`${selected.code} ${selected.name}`)">复制</el-button></div>
+        <p>{{ selected.description }}</p>
+        <div class="selected-details">
+          <div><span>典型场景</span><strong>{{ selected.usage || selectedCategory.summary }}</strong></div>
+          <div><span>处理建议</span><strong>{{ selected.advice || (selected.category === '4' ? '检查请求参数、认证状态和资源条件。' : selected.category === '5' ? '检查服务日志、上游依赖和容量状态。' : '结合方法、响应头和业务语义判断。') }}</strong></div>
+        </div>
+        <div class="tag-row"><span v-if="selected.note" class="note-tag">{{ selected.note }}</span><span v-for="tag in selected.tags" :key="tag">{{ tag }}</span></div>
+      </div>
+    </section>
 
-      <el-table :data="tableDataControlFive" class="w-full mb-3">
-        <el-table-column label="5xx 这些状态代码表示服务器在尝试处理请求时发生内部错误。 这些错误可能是服务器本身的错误，而不是请求出错" align="center">
-          <el-table-column prop="code" label="状态码" width="270" />
-          <el-table-column prop="desc" label="含义解释"/>
-        </el-table-column>
-      </el-table>
-    </div>
+    <section class="common-card">
+      <div class="section-heading"><div><span class="eyebrow">QUICK ACCESS</span><h3>高频状态码</h3></div><span>点击查看详情</span></div>
+      <div class="common-list"><button v-for="status in commonStatuses" :key="status.code" :class="{ active: selected.code === status.code }" @click="selectStatus(status)"><strong>{{ status.code }}</strong><span>{{ status.name }}</span></button></div>
+    </section>
 
-    <!-- desc -->
-    <ToolDetail title="描述">
-      <el-text>
-        超全面http状态对应的名称和含义解释
-      </el-text> 
+    <section class="results-card">
+      <div class="section-heading"><div><span class="eyebrow">STATUS DIRECTORY</span><h3>状态码目录</h3></div><span>找到 {{ results.length }} 项</span></div>
+      <div v-if="results.length" class="status-grid">
+        <article v-for="status in results" :key="status.code" :class="[`category-${status.category}`, { selected: selected.code === status.code }]" @click="selectStatus(status)">
+          <div class="status-heading"><strong>{{ status.code }}</strong><div><h4>{{ status.name }}</h4><span>{{ HTTP_STATUS_CATEGORIES.find(item => item.value === status.category)?.label }}</span></div><small v-if="status.common">常用</small></div>
+          <p>{{ status.description }}</p>
+          <div class="status-footer"><span v-if="status.note">{{ status.note }}</span><span v-else>{{ status.tags?.slice(0, 2).join(' · ') || 'HTTP' }}</span><el-button link type="primary" :icon="CopyDocument" @click.stop="copy(String(status.code))">复制</el-button></div>
+        </article>
+      </div>
+      <div v-else class="empty-state">没有找到匹配的状态码，请尝试其他关键词或关闭筛选。</div>
+    </section>
+
+    <ToolDetail title="分类说明">
+      <el-text>1xx 表示继续处理；2xx 表示成功；3xx 表示需要重定向或使用缓存；4xx 通常与请求、认证或资源状态有关；5xx 表示服务端或上游未能完成请求。状态码只能说明协议层结果，实际排查仍需结合 HTTP 方法、响应头、响应体和服务日志。</el-text>
     </ToolDetail>
   </div>
 </template>
 
 <style scoped>
+.http-page { --sky: #0284c7; --emerald: #059669; --amber: #d97706; --rose: #e11d48; --violet: #7c3aed; gap: 16px; }
+.hero-card, .search-card, .selected-card, .common-card, .results-card { border: 1px solid #e2e8f0; border-radius: 22px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }
+.hero-card { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 25px 28px; background: radial-gradient(circle at 88% 10%, #dbeafe, transparent 26%), #fff; }
+.eyebrow { color: #2563eb; font-size: 10px; font-weight: 800; letter-spacing: .15em; }
+.hero-card h2 { margin: 6px 0 4px; color: #0f172a; font-size: clamp(21px, 3vw, 28px); }.hero-card p { margin: 0; color: #64748b; font-size: 13px; }
+.hero-card a { flex: none; padding: 8px 12px; border: 1px solid #bfdbfe; border-radius: 999px; color: #1d4ed8; background: #eff6ff; font-size: 11px; text-decoration: none; }
+.category-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 9px; }
+.category-grid button { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 9px; min-width: 0; padding: 13px; border: 1px solid #e2e8f0; border-radius: 16px; text-align: left; background: #fff; cursor: pointer; transition: .18s ease; }
+.category-grid button:hover, .category-grid button.active { transform: translateY(-2px); box-shadow: 0 8px 20px rgb(15 23 42 / 9%); }.category-grid button > strong { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 12px; color: #fff; }.category-grid button div { display: flex; min-width: 0; flex-direction: column; }.category-grid b { color: #334155; font-size: 12px; }.category-grid span, .category-grid small { color: #94a3b8; font-size: 9px; }.category-grid small { grid-column: 2; }
+.category-grid .sky > strong { background: var(--sky); }.category-grid .emerald > strong { background: var(--emerald); }.category-grid .amber > strong { background: var(--amber); }.category-grid .rose > strong { background: var(--rose); }.category-grid .violet > strong { background: var(--violet); }
+.category-grid .sky.active { border-color: #7dd3fc; background: #f0f9ff; }.category-grid .emerald.active { border-color: #6ee7b7; background: #ecfdf5; }.category-grid .amber.active { border-color: #fcd34d; background: #fffbeb; }.category-grid .rose.active { border-color: #fda4af; background: #fff1f2; }.category-grid .violet.active { border-color: #c4b5fd; background: #f5f3ff; }
+.search-card { padding: 17px 20px; }.search-box { display: flex; align-items: center; gap: 9px; }.search-box > .el-icon { color: #64748b; font-size: 20px; }.search-box :deep(.el-input__wrapper) { box-shadow: none; background: #f8fafc; }
+.filter-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 12px; }.category-tabs { display: flex; flex-wrap: wrap; gap: 5px; }.category-tabs button { padding: 5px 11px; border: 0; border-radius: 999px; color: #64748b; background: #f1f5f9; cursor: pointer; }.category-tabs button.active { color: #fff; background: #2563eb; }
+.selected-card { display: grid; grid-template-columns: 145px minmax(0, 1fr); overflow: hidden; }.selected-code { display: flex; align-items: center; justify-content: center; flex-direction: column; color: #fff; }.selected-code span { font-size: 48px; font-weight: 900; line-height: 1; }.selected-code small { margin-top: 7px; opacity: .8; }.tone-1 .selected-code { background: var(--sky); }.tone-2 .selected-code { background: var(--emerald); }.tone-3 .selected-code { background: var(--amber); }.tone-4 .selected-code { background: var(--rose); }.tone-5 .selected-code { background: var(--violet); }
+.selected-main { min-width: 0; padding: 21px 23px; }.selected-heading, .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }.selected-heading h3 { margin: 4px 0 0; color: #0f172a; font-size: 22px; }.selected-main > p { margin: 11px 0 15px; color: #475569; line-height: 1.65; }.selected-details { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; }.selected-details > div { display: flex; flex-direction: column; padding: 11px 13px; border-radius: 12px; background: #f8fafc; }.selected-details span { color: #94a3b8; font-size: 9px; }.selected-details strong { margin-top: 3px; color: #334155; font-size: 11px; line-height: 1.5; }.tag-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 11px; }.tag-row span { padding: 3px 7px; border-radius: 99px; color: #475569; background: #f1f5f9; font-size: 9px; }.tag-row .note-tag { color: #9a3412; background: #ffedd5; }
+.common-card, .results-card { padding: 22px; }.section-heading h3 { margin: 4px 0 0; color: #0f172a; font-size: 18px; }.section-heading > span { color: #94a3b8; font-size: 10px; }.common-list { display: flex; gap: 7px; margin-top: 15px; overflow-x: auto; padding-bottom: 4px; }.common-list button { display: flex; align-items: center; gap: 7px; flex: none; padding: 7px 10px; border: 1px solid #e2e8f0; border-radius: 11px; color: #475569; background: #f8fafc; cursor: pointer; }.common-list button.active { border-color: #93c5fd; color: #1d4ed8; background: #eff6ff; }.common-list strong { font: 800 12px ui-monospace, monospace; }.common-list span { font-size: 10px; }
+.status-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 17px; }.status-grid article { min-width: 0; padding: 14px; border: 1px solid #e2e8f0; border-left-width: 4px; border-radius: 14px; background: #f8fafc; cursor: pointer; transition: .18s ease; }.status-grid article:hover, .status-grid article.selected { transform: translateY(-2px); box-shadow: 0 8px 20px rgb(15 23 42 / 8%); }.status-grid .category-1 { border-left-color: var(--sky); }.status-grid .category-2 { border-left-color: var(--emerald); }.status-grid .category-3 { border-left-color: var(--amber); }.status-grid .category-4 { border-left-color: var(--rose); }.status-grid .category-5 { border-left-color: var(--violet); }.status-heading { display: flex; align-items: center; gap: 10px; }.status-heading > strong { color: #0f172a; font: 900 20px ui-monospace, monospace; }.status-heading > div { display: flex; min-width: 0; flex: 1; flex-direction: column; }.status-heading h4 { margin: 0; color: #334155; overflow: hidden; text-overflow: ellipsis; font-size: 12px; white-space: nowrap; }.status-heading span, .status-heading small { color: #94a3b8; font-size: 9px; }.status-heading small { padding: 3px 6px; border-radius: 99px; color: #2563eb; background: #dbeafe; }.status-grid article > p { min-height: 42px; margin: 11px 0; color: #64748b; font-size: 11px; line-height: 1.7; }.status-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }.status-footer > span { color: #94a3b8; font-size: 9px; }.empty-state { margin-top: 16px; padding: 36px; border-radius: 14px; color: #94a3b8; background: #f8fafc; text-align: center; }
 
+:global(html.dark .http-page .hero-card), :global(html.dark .http-page .search-card), :global(html.dark .http-page .selected-card), :global(html.dark .http-page .common-card), :global(html.dark .http-page .results-card), :global(html.dark .http-page .category-grid button) { border-color: #334155; background: #1e293b; box-shadow: none; }:global(html.dark .http-page .hero-card) { background: radial-gradient(circle at 88% 10%, #1e3a8a, transparent 26%), #1e293b; }
+:global(html.dark .http-page h2), :global(html.dark .http-page h3), :global(html.dark .http-page .category-grid b), :global(html.dark .http-page .status-heading > strong), :global(html.dark .http-page .status-heading h4) { color: #f8fafc; }
+:global(html.dark .http-page .hero-card a), :global(html.dark .http-page .common-list button.active) { border-color: #1d4ed8; color: #93c5fd; background: #172554; }
+:global(html.dark .http-page .search-box .el-input__wrapper), :global(html.dark .http-page .selected-details > div), :global(html.dark .http-page .common-list button), :global(html.dark .http-page .status-grid article), :global(html.dark .http-page .empty-state) { border-color: #334155; color: #cbd5e1; background: #0f172a; }
+:global(html.dark .http-page .selected-main > p), :global(html.dark .http-page .selected-details strong) { color: #cbd5e1; }:global(html.dark .http-page .category-grid button.active) { border-color: #475569; background: #172033; }
+
+@media (max-width: 900px) { .category-grid { grid-template-columns: repeat(3, 1fr); }.category-grid button:nth-child(n+4) { grid-column: span 1; } }
+@media (max-width: 640px) { .hero-card { align-items: flex-start; flex-direction: column; padding: 21px; }.category-grid { grid-template-columns: 1fr 1fr; }.category-grid button:last-child { grid-column: 1 / -1; }.search-card, .common-card, .results-card { padding: 17px; border-radius: 19px; }.filter-row { align-items: flex-start; flex-direction: column; }.selected-card { grid-template-columns: 1fr; }.selected-code { padding: 19px; }.selected-code span { font-size: 38px; }.selected-main { padding: 18px; }.selected-details, .status-grid { grid-template-columns: 1fr; }.status-grid article > p { min-height: 0; } }
 </style>

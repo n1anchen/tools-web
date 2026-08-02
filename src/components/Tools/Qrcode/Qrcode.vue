@@ -1,198 +1,211 @@
 <script setup lang="ts">
-import { reactive,ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
+import { CopyDocument, Delete, Download, Refresh } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
+import QRCodeVue3 from 'qrcode-vue3'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-import QRCodeVue3 from 'qrcode-vue3'
-import { Delete, Plus } from '@element-plus/icons-vue'
-import { ElMessage, type UploadFile } from 'element-plus'
-const info = reactive({
-  title: "二维码生成",
-  content: '可在此输入文字或网址,右键图片另存为可保存图片',
-  width: 200,
-  height: 200,
-  size: '200',
-  sizeSelect: '',
-  margin: 1,
-  fileList: <string[]>[],
-  fileUrl: '',
-  preColor: '#000',
-  bgColor: '#fff',
-  qrKey: 1,
-  errorCorrectionLevel: 'Q',
+import { buildQrPayload, type QrContentType } from '@/utils/qrTools'
+import { copy } from '@/utils/string'
+
+type ErrorCorrectionLevel = 'L' | 'M' | 'Q' | 'H'
+type DotStyle = 'square' | 'dots' | 'rounded' | 'classy' | 'classy-rounded' | 'extra-rounded'
+type CornerStyle = 'square' | 'dot' | 'extra-rounded'
+
+const contentTypes: Array<{ value: QrContentType; label: string; hint: string }> = [
+  { value: 'text', label: '文本', hint: '段落、口令或任意内容' },
+  { value: 'url', label: '网址', hint: '网页、文档或活动链接' },
+  { value: 'wifi', label: 'Wi-Fi', hint: '扫码连接无线网络' },
+  { value: 'email', label: '邮件', hint: '预填收件人和正文' },
+  { value: 'phone', label: '电话', hint: '扫码快速拨号' },
+]
+
+const form = reactive({
+  type: 'text' as QrContentType,
+  text: '把复杂的信息，变成一次轻松的扫码。',
+  url: 'https://example.com',
+  ssid: '',
+  password: '',
+  encryption: 'WPA' as 'WPA' | 'WEP' | 'nopass',
+  hidden: false,
+  email: '',
+  subject: '',
+  body: '',
+  phone: '',
 })
 
-const uploadLogo = ref()
+const design = reactive({
+  size: 360,
+  margin: 10,
+  errorCorrectionLevel: 'Q' as ErrorCorrectionLevel,
+  foreground: '#111827',
+  background: '#FFFFFF',
+  dotStyle: 'rounded' as DotStyle,
+  cornerStyle: 'extra-rounded' as CornerStyle,
+  logoSize: 0.25,
+})
 
-//上传达到上限触发
-const handleExceed = () => {
-  ElMessage({
-    message: '上传数量已达上限，请清除后重新上传',
-    type: 'warning',
+const logoDataUrl = ref('')
+const logoName = ref('')
+const logoInput = ref<HTMLInputElement | null>(null)
+const preview = ref<HTMLElement | null>(null)
+
+const qrValue = computed(() => buildQrPayload(form))
+const currentType = computed(() => contentTypes.find(item => item.value === form.type)!)
+const renderKey = computed(() => JSON.stringify({ value: qrValue.value, ...design, logo: logoDataUrl.value }))
+const payloadLength = computed(() => new TextEncoder().encode(qrValue.value).length)
+
+function handleLogo(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  if (!file.type.startsWith('image/')) {
+    ElMessage.warning('请选择图片文件')
+    input.value = ''
+    return
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    ElMessage.warning('Logo 图片不能超过 5MB')
+    input.value = ''
+    return
+  }
+  const reader = new FileReader()
+  reader.onload = () => {
+    logoDataUrl.value = String(reader.result ?? '')
+    logoName.value = file.name
+  }
+  reader.readAsDataURL(file)
+}
+
+function removeLogo() {
+  logoDataUrl.value = ''
+  logoName.value = ''
+  if (logoInput.value) logoInput.value.value = ''
+}
+
+function resetDesign() {
+  Object.assign(design, {
+    size: 360,
+    margin: 10,
+    errorCorrectionLevel: 'Q',
+    foreground: '#111827',
+    background: '#FFFFFF',
+    dotStyle: 'rounded',
+    cornerStyle: 'extra-rounded',
+    logoSize: 0.25,
   })
+  removeLogo()
 }
 
-//设置尺寸
-const setQRSize = () => {
-  info.width = parseInt(info.size)
-  info.height = parseInt(info.size)
-}
-
-const handleChange = (file: UploadFile) => {
-  info.fileList.push(file.url as string)
-  info.fileUrl = info.fileList[0] ?? ''
-}
-
-const handleRemove = (file: UploadFile) => {
-  info.fileList = uploadLogo.value.handleRemove(file)
-}
-
-
-//生成二维码
-const gen = () => {
-  //设置尺寸
-  setQRSize()
-  info.qrKey += 1
+function downloadQrCode() {
+  if (!qrValue.value) return
+  const image = preview.value?.querySelector('img')
+  if (!image?.src) {
+    ElMessage.warning('二维码仍在生成，请稍后重试')
+    return
+  }
+  const link = document.createElement('a')
+  link.href = image.src
+  link.download = `qrcode-${Date.now()}.png`
+  link.click()
 }
 </script>
 
 <template>
-  <div class="flex flex-col mt-3 ml-4 flex-1 mr-3">
-    <DetailHeader :title="info.title"></DetailHeader>
+  <div class="qr-page flex flex-col mt-3 flex-1">
+    <DetailHeader title="二维码生成" />
 
-    <div class="flex justify-between w-full p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
-      <div class="w-4/6 ">
-        <div class="flex mb-3">
-          <div class="w-16 mr-2"><el-text>内容</el-text></div>
-          <el-input v-model="info.content" type="textarea" :rows="3" class="w-full" placeholder="可在此输入文字或网址"></el-input>
-        </div>
-        <div class="flex mb-3">
-          <div class="w-16 mr-2"><el-text>尺寸</el-text></div>
-          <el-input v-model="info.size" class="">
-            <template #append>
-                <el-select v-model="info.size" class="size-select">
-                  <el-option label="常规 200px" value="200" />
-                  <el-option label="常规 300px" value="300" />
-                  <el-option label="适中 350px" value="350" />
-                  <el-option label="较大 500px" value="500" />
-                  <!-- 分割线 start -->
-                  <div class="flex justify-center bg-gray-200 w-full">
-                    <div class="h-[1px] bg-gray-200 w-4/5"></div>
-                  </div>
-                  <!-- 分割线 end -->
-                  <el-option label="超大 1000px" value="1000" />
-                  <el-option label="超大 1200px" value="1200" />
-                </el-select>
-            </template>
-          </el-input>
-        </div>
-        <div class="flex mb-3">
-          <div class="w-16">
-            <el-text>纠错级别</el-text>
-          </div>
-          <el-select v-model="info.errorCorrectionLevel" class="corr-select">
-            <el-option label="L 可遮挡 7%" value="L" />
-            <el-option label="M 可遮挡 15%" value="M" />
-            <el-option label="Q 可遮挡 25%" value="Q" />
-            <el-option label="H 可遮挡 30%" value="H" />
-          </el-select>
-        </div>
-        <div class="flex mb-3">
-          <div class="w-16"><el-text>边距</el-text></div>
-          <el-input-number v-model="info.margin" :step="1" :min="0"/>
-        </div>
-        <div class="flex mb-3">
-          <div class="w-16"><el-text>颜色</el-text></div>
-          <!-- <div class="w-16 flex flex-col items-center bg-gray-100 p-1 rounded-md mr-2">
-            <el-text>前景色</el-text>
-            <el-color-picker v-model="info.preColor" />
-          </div> -->
-          <div class="w-16 flex flex-col items-center bg-gray-100 dark:bg-slate-700 p-1 rounded-md">
-            <el-text>背景色</el-text>
-            <el-color-picker v-model="info.bgColor" />
-          </div>
-        </div>
-        <div class="flex mb-3">
-          <div class="w-16"><el-text>logo</el-text></div>
-          <el-upload 
-            ref="uploadLogo"
-            action="#" 
-            :auto-upload="false" 
-            :limit="1" 
-            list-type="picture-card" 
-            accept=".png,.ico,.jpg,.jpeg"
-            :on-change="handleChange"
-            :on-exceed="handleExceed">
-            <el-icon><Plus /></el-icon>
-            <template #file="{ file }">
-              <div class="border-2 w-full border-blue-400">
-                <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
-                <span class="el-upload-list__item-actions">
-                  <span
-                    class="el-upload-list__item-delete"
-                    @click="handleRemove(file)"
-                  >
-                    <el-icon><Delete /></el-icon>
-                  </span>
-                </span>
-              </div>
-            </template>
-          </el-upload>
-        </div>
-        <div class="flex mb-3">
-          <div class="w-16"></div>
-          <el-button type="primary" @click="gen">生成二维码</el-button>
-        </div>
-      </div>
-      <div class="w-[200px] h-[200px]">
-        <QRCodeVue3
-          :key="info.qrKey"
-          :width="info.width"
-          :height="info.height"
-          :value="info.content"
-          :margin="info.margin"
-          :qrOptions="{ typeNumber: 0, mode: 'Byte', errorCorrectionLevel: info.errorCorrectionLevel }"
-          :imageOptions="{ hideBackgroundDots: true, imageSize: 0.4, margin: 0 }"
-          :image="info.fileList[0]"
-          :dotsOptions="{
-            type: 'none',
-            color: '#26249a',
-            gradient: {
-              type: 'linear',
-              rotation: 0,
-              colorStops: [
-                { offset: 0, color: '#26249a' },
-                { offset: 1, color: '#26249a' },
-              ],
-            },
-          }"
-          :backgroundOptions="{ color: info.bgColor }"
-          :cornersSquareOptions="{ type: 'square', color: '#000000' }"
-          :cornersDotOptions="{ type: undefined, color: '#000000' }"
-          fileExt="png"
-          myclass="my-qur"
-          imgclass="img-qr"
-        />
-      </div>
-    </div>
+    <section class="hero-card">
+      <div><span class="eyebrow">QR STUDIO</span><h2>内容、样式与预览，一处完成</h2><p>支持网址、Wi-Fi、邮件和电话模板，所有内容只在本地浏览器中生成。</p></div>
+      <div class="hero-badges"><span>实时预览</span><span>PNG 导出</span><span>Logo 定制</span></div>
+    </section>
 
-    <!-- desc -->
-    <ToolDetail title="描述">
-      <el-text>
-        根据内容生成二维码，自定义尺寸，纠错级别，颜色等带logo二维码
-      </el-text> 
+    <section class="workspace">
+      <div class="editor-column">
+        <article class="panel content-panel">
+          <div class="panel-heading"><div><span>01</span><div><h3>选择内容</h3><p>{{ currentType.hint }}</p></div></div><small>{{ payloadLength }} Bytes</small></div>
+          <div class="type-switcher">
+            <button v-for="item in contentTypes" :key="item.value" :class="{ active: form.type === item.value }" @click="form.type = item.value">{{ item.label }}</button>
+          </div>
+
+          <el-input v-if="form.type === 'text'" v-model="form.text" type="textarea" :rows="5" maxlength="1200" show-word-limit placeholder="输入要编码的文本" />
+          <el-input v-else-if="form.type === 'url'" v-model="form.url" size="large" placeholder="https://example.com/page" clearable />
+          <div v-else-if="form.type === 'wifi'" class="form-grid">
+            <label class="wide"><span>网络名称（SSID）</span><el-input v-model="form.ssid" placeholder="例如 Home-WiFi" clearable /></label>
+            <label><span>加密方式</span><el-select v-model="form.encryption"><el-option label="WPA / WPA2" value="WPA" /><el-option label="WEP" value="WEP" /><el-option label="无密码" value="nopass" /></el-select></label>
+            <label v-if="form.encryption !== 'nopass'"><span>网络密码</span><el-input v-model="form.password" type="password" show-password placeholder="输入 Wi-Fi 密码" /></label>
+            <label class="switch-field"><span>隐藏网络</span><el-switch v-model="form.hidden" /></label>
+          </div>
+          <div v-else-if="form.type === 'email'" class="form-grid">
+            <label><span>收件人</span><el-input v-model="form.email" placeholder="name@example.com" clearable /></label>
+            <label><span>主题</span><el-input v-model="form.subject" placeholder="邮件主题（可选）" clearable /></label>
+            <label class="wide"><span>正文</span><el-input v-model="form.body" type="textarea" :rows="3" placeholder="邮件正文（可选）" /></label>
+          </div>
+          <el-input v-else v-model="form.phone" size="large" placeholder="例如 +86 138 0000 0000" clearable />
+          <p v-if="!qrValue" class="empty-tip">填写必要内容后，右侧将自动生成二维码。</p>
+        </article>
+
+        <article class="panel design-panel">
+          <div class="panel-heading"><div><span>02</span><div><h3>调整样式</h3><p>导出尺寸与视觉风格彼此独立</p></div></div><el-button link :icon="Refresh" @click="resetDesign">恢复默认</el-button></div>
+          <div class="design-grid">
+            <label><span>导出尺寸 <b>{{ design.size }}px</b></span><el-slider v-model="design.size" :min="160" :max="1000" :step="20" /></label>
+            <label><span>留白边距 <b>{{ design.margin }}px</b></span><el-slider v-model="design.margin" :min="0" :max="32" /></label>
+            <label><span>纠错级别</span><el-select v-model="design.errorCorrectionLevel"><el-option label="L · 约 7%" value="L" /><el-option label="M · 约 15%" value="M" /><el-option label="Q · 约 25%" value="Q" /><el-option label="H · 约 30%" value="H" /></el-select></label>
+            <label><span>码点样式</span><el-select v-model="design.dotStyle"><el-option label="圆润" value="rounded" /><el-option label="圆点" value="dots" /><el-option label="方形" value="square" /><el-option label="优雅" value="classy" /><el-option label="优雅圆角" value="classy-rounded" /><el-option label="大圆角" value="extra-rounded" /></el-select></label>
+            <label><span>定位角样式</span><el-select v-model="design.cornerStyle"><el-option label="大圆角" value="extra-rounded" /><el-option label="方形" value="square" /><el-option label="圆点" value="dot" /></el-select></label>
+            <div class="color-field"><span>颜色</span><div><label><el-color-picker v-model="design.foreground" />前景</label><label><el-color-picker v-model="design.background" />背景</label></div></div>
+          </div>
+          <div class="logo-row">
+            <div><strong>中心 Logo</strong><span>建议使用正方形 PNG / SVG，最大 5MB</span></div>
+            <div class="logo-actions">
+              <label class="upload-button"><input ref="logoInput" type="file" accept="image/*" @change="handleLogo" />{{ logoName || '选择图片' }}</label>
+              <el-button v-if="logoDataUrl" link type="danger" :icon="Delete" @click="removeLogo">移除</el-button>
+            </div>
+          </div>
+          <label v-if="logoDataUrl" class="logo-size"><span>Logo 比例 <b>{{ Math.round(design.logoSize * 100) }}%</b></span><el-slider v-model="design.logoSize" :min="0.12" :max="0.4" :step="0.01" /></label>
+        </article>
+      </div>
+
+      <aside class="preview-card">
+        <div class="preview-heading"><div><span class="eyebrow">LIVE PREVIEW</span><h3>扫码预览</h3></div><span class="status-dot"><i />实时</span></div>
+        <div ref="preview" class="qr-stage" :class="{ empty: !qrValue }">
+          <QRCodeVue3
+            v-if="qrValue"
+            :key="renderKey"
+            :width="design.size"
+            :height="design.size"
+            :value="qrValue"
+            :image="logoDataUrl"
+            :margin="design.margin"
+            :qr-options="{ typeNumber: 0, mode: 'Byte', errorCorrectionLevel: design.errorCorrectionLevel }"
+            :image-options="{ hideBackgroundDots: true, imageSize: design.logoSize, margin: 3 }"
+            :dots-options="{ type: design.dotStyle, color: design.foreground }"
+            :background-options="{ color: design.background }"
+            :corners-square-options="{ type: design.cornerStyle, color: design.foreground }"
+            :corners-dot-options="{ type: 'dot', color: design.foreground }"
+            file-ext="png"
+            imgclass="qr-output-image"
+          />
+          <div v-else><b>等待内容</b><span>二维码将在这里出现</span></div>
+        </div>
+        <div class="payload-preview"><span>编码内容</span><code>{{ qrValue || '尚未填写' }}</code></div>
+        <div class="preview-actions"><el-button :icon="CopyDocument" :disabled="!qrValue" @click="copy(qrValue)">复制内容</el-button><el-button type="primary" :icon="Download" :disabled="!qrValue" @click="downloadQrCode">下载 PNG</el-button></div>
+        <p>含 Logo 时建议使用 Q 或 H 纠错级别，并在实际设备上试扫。</p>
+      </aside>
+    </section>
+
+    <ToolDetail title="使用建议">
+      <el-text>二维码承载内容越短越容易识别。用于印刷时建议导出较大尺寸、保留足够边距，并避免前景色与背景色过于接近；Wi-Fi 密码与邮件内容都只在当前浏览器中编码，不会上传到服务器。</el-text>
     </ToolDetail>
-
   </div>
 </template>
 
 <style scoped>
-.my-button{
-  background-color:red;
-}
-.size-select{
-  @apply w-36
-}
-.corr-select{
-  @apply w-36
-}
+.qr-page { --blue: #2563eb; gap: 16px; }.hero-card, .panel, .preview-card { border: 1px solid #e2e8f0; border-radius: 22px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }.hero-card { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 25px 28px; background: radial-gradient(circle at 88% 10%, #dbeafe, transparent 28%), #fff; }.eyebrow { color: var(--blue); font-size: 10px; font-weight: 800; letter-spacing: .15em; }.hero-card h2 { margin: 6px 0 4px; color: #0f172a; font-size: clamp(21px, 3vw, 28px); }.hero-card p { margin: 0; color: #64748b; font-size: 13px; }.hero-badges { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }.hero-badges span { padding: 6px 10px; border: 1px solid #bfdbfe; border-radius: 99px; color: #1d4ed8; background: #eff6ff; font-size: 10px; }
+.workspace { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, .75fr); align-items: start; gap: 16px; }.editor-column { display: flex; min-width: 0; flex-direction: column; gap: 16px; }.panel { padding: 22px; }.panel-heading, .panel-heading > div { display: flex; align-items: center; justify-content: space-between; gap: 11px; }.panel-heading > div > span { display: grid; width: 33px; height: 33px; place-items: center; border-radius: 11px; color: #fff; background: var(--blue); font: 800 11px ui-monospace, monospace; }.panel-heading h3, .preview-heading h3 { margin: 0; color: #0f172a; font-size: 16px; }.panel-heading p { margin: 2px 0 0; color: #94a3b8; font-size: 10px; }.panel-heading small { color: #94a3b8; font: 10px ui-monospace, monospace; }.type-switcher { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 18px 0 15px; padding: 5px; border-radius: 13px; background: #f1f5f9; }.type-switcher button { padding: 8px 5px; border: 0; border-radius: 9px; color: #64748b; background: transparent; font-size: 11px; cursor: pointer; }.type-switcher button.active { color: #1d4ed8; background: #fff; box-shadow: 0 3px 10px rgb(15 23 42 / 9%); }.content-panel :deep(.el-textarea__inner), .content-panel :deep(.el-input__wrapper), .design-panel :deep(.el-select__wrapper) { border-radius: 11px; box-shadow: 0 0 0 1px #e2e8f0 inset; }.form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }.form-grid label { display: flex; min-width: 0; flex-direction: column; gap: 6px; }.form-grid label > span, .design-grid label > span, .color-field > span, .logo-size > span { color: #64748b; font-size: 10px; }.form-grid .wide { grid-column: 1 / -1; }.form-grid .switch-field { justify-content: flex-end; flex-direction: row; align-items: center; }.empty-tip { margin: 10px 0 0; color: #f59e0b; font-size: 10px; }
+.design-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 17px 24px; margin-top: 20px; }.design-grid > label { display: flex; min-width: 0; flex-direction: column; gap: 5px; }.design-grid b, .logo-size b { float: right; color: #334155; font-family: ui-monospace, monospace; }.color-field > div { display: flex; gap: 16px; margin-top: 7px; }.color-field label { display: flex; align-items: center; gap: 7px; color: #475569; font-size: 10px; }.logo-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: 20px; padding: 13px; border-radius: 13px; background: #f8fafc; }.logo-row > div:first-child { display: flex; flex-direction: column; }.logo-row strong { color: #334155; font-size: 11px; }.logo-row span { color: #94a3b8; font-size: 9px; }.logo-actions { display: flex; align-items: center; gap: 5px; }.upload-button { max-width: 160px; padding: 7px 11px; overflow: hidden; border: 1px solid #bfdbfe; border-radius: 9px; color: #1d4ed8; background: #eff6ff; text-overflow: ellipsis; font-size: 10px; white-space: nowrap; cursor: pointer; }.upload-button input { display: none; }.logo-size { display: block; margin-top: 12px; }
+.preview-card { position: sticky; top: 14px; padding: 21px; }.preview-heading { display: flex; align-items: center; justify-content: space-between; }.preview-heading h3 { margin-top: 3px; }.status-dot { display: flex; align-items: center; gap: 5px; color: #16a34a; font-size: 9px; }.status-dot i { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 4px #dcfce7; }.qr-stage { display: grid; min-height: 270px; margin: 17px 0 13px; padding: 16px; overflow: hidden; place-items: center; border: 1px solid #e2e8f0; border-radius: 17px; background-color: #fff; background-image: linear-gradient(45deg, #f8fafc 25%, transparent 25%), linear-gradient(-45deg, #f8fafc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f8fafc 75%), linear-gradient(-45deg, transparent 75%, #f8fafc 75%); background-position: 0 0, 0 8px, 8px -8px, -8px 0; background-size: 16px 16px; }.qr-stage :deep(.qr-output-image) { display: block; max-width: 100%; height: auto; }.qr-stage.empty > div { display: flex; flex-direction: column; color: #94a3b8; text-align: center; }.qr-stage.empty b { color: #64748b; }.qr-stage.empty span { margin-top: 4px; font-size: 10px; }.payload-preview { padding: 11px; border-radius: 11px; background: #f8fafc; }.payload-preview span { display: block; margin-bottom: 4px; color: #94a3b8; font-size: 9px; }.payload-preview code { display: block; max-height: 52px; overflow: hidden; color: #475569; font-size: 9px; line-height: 1.5; overflow-wrap: anywhere; }.preview-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }.preview-card > p { margin: 10px 0 0; color: #94a3b8; font-size: 9px; line-height: 1.5; text-align: center; }
+:global(html.dark .qr-page .hero-card), :global(html.dark .qr-page .panel), :global(html.dark .qr-page .preview-card) { border-color: #334155; background: #1e293b; box-shadow: none; }:global(html.dark .qr-page .hero-card) { background: radial-gradient(circle at 88% 10%, #1e3a8a, transparent 28%), #1e293b; }:global(html.dark .qr-page h2), :global(html.dark .qr-page h3), :global(html.dark .qr-page .design-grid b), :global(html.dark .qr-page .logo-size b), :global(html.dark .qr-page .logo-row strong) { color: #f8fafc; }:global(html.dark .qr-page .type-switcher), :global(html.dark .qr-page .logo-row), :global(html.dark .qr-page .payload-preview) { background: #0f172a; }:global(html.dark .qr-page .type-switcher button.active) { color: #93c5fd; background: #334155; }:global(html.dark .qr-page .color-field label), :global(html.dark .qr-page .payload-preview code) { color: #cbd5e1; }
+@media (max-width: 930px) { .workspace { grid-template-columns: 1fr; }.preview-card { position: static; }.qr-stage { min-height: 320px; } }
+@media (max-width: 640px) { .hero-card { align-items: flex-start; flex-direction: column; padding: 21px; }.hero-badges { justify-content: flex-start; }.panel, .preview-card { padding: 17px; border-radius: 19px; }.type-switcher { grid-template-columns: repeat(3, 1fr); }.form-grid, .design-grid { grid-template-columns: 1fr; }.form-grid .wide { grid-column: auto; }.logo-row { align-items: flex-start; flex-direction: column; }.logo-actions { width: 100%; }.upload-button { flex: 1; max-width: none; }.qr-stage { min-height: 280px; }.preview-actions { grid-template-columns: 1fr; } }
 </style>

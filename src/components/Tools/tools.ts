@@ -256,9 +256,9 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'MD5在线加密',
+          title: 'MD5 摘要校验',
           logo: '/images/logo/md5.png',
-          desc: 'MD5在线加密,长度包含32位、16位',
+          desc: '计算文本或文件的 MD5 摘要，支持 16/32 位格式转换与校验值比对',
           url: '/md5/',
           cateId: 3,
           cate: '开发运维',
