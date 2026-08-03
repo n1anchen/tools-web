@@ -137,9 +137,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Barrage/Barrage.vue'),
     name: 'barrage',
     meta: {
-      title: "手持弹幕",
-      keywords: '手持弹幕，弹幕工具',
-      description: '手持弹幕是一种新型的互动沟通工具，可以方便地为各种户外活动、演出嘉年华等活动增加趣味性和互动性。手持弹幕具有轻便、易携带、易操作等优点，可以让每个参与者都变成活动的一部分。同时，手持弹幕还可以通过预先编写的文本、表情等形式，表达参与者的情感和想法，实现沟通互动。在社交媒体时代，手持弹幕的使用也带来了更广泛的社交效应，增加了活动的互动性和传播度。无论是举办方还是参与者，手持弹幕都是一个非常有价值的互动工具。',
+      title: '手持弹幕工作台',
+      keywords: '手持弹幕,全屏弹幕,滚动文字,应援屏,大字展示',
+      description: '支持多条消息、滚动与常亮模式、场景配色、方向控制和对比度检查的手持弹幕工作台',
     }
   },
   {
@@ -147,9 +147,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Unit/Unit.vue'),
     name: 'unit',
     meta: {
-      title: "单位转换",
-      keywords: '在线单位换算,长度单位换算,面积单位换算,时间单位换算,重量单位换算,温度单位换算,压力单位换算,热量单位换算,功率单位换算。',
-      description: '在线单位换算,长度单位换算,面积单位换算,时间单位换算,重量单位换算,温度单位换算,压力单位换算,热量单位换算,功率单位换算。',
+      title: '单位转换工作台',
+      keywords: '单位换算,长度,面积,重量,时间,温度,压力,能量,功率,公制,市制,英制',
+      description: '统一换算长度、面积、重量、时间、温度、压力、能量和功率，一次输入查看全部单位与定义说明',
     }
   },
   {
@@ -407,9 +407,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Choyen5000/Choyen5000.vue'),
     name: 'choyen5000',
     meta: {
-      title: "5000兆円生成器",
-      keywords: '5000兆円,表情包生成,图片生成',
-      description: '生成经典的5000兆円欲しい!表情包，支持自定义文本内容和字体颜色。',
+      title: '金属冲击标题工作室',
+      keywords: '5000兆円,金属标题,表情包生成,透明PNG,文字图片生成',
+      description: '生成红金与银色错位金属标题，支持拖拽定位、透明背景、经典副标题和多倍率 PNG 导出',
     }
   },
   {
@@ -417,9 +417,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/PornhubLogo/PornhubLogo.vue'),
     name: 'pornhublogo',
     meta: {
-      title: "P站风格Logo生成",
-      keywords: 'Pornhub风格,P站Logo,Logo生成,图片生成',
-      description: '生成P站风格的黑黄 Logo 图片，可自定义左右文字内容和背景形状。',
+      title: '双栏徽标工作室',
+      keywords: '双栏Logo,徽标生成,黑橙Logo,头像生成,透明PNG',
+      description: '实时生成可自定义文字、配色、圆角、画布形状和清晰倍率的双栏徽标 PNG',
     }
   },
   {
@@ -427,9 +427,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/BlueArchive/BlueArchive.vue'),
     name: 'bluearchive',
     meta: {
-      title: "蔚蓝档案标题生成",
-      keywords: 'BlueArchive,蔚蓝档案Logo,碧蓝档案,标题生成,图片生成',
-      description: '生成《蔚蓝档案》(Blue Archive) 游戏主标题Logo风格的图片。',
+      title: '蔚蓝标题工作室',
+      keywords: 'BlueArchive,蔚蓝档案Logo,碧蓝档案,标题生成,透明PNG,同人Logo',
+      description: '生成蔚蓝档案视觉语言启发的双栏标题，支持光环定位、透明背景和多倍率 PNG 导出',
     }
   },
   {
@@ -487,9 +487,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/FontPreview/FontPreview.vue'),
     name: 'fontPreview',
     meta: {
-      title: "字体在线预览",
-      keywords: '字体预览,本地字体,字体查看,font preview,字体文件预览',
-      description: '在线本地字体预览工具，打开本地字体文件或读取系统已安装字体，查看字体显示效果',
+      title: '字体标本工作室',
+      keywords: '字体预览,本地字体,字体标本,字号瀑布,CSS字体,font preview',
+      description: '使用真实样文和字号瀑布检查字体，支持内置字体栈、字体文件、本机字体及排版 CSS 复制',
     }
   },
   {
@@ -507,9 +507,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/ASCIIWordPic/ASCIIWordPic.vue'),
     name: 'asciiWordPic',
     meta: {
-      title: "ASCII字形生成器",
-      keywords: 'ASCII画,字形画,字形生成器',
-      description: '在线生成字形ASCII画',
+      title: 'ASCII 字形工作室',
+      keywords: 'ASCII画,FIGlet,字符画,字形生成器,终端标题',
+      description: '使用本地 FIGlet 字体实时生成 ASCII 字形，支持版式调节、复制和 TXT 下载',
     }
   },
   {

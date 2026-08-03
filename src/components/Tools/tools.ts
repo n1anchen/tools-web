@@ -44,9 +44,9 @@ export function getToolsCate() {
       list: [
         {
           id: 1,
-          title: '字体在线预览',
+          title: '字体标本工作室',
           logo: 'Font',
-          desc: '在线预览本机字体，支持打开字体文件或读取系统已安装字体查看效果',
+          desc: '用真实样文和字号瀑布预览字体，支持本机字体、字体文件与 CSS 复制',
           url: '/fontpreview/',
           cateId: 1,
           cate: '在线编辑'
@@ -150,9 +150,9 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'ASCII字形生成器',
+          title: 'ASCII 字形工作室',
           logo: '/images/logo/ascii_word_pic.png',
-          desc: '在线生成字形ASCII画',
+          desc: '21 种 FIGlet 字体实时预览，支持版式调节与 TXT 导出',
           url: '/asciiwordpic/',
           cateId: 2,
           cate: '文本处理',
@@ -391,7 +391,7 @@ export function getToolsCate() {
           id: 1,
           title: '单位换算',
           logo: '/images/logo/unit.png',
-          desc: '在线重量、长度、面积、时间、角度、速度、温度、压力、热量、功率等换算',
+          desc: '统一换算长度、面积、重量、时间、温度、压力、能量和功率，一次输入查看全部单位结果',
           url: '/unit/',
           cateId: 4,
           cate: '单位换算'
@@ -400,7 +400,7 @@ export function getToolsCate() {
           id: 1,
           title: '长度单位转换',
           logo: '/images/logo/length.png',
-          desc: '长度转换工具-支持国际长度单位，中国传统长度单位，英制长度单位',
+          desc: '支持公制、中国市制、英美制与航海长度，采用英寸、海里等精确定义',
           url: '/unit/?active=length',
           cateId: 4,
           cate: '单位换算'
@@ -409,7 +409,7 @@ export function getToolsCate() {
           id: 1,
           title: '面积单位转换',
           logo: '/images/logo/area.png',
-          desc: '面积转换工具-支持国际面积单位，中国传统面积单位，英制面积单位',
+          desc: '支持公制土地面积、中国市制与英美面积，包含亩、公顷、英亩等常用单位',
           url: '/unit/?active=area',
           cateId: 4,
           cate: '单位换算'
@@ -418,7 +418,7 @@ export function getToolsCate() {
           id: 1,
           title: '重量单位转换',
           logo: '/images/logo/weight.png',
-          desc: '重量转换工具-支持国际重量单位，中国传统重量单位，英制重量单位(常衡制和金衡制)',
+          desc: '支持公制、中国市制、常衡制和金衡制，并区分日常盎司与金衡盎司',
           url: '/unit/?active=weight',
           cateId: 4,
           cate: '单位换算'
@@ -427,7 +427,7 @@ export function getToolsCate() {
           id: 1,
           title: '时间单位转换',
           logo: '/images/logo/time_unit.png',
-          desc: '时间单位转换工具-支持国际时间单位',
+          desc: '支持纳秒至平均公历年，并明确区分固定时长与月、年的日历近似值',
           url: '/unit/?active=time',
           cateId: 4,
           cate: '单位换算'
@@ -436,7 +436,7 @@ export function getToolsCate() {
           id: 1,
           title: '温度单位转换',
           logo: '/images/logo/temperature.png',
-          desc: '温度单位转换工具-支持国际温度单位',
+          desc: '摄氏、华氏、开尔文、列氏和兰氏实时互转，并检查绝对零度边界',
           url: '/unit/?active=temperature',
           cateId: 4,
           cate: '单位换算'
@@ -445,16 +445,16 @@ export function getToolsCate() {
           id: 1,
           title: '压力单位转换',
           logo: '/images/logo/pressure.png',
-          desc: '压力单位转换工具-Pa/kPa/hPa/MPa/bar/torr/psi等',
+          desc: '覆盖 Pa、bar、atm、Torr、mmHg、psi 等工程、气象和轮胎常用单位',
           url: '/unit/?active=pressure',
           cateId: 4,
           cate: '单位换算'
         },
         {
           id: 1,
-          title: '热量单位转换',
+          title: '能量单位转换',
           logo: '/images/logo/heat.png',
-          desc: '热量单位转换工具-Wh/mWh/kWh/MWh/J/kJ等',
+          desc: '覆盖 Wh、J、cal、BTU 与电子伏特，可处理电能、机械能和热量换算',
           url: '/unit/?active=heat',
           cateId: 4,
           cate: '单位换算'
@@ -463,7 +463,7 @@ export function getToolsCate() {
           id: 1,
           title: '功率单位转换',
           logo: '/images/logo/power.png',
-          desc: '功率单位转换工具-W/mW/kW/MW/GW等',
+          desc: '覆盖 W、kW、机械马力、公制马力、BTU/h 与 kcal/h 等功率单位',
           url: '/unit/?active=power',
           cateId: 4,
           cate: '单位换算'
@@ -583,27 +583,27 @@ export function getToolsCate() {
       list: [
         {
           id: 1,
-          title: 'P站风格Logo生成',
+          title: '双栏徽标工作室',
           logo: '/images/logo/hub.png',
-          desc: '生成P站风格的黑黄 Logo 图片，可自定义左右文字内容和背景形状。',
+          desc: '自定义双栏文字、配色、圆角与画布形状，支持高清 PNG',
           url: '/pornhublogo/',
           cateId: 6,
           cate: '趣味工具',
         },
         {
           id: 1,
-          title: '5000兆円生成器',
+          title: '金属冲击标题工作室',
           logo: '/images/logo/5000choyen.png',
-          desc: '生成5000兆円风格图片的工具。支持自定义文本内容和字体颜色。',
+          desc: '生成红金与银色错位标题，支持拖拽定位、透明背景和高清 PNG',
           url: '/choyen5000/',
           cateId: 6,
           cate: '趣味工具',
         },
         {
           id: 1,
-          title: '蔚蓝档案标题生成',
+          title: '蔚蓝标题工作室',
           logo: '/images/logo/bluearchive.png',
-          desc: '生成类似于《蔚蓝档案》(Blue Archive) 游戏主标题 Logo 风格的图片。',
+          desc: '实时调整双栏标题与光环位置，支持透明背景和多倍率导出',
           url: '/bluearchive/',
           cateId: 6,
           cate: '趣味工具',
@@ -871,9 +871,9 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '手持弹幕',
+          title: '手持弹幕工作台',
           logo: '/images/logo/dm.png',
-          desc: '手持滚动弹幕',
+          desc: '多条消息、实时预览、场景配色与全屏展示',
           url: '/barrage/',
           cateId: 7,
           cate: '其他工具',

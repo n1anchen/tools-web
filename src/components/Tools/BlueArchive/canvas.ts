@@ -1,5 +1,6 @@
 import settings from './settings';
 import { loadFont } from './utils';
+import { canvasToPngBlob, getScaledDimensions } from '@/utils/logoStudio';
 
 const {
   canvasHeight,
@@ -41,14 +42,10 @@ export class LogoCanvas {
     this.crossImg = crossImg;
   }
 
-  async draw(setLoading?: (loading: boolean) => void) {
-    if (setLoading) setLoading(true);
-    
+  async draw() {
     const c = this.ctx;
     //predict canvas width
     await loadFont(fontSize, this.textL + this.textR);
-    
-    if (setLoading) setLoading(false);
     
     c.font = font;
     this.textMetricsL = c.measureText(this.textL);
@@ -184,14 +181,23 @@ export class LogoCanvas {
 
   private _drawOffsetY = 0;
 
-  generateImg(): Promise<Blob> {
+  private shouldCropOutput() {
+    return this.bgShape === 'auto' && (
+      this.textWidthL + paddingX < canvasWidth / 2 ||
+      this.textWidthR + paddingX < canvasWidth / 2
+    );
+  }
+
+  getOutputDimensions(scale = 1) {
+    const width = this.shouldCropOutput()
+      ? this.textWidthL + this.textWidthR + paddingX * 2
+      : this.canvas.width;
+    return getScaledDimensions(width, this.canvas.height, scale);
+  }
+
+  private createOutputCanvas() {
     let outputCanvas: HTMLCanvasElement;
-    if (
-      this.bgShape === 'auto' && (
-        this.textWidthL + paddingX < canvasWidth / 2 ||
-        this.textWidthR + paddingX < canvasWidth / 2
-      )
-    ) {
+    if (this.shouldCropOutput()) {
       outputCanvas = document.createElement('canvas');
       outputCanvas.width = this.textWidthL + this.textWidthR + paddingX * 2;
       outputCanvas.height = this.canvas.height;
@@ -210,14 +216,10 @@ export class LogoCanvas {
     } else {
       outputCanvas = this.canvas;
     }
-    return new Promise<Blob>((resolve, reject) => {
-      outputCanvas.toBlob((blob) => {
-        if (blob) {
-          resolve(blob);
-        } else {
-          reject(new Error('Canvas to Blob failed'));
-        }
-      });
-    });
+    return outputCanvas;
+  }
+
+  generateImg(scale = 1): Promise<Blob> {
+    return canvasToPngBlob(this.createOutputCanvas(), scale);
   }
 }

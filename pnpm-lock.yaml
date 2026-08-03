@@ -143,9 +143,6 @@ importers:
       vue-clipboard3:
         specifier: ^2.0.0
         version: 2.0.0
-      vue-danmaku:
-        specifier: ^2.0.5
-        version: 2.0.5(vue@3.5.40(typescript@5.9.3))
       vue-router:
         specifier: ^4.6.4
         version: 4.6.4(vue@3.5.40(typescript@5.9.3))
@@ -4212,11 +4209,6 @@ packages:
 
   vue-component-type-helpers@3.3.8:
     resolution: {integrity: sha512-troqCMmQodQDqUqn63NQaFi+CDSclSe7sc8VEBFqf5GFLqmGR2Ph3P2WEC7qwpRVyEWsTi/aAr4vyOe/B1hU3g==}
-
-  vue-danmaku@2.0.5:
-    resolution: {integrity: sha512-crLTHXmkB+1/Fix7ciJnCo/KAhlUPoR4F/2DVpAi9PdN5XJcs7hS4nsm1xrSahBIOdWm+QltiUWSwSkWmqXN2A==}
-    peerDependencies:
-      vue: ^3.0.0
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -8744,10 +8736,6 @@ snapshots:
       clipboard: 2.0.11
 
   vue-component-type-helpers@3.3.8: {}
-
-  vue-danmaku@2.0.5(vue@3.5.40(typescript@5.9.3)):
-    dependencies:
-      vue: 3.5.40(typescript@5.9.3)
 
   vue-demi@0.14.10(vue@3.5.40(typescript@5.9.3)):
     dependencies:

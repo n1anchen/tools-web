@@ -1,3 +1,34 @@
+export interface ChoyenOutputBounds {
+    width: number;
+    height: number;
+}
+
+export function calculateChoyenOutputBounds(
+    topX: number,
+    topWidth: number,
+    bottomX: number,
+    bottomWidth: number,
+    canvasHeight = 290,
+    padding = 24,
+): ChoyenOutputBounds {
+    const rightEdge = Math.max(topX + Math.max(0, topWidth), bottomX + Math.max(0, bottomWidth));
+    return {
+        width: Math.max(320, Math.ceil(rightEdge + Math.max(0, padding))),
+        height: Math.max(1, Math.ceil(canvasHeight)),
+    };
+}
+
+export function buildChoyenFilename(topText: string, bottomText: string): string {
+    const safeText = `${topText}-${bottomText}`
+        .trim()
+        .replace(/[\\/:*?"<>|]/g, '-')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
+        .slice(0, 42);
+    return `${safeText || 'impact-title'}-5000-style.png`;
+}
+
 export class TopText {
     value: string = "";
     font: string = "";
@@ -229,6 +260,7 @@ export class Drawer {
     dragStartCursorPos: number = 0;
     dragStartBottomTextPos: number = 0;
     lang: string = "cn";
+    onPositionChange: ((x: number) => void) | null = null;
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
@@ -267,6 +299,19 @@ export class Drawer {
         this.bottomText.draw();
     }
 
+    resize(width: number, height = this.canvas.height) {
+        const safeWidth = Math.max(320, Math.ceil(width));
+        const safeHeight = Math.max(1, Math.ceil(height));
+        if (this.canvas.width === safeWidth && this.canvas.height === safeHeight) return;
+        this.canvas.width = safeWidth;
+        this.canvas.height = safeHeight;
+        this.ctx = this.canvas.getContext('2d')!;
+        this.ctx.lineJoin = 'round';
+        this.ctx.lineCap = 'round';
+        this.topText.ctx = this.ctx;
+        this.bottomText.ctx = this.ctx;
+    }
+
     clear() {
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         if (!this.useTransparent) {
@@ -293,7 +338,8 @@ export class Drawer {
         if (this.dragging) {
             const currentX = this.getCanvasLocalX(e.clientX);
             const dx = currentX - this.dragStartCursorPos;
-            this.bottomText.x = this.dragStartBottomTextPos + dx;
+            this.bottomText.x = Math.max(40, Math.min(this.canvas.width - 120, this.dragStartBottomTextPos + dx));
+            this.onPositionChange?.(Math.round(this.bottomText.x));
             this.refresh();
         }
 
@@ -357,21 +403,36 @@ export class Drawer {
         this.onCursorUp(e.changedTouches[0]);
     }
 
-    saveImage() {
-        const width = Math.max(this.topText.x + this.topText.w, this.bottomText.x + this.bottomText.w);
-        const height = this.ctx.canvas.height;
+    getOutputBounds(): ChoyenOutputBounds {
+        return calculateChoyenOutputBounds(
+            this.topText.x,
+            this.topText.w,
+            this.bottomText.x,
+            this.bottomText.w,
+            this.ctx.canvas.height,
+        );
+    }
 
-        const data = this.ctx.getImageData(0, 0, width, height);
+    createOutputCanvas(scale = 1): HTMLCanvasElement {
+        const safeScale = Math.max(1, Math.min(3, Math.round(scale)));
+        const { width, height } = this.getOutputBounds();
         const canvas = document.createElement('canvas');
-        canvas.width = data.width;
-        canvas.height = data.height;
+        canvas.width = width * safeScale;
+        canvas.height = height * safeScale;
 
         const ctx = canvas.getContext('2d')!;
-        ctx.putImageData(data, 0, 0);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(this.canvas, 0, 0, width, height, 0, 0, canvas.width, canvas.height);
+        return canvas;
+    }
+
+    saveImage(scale = 1, filename = 'impact-title-5000-style.png') {
+        const canvas = this.createOutputCanvas(scale);
 
         const a = document.createElement("a");
         a.href = canvas.toDataURL("image/png");
-        a.setAttribute("download", "5000choyen.png");
+        a.setAttribute("download", filename);
 
         document.body.appendChild(a);
         a.click();

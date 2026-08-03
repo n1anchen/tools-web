@@ -1,21 +1,33 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted, watch } from 'vue'
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { CopyDocument, Download, Loading, Refresh } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import { Download, CopyDocument, Loading } from '@element-plus/icons-vue'
+import debounce from 'lodash/debounce'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import { buildLogoFilename } from '@/utils/logoStudio'
+import { loadFontStylesheet, ensureFontsLoaded } from '@/utils/font'
 import { LogoCanvas } from './canvas'
 import { loadImages } from './utils'
-import debounce from 'lodash/debounce'
-import { loadFontStylesheet, ensureFontsLoaded } from '@/utils/font'
 
-const info = reactive({
-  title: "蔚蓝档案标题生成",
-})
+const presets = [
+  { label: '经典标题', note: 'Blue / Archive', left: 'Blue', right: 'Archive' },
+  { label: '工具箱', note: 'Tools / Web', left: 'Tools', right: 'Web' },
+  { label: '老师社团', note: 'Sensei / Club', left: 'Sensei', right: 'Club' },
+  { label: '青春档案', note: '中文双栏', left: '青春', right: '档案' },
+]
+const shapeOptions = [
+  { label: '自适应', value: 'auto' },
+  { label: '方形', value: 'square' },
+  { label: '圆形', value: 'circle' },
+]
+const scaleOptions = [
+  { label: '1×', value: 1 },
+  { label: '2×', value: 2 },
+  { label: '3×', value: 3 },
+]
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
-let baCanvas: LogoCanvas | null = null
-
 const state = reactive({
   textL: 'Blue',
   textR: 'Archive',
@@ -23,214 +35,201 @@ const state = reactive({
   bgShape: 'auto' as 'auto' | 'square' | 'circle',
   graphX: -15,
   graphY: 0,
-  loading: true
+  scale: 2,
+  loading: true,
+  exporting: false,
+  status: '正在载入字体与图形资源',
+  error: '',
 })
+const dimensions = reactive({ width: 900, height: 250 })
+let logoCanvas: LogoCanvas | null = null
+let renderId = 0
 
-// Update canvas with state values
-const updateCanvas = () => {
-  if (!baCanvas) return
-  
-  baCanvas.textL = state.textL
-  baCanvas.textR = state.textR
-  baCanvas.transparentBg = state.transparent
-  baCanvas.bgShape = state.bgShape
-  baCanvas.graphOffset.X = state.graphX
-  baCanvas.graphOffset.Y = state.graphY
-  
-  baCanvas.draw((l: boolean) => { state.loading = l })
+const textLength = computed(() => Array.from(`${state.textL}${state.textR}`).length)
+const backgroundLabel = computed(() => state.transparent ? '透明背景' : '白色背景')
+const shapeLabel = computed(() => ({ auto: '自适应横幅', square: '正方形画布', circle: '圆形画布' })[state.bgShape])
+
+function syncDimensions() {
+  if (!logoCanvas) return
+  const next = logoCanvas.getOutputDimensions(state.scale)
+  dimensions.width = next.width
+  dimensions.height = next.height
 }
 
-// Debounced text update
-const debouncedUpdate = debounce(updateCanvas, 300)
+async function renderCanvas() {
+  if (!logoCanvas) return
+  const currentId = ++renderId
+  state.loading = true
+  state.error = ''
+  state.status = '正在重绘标题…'
+  logoCanvas.textL = state.textL.trim() || ' '
+  logoCanvas.textR = state.textR.trim() || ' '
+  logoCanvas.transparentBg = state.transparent
+  logoCanvas.bgShape = state.bgShape
+  logoCanvas.graphOffset.X = state.graphX
+  logoCanvas.graphOffset.Y = state.graphY
+  try {
+    await logoCanvas.draw()
+    if (currentId !== renderId) return
+    syncDimensions()
+    state.status = '预览已更新，可复制或下载'
+  } catch (error) {
+    if (currentId !== renderId) return
+    state.error = error instanceof Error ? error.message : '预览生成失败'
+    state.status = '渲染失败，请重试'
+  } finally {
+    if (currentId === renderId) state.loading = false
+  }
+}
 
-watch(() => [state.textL, state.textR], () => {
-  debouncedUpdate()
-})
+const scheduleRender = debounce(renderCanvas, 180)
 
-watch(() => [state.transparent, state.bgShape, state.graphX, state.graphY], () => {
-  updateCanvas()
-})
+function applyPreset(preset: typeof presets[number]) {
+  state.textL = preset.left
+  state.textR = preset.right
+  scheduleRender.flush()
+}
+
+function resetStudio() {
+  Object.assign(state, { textL: 'Blue', textR: 'Archive', transparent: false, bgShape: 'auto', graphX: -15, graphY: 0, scale: 2 })
+  renderCanvas()
+}
+
+function resetHalo() {
+  state.graphX = -15
+  state.graphY = 0
+}
+
+async function exportBlob() {
+  if (!logoCanvas) throw new Error('画布尚未准备完成')
+  return logoCanvas.generateImg(state.scale)
+}
+
+async function downloadImage() {
+  if (state.loading || state.exporting) return
+  state.exporting = true
+  try {
+    const blob = await exportBlob()
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = buildLogoFilename([state.textL, state.textR], 'blue-style')
+    anchor.click()
+    URL.revokeObjectURL(url)
+    ElMessage.success(`已导出 ${dimensions.width} × ${dimensions.height} PNG`)
+  } catch {
+    ElMessage.error('图片保存失败，请稍后重试')
+  } finally {
+    state.exporting = false
+  }
+}
+
+async function copyImage() {
+  if (state.loading || state.exporting) return
+  if (typeof ClipboardItem === 'undefined' || !navigator.clipboard?.write) {
+    ElMessage.warning('当前浏览器不支持复制 PNG，请使用下载')
+    return
+  }
+  state.exporting = true
+  try {
+    const blob = await exportBlob()
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+    ElMessage.success('PNG 图片已复制到剪贴板')
+  } catch {
+    ElMessage.error('图片复制失败，请尝试直接下载')
+  } finally {
+    state.exporting = false
+  }
+}
+
+watch(() => [state.textL, state.textR, state.transparent, state.bgShape, state.graphX, state.graphY], scheduleRender)
+watch(() => state.scale, syncDimensions)
 
 onMounted(async () => {
   try {
-    // 注册并加载本地 RoGSans 字体（仅 ASCII）
-    const existingFace = [...document.fonts].find(f => f.family === 'RoGSans')
-    let rogsansReady: Promise<FontFace>
-    if (existingFace) {
-      rogsansReady = existingFace.status === 'loaded'
-        ? Promise.resolve(existingFace)
-        : existingFace.load()
-    } else {
-      const rogsans = new FontFace('RoGSans', 'url(/fonts/bluearchive/RoGSans.woff2)', {
-        weight: '900',
-        style: 'normal',
-        unicodeRange: 'U+0-7F',
-      })
-      document.fonts.add(rogsans)
-      rogsansReady = rogsans.load()
-    }
+    const existingFace = [...document.fonts].find(face => face.family === 'RoGSans')
+    const rogsansReady = existingFace
+      ? (existingFace.status === 'loaded' ? Promise.resolve(existingFace) : existingFace.load())
+      : (() => {
+          const face = new FontFace('RoGSans', 'url(/fonts/bluearchive/RoGSans.woff2)', { weight: '900', style: 'normal', unicodeRange: 'U+0-7F' })
+          document.fonts.add(face)
+          return face.load()
+        })()
 
-    // 并行加载所有资源：本地字体、网络字体样式表、图片
     const [, , { halo, cross }] = await Promise.all([
-      rogsansReady.catch(e => console.warn('RoGSans load failed:', e)),
+      rogsansReady.catch(() => undefined),
       loadFontStylesheet('font-noto-sans', 'https://fonts.loli.net/css?family=Noto+Sans+SC:900'),
       loadImages('/images/bluearchive/halo.png', '/images/bluearchive/cross.png'),
     ])
-
-    // 显式触发网络字体分片下载
-    await ensureFontsLoaded([
-      { font: '900 84px "Noto Sans SC"', text: '测试' },
-    ])
-
-    if (canvasRef.value) {
-      baCanvas = new LogoCanvas(canvasRef.value, halo, cross)
-      updateCanvas()
-    }
-  } catch (err) {
-    console.error("Failed to init BA logo canvas", err)
+    await ensureFontsLoaded([{ font: '900 84px "Noto Sans SC"', text: '青春档案' }])
+    if (!canvasRef.value) throw new Error('画布初始化失败')
+    logoCanvas = new LogoCanvas(canvasRef.value, halo, cross)
+    await renderCanvas()
+  } catch (error) {
+    state.error = error instanceof Error ? error.message : '资源加载失败'
+    state.status = '资源加载失败，请刷新重试'
     state.loading = false
   }
 })
 
 onUnmounted(() => {
-  debouncedUpdate.cancel()
+  renderId += 1
+  scheduleRender.cancel()
 })
-
-const handleSave = async () => {
-  if (!baCanvas) return
-  
-  try {
-    const blob = await baCanvas.generateImg()
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${state.textL}${state.textR}_ba-style.png`
-    a.click()
-    URL.revokeObjectURL(url)
-  } catch (e) {
-    ElMessage.error('图片保存失败')
-  }
-}
-
-const handleCopy = async () => {
-  if (!baCanvas) return
-  
-  try {
-    const blob = await baCanvas.generateImg()
-    const cp = [new ClipboardItem({ 'image/png': blob })]
-    await navigator.clipboard.write(cp)
-    ElMessage.success('图片已复制到剪贴板')
-  } catch (e) {
-    ElMessage.error('图片复制失败，请尝试直接保存')
-  }
-}
 </script>
 
 <template>
-  <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+  <div class="blue-logo-page flex flex-col mt-3 flex-1">
+    <DetailHeader title="蔚蓝标题工作室" />
 
-    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm transition-shadow duration-300">
-      
-      <!-- Canvas Wrapper -->
-      <div class="w-full overflow-x-auto mb-6 flex justify-center rounded-lg p-4 checkerboard-bg custom-scrollbar relative">
-        <canvas ref="canvasRef" height="250" width="900" style="max-width: 100%; height: auto; border: 1px solid rgba(0,0,0,0.1);"></canvas>
-        
-        <!-- Loading overlay -->
-        <div v-if="state.loading" class="absolute inset-0 z-10 flex items-center justify-center bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-lg">
-          <el-icon class="is-loading text-4xl text-blue-500"><Loading /></el-icon>
-        </div>
+    <section class="studio-hero">
+      <div><span class="eyebrow">BLUE TITLE COMPOSER</span><h2>拆分文字，组合一枚清透标题</h2><p>左右文字、光环位置、画布形状与导出倍率都可实时调整；所有合成均在浏览器画布中完成。</p></div>
+      <div class="hero-stats"><div><strong>{{ dimensions.width }}</strong><span>导出宽度</span></div><div><strong>{{ dimensions.height }}</strong><span>导出高度</span></div><div><strong>{{ state.scale }}×</strong><span>清晰倍率</span></div></div>
+    </section>
+
+    <section class="preview-card">
+      <header class="preview-heading">
+        <div><span class="eyebrow">LIVE CANVAS</span><h3>最终效果预览</h3><p>{{ state.status }}</p></div>
+        <div class="export-actions"><button type="button" aria-label="复制蔚蓝风格 PNG" :disabled="state.loading || state.exporting" @click="copyImage"><el-icon><CopyDocument /></el-icon>复制 PNG</button><button type="button" class="primary" aria-label="下载蔚蓝风格 PNG" :disabled="state.loading || state.exporting" @click="downloadImage"><el-icon><Download /></el-icon>下载图片</button></div>
+      </header>
+      <div class="canvas-stage">
+        <canvas ref="canvasRef" width="900" height="250" role="img" aria-label="蔚蓝风格标题预览" />
+        <div v-if="state.loading" class="loading-overlay"><el-icon class="is-loading"><Loading /></el-icon><span>{{ state.status }}</span></div>
+        <div v-else-if="state.error" class="loading-overlay error"><span>{{ state.error }}</span><button type="button" @click="renderCanvas">重新渲染</button></div>
       </div>
+      <div class="preview-meta"><span>{{ shapeLabel }}</span><span>{{ backgroundLabel }}</span><span>{{ dimensions.width }} × {{ dimensions.height }} px</span><span>PNG · 本地生成</span></div>
+    </section>
 
-      <!-- Controls -->
-      <div class="flex flex-col gap-6 max-w-3xl mx-auto w-full">
-        <!-- Input fields -->
-        <div class="flex flex-col sm:flex-row gap-4 items-center justify-center">
-          <el-input 
-            v-model="state.textL" 
-            size="large"
-            placeholder="Blue"
-            class="max-w-[200px]"
-          />
-          <el-input 
-            v-model="state.textR" 
-            size="large"
-            placeholder="Archive"
-            class="max-w-[200px]"
-          />
-        </div>
+    <div class="workspace-grid">
+      <section class="control-card">
+        <header class="card-heading"><div><span class="eyebrow">TITLE CONTENT</span><h3>文字与场景</h3></div><span>{{ textLength }} 个字符</span></header>
+        <div class="text-grid"><label><span>左侧蓝字</span><el-input v-model="state.textL" maxlength="18" aria-label="左侧蓝色文字" /></label><label><span>右侧深色字</span><el-input v-model="state.textR" maxlength="18" aria-label="右侧深色文字" /></label></div>
+        <div class="preset-section"><span>标题预设</span><div><button v-for="preset in presets" :key="preset.label" type="button" @click="applyPreset(preset)"><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small></button></div></div>
 
-        <!-- Options -->
-        <div class="flex flex-col sm:flex-row gap-6 justify-center flex-wrap">
-          <div class="flex flex-col items-center gap-2">
-            <el-checkbox v-model="state.transparent" label="透明背景" size="large" border />
-          </div>
+        <label class="option-field"><span>画布形状</span><el-segmented v-model="state.bgShape" :options="shapeOptions" /></label>
+        <div class="background-row"><div><strong>透明背景</strong><span>适合叠加到海报、视频或头像中</span></div><el-switch v-model="state.transparent" aria-label="切换透明背景" /></div>
+      </section>
 
-          <div class="flex items-center gap-3 bg-gray-50 dark:bg-slate-700/50 px-4 py-2 rounded-lg border border-gray-100 dark:border-slate-700">
-            <span class="text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">背景形状</span>
-            <el-radio-group v-model="state.bgShape" size="small">
-              <el-radio-button value="auto">自适应</el-radio-button>
-              <el-radio-button value="square">正方形</el-radio-button>
-              <el-radio-button value="circle">圆形</el-radio-button>
-            </el-radio-group>
-          </div>
+      <aside class="export-card">
+        <header class="card-heading"><div><span class="eyebrow">HALO & EXPORT</span><h3>光环与导出</h3></div><button type="button" aria-label="恢复默认设置" @click="resetStudio"><el-icon><Refresh /></el-icon>重置</button></header>
+        <div class="slider-setting"><label><span>光环水平位置</span><strong>X {{ state.graphX }}</strong></label><el-slider v-model="state.graphX" :min="-120" :max="120" /></div>
+        <div class="slider-setting"><label><span>光环垂直位置</span><strong>Y {{ state.graphY }}</strong></label><el-slider v-model="state.graphY" :min="-80" :max="80" /></div>
+        <button type="button" class="halo-reset" @click="resetHalo">光环回到默认位置</button>
 
-          <div class="flex items-center gap-3 bg-gray-50 dark:bg-slate-700/50 px-4 py-2 rounded-lg border border-gray-100 dark:border-slate-700">
-            <span class="text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">光环位置 X</span>
-            <el-input-number v-model="state.graphX" :step="1" size="small" class="w-24" />
-            
-            <span class="text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap ml-2">Y </span>
-            <el-input-number v-model="state.graphY" :step="1" size="small" class="w-24" />
-          </div>
-        </div>
-
-        <!-- Action -->
-        <div class="flex justify-center gap-4 mt-4">
-          <el-button type="primary" size="large" class="w-32" @click="handleSave" :loading="state.loading">
-            <el-icon class="mr-1"><Download /></el-icon>保存图片
-          </el-button>
-          <el-button size="large" class="w-32" @click="handleCopy" :loading="state.loading">
-            <el-icon class="mr-1"><CopyDocument /></el-icon>复制图片
-          </el-button>
-        </div>
-      </div>
+        <label class="resolution-field"><span>导出清晰度</span><el-segmented v-model="state.scale" :options="scaleOptions" /></label>
+        <div class="dimension-summary"><span>最终 PNG</span><strong>{{ dimensions.width }} × {{ dimensions.height }}</strong><small>{{ state.scale === 1 ? '适合网页与聊天' : state.scale === 2 ? '适合高清分享' : '适合大尺寸排版' }}</small></div>
+      </aside>
     </div>
 
-    <!-- desc -->
-    <ToolDetail title="简介">
-      <div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-        <el-text>生成类似于《蔚蓝档案》(Blue Archive) 游戏主标题 Logo 风格的图片。</el-text>
-        <br/><el-text class="mt-2">参考项目：<el-link href="https://github.com/nulla2011/Bluearchive-logo" target="_blank">nulla2011/Bluearchive-logo</el-link></el-text>
-      </div> 
+    <ToolDetail title="使用与版权说明">
+      <el-text>本工具用于生成受《蔚蓝档案》标题视觉语言启发的同人风格图片，并非官方工具。自适应画布会裁切多余留白，方形和圆形适合作为头像底图；透明背景仅保留文字、描边与图形。导出倍率只影响 PNG 像素尺寸，不改变预览构图。商用前请自行确认文字、作品与相关标识的使用权限。</el-text>
     </ToolDetail>
   </div>
 </template>
 
 <style scoped>
-.checkerboard-bg {
-  background-color: #f9fafb;
-  background-image: 
-    linear-gradient(45deg, #e5e7eb 25%, transparent 25%, transparent 75%, #e5e7eb 75%, #e5e7eb), 
-    linear-gradient(45deg, #e5e7eb 25%, transparent 25%, transparent 75%, #e5e7eb 75%, #e5e7eb);
-  background-size: 20px 20px;
-  background-position: 0 0, 10px 10px;
-}
-
-.dark .checkerboard-bg {
-  background-color: #0f172a;
-  background-image: 
-    linear-gradient(45deg, #1e293b 25%, transparent 25%, transparent 75%, #1e293b 75%, #1e293b), 
-    linear-gradient(45deg, #1e293b 25%, transparent 25%, transparent 75%, #1e293b 75%, #1e293b);
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  height: 8px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #475569;
-}
+.blue-logo-page{--accent:#0ea5e9;--deep:#0369a1;--soft:#f0f9ff;gap:16px}.studio-hero,.preview-card,.control-card,.export-card{border:1px solid #dbeafe;border-radius:22px;background:#fff;box-shadow:0 16px 40px rgba(14,116,144,.07)}.studio-hero{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:27px 30px;border:0;color:#fff;background:radial-gradient(circle at 84% 5%,rgba(255,255,255,.32),transparent 23%),linear-gradient(135deg,#082f49,#0284c7 57%,#67e8f9)}.eyebrow{display:block;margin-bottom:6px;color:var(--accent);font-size:10px;font-weight:900;letter-spacing:.16em}.studio-hero .eyebrow{color:#bae6fd}.studio-hero h2{margin:0;font-size:clamp(24px,3vw,36px);font-weight:850;letter-spacing:-.03em}.studio-hero p{max-width:700px;margin:9px 0 0;color:#e0f2fe;line-height:1.65}.hero-stats{display:grid;grid-template-columns:repeat(3,88px)}.hero-stats div{display:grid;place-items:center;padding:8px;border-left:1px solid rgba(255,255,255,.28)}.hero-stats strong{font-size:21px}.hero-stats span{color:#e0f2fe;font-size:9px}.preview-card{padding:21px}.preview-heading,.card-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.preview-heading{margin-bottom:14px}.preview-heading h3,.card-heading h3{margin:0;color:#0f172a;font-size:19px}.preview-heading p{margin:3px 0 0;color:#94a3b8;font-size:10px}.export-actions{display:flex;gap:7px}.export-actions button,.card-heading>button{display:flex;align-items:center;gap:5px;padding:8px 10px;border:1px solid #cbd5e1;border-radius:9px;color:#475569;background:#fff;cursor:pointer;font-size:10px}.export-actions button.primary{border-color:var(--accent);color:#fff;background:var(--accent)}.export-actions button:disabled{opacity:.4;cursor:not-allowed}.canvas-stage{position:relative;display:grid;place-items:center;min-height:280px;padding:28px;border-radius:17px;overflow:auto;background-color:#f8fafc;background-image:linear-gradient(45deg,#e2e8f0 25%,transparent 25%,transparent 75%,#e2e8f0 75%),linear-gradient(45deg,#e2e8f0 25%,transparent 25%,transparent 75%,#e2e8f0 75%);background-position:0 0,12px 12px;background-size:24px 24px}.canvas-stage canvas{display:block;max-width:100%;height:auto;filter:drop-shadow(0 10px 24px rgba(14,116,144,.12))}.loading-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:9px;color:var(--deep);background:rgba(248,250,252,.75);backdrop-filter:blur(4px);font-size:11px}.loading-overlay>.el-icon{font-size:25px}.loading-overlay.error{flex-direction:column;color:#be123c}.loading-overlay button{padding:6px 9px;border:0;border-radius:7px;color:#fff;background:#e11d48;cursor:pointer}.preview-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}.preview-meta span{padding:5px 8px;border-radius:999px;color:#64748b;background:#f1f5f9;font-size:9px}.workspace-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(340px,.78fr);gap:16px;align-items:start}.control-card,.export-card{padding:21px}.card-heading{margin-bottom:17px}.card-heading>span{padding:5px 8px;border-radius:999px;color:var(--deep);background:var(--soft);font-size:9px}.card-heading>button{padding:6px 8px}.text-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.text-grid label>span,.option-field>span,.resolution-field>span{display:block;margin-bottom:7px;color:#64748b;font-size:10px}.preset-section{margin-top:15px}.preset-section>span{display:block;margin-bottom:7px;color:#64748b;font-size:10px}.preset-section>div{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.preset-section button{padding:9px;border:1px solid #e2e8f0;border-radius:11px;color:#64748b;background:#f8fafc;text-align:left;cursor:pointer}.preset-section strong,.preset-section small{display:block}.preset-section strong{color:#334155;font-size:10px}.preset-section small{margin-top:3px;color:#94a3b8;font-size:8px}.option-field,.resolution-field{display:block;margin-top:16px}.option-field :deep(.el-segmented),.resolution-field :deep(.el-segmented){width:100%}.background-row{display:flex;align-items:center;justify-content:space-between;margin-top:13px;padding:11px 12px;border-radius:12px;background:#f8fafc}.background-row strong,.background-row span{display:block}.background-row strong{color:#334155;font-size:11px}.background-row span{margin-top:2px;color:#94a3b8;font-size:9px}.slider-setting{margin-top:13px}.slider-setting label{display:flex;justify-content:space-between;margin-bottom:7px;color:#64748b;font-size:10px}.slider-setting strong{color:var(--deep)}.slider-setting :deep(.el-slider){padding:0 8px}.halo-reset{width:100%;padding:7px;border:1px dashed #bae6fd;border-radius:9px;color:var(--deep);background:var(--soft);cursor:pointer;font-size:9px}.dimension-summary{margin-top:14px;padding:15px;border-radius:14px;color:#fff;background:linear-gradient(135deg,#075985,#0284c7)}.dimension-summary span,.dimension-summary strong,.dimension-summary small{display:block}.dimension-summary span{color:#bae6fd;font-size:9px}.dimension-summary strong{margin-top:5px;font-size:22px}.dimension-summary small{margin-top:4px;color:#e0f2fe;font-size:9px}
+:global(html.dark .blue-logo-page .preview-card),:global(html.dark .blue-logo-page .control-card),:global(html.dark .blue-logo-page .export-card){border-color:#334155;background:#1e293b;box-shadow:none}:global(html.dark .blue-logo-page .preview-heading h3),:global(html.dark .blue-logo-page .card-heading h3),:global(html.dark .blue-logo-page .preset-section strong),:global(html.dark .blue-logo-page .background-row strong){color:#f8fafc}:global(html.dark .blue-logo-page .canvas-stage){background-color:#0f172a;background-image:linear-gradient(45deg,#1e293b 25%,transparent 25%,transparent 75%,#1e293b 75%),linear-gradient(45deg,#1e293b 25%,transparent 25%,transparent 75%,#1e293b 75%)}:global(html.dark .blue-logo-page .loading-overlay){background:rgba(15,23,42,.8)}:global(html.dark .blue-logo-page .export-actions button),:global(html.dark .blue-logo-page .card-heading>button),:global(html.dark .blue-logo-page .preset-section button),:global(html.dark .blue-logo-page .background-row){border-color:#334155;color:#cbd5e1;background:#0f172a}:global(html.dark .blue-logo-page .preview-meta span){color:#cbd5e1;background:#0f172a}
+.canvas-stage canvas{max-height:520px}
+@media(max-width:980px){.workspace-grid{grid-template-columns:1fr}.canvas-stage{min-height:240px}}@media(max-width:650px){.blue-logo-page{gap:12px}.studio-hero{align-items:flex-start;flex-direction:column;padding:22px 20px}.hero-stats{grid-template-columns:repeat(3,1fr);width:100%}.hero-stats div:first-child{border-left:0}.preview-card,.control-card,.export-card{padding:15px}.preview-heading{align-items:flex-start;flex-direction:column}.export-actions{width:100%}.export-actions button{flex:1;justify-content:center}.canvas-stage{min-height:190px;padding:14px}.text-grid{grid-template-columns:1fr}.preset-section>div{grid-template-columns:1fr 1fr}.card-heading{align-items:flex-start}}
 </style>
