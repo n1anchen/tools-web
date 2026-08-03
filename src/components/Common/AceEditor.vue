@@ -22,6 +22,7 @@ interface Props {
   showLineNumbers?: boolean
   wordWrap?: boolean
   readonly?: boolean
+  tabSize?: number
 }
 
 interface Emits {
@@ -36,13 +37,15 @@ const props = withDefaults(defineProps<Props>(), {
   showWhitespace: false,
   showLineNumbers: true,
   wordWrap: true,
-  readonly: false
+  readonly: false,
+  tabSize: 2
 })
 
 const emit = defineEmits<Emits>()
 
 const editorRef = ref<HTMLElement>()
 let editor: any = null
+let aceApi: any = null
 let aceLoaded = false
 
 // 动态加载 Ace 编辑器
@@ -62,6 +65,9 @@ const loadAceEditor = async () => {
       break
     case 'html':
       await import('ace-builds/src-noconflict/mode-html')
+      break
+    case 'xml':
+      await import('ace-builds/src-noconflict/mode-xml')
       break
     case 'json':
       await import('ace-builds/src-noconflict/mode-json')
@@ -99,6 +105,7 @@ const initEditor = async () => {
 
   try {
     const ace = await loadAceEditor()
+    aceApi = ace
     
     editor = ace.edit(editorRef.value)
     editor.setTheme(isDark.value ? 'ace/theme/monokai' : 'ace/theme/chrome')
@@ -118,7 +125,9 @@ const initEditor = async () => {
       highlightActiveLine: true,
       highlightSelectedWord: true,
       foldStyle: "markbegin",
-      readOnly: props.readonly
+      readOnly: props.readonly,
+      tabSize: props.tabSize,
+      useSoftTabs: true
     })
 
     // 启用扩展功能
@@ -181,6 +190,16 @@ watch(() => props.wordWrap, (value) => {
   }
 })
 
+watch(() => props.tabSize, (value) => {
+  if (editor) editor.session.setTabSize(value)
+})
+
+watch(() => props.mode, async (value) => {
+  if (!editor) return
+  if (value === 'xml') await import('ace-builds/src-noconflict/mode-xml')
+  editor.session.setMode(`ace/mode/${value}`)
+})
+
 watch(isDark, (dark) => {
   if (editor) {
     editor.setTheme(dark ? 'ace/theme/monokai' : 'ace/theme/chrome')
@@ -199,9 +218,8 @@ const getValue = () => {
 }
 
 const formatCode = () => {
-  if (editor) {
-    const ace = (window as any).ace
-    const beautify = ace.require("ace/ext/beautify")
+  if (editor && aceApi) {
+    const beautify = aceApi.require("ace/ext/beautify")
     beautify.beautify(editor.session)
   }
 }

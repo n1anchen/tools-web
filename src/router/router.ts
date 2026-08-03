@@ -37,9 +37,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/JsonTran/JsonTran.vue'),
     name: 'json',
     meta: {
-      title: "Json在线转换",
-      keywords: 'json编辑器，json格式化,json压缩,json转义,json去转义',
-      description: '提供实时编辑和预览JSON 数据，语法高亮、校验、格式化、转义，去转义、压缩等功能，可以提高阅读修改的效率和准确性',
+      title: "JSON 工作台",
+      keywords: 'JSON编辑器,JSON格式化,JSON压缩,JSON转义,JSON校验',
+      description: '在线校验、格式化和安全压缩 JSON，支持错误定位、递归键名排序与 JSON 字符串转义。',
     }
   },
   {
@@ -513,13 +513,14 @@ export const constantRoute = [
     }
   },
   {
-    path: '/jsforamt',
+    path: '/jsformat',
+    alias: '/jsforamt',
     component: () => import('@/components/Tools/JSFormat/JSFormat.vue'),
-    name: 'JSForamt',
+    name: 'JSFormat',
     meta: {
-      title: "js代码格式化/压缩",
-      keywords: 'js代码格式化,js格式化,js压缩,javascript格式化',
-      description: 'JS格式化/压缩工具,提供在线JS格式化、JS压缩、JS混淆、JS解密',
+      title: "JavaScript 格式化与压缩",
+      keywords: 'JavaScript代码格式化,JS格式化,JS压缩,Terser压缩',
+      description: '在线校验、格式化与压缩 JavaScript，支持目标语法、模块模式、变量改名和 Console 移除选项。',
     }
   },
   {
@@ -527,9 +528,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/HtmlFormat/HtmlFormat.vue'),
     name: 'HtmlFormat',
     meta: {
-      title: "html代码格式化",
-      keywords: 'html格式化,xml格式化',
-      description: '提供在线html、xml格式化',
+      title: "HTML / XML 工作台",
+      keywords: 'HTML格式化,HTML压缩,XML格式化,XML校验',
+      description: '在线格式化 HTML 与 XML，支持 XML 结构校验、标记统计和保护敏感内容块的保守压缩。',
     }
   },
   {
@@ -537,9 +538,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/CssFormat/CssFormat.vue'),
     name: 'CssFormat',
     meta: {
-      title: "css代码格式化/压缩",
-      keywords: 'css格式化,css压缩',
-      description: '提供在线css格式化,在线css压缩工具',
+      title: "CSS 格式化与优化",
+      keywords: 'CSS格式化,CSS压缩,CSSO优化,CSS校验',
+      description: '在线格式化、解析和优化压缩 CSS，支持结构重组、许可证注释保留与压缩收益统计。',
     }
   },
   {

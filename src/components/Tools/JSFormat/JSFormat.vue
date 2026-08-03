@@ -1,189 +1,185 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-import AceEditor from '@/components/Common/AceEditor.vue'
-import { copy } from '@/utils/string'
-import { ElMessage } from 'element-plus'
+import { computed, ref } from 'vue'
+import CodeWorkbench from '@/components/Tools/CodeWorkbench/CodeWorkbench.vue'
+import { analyzeJavaScript, getCompressionReport } from '@/utils/codeWorkbench'
 
-const info = reactive({
-  title: "js代码格式化/压缩",
-  code: '',
-  isParseErr: false,
-  parseErr: '',
-  // 编辑器配置选项
-  showWhitespace: false,
-  showLineNumbers: true,
-  wordWrap: true
-})
-
-// Ace 编辑器引用
-const aceEditorRef = ref<InstanceType<typeof AceEditor>>()
-
-const loadMinifier = async () => {
-  const { minify } = await import('terser')
-  return { minify }
+interface TerserError extends Error {
+  line?: number
+  col?: number
 }
 
-interface Error {
-    name: string;
-    message: string;
-    stack?: string;
+const samples = [
+  { label: '数据聚合', note: 'ES2020', value: 'const orders = [{ total: 128, status: "paid" }, { total: 76, status: "pending" }, { total: 215, status: "paid" }];\n\nfunction summarize(items) {\n  return items.filter(({ status }) => status === "paid").reduce((sum, { total }) => sum + total, 0);\n}\n\nconsole.log(`Revenue: ${summarize(orders)}`);' },
+  { label: '异步请求', note: 'Async / Await', value: 'async function loadProfile(userId) {\n  const response = await fetch(`/api/users/${userId}`);\n  if (!response.ok) throw new Error(`HTTP ${response.status}`);\n  return response.json();\n}\n\nloadProfile(42).then(profile => console.log(profile));' },
+  { label: 'ES Module', note: 'Import / Export', value: 'import { format } from "./date.js";\n\nexport function createGreeting(name, now = new Date()) {\n  const safeName = name?.trim() || "Guest";\n  return `Hello ${safeName}, today is ${format(now)}`;\n}' },
+]
+
+const code = ref(samples[0].value)
+const tabSize = ref(2)
+const ecma = ref<2015 | 2018 | 2020>(2020)
+const compressEnabled = ref(true)
+const mangle = ref(true)
+const dropConsole = ref(false)
+const moduleMode = ref(false)
+const preserveLicense = ref(true)
+const previousCode = ref('')
+const busy = ref(false)
+const actionMessage = ref('示例已载入，可格式化或生成发布版本')
+const statusTone = ref<'idle' | 'success' | 'error' | 'working'>('success')
+const errorDetail = ref('')
+const compression = ref({ saved: 0, percent: 0 })
+const analysis = computed(() => analyzeJavaScript(code.value))
+const metrics = computed(() => [
+  { label: '函数', value: analysis.value.functions },
+  { label: '导入 / 导出', value: `${analysis.value.imports} / ${analysis.value.exports}` },
+  { label: 'Console 调用', value: analysis.value.consoleCalls },
+  { label: '注释', value: analysis.value.comments },
+  { label: '体积减少', value: compression.value.saved ? `${compression.value.saved} B · ${compression.value.percent}%` : '—' },
+])
+const tips = [
+  { title: '变量改名不是加密', description: 'Mangle 只缩短局部标识符，不能保护密钥、业务规则或其他敏感代码。' },
+  { title: '删除 Console 需谨慎', description: '开启后包括 console.error 在内的调用都可能被移除，不适合依赖日志副作用的代码。' },
+  { title: '模块模式影响解析', description: '含 import / export 或顶层 await 的代码应开启 ES Module，普通脚本保持关闭。' },
+]
+
+function checkpoint() {
+  if (previousCode.value !== code.value) previousCode.value = code.value
 }
 
-//格式化 - 使用 Ace 编辑器自带的美化功能
-const formatCode = () => {
-  if (aceEditorRef.value) {
-    aceEditorRef.value.formatCode()
-  }
+function setTerserError(error: unknown) {
+  const terserError = error as TerserError
+  const location = terserError.line ? `第 ${terserError.line} 行${typeof terserError.col === 'number' ? ` · 第 ${terserError.col + 1} 列` : ''}` : ''
+  statusTone.value = 'error'
+  actionMessage.value = 'JavaScript 语法或选项错误'
+  errorDetail.value = `${terserError.message || '处理失败'}${location ? `（${location}）` : ''}`
 }
 
-//混淆压缩
-const confuseCompress = async () => {
+async function formatCode() {
+  if (!code.value.trim()) return
+  busy.value = true
+  statusTone.value = 'working'
+  actionMessage.value = '正在解析并格式化 JavaScript…'
+  errorDetail.value = ''
   try {
-    const { minify } = await loadMinifier()
-    let res = await minify(info.code, {
-      mangle: {
-        toplevel: true,
-      }
+    const { minify } = await import('terser')
+    const result = await minify(code.value, {
+      ecma: ecma.value,
+      module: moduleMode.value,
+      compress: false,
+      mangle: false,
+      format: { beautify: true, indent_level: tabSize.value, comments: 'all' },
     })
-    const compressed = res.code != undefined ? res.code : info.code
-    info.code = compressed
-    if (aceEditorRef.value) {
-      aceEditorRef.value.setValue(compressed)
-    }
-  } catch(error) {
-    ElMessage({
-      showClose: true,
-      message: '请填入正确的js代码: ' + (error as Error).message,
-      type: 'error',
+    if (result.code == null) throw new Error('格式化器没有返回代码')
+    checkpoint()
+    code.value = result.code
+    compression.value = { saved: 0, percent: 0 }
+    statusTone.value = 'success'
+    actionMessage.value = '语法校验与格式化完成'
+  } catch (error) {
+    setTerserError(error)
+  } finally {
+    busy.value = false
+  }
+}
+
+async function minifyCode() {
+  if (!code.value.trim()) return
+  busy.value = true
+  statusTone.value = 'working'
+  actionMessage.value = '正在生成压缩版本…'
+  errorDetail.value = ''
+  try {
+    const { minify } = await import('terser')
+    const before = code.value
+    const result = await minify(code.value, {
+      ecma: ecma.value,
+      module: moduleMode.value,
+      compress: compressEnabled.value ? { drop_console: dropConsole.value, passes: 2 } : false,
+      mangle: mangle.value ? { toplevel: moduleMode.value } : false,
+      format: { comments: preserveLicense.value ? /^!/ : false },
     })
+    if (result.code == null) throw new Error('压缩器没有返回代码')
+    checkpoint()
+    code.value = result.code
+    compression.value = getCompressionReport(before, code.value)
+    statusTone.value = 'success'
+    actionMessage.value = `发布版本已生成，体积减少 ${compression.value.percent}%`
+  } catch (error) {
+    setTerserError(error)
+  } finally {
+    busy.value = false
   }
 }
 
-//清空输入框
-const clear = () => {
-  info.code = ''
-  if (aceEditorRef.value) {
-    aceEditorRef.value.setValue('')
-  }
+function restore() {
+  if (!previousCode.value) return
+  const current = code.value
+  code.value = previousCode.value
+  previousCode.value = current
+  compression.value = { saved: 0, percent: 0 }
+  statusTone.value = 'success'
+  actionMessage.value = '已恢复上一步内容'
+  errorDetail.value = ''
 }
 
-const copyRes = async () => {
-  copy(info.code)
+function clear() {
+  checkpoint()
+  code.value = ''
+  compression.value = { saved: 0, percent: 0 }
+  statusTone.value = 'idle'
+  actionMessage.value = '等待 JavaScript 内容'
+  errorDetail.value = ''
 }
 
-// 编辑器控制函数
-const toggleWhitespace = () => {
-  info.showWhitespace = !info.showWhitespace
-  if (aceEditorRef.value) {
-    aceEditorRef.value.toggleWhitespace()
-  }
-}
-
-const toggleLineNumbers = () => {
-  info.showLineNumbers = !info.showLineNumbers
-  if (aceEditorRef.value) {
-    aceEditorRef.value.toggleLineNumbers()
-  }
-}
-
-const toggleWordWrap = () => {
-  info.wordWrap = !info.wordWrap
-  if (aceEditorRef.value) {
-    aceEditorRef.value.toggleWordWrap()
-  }
-}
-
-const openSearchBox = () => {
-  if (aceEditorRef.value) {
-    aceEditorRef.value.openSearchBox()
-  }
-}
-
-const beautifyCode = () => {
-  if (aceEditorRef.value) {
-    aceEditorRef.value.formatCode()
-  }
+function loadSample(sample: { value: string; label: string }) {
+  checkpoint()
+  code.value = sample.value
+  moduleMode.value = sample.label === 'ES Module'
+  compression.value = { saved: 0, percent: 0 }
+  statusTone.value = 'success'
+  actionMessage.value = `${sample.label} 示例已载入`
+  errorDetail.value = ''
 }
 </script>
 
 <template>
-  <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
-    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
-      
-      <div>
-        <AceEditor
-          ref="aceEditorRef"
-          v-model="info.code"
-          mode="javascript"
-          :show-whitespace="info.showWhitespace"
-          :show-line-numbers="info.showLineNumbers"
-          :word-wrap="info.wordWrap"
-          height="400px"
-        />
-      </div>
-      
-      <div class="mt-4">
-        <!-- JS 操作按钮 -->
-        <div class="mb-3">
-          <el-button type="primary" @click="formatCode">格式化 (Ctrl+Shift+F)</el-button>
-          <el-button type="primary" @click="confuseCompress">混淆压缩</el-button>
-          <el-button type="primary" @click="copyRes">复制</el-button>
-          <el-button type="primary" @click="clear">清空</el-button>
-        </div>
-        
-        <!-- 编辑器控制按钮 -->
-        <div class="flex flex-wrap gap-2">
-          <el-button 
-            size="small" 
-            :type="info.showWhitespace ? 'primary' : 'default'"
-            @click="toggleWhitespace"
-          >
-            显示空白字符
-          </el-button>
-          <el-button 
-            size="small" 
-            :type="info.showLineNumbers ? 'primary' : 'default'"
-            @click="toggleLineNumbers"
-          >
-            显示行号
-          </el-button>
-          <el-button 
-            size="small" 
-            :type="info.wordWrap ? 'primary' : 'default'"
-            @click="toggleWordWrap"
-          >
-            自动换行
-          </el-button>
-          <el-button size="small" @click="openSearchBox">搜索 (Ctrl+F)</el-button>
-          <el-button size="small" @click="beautifyCode">美化代码</el-button>
-        </div>
-      </div>
-
-      <div class="mt-3 min-h-md bg-red-100 p-3 mb-3" v-show="info.isParseErr">
-        <el-text type="danger">{{ info.parseErr }}</el-text>
-      </div>
-    </div>
-
-    <!-- desc -->
-    <ToolDetail title="描述">
-      <el-text>
-        JS格式化/压缩工具，提供在线JS格式化、JS压缩、JS混淆功能。<br><br>
-        <strong>功能特性：</strong><br>
-        • JavaScript 语法高亮和代码折叠<br>
-        • 实时语法校验和错误提示<br>
-        • 代码格式化和混淆压缩<br>
-        • 智能代码补全和美化<br>
-        • 搜索和替换功能 (Ctrl+F)<br>
-        • 空白字符显示切换<br>
-        • 自动换行和行号显示<br>
-        • 快捷键支持 (Ctrl+Shift+F 格式化, Ctrl+Shift+W 切换空白字符显示)
-      </el-text> 
-    </ToolDetail>
-  </div>
+  <CodeWorkbench
+    v-model="code"
+    page-title="JavaScript 格式化与压缩"
+    eyebrow="JAVASCRIPT BUILD LAB"
+    headline="先验证代码，再决定压缩强度"
+    description="格式化和发布压缩都由 Terser 解析，目标语法、模块模式、变量改名和 Console 策略由你明确控制。"
+    language="JavaScript"
+    mode="javascript"
+    accent="violet"
+    :status="actionMessage"
+    :status-tone="statusTone"
+    :status-detail="errorDetail ? '请查看右侧诊断' : `ECMAScript ${ecma}`"
+    :samples="samples"
+    :metrics="metrics"
+    :tips="tips"
+    :tab-size="tabSize"
+    :busy="busy"
+    primary-label="校验并格式化"
+    secondary-label="生成压缩版本"
+    :can-restore="Boolean(previousCode)"
+    filename="script.js"
+    @primary="formatCode"
+    @secondary="minifyCode"
+    @restore="restore"
+    @clear="clear"
+    @sample="loadSample"
+  >
+    <template #options>
+      <label class="option-field"><span>目标语法</span><el-select v-model="ecma"><el-option label="ES2015" :value="2015" /><el-option label="ES2018" :value="2018" /><el-option label="ES2020" :value="2020" /></el-select></label>
+      <label class="option-field"><span>格式化缩进</span><el-input-number v-model="tabSize" :min="2" :max="8" /></label>
+      <label class="switch-field"><span>ES Module 模式</span><el-switch v-model="moduleMode" /></label>
+      <label class="switch-field"><span>启用压缩优化</span><el-switch v-model="compressEnabled" /></label>
+      <label class="switch-field"><span>缩短变量名（Mangle）</span><el-switch v-model="mangle" /></label>
+      <label class="switch-field"><span>移除 Console 调用</span><el-switch v-model="dropConsole" :disabled="!compressEnabled" /></label>
+      <label class="switch-field"><span>保留 /*! 许可证注释 */</span><el-switch v-model="preserveLicense" /></label>
+      <div :class="['notice-card', { error: errorDetail }]">{{ errorDetail || (mangle ? '变量改名已开启。导出的代码更小，但堆栈和调试可读性会下降。' : '变量名保持不变，适合需要可读堆栈或对外暴露函数名的场景。') }}</div>
+    </template>
+    <template #usage><el-text>格式化与压缩均使用 Terser 完整解析 JavaScript，因此语法错误会附带行列位置。压缩优化、变量改名、Console 移除和模块模式相互独立；“变量改名”不是加密，也不能保护前端代码中的敏感信息。每次转换前都会保存可撤回快照。</el-text></template>
+  </CodeWorkbench>
 </template>
-
-<style scoped>
-</style>

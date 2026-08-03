@@ -46,6 +46,7 @@ const ACE_WORKER_FILES = [
   'worker-html.js',
   'worker-javascript.js',
   'worker-json.js',
+  'worker-xml.js',
 ]
 
 const FIGLET_FONT_FILES = [

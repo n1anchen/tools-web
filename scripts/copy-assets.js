@@ -69,9 +69,10 @@ async function copyAceWorkers() {
   // 需要复制的 worker 文件
   const workerFiles = [
     'worker-css.js',
-    'worker-html.js', 
+    'worker-html.js',
     'worker-javascript.js',
-    'worker-json.js'
+    'worker-json.js',
+    'worker-xml.js'
   ]
 
   // 确保目标目录存在
