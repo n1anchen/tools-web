@@ -1,137 +1,384 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
+import { Delete, Download, Picture, Refresh, UploadFilled } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-import { ElMessage } from 'element-plus'
+import { autoDown } from '@/utils/file'
+import {
+  getRotatedBounds,
+  getWatermarkPlacements,
+  type WatermarkPosition,
+} from '@/utils/imageStudio'
 
-const title = '图片水印'
+const MAX_IMAGE_BYTES = 30 * 1024 * 1024
+const ALLOWED_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp'])
+
+const fileInput = ref<HTMLInputElement | null>(null)
+const imageElement = ref<HTMLImageElement | null>(null)
+const canvasElement = ref<HTMLCanvasElement | null>(null)
 const imageUrl = ref('')
-const resultUrl = ref('')
-const imgEl = ref<HTMLImageElement | null>(null)
-const canvasEl = ref<HTMLCanvasElement | null>(null)
+const objectUrl = ref('')
+const dragging = ref(false)
+const rendering = ref(false)
+const fileMeta = reactive({ name: '', size: 0, type: '', width: 0, height: 0 })
 
-const wm = ref({ text: '版权所有', fontSize: 32, color: '#ffffff', opacity: 0.5, position: 'bottomRight', rotate: -30 })
-const positions = [
-  { label: '左上角', value: 'topLeft' }, { label: '右上角', value: 'topRight' },
-  { label: '居中', value: 'center' },
-  { label: '左下角', value: 'bottomLeft' }, { label: '右下角', value: 'bottomRight' },
-  { label: '平铺', value: 'tile' },
+const state = reactive({
+  text: '© 2026 在线工具箱',
+  fontSize: 42,
+  fontWeight: '700',
+  fontFamily: 'system-ui, sans-serif',
+  color: '#ffffff',
+  opacity: .58,
+  position: 'bottomRight' as WatermarkPosition,
+  rotate: -18,
+  padding: 32,
+  tileGap: 96,
+  outline: true,
+  shadow: true,
+  format: 'png' as 'png' | 'jpeg' | 'webp',
+  quality: .92,
+})
+
+const positions: Array<{ label: string; value: WatermarkPosition; icon: string }> = [
+  { label: '左上', value: 'topLeft', icon: '↖' },
+  { label: '右上', value: 'topRight', icon: '↗' },
+  { label: '居中', value: 'center', icon: '◎' },
+  { label: '左下', value: 'bottomLeft', icon: '↙' },
+  { label: '右下', value: 'bottomRight', icon: '↘' },
+  { label: '平铺', value: 'tile', icon: '▦' },
 ]
 
-const handleFile = (file: any) => {
-  const reader = new FileReader()
-  reader.onload = e => { imageUrl.value = e.target?.result as string; resultUrl.value = '' }
-  reader.readAsDataURL(file.raw)
+const formattedFileSize = computed(() => {
+  if (!fileMeta.size) return '—'
+  return fileMeta.size >= 1024 * 1024
+    ? `${(fileMeta.size / 1024 / 1024).toFixed(1)} MB`
+    : `${Math.max(1, Math.round(fileMeta.size / 1024))} KB`
+})
+
+const outputLabel = computed(() => state.format === 'jpeg' ? 'JPG' : state.format.toUpperCase())
+const watermarkCount = ref(0)
+
+function releaseObjectUrl() {
+  if (objectUrl.value) URL.revokeObjectURL(objectUrl.value)
+  objectUrl.value = ''
 }
 
-const hexToRgba = (hex: string, alpha: number) => {
-  const r = parseInt(hex.slice(1, 3), 16)
-  const g = parseInt(hex.slice(3, 5), 16)
-  const b = parseInt(hex.slice(5, 7), 16)
-  return `rgba(${r},${g},${b},${alpha})`
+function loadSource(source: string, meta: { name: string; size: number; type: string }, revoke = false) {
+  releaseObjectUrl()
+  if (revoke) objectUrl.value = source
+  imageUrl.value = source
+  Object.assign(fileMeta, { ...meta, width: 0, height: 0 })
 }
 
-const applyWatermark = () => {
-  if (!imgEl.value || !canvasEl.value) { ElMessage.warning('请先上传图片'); return }
-  if (!wm.value.text.trim()) { ElMessage.warning('请输入水印文字'); return }
-  const { width, height } = imgEl.value
-  canvasEl.value.width = width; canvasEl.value.height = height
-  const ctx = canvasEl.value.getContext('2d')!
-  ctx.drawImage(imgEl.value, 0, 0)
-
-  ctx.save()
-  ctx.font = `${wm.value.fontSize}px sans-serif`
-  ctx.fillStyle = hexToRgba(wm.value.color, wm.value.opacity)
-  const tw = ctx.measureText(wm.value.text).width
-  const th = wm.value.fontSize
-
-  const drawAt = (x: number, y: number) => {
-    ctx.save(); ctx.translate(x, y); ctx.rotate((wm.value.rotate * Math.PI) / 180)
-    ctx.fillText(wm.value.text, 0, 0); ctx.restore()
+function loadFile(file?: File) {
+  if (!file) return
+  if (!ALLOWED_TYPES.has(file.type)) {
+    ElMessage.warning('请选择 PNG、JPEG 或 WebP 图片')
+    return
   }
-
-  const p = wm.value.position
-  const pad = 16
-  if (p === 'topLeft') drawAt(pad, th + pad)
-  else if (p === 'topRight') drawAt(width - tw - pad, th + pad)
-  else if (p === 'center') drawAt((width - tw) / 2, (height + th) / 2)
-  else if (p === 'bottomLeft') drawAt(pad, height - pad)
-  else if (p === 'bottomRight') drawAt(width - tw - pad, height - pad)
-  else if (p === 'tile') {
-    const gapX = tw + 80; const gapY = th + 60
-    for (let y = 0; y < height + gapY; y += gapY)
-      for (let x = 0; x < width + gapX; x += gapX) drawAt(x, y)
+  if (file.size > MAX_IMAGE_BYTES) {
+    ElMessage.warning('图片不能超过 30 MB')
+    return
   }
-  ctx.restore()
-  resultUrl.value = canvasEl.value.toDataURL('image/png')
-  ElMessage.success('水印已添加')
+  loadSource(URL.createObjectURL(file), { name: file.name, size: file.size, type: file.type }, true)
 }
 
-const download = () => {
-  if (!resultUrl.value) return
-  const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'watermarked.png'; a.click()
+function handleInput(event: Event) {
+  loadFile((event.target as HTMLInputElement).files?.[0])
 }
+
+function handleDrop(event: DragEvent) {
+  dragging.value = false
+  loadFile(event.dataTransfer?.files?.[0])
+}
+
+function loadDemo() {
+  const canvas = document.createElement('canvas')
+  canvas.width = 1440
+  canvas.height = 900
+  const context = canvas.getContext('2d')!
+  const gradient = context.createLinearGradient(0, 0, 1440, 900)
+  gradient.addColorStop(0, '#0f172a')
+  gradient.addColorStop(.48, '#1d4ed8')
+  gradient.addColorStop(1, '#f97316')
+  context.fillStyle = gradient
+  context.fillRect(0, 0, canvas.width, canvas.height)
+  context.fillStyle = 'rgba(255,255,255,.12)'
+  context.beginPath()
+  context.arc(1110, 180, 260, 0, Math.PI * 2)
+  context.fill()
+  context.fillStyle = '#ffffff'
+  context.font = '800 96px system-ui, sans-serif'
+  context.fillText('LOCAL', 96, 180)
+  context.fillText('IMAGE LAB', 96, 286)
+  context.font = '32px system-ui, sans-serif'
+  context.fillStyle = 'rgba(255,255,255,.8)'
+  context.fillText('用示例图片试试水印位置、描边与平铺效果', 104, 356)
+  for (let index = 0; index < 5; index += 1) {
+    context.fillStyle = `hsla(${205 + index * 23}, 90%, 70%, .68)`
+    context.fillRect(110 + index * 230, 520 - index * 45, 170, 220 + index * 45)
+  }
+  const source = canvas.toDataURL('image/png')
+  loadSource(source, { name: '水印工作室示例.png', size: Math.round(source.length * .75), type: 'image/png' })
+}
+
+function drawWatermark() {
+  const image = imageElement.value
+  const canvas = canvasElement.value
+  if (!image || !canvas || !image.naturalWidth) return
+  rendering.value = true
+  canvas.width = image.naturalWidth
+  canvas.height = image.naturalHeight
+  const context = canvas.getContext('2d')!
+  context.clearRect(0, 0, canvas.width, canvas.height)
+  if (state.format === 'jpeg') {
+    context.fillStyle = '#ffffff'
+    context.fillRect(0, 0, canvas.width, canvas.height)
+  }
+  context.drawImage(image, 0, 0)
+
+  const lines = state.text.split('\n').map(line => line.trim()).filter(Boolean)
+  if (!lines.length) {
+    watermarkCount.value = 0
+    rendering.value = false
+    return
+  }
+  const lineHeight = state.fontSize * 1.22
+  context.font = `${state.fontWeight} ${state.fontSize}px ${state.fontFamily}`
+  const textWidth = Math.max(...lines.map(line => context.measureText(line).width))
+  const textHeight = lineHeight * lines.length
+  const rotated = getRotatedBounds(textWidth, textHeight, state.rotate)
+  const points = getWatermarkPlacements(
+    canvas.width,
+    canvas.height,
+    rotated.width,
+    rotated.height,
+    state.position,
+    state.padding,
+    state.tileGap,
+  )
+  watermarkCount.value = points.length
+
+  points.forEach(point => {
+    context.save()
+    context.translate(point.x, point.y)
+    context.rotate(state.rotate * Math.PI / 180)
+    context.globalAlpha = state.opacity
+    context.textAlign = 'center'
+    context.textBaseline = 'middle'
+    context.fillStyle = state.color
+    if (state.shadow) {
+      context.shadowColor = 'rgba(0, 0, 0, .55)'
+      context.shadowBlur = Math.max(2, state.fontSize * .16)
+      context.shadowOffsetY = Math.max(1, state.fontSize * .08)
+    }
+    lines.forEach((line, index) => {
+      const y = (index - (lines.length - 1) / 2) * lineHeight
+      if (state.outline) {
+        context.lineWidth = Math.max(1.5, state.fontSize * .06)
+        context.strokeStyle = state.color.toLowerCase() === '#ffffff' ? 'rgba(15,23,42,.85)' : 'rgba(255,255,255,.8)'
+        context.strokeText(line, 0, y)
+      }
+      context.fillText(line, 0, y)
+    })
+    context.restore()
+  })
+  rendering.value = false
+}
+
+function handleImageReady() {
+  const image = imageElement.value
+  if (!image) return
+  fileMeta.width = image.naturalWidth
+  fileMeta.height = image.naturalHeight
+  drawWatermark()
+}
+
+function resetSettings() {
+  Object.assign(state, {
+    text: '© 2026 在线工具箱', fontSize: 42, fontWeight: '700', fontFamily: 'system-ui, sans-serif',
+    color: '#ffffff', opacity: .58, position: 'bottomRight', rotate: -18, padding: 32,
+    tileGap: 96, outline: true, shadow: true, format: 'png', quality: .92,
+  })
+}
+
+function clearImage() {
+  releaseObjectUrl()
+  imageUrl.value = ''
+  Object.assign(fileMeta, { name: '', size: 0, type: '', width: 0, height: 0 })
+  watermarkCount.value = 0
+  if (fileInput.value) fileInput.value.value = ''
+}
+
+function downloadImage() {
+  const canvas = canvasElement.value
+  if (!canvas || !imageUrl.value) return
+  const mime = `image/${state.format}`
+  const extension = state.format === 'jpeg' ? 'jpg' : state.format
+  canvas.toBlob(blob => {
+    if (!blob) {
+      ElMessage.error('图片导出失败，请尝试其他格式')
+      return
+    }
+    const baseName = fileMeta.name.replace(/\.[^.]+$/, '') || 'watermarked'
+    autoDown(URL.createObjectURL(blob), `${baseName}-watermarked.${extension}`)
+    ElMessage.success(`已导出 ${outputLabel.value} 图片`)
+  }, mime, state.quality)
+}
+
+watch(state, () => nextTick(drawWatermark), { deep: true })
+onBeforeUnmount(releaseObjectUrl)
 </script>
 
 <template>
-  <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
-    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300 space-y-4">
-      <el-upload action="#" :auto-upload="false" :on-change="handleFile" :show-file-list="false" accept="image/*">
-        <el-button type="primary">点击上传图片</el-button>
-      </el-upload>
+  <div class="watermark-page flex flex-col mt-3 flex-1">
+    <DetailHeader title="图片水印" />
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-        <el-input v-model="wm.text" placeholder="水印文字">
-          <template #prepend>文字</template>
-        </el-input>
-        <div class="flex items-center gap-2">
-          <span class="text-sm text-slate-600 dark:text-slate-300 whitespace-nowrap">字号</span>
-          <el-input-number v-model="wm.fontSize" :min="12" :max="200" size="small" />
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="text-sm text-slate-600 dark:text-slate-300 whitespace-nowrap">透明度</span>
-          <el-slider v-model="wm.opacity" :min="0" :max="1" :step="0.05" style="width:120px" />
-          <span class="text-sm text-slate-500 w-8">{{ wm.opacity }}</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="text-sm text-slate-600 dark:text-slate-300 whitespace-nowrap">颜色</span>
-          <el-color-picker v-model="wm.color" />
-          <span class="text-sm font-mono text-slate-500">{{ wm.color }}</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="text-sm text-slate-600 dark:text-slate-300 whitespace-nowrap">旋转</span>
-          <el-slider v-model="wm.rotate" :min="-180" :max="180" style="width:120px" />
-          <span class="text-sm text-slate-500 w-8">{{ wm.rotate }}°</span>
-        </div>
-        <el-select v-model="wm.position">
-          <el-option v-for="p in positions" :key="p.value" :label="p.label" :value="p.value" />
-        </el-select>
+    <section class="hero-card">
+      <div>
+        <span class="eyebrow">LOCAL WATERMARK STUDIO</span>
+        <h2>边调参数，边看最终成片</h2>
+        <p>单点与平铺水印实时预览，描边、阴影、透明度和导出质量全部在浏览器本地完成。</p>
       </div>
+      <div class="hero-stats">
+        <div><strong>6</strong><span>定位模式</span></div>
+        <div><strong>3</strong><span>导出格式</span></div>
+        <div><strong>0</strong><span>图片上传</span></div>
+      </div>
+    </section>
 
-      <div class="flex gap-3">
-        <el-button type="primary" :disabled="!imageUrl" @click="applyWatermark">添加水印</el-button>
-        <el-button type="success" :disabled="!resultUrl" @click="download">下载图片</el-button>
-      </div>
+    <input ref="fileInput" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="handleInput">
 
-      <canvas ref="canvasEl" class="hidden" />
-      <img v-if="imageUrl" ref="imgEl" :src="imageUrl" class="hidden" />
+    <section
+      v-if="!imageUrl"
+      class="upload-card"
+      :class="{ dragging }"
+      @dragenter.prevent="dragging = true"
+      @dragover.prevent
+      @dragleave.prevent="dragging = false"
+      @drop.prevent="handleDrop"
+    >
+      <div class="upload-icon"><el-icon><UploadFilled /></el-icon></div>
+      <span class="eyebrow">START WITH AN IMAGE</span>
+      <h3>拖入图片，开始设计水印</h3>
+      <p>支持 PNG、JPEG、WebP，单张不超过 30 MB；图片只会读取到当前浏览器。</p>
+      <div class="upload-actions">
+        <el-button type="primary" size="large" :icon="Picture" @click="fileInput?.click()">选择图片</el-button>
+        <el-button size="large" @click="loadDemo">载入示例</el-button>
+      </div>
+    </section>
 
-      <div v-if="resultUrl" class="rounded-lg overflow-hidden border border-slate-200 dark:border-slate-600">
-        <img :src="resultUrl" class="max-w-full" alt="水印预览" />
-      </div>
-      <div v-else-if="imageUrl" class="rounded-lg overflow-hidden border border-slate-200 dark:border-slate-600">
-        <img :src="imageUrl" class="max-w-full" alt="原图预览" />
-      </div>
-      <div v-else class="text-center text-slate-400 dark:text-slate-500 py-12">请上传图片后添加水印</div>
-    </div>
+    <section v-else class="studio-grid">
+      <article class="preview-card">
+        <header class="card-heading">
+          <div><span class="eyebrow">LIVE CANVAS</span><h3>实时预览</h3></div>
+          <div class="header-actions">
+            <el-button :icon="Refresh" @click="fileInput?.click()">换图</el-button>
+            <el-button :icon="Delete" plain type="danger" @click="clearImage">移除</el-button>
+          </div>
+        </header>
+        <div class="canvas-stage">
+          <canvas ref="canvasElement" aria-label="水印效果预览" />
+          <div v-if="rendering" class="rendering-badge">正在更新预览…</div>
+        </div>
+        <div class="image-meta">
+          <div><span>源文件</span><strong>{{ fileMeta.name }}</strong></div>
+          <div><span>原始尺寸</span><strong>{{ fileMeta.width }} × {{ fileMeta.height }}</strong></div>
+          <div><span>文件大小</span><strong>{{ formattedFileSize }}</strong></div>
+          <div><span>水印数量</span><strong>{{ watermarkCount }}</strong></div>
+        </div>
+        <img ref="imageElement" :src="imageUrl" class="source-image" alt="待添加水印的原图" @load="handleImageReady">
+      </article>
+
+      <aside class="settings-card">
+        <header class="card-heading">
+          <div><span class="eyebrow">WATERMARK SETTINGS</span><h3>水印设置</h3></div>
+          <button class="text-button" type="button" @click="resetSettings">恢复默认</button>
+        </header>
+
+        <div class="field-group">
+          <label for="watermark-text">水印文字 <small>支持换行</small></label>
+          <el-input id="watermark-text" v-model="state.text" type="textarea" :rows="2" maxlength="80" show-word-limit />
+        </div>
+
+        <div class="two-columns">
+          <div class="field-group"><label>字号</label><el-input-number v-model="state.fontSize" :min="12" :max="240" /></div>
+          <div class="field-group"><label>字重</label><el-select v-model="state.fontWeight"><el-option label="常规" value="400" /><el-option label="中等" value="600" /><el-option label="粗体" value="700" /><el-option label="特粗" value="800" /></el-select></div>
+          <div class="field-group"><label>颜色</label><div class="color-row"><el-color-picker v-model="state.color" /><code>{{ state.color }}</code></div></div>
+          <div class="field-group"><label>字体</label><el-select v-model="state.fontFamily"><el-option label="系统无衬线" value="system-ui, sans-serif" /><el-option label="衬线体" value="Georgia, serif" /><el-option label="等宽体" value="ui-monospace, monospace" /></el-select></div>
+        </div>
+
+        <div class="slider-field"><label><span>透明度</span><strong>{{ Math.round(state.opacity * 100) }}%</strong></label><el-slider v-model="state.opacity" :min=".05" :max="1" :step=".05" /></div>
+        <div class="slider-field"><label><span>旋转角度</span><strong>{{ state.rotate }}°</strong></label><el-slider v-model="state.rotate" :min="-90" :max="90" /></div>
+
+        <div class="field-group">
+          <label>水印位置</label>
+          <div class="position-grid">
+            <button v-for="item in positions" :key="item.value" type="button" :class="{ active: state.position === item.value }" @click="state.position = item.value">
+              <span>{{ item.icon }}</span>{{ item.label }}
+            </button>
+          </div>
+        </div>
+
+        <div v-if="state.position === 'tile'" class="slider-field"><label><span>平铺间距</span><strong>{{ state.tileGap }}px</strong></label><el-slider v-model="state.tileGap" :min="24" :max="240" /></div>
+        <div v-else class="slider-field"><label><span>边缘留白</span><strong>{{ state.padding }}px</strong></label><el-slider v-model="state.padding" :min="0" :max="160" /></div>
+
+        <div class="toggle-row">
+          <label><span>文字描边<small>复杂背景更清晰</small></span><el-switch v-model="state.outline" /></label>
+          <label><span>投射阴影<small>增强层次感</small></span><el-switch v-model="state.shadow" /></label>
+        </div>
+
+        <div class="export-box">
+          <div class="field-group"><label>导出格式</label><el-radio-group v-model="state.format"><el-radio-button value="png">PNG</el-radio-button><el-radio-button value="jpeg">JPG</el-radio-button><el-radio-button value="webp">WebP</el-radio-button></el-radio-group></div>
+          <div v-if="state.format !== 'png'" class="slider-field"><label><span>导出质量</span><strong>{{ Math.round(state.quality * 100) }}%</strong></label><el-slider v-model="state.quality" :min=".4" :max="1" :step=".02" /></div>
+          <el-button class="download-button" type="primary" size="large" :icon="Download" @click="downloadImage">下载 {{ outputLabel }}</el-button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="feature-strip">
+      <article><b>01</b><div><strong>旋转边界感知</strong><p>角落定位按旋转后的文字外框计算，减少水印越界裁切。</p></div></article>
+      <article><b>02</b><div><strong>所见即所得</strong><p>设置变化会立即重绘原尺寸画布，导出内容与预览一致。</p></div></article>
+      <article><b>03</b><div><strong>本地隐私</strong><p>读取、绘制和导出均在浏览器完成，不上传图片内容。</p></div></article>
+    </section>
+
     <ToolDetail title="使用说明">
-      <p>在线为图片添加文字水印，所有操作在本地完成，图片不会上传至服务器。</p>
-      <ul class="list-disc list-inside mt-1 space-y-1">
-        <li>支持自定义水印文字、字号、颜色、透明度和旋转角度</li>
-        <li>支持 5 种定位方式，以及平铺效果</li>
-        <li>处理完成后可直接下载 PNG 格式图片</li>
-      </ul>
+      <p>上传图片或载入示例后，可调整文字、字体、颜色、旋转、描边、阴影和定位。平铺模式会自动根据文字旋转后的尺寸分布水印；JPG/WebP 可进一步设置导出质量。透明 PNG 导出为 JPG 时会自动使用白色背景。</p>
     </ToolDetail>
   </div>
 </template>
+
+<style scoped>
+.watermark-page { --studio-accent: #2563eb; --studio-warm: #f97316; gap: 16px; }
+.hero-card, .upload-card, .preview-card, .settings-card, .feature-strip article { border: 1px solid #e2e8f0; background: #fff; box-shadow: 0 16px 40px rgba(15, 23, 42, .06); }
+.hero-card { display: flex; justify-content: space-between; gap: 28px; padding: 28px 30px; border-radius: 24px; color: #fff; border: 0; background: radial-gradient(circle at 88% 8%, rgba(249,115,22,.48), transparent 25%), linear-gradient(135deg, #0f172a, #1d4ed8 62%, #0f766e); }
+.eyebrow { display: block; margin-bottom: 7px; color: #60a5fa; font-size: 11px; font-weight: 900; letter-spacing: .16em; }
+.hero-card .eyebrow { color: #fdba74; }
+.hero-card h2 { margin: 0; font-size: clamp(24px, 3vw, 36px); font-weight: 850; letter-spacing: -.03em; }
+.hero-card p { max-width: 700px; margin: 10px 0 0; color: #dbeafe; line-height: 1.7; }
+.hero-stats { display: grid; grid-template-columns: repeat(3, 88px); align-self: center; }
+.hero-stats div { display: grid; place-items: center; padding: 8px; border-left: 1px solid rgba(255,255,255,.18); }
+.hero-stats strong { font-size: 25px; }.hero-stats span { color: #bfdbfe; font-size: 11px; }
+.upload-card { min-height: 430px; padding: 58px 24px; border-radius: 24px; text-align: center; display: grid; place-items: center; align-content: center; transition: .2s ease; }
+.upload-card.dragging { border-color: var(--studio-accent); background: #eff6ff; transform: translateY(-2px); }
+.upload-icon { display: grid; place-items: center; width: 72px; height: 72px; margin-bottom: 18px; border-radius: 22px; color: #fff; font-size: 34px; background: linear-gradient(145deg, #2563eb, #0d9488); box-shadow: 0 14px 28px rgba(37,99,235,.25); }
+.upload-card h3, .card-heading h3 { margin: 0; color: #0f172a; }.upload-card h3 { font-size: 24px; }.upload-card p { max-width: 560px; margin: 10px auto 22px; color: #64748b; line-height: 1.7; }.upload-actions { display: flex; gap: 10px; }
+.studio-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(330px, .8fr); gap: 16px; align-items: start; }
+.preview-card, .settings-card { border-radius: 24px; padding: 20px; }.settings-card { position: sticky; top: 82px; }
+.card-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }.card-heading .eyebrow { margin-bottom: 3px; }.header-actions { display: flex; gap: 8px; }.text-button { border: 0; background: none; color: #64748b; cursor: pointer; font-size: 12px; }
+.canvas-stage { position: relative; min-height: 420px; display: grid; place-items: center; padding: 18px; overflow: auto; border-radius: 18px; background-color: #e2e8f0; background-image: linear-gradient(45deg,#cbd5e1 25%,transparent 25%),linear-gradient(-45deg,#cbd5e1 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#cbd5e1 75%),linear-gradient(-45deg,transparent 75%,#cbd5e1 75%); background-size: 24px 24px; background-position: 0 0,0 12px,12px -12px,-12px 0; }
+.canvas-stage canvas { display: block; max-width: 100%; max-height: 68vh; object-fit: contain; box-shadow: 0 22px 44px rgba(15,23,42,.22); }.rendering-badge { position: absolute; right: 12px; bottom: 12px; padding: 6px 10px; border-radius: 999px; color: #fff; background: rgba(15,23,42,.75); font-size: 11px; }
+.source-image { display: none; }.image-meta { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); margin-top: 14px; border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden; }.image-meta div { min-width: 0; padding: 11px 13px; border-right: 1px solid #e2e8f0; }.image-meta div:last-child { border: 0; }.image-meta span, .image-meta strong { display: block; }.image-meta span { color: #94a3b8; font-size: 10px; }.image-meta strong { margin-top: 3px; overflow: hidden; color: #334155; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.field-group { margin-bottom: 15px; }.field-group > label, .slider-field > label { display: flex; justify-content: space-between; margin-bottom: 7px; color: #475569; font-size: 12px; font-weight: 700; }.field-group label small, .toggle-row small { color: #94a3b8; font-weight: 400; }.two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }.two-columns :deep(.el-input-number), .two-columns :deep(.el-select) { width: 100%; }.color-row { display: flex; align-items: center; gap: 10px; height: 32px; }.color-row code { color: #64748b; font-size: 12px; }.slider-field { margin-bottom: 12px; }.slider-field label strong { color: var(--studio-accent); }
+.position-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }.position-grid button { display: flex; align-items: center; justify-content: center; gap: 5px; padding: 8px 5px; border: 1px solid #e2e8f0; border-radius: 9px; color: #64748b; background: #f8fafc; cursor: pointer; }.position-grid button.active { border-color: #60a5fa; color: #1d4ed8; background: #eff6ff; box-shadow: inset 0 0 0 1px #93c5fd; }
+.toggle-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0; }.toggle-row label { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px; border: 1px solid #e2e8f0; border-radius: 12px; color: #334155; font-size: 12px; }.toggle-row span, .toggle-row small { display: block; }
+.export-box { margin-top: 16px; padding: 14px; border-radius: 16px; background: #f8fafc; }.download-button { width: 100%; }
+.feature-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }.feature-strip article { display: flex; gap: 12px; padding: 17px; border-radius: 18px; }.feature-strip b { display: grid; place-items: center; flex: 0 0 34px; height: 34px; border-radius: 10px; color: #ea580c; background: #fff7ed; font-size: 11px; }.feature-strip strong { color: #1e293b; font-size: 13px; }.feature-strip p { margin: 4px 0 0; color: #64748b; font-size: 11px; line-height: 1.55; }
+:global(html.dark .watermark-page .hero-card), :global(html.dark .watermark-page .upload-card), :global(html.dark .watermark-page .preview-card), :global(html.dark .watermark-page .settings-card), :global(html.dark .watermark-page .feature-strip article) { border-color: #334155; background-color: #1e293b; box-shadow: none; }
+:global(html.dark .watermark-page .hero-card) { background: radial-gradient(circle at 88% 8%,rgba(249,115,22,.32),transparent 25%),linear-gradient(135deg,#020617,#1e3a8a 62%,#134e4a); }
+:global(html.dark .watermark-page .upload-card.dragging), :global(html.dark .watermark-page .export-box) { background: #0f172a; }:global(html.dark .watermark-page .upload-card h3), :global(html.dark .watermark-page .card-heading h3), :global(html.dark .watermark-page .feature-strip strong) { color: #f8fafc; }:global(html.dark .watermark-page .upload-card p), :global(html.dark .watermark-page .feature-strip p), :global(html.dark .watermark-page .field-group > label), :global(html.dark .watermark-page .slider-field > label) { color: #94a3b8; }
+:global(html.dark .watermark-page .canvas-stage) { background-color: #0f172a; background-image: linear-gradient(45deg,#1e293b 25%,transparent 25%),linear-gradient(-45deg,#1e293b 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#1e293b 75%),linear-gradient(-45deg,transparent 75%,#1e293b 75%); }:global(html.dark .watermark-page .image-meta), :global(html.dark .watermark-page .image-meta div), :global(html.dark .watermark-page .position-grid button), :global(html.dark .watermark-page .toggle-row label) { border-color: #334155; }:global(html.dark .watermark-page .image-meta strong), :global(html.dark .watermark-page .toggle-row label) { color: #e2e8f0; }:global(html.dark .watermark-page .position-grid button) { color: #94a3b8; background: #0f172a; }:global(html.dark .watermark-page .position-grid button.active) { color: #93c5fd; background: #172554; }:global(html.dark .watermark-page .feature-strip b) { background: #431407; }
+@media (max-width: 1080px) { .studio-grid { grid-template-columns: 1fr; }.settings-card { position: static; }.canvas-stage { min-height: 360px; } }
+@media (max-width: 720px) { .watermark-page { gap: 12px; }.hero-card { padding: 22px 20px; flex-direction: column; }.hero-stats { grid-template-columns: repeat(3, 1fr); width: 100%; }.hero-stats div:first-child { border-left: 0; }.upload-card { min-height: 360px; padding: 36px 18px; }.preview-card, .settings-card { padding: 15px; border-radius: 20px; }.card-heading { align-items: flex-start; }.header-actions { flex-wrap: wrap; justify-content: flex-end; }.canvas-stage { min-height: 280px; padding: 10px; }.image-meta { grid-template-columns: 1fr 1fr; }.image-meta div:nth-child(2) { border-right: 0; }.image-meta div:nth-child(-n+2) { border-bottom: 1px solid #e2e8f0; }.feature-strip { grid-template-columns: 1fr; }.two-columns, .toggle-row { grid-template-columns: 1fr; }.upload-actions { flex-direction: column; width: 100%; }.upload-actions :deep(.el-button) { width: 100%; margin-left: 0; } }
+</style>

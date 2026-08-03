@@ -398,8 +398,8 @@ export const constantRoute = [
     name: 'imgCut',
     meta: {
       title: "图片分割",
-      keywords: '图片分割,图片切割,四宫格,九宫格,十六宫格',
-      description: '将图片分割成四宫格、九宫格、十六宫格，支持自定义行与列',
+      keywords: '图片分割,图片切割,四宫格,九宫格,自定义网格,ZIP导出',
+      description: '按自定义行列精确分割图片，支持切线预览、余数像素完整覆盖、单片下载和 ZIP 批量导出',
     }
   },
   {
@@ -641,7 +641,7 @@ export const constantRoute = [
     meta: {
       title: '图片拼接',
       keywords: '图片拼接,纵向拼接,横向拼接,影视台词拼接,图片合并,拼图',
-      description: '上传多张图片，支持纵向、横向和影视台词三种拼接模式，可调节间距和背景色，实时预览并导出 JPG/PNG',
+      description: '纵向、横向和影视台词拼接，支持拖拽与手机按钮排序、画布安全检查，实时预览并导出 JPG/PNG/WebP',
     }
   },
   {
@@ -770,8 +770,8 @@ export const constantRoute = [
     name: 'imagewatermark',
     meta: {
       title: '图片水印',
-      keywords: '水印,图片,文字水印,加水印,在线工具',
-      description: '在线为图片添加文字水印，支持自定义位置、字号、颜色、透明度，本地处理保护隐私',
+      keywords: '水印,图片,文字水印,平铺水印,图片加字,本地图片处理',
+      description: '实时为图片添加单点或平铺文字水印，支持描边、阴影、旋转和多格式导出，全程本地处理',
     }
   },
   {
