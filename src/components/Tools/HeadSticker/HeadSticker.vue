@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
+import { ElMessage } from 'element-plus'
 import {
   Canvas,
   Control,
@@ -13,88 +14,98 @@ import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
 const title = '接头霸王'
 
-// ── 角色分组配置，后期新增角色只需在此追加 ──────────────────
-// · count  : 图片数量，自动生成 {prefix}_01.png ~ {prefix}_NN.png
-// · labels : 可选，仅需为「有备注后缀」的文件写一行：
-//            键为零填充序号字符串（如 '02'），值为备注名
-//            有备注时实际文件名为 {prefix}_{idx}_{备注}.png，显示备注名
-//            无备注时实际文件名为 {prefix}_{idx}.png，        显示序号
 interface HeadGroup {
   name: string
   prefix: string
   count: number
   labels?: Record<string, string>
 }
+
+interface HeadItem {
+  groupName: string
+  src: string
+  label: string
+}
+
 const headGroups: HeadGroup[] = [
   { name: '凯露', prefix: 'kyaru', count: 10 },
   { name: '哈基米', prefix: 'hajimi', count: 1, labels: { '01': '耄耋' } },
   { name: '车万', prefix: 'th', count: 1, labels: { '01': 'doremi' } },
 ]
 
-// 根据 count + labels 生成该分组的完整头像列表
-interface HeadItem {
-  groupName: string
-  src: string
-  label: string
-}
 function buildHeadItems(group: HeadGroup): HeadItem[] {
-  return Array.from({ length: group.count }, (_, i) => {
-    const idx = String(i + 1).padStart(2, '0')
-    const labelText = group.labels?.[idx]
-    const filename = labelText
-      ? `${group.prefix}_${idx}_${labelText}.png`
-      : `${group.prefix}_${idx}.png`
+  return Array.from({ length: group.count }, (_, index) => {
+    const number = String(index + 1).padStart(2, '0')
+    const customLabel = group.labels?.[number]
     return {
       groupName: group.name,
-      src: `/images/heads/${filename}`,
-      label: labelText ?? idx,
+      src: `/images/heads/${group.prefix}_${number}${customLabel ? `_${customLabel}` : ''}.png`,
+      label: customLabel || `${group.name} ${number}`,
     }
   })
 }
 
-// 选项卡图标：取序号 01 的 src（已由 buildHeadItems 正确处理备注后缀）
-function groupIconSrc(group: HeadGroup): string {
-  return buildHeadItems(group)[0]?.src ?? `/images/heads/${group.prefix}_01.png`
+function groupIconSrc(group: HeadGroup) {
+  return buildHeadItems(group)[0]?.src || `/images/heads/${group.prefix}_01.png`
 }
 
-// ── Canvas 相关 ─────────────────────────────────────────────
 const canvasEl = ref<HTMLCanvasElement | null>(null)
-let fc: Canvas | null = null
+const stageRef = ref<HTMLElement | null>(null)
+const backgroundInputRef = ref<HTMLInputElement | null>(null)
+const customStickerInputRef = ref<HTMLInputElement | null>(null)
+const selectedObject = shallowRef<FabricObject | null>(null)
+let canvas: Canvas | null = null
+let draggingHead: HeadItem | null = null
+const stickerMeta = new WeakMap<FabricObject, HeadItem>()
 
-// 删除图标 (内联 base64，避免外部依赖)
-const DELETE_ICON =
-  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjU1NTUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48bGluZSB4MT0iMTgiIHkxPSI2IiB4Mj0iNiIgeTI9IjE4Ii8+PGxpbmUgeDE9IjYiIHkxPSI2IiB4Mj0iMTgiIHkyPSIxOCIvPjwvc3ZnPg=='
+const hasBackground = ref(false)
+const backgroundName = ref('')
+const originalWidth = ref(0)
+const originalHeight = ref(0)
+const displayScale = ref(1)
+const stickerCount = ref(0)
+const activeGroup = ref(headGroups[0].prefix)
+const stageTheme = ref<'checker' | 'light' | 'dark'>('checker')
+const exportFormat = ref<'png' | 'jpeg'>('png')
+const exportScale = ref(1)
 
-// 翻转图标
-const FLIP_ICON =
-  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM0NDk5ZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTcgMWw0IDQtNCA0Ii8+PHBhdGggZD0iTTMgMTFWOWE0IDQgMCAwIDEgNC00aDEwIi8+PHBhdGggZD0iTTcgMjNsLTQtNCA0LTQiLz48cGF0aCBkPSJNMjEgMTN2MmE0IDQgMCAwIDEtNCA0SDciLz48L3N2Zz4='
+const activeHeadItems = computed(() => {
+  const group = headGroups.find(item => item.prefix === activeGroup.value)
+  return group ? buildHeadItems(group) : []
+})
+const selectedMeta = computed(() => selectedObject.value ? stickerMeta.get(selectedObject.value) : null)
+const exportDimensions = computed(() => ({
+  width: Math.round(originalWidth.value * exportScale.value),
+  height: Math.round(originalHeight.value * exportScale.value),
+}))
 
-function renderCtrlIcon(iconSrc: string) {
-  const img = new Image()
-  img.src = iconSrc
+const DELETE_ICON = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3LncudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmY1NTU1IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGxpbmUgeDE9IjE4IiB5MT0iNiIgeDI9IjYiIHkyPSIxOCIvPjxsaW5lIHgxPSI2IiB5MT0iNiIgeDI9IjE4IiB5Mj0iMTgiLz48L3N2Zz4='
+const FLIP_ICON = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3LncudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNDQ5OWZmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTE3IDFsNCA0LTQgNCIvPjxwYXRoIGQ9Ik0zIDExVjlhNCA0IDAgMCAxIDQtNGgxMCIvPjxwYXRoIGQ9Ik03IDIzbC00LTQgNC00Ii8+PHBhdGggZD0iTTIxIDEzdjJhNCA0IDAgMCAxLTQgNEg3Ii8+PC9zdmc+'
+
+function renderControlIcon(source: string) {
+  const image = new Image()
+  image.onload = () => canvas?.requestRenderAll()
+  image.src = source
   return function (
     this: Control,
-    ctx: CanvasRenderingContext2D,
+    context: CanvasRenderingContext2D,
     left: number,
     top: number,
     _: unknown,
-    fabricObject: FabricObject
+    object: FabricObject,
   ) {
-    const size = 24
-    ctx.save()
-    ctx.translate(left, top)
-    ctx.rotate(util.degreesToRadians(fabricObject.angle ?? 0))
-    ctx.drawImage(img, -size / 2, -size / 2, size, size)
-    ctx.restore()
+    if (!image.complete || !image.naturalWidth) return
+    context.save()
+    context.translate(left, top)
+    context.rotate(util.degreesToRadians(object.angle || 0))
+    context.drawImage(image, -12, -12, 24, 24)
+    context.restore()
   }
 }
 
-let stickerControls: Record<string, Control> | null = null
+let stickerControls: Record<string, Control> = {}
 
 function setupCustomControls() {
-  if (stickerControls) return
-
-  // 删除控制点（右上角）
   stickerControls = {
     deleteCtrl: new Control({
       x: 0.5,
@@ -103,14 +114,12 @@ function setupCustomControls() {
       offsetY: -8,
       cursorStyle: 'pointer',
       mouseUpHandler: (_: unknown, transform: Transform) => {
-        const obj = transform.target
-        obj.canvas?.remove(obj)
-        obj.canvas?.requestRenderAll()
+        transform.target.canvas?.remove(transform.target)
+        transform.target.canvas?.requestRenderAll()
         return true
       },
-      render: renderCtrlIcon(DELETE_ICON),
+      render: renderControlIcon(DELETE_ICON),
     }),
-    // 翻转控制点（左上角）
     flipCtrl: new Control({
       x: -0.5,
       y: -0.5,
@@ -118,243 +127,359 @@ function setupCustomControls() {
       offsetY: -8,
       cursorStyle: 'pointer',
       mouseUpHandler: (_: unknown, transform: Transform) => {
-        const obj = transform.target
-        obj.set('flipX', !obj.flipX)
-        obj.canvas?.requestRenderAll()
+        transform.target.set('flipX', !transform.target.flipX)
+        transform.target.canvas?.requestRenderAll()
         return true
       },
-      render: renderCtrlIcon(FLIP_ICON),
+      render: renderControlIcon(FLIP_ICON),
     }),
   }
 }
 
-// ── 底图相关 ─────────────────────────────────────────────────
-const hasBackground = ref(false)
-
-function handleFileUpload(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
-  if (!file || !file.type.startsWith('image/')) return
-  ;(event.target as HTMLInputElement).value = ''
+function handleBackgroundUpload(event: Event) {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  target.value = ''
+  if (!file) return
+  if (!file.type.startsWith('image/')) {
+    ElMessage.error('请选择 PNG、JPG、WebP 等图片文件')
+    return
+  }
 
   const reader = new FileReader()
+  reader.onerror = () => ElMessage.error('图片读取失败')
   reader.onload = () => {
-    if (!fc) return
-    const img = new Image()
-    img.onload = () => {
-      const maxW = canvasEl.value?.parentElement?.clientWidth ?? 800
-      const scale = img.width > maxW - 40 ? (maxW - 40) / img.width : 1
-      const w = Math.round(img.width * scale)
-      const h = Math.round(img.height * scale)
-      fc!.setDimensions({ width: w, height: h })
-
-      const fabImg = new FabricImage(img, {
-        scaleX: scale,
-        scaleY: scale,
-        selectable: false,
-        evented: false,
-      })
-      fabImg.canvas = fc!
-      fc!.backgroundImage = fabImg
-      fc!.requestRenderAll()
-      hasBackground.value = true
-    }
-    img.src = reader.result as string
+    const image = new Image()
+    image.onerror = () => ElMessage.error('图片解码失败')
+    image.onload = () => setBackground(image, file.name)
+    image.src = reader.result as string
   }
   reader.readAsDataURL(file)
 }
 
-// ── 当前选中角色分组 ────────────────────────────────────────
-const activeGroup = ref(headGroups[0].prefix)
+function setBackground(image: HTMLImageElement, fileName: string) {
+  if (!canvas) return
+  clearStickers()
+  const stageWidth = Math.max(280, (stageRef.value?.clientWidth || 900) - 48)
+  const scale = Math.min(1, stageWidth / image.naturalWidth, 640 / image.naturalHeight)
+  const width = Math.max(1, Math.round(image.naturalWidth * scale))
+  const height = Math.max(1, Math.round(image.naturalHeight * scale))
+  canvas.setDimensions({ width, height })
 
-// 当前选项卡下的头像列表
-const activeHeadItems = computed(() => {
-  const group = headGroups.find((g) => g.prefix === activeGroup.value)
-  return group ? buildHeadItems(group) : []
-})
+  const background = new FabricImage(image, {
+    scaleX: scale,
+    scaleY: scale,
+    selectable: false,
+    evented: false,
+  })
+  background.canvas = canvas
+  canvas.backgroundImage = background
+  canvas.requestRenderAll()
 
-// ── 拖拽 / 点击添加贴纸 ──────────────────────────────────────
-let draggingHeadSrc: string | null = null
-
-function onHeadDragStart(e: DragEvent, src: string) {
-  draggingHeadSrc = src
-  e.dataTransfer?.setData('text/plain', src)
+  hasBackground.value = true
+  backgroundName.value = fileName
+  originalWidth.value = image.naturalWidth
+  originalHeight.value = image.naturalHeight
+  displayScale.value = scale
 }
 
-function onHeadDragEnd() {
-  draggingHeadSrc = null
+function handleCustomStickerUpload(event: Event) {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  target.value = ''
+  if (!file) return
+  if (!file.type.startsWith('image/')) {
+    ElMessage.error('自定义贴纸必须是图片文件')
+    return
+  }
+  const reader = new FileReader()
+  reader.onload = () => addSticker({ groupName: '自定义', src: reader.result as string, label: file.name.replace(/\.[^.]+$/, '') })
+  reader.readAsDataURL(file)
+}
+
+function onHeadDragStart(event: DragEvent, item: HeadItem) {
+  draggingHead = item
+  event.dataTransfer?.setData('text/plain', item.src)
 }
 
 function bindCanvasDrop() {
-  if (!fc) return
-  const upper = fc.upperCanvasEl as HTMLCanvasElement
-  upper.addEventListener('dragover', (e) => e.preventDefault())
-  upper.addEventListener('drop', (e: DragEvent) => {
-    e.preventDefault()
-    if (!draggingHeadSrc) return
-    const rect = upper.getBoundingClientRect()
-    const offsetX = e.clientX - rect.left
-    const offsetY = e.clientY - rect.top
-    addStickerAt(draggingHeadSrc, offsetX, offsetY)
-    draggingHeadSrc = null
+  if (!canvas) return
+  const upperCanvas = canvas.upperCanvasEl
+  upperCanvas.addEventListener('dragover', event => event.preventDefault())
+  upperCanvas.addEventListener('drop', event => {
+    event.preventDefault()
+    if (!draggingHead || !canvas) return
+    const rect = upperCanvas.getBoundingClientRect()
+    addSticker(draggingHead, event.clientX - rect.left, event.clientY - rect.top)
+    draggingHead = null
   })
 }
 
-function onHeadClick(src: string) {
-  if (!fc) return
-  // 居中添加
-  addStickerAt(src, (fc.getWidth() ?? 200) / 2, (fc.getHeight() ?? 200) / 2)
+async function addSticker(item: HeadItem, x?: number, y?: number) {
+  if (!canvas || !hasBackground.value) {
+    ElMessage.info('请先上传一张底图')
+    return
+  }
+  try {
+    const image = await FabricImage.fromURL(item.src, { crossOrigin: 'anonymous' })
+    if (!canvas) return
+    const targetWidth = Math.min(190, Math.max(86, canvas.getWidth() * 0.28))
+    const scale = targetWidth / Math.max(1, image.width || targetWidth)
+    image.set({
+      left: (x ?? canvas.getWidth() / 2) - targetWidth / 2,
+      top: (y ?? canvas.getHeight() / 2) - ((image.height || targetWidth) * scale) / 2,
+      scaleX: scale,
+      scaleY: scale,
+      cornerColor: '#7c5ce0',
+      cornerStyle: 'circle',
+      transparentCorners: false,
+      borderColor: '#7c5ce0',
+    })
+    image.controls = { ...image.controls, ...stickerControls }
+    stickerMeta.set(image, item)
+    canvas.add(image)
+    canvas.setActiveObject(image)
+    canvas.requestRenderAll()
+  } catch {
+    ElMessage.error('贴纸加载失败')
+  }
 }
 
-async function addStickerAt(src: string, x: number, y: number) {
-  const img = await FabricImage.fromURL(src, { crossOrigin: 'anonymous' })
-  if (!fc) return
-  img.set({
-    left: x - (img.width ?? 60) / 2,
-    top: y - (img.height ?? 60) / 2,
-  })
-  img.controls = { ...img.controls, ...stickerControls }
-  fc.add(img)
-  fc.setActiveObject(img)
-  fc.requestRenderAll()
+function updateSelection() {
+  selectedObject.value = canvas?.getActiveObject() || null
 }
 
-// ── 下载 ─────────────────────────────────────────────────────
-function download() {
-  if (!fc) return
-  const url = fc.toDataURL({ format: 'png', multiplier: 1 })
-  const a = document.createElement('a')
-  a.href = url
-  a.download = '接头霸王.png'
-  a.click()
+function refreshStickerCount() {
+  stickerCount.value = canvas?.getObjects().length || 0
+  updateSelection()
 }
 
-// ── 清空贴纸（保留底图）──────────────────────────────────────
+function applyToSelected(action: (object: FabricObject) => void) {
+  if (!selectedObject.value || !canvas) return
+  action(selectedObject.value)
+  selectedObject.value.setCoords()
+  canvas.requestRenderAll()
+}
+
+function flipSelected() {
+  applyToSelected(object => object.set('flipX', !object.flipX))
+}
+
+function rotateSelected(delta: number) {
+  applyToSelected(object => object.rotate((object.angle || 0) + delta))
+}
+
+function scaleSelected(factor: number) {
+  applyToSelected(object => object.scale(Math.max(0.08, object.scaleX * factor)))
+}
+
+function moveLayer(direction: 'forward' | 'backward') {
+  if (!canvas || !selectedObject.value) return
+  if (direction === 'forward') canvas.bringObjectForward(selectedObject.value)
+  else canvas.sendObjectBackwards(selectedObject.value)
+  canvas.requestRenderAll()
+}
+
+async function duplicateSelected() {
+  if (!canvas || !selectedObject.value) return
+  const source = selectedObject.value
+  const clone = await source.clone()
+  clone.set({ left: (source.left || 0) + 20, top: (source.top || 0) + 20 })
+  clone.controls = { ...clone.controls, ...stickerControls }
+  const meta = stickerMeta.get(source)
+  if (meta) stickerMeta.set(clone, meta)
+  canvas.add(clone)
+  canvas.setActiveObject(clone)
+  canvas.requestRenderAll()
+}
+
+function deleteSelected() {
+  if (!canvas || !selectedObject.value) return
+  canvas.remove(selectedObject.value)
+  canvas.discardActiveObject()
+  canvas.requestRenderAll()
+}
+
 function clearStickers() {
-  if (!fc) return
-  fc.getObjects().forEach((obj) => fc!.remove(obj))
-  fc.requestRenderAll()
+  if (!canvas) return
+  canvas.discardActiveObject()
+  canvas.getObjects().forEach(object => canvas?.remove(object))
+  canvas.requestRenderAll()
 }
 
-// ── 生命周期 ─────────────────────────────────────────────────
+function resetWorkspace() {
+  if (!canvas) return
+  clearStickers()
+  canvas.backgroundImage = undefined
+  canvas.setDimensions({ width: 600, height: 400 })
+  canvas.requestRenderAll()
+  hasBackground.value = false
+  backgroundName.value = ''
+  originalWidth.value = 0
+  originalHeight.value = 0
+  displayScale.value = 1
+}
+
+function download() {
+  if (!canvas || !hasBackground.value) return
+  canvas.discardActiveObject()
+  canvas.requestRenderAll()
+  const desiredMultiplier = (1 / displayScale.value) * exportScale.value
+  const safeMultiplier = Math.min(desiredMultiplier, 8192 / canvas.getWidth(), 8192 / canvas.getHeight())
+  const format = exportFormat.value
+  const url = canvas.toDataURL({ format, quality: format === 'jpeg' ? 0.92 : 1, multiplier: safeMultiplier })
+  const anchor = document.createElement('a')
+  const baseName = backgroundName.value.replace(/\.[^.]+$/, '').replace(/[\\/:*?"<>|]/g, '_') || '接头霸王'
+  anchor.href = url
+  anchor.download = `${baseName}_接头霸王.${format === 'jpeg' ? 'jpg' : 'png'}`
+  anchor.click()
+}
+
+function handleKeydown(event: KeyboardEvent) {
+  if (event.key === 'Delete' || event.key === 'Backspace') {
+    const target = event.target as HTMLElement
+    if (['INPUT', 'TEXTAREA'].includes(target.tagName)) return
+    deleteSelected()
+  }
+}
+
 onMounted(() => {
   setupCustomControls()
-  fc = new Canvas(canvasEl.value!, {
-    selection: false,
-    width: 600,
-    height: 400,
-  })
+  canvas = new Canvas(canvasEl.value!, { selection: false, width: 600, height: 400, preserveObjectStacking: true })
   bindCanvasDrop()
+  canvas.on('selection:created', updateSelection)
+  canvas.on('selection:updated', updateSelection)
+  canvas.on('selection:cleared', updateSelection)
+  canvas.on('object:added', refreshStickerCount)
+  canvas.on('object:removed', refreshStickerCount)
+  window.addEventListener('keydown', handleKeydown)
 })
 
 onBeforeUnmount(() => {
-  fc?.dispose()
+  window.removeEventListener('keydown', handleKeydown)
+  canvas?.dispose()
 })
 </script>
 
 <template>
-  <div class="flex flex-col mt-3 flex-1">
+  <div class="sticker-tool flex flex-col mt-3 flex-1">
     <DetailHeader :title="title" />
 
-    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300 space-y-4">
-
-      <!-- 操作栏 -->
-      <div class="flex flex-wrap gap-2 items-center">
-        <label
-          class="cursor-pointer inline-flex items-center gap-1 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          选择受害者图片
-          <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="hidden" @change="handleFileUpload" />
-        </label>
-
-        <button
-          v-if="hasBackground"
-          @click="download"
-          class="inline-flex items-center gap-1 px-4 py-2 rounded-lg bg-purple-500 hover:bg-purple-600 text-white text-sm font-medium transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-          迫害完成，下载！
-        </button>
-
-        <button
-          v-if="hasBackground"
-          @click="clearStickers"
-          class="inline-flex items-center gap-1 px-4 py-2 rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-sm font-medium transition-colors"
-        >
-          清空贴纸
-        </button>
+    <section class="hero-card">
+      <div>
+        <div class="eyebrow">STICKER COMPOSER</div>
+        <h2>选一张底图，开始自由接头</h2>
+        <p>内置角色贴纸，也支持上传自定义素材；画布可缩放、旋转、翻转和调整图层。</p>
       </div>
+      <div class="hero-metrics">
+        <div><span>底图</span><strong>{{ hasBackground ? `${originalWidth} × ${originalHeight}` : '未选择' }}</strong></div>
+        <div><span>贴纸数量</span><strong>{{ stickerCount }}</strong></div>
+        <div><span>导出</span><strong>{{ exportFormat.toUpperCase() }} · {{ exportScale }}×</strong></div>
+      </div>
+    </section>
 
-      <!-- 贴纸选择区（选项卡） -->
-      <div class="rounded-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
-        <!-- 选项卡头部 -->
-        <div class="flex border-b border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
-          <button
-            v-for="group in headGroups"
-            :key="group.prefix"
-            class="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px"
-            :class="activeGroup === group.prefix
-              ? 'border-blue-500 text-blue-600 dark:text-blue-400 bg-white dark:bg-slate-800'
-              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'"
-            @click="activeGroup = group.prefix"
-          >
-            <img
-              :src="groupIconSrc(group)"
-              class="w-6 h-6 rounded object-contain"
-              :alt="group.name"
-            />
-            {{ group.name }}
+    <section class="workspace-card">
+      <aside class="asset-panel">
+        <div class="panel-heading"><span>ASSETS</span><h3>素材库</h3></div>
+
+        <button class="background-upload" @click="backgroundInputRef?.click()">
+          <span class="upload-icon">底</span>
+          <span><strong>{{ hasBackground ? '更换底图' : '选择一张底图' }}</strong><small>{{ backgroundName || 'PNG / JPG / WebP / GIF' }}</small></span>
+        </button>
+        <input ref="backgroundInputRef" type="file" accept="image/*" hidden @change="handleBackgroundUpload" />
+
+        <div class="group-tabs">
+          <button v-for="group in headGroups" :key="group.prefix" :class="{ active: activeGroup === group.prefix }" @click="activeGroup = group.prefix">
+            <img :src="groupIconSrc(group)" :alt="group.name" /><span>{{ group.name }}</span>
           </button>
         </div>
-        <!-- 选项卡内容 -->
-        <div class="p-3 flex flex-wrap gap-2">
-          <div
+
+        <div class="sticker-grid">
+          <button
             v-for="item in activeHeadItems"
             :key="item.src"
-            class="flex flex-col items-center gap-1 cursor-pointer group"
-            draggable
-            @dragstart="onHeadDragStart($event, item.src)"
-            @dragend="onHeadDragEnd"
-            @click="onHeadClick(item.src)"
+            draggable="true"
+            :title="`添加 ${item.label}`"
+            @dragstart="onHeadDragStart($event, item)"
+            @dragend="draggingHead = null"
+            @click="addSticker(item)"
           >
-            <img
-              :src="item.src"
-              class="w-14 h-14 rounded-lg object-contain border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 group-hover:scale-110 group-hover:border-blue-400 transition-transform duration-150 select-none"
-            />
-            <span class="text-xs text-slate-500 dark:text-slate-400 select-none leading-none">
-              {{ item.label }}
-            </span>
+            <img :src="item.src" :alt="item.label" /><span>{{ item.label }}</span>
+          </button>
+        </div>
+
+        <button class="custom-upload" @click="customStickerInputRef?.click()"><span>＋</span><div><strong>上传自定义贴纸</strong><small>透明 PNG 效果最佳</small></div></button>
+        <input ref="customStickerInputRef" type="file" accept="image/*" hidden @change="handleCustomStickerUpload" />
+      </aside>
+
+      <div class="canvas-panel">
+        <div class="canvas-toolbar">
+          <div class="tool-status">
+            <span :class="{ active: selectedObject }"></span>
+            <strong>{{ selectedMeta?.label || (selectedObject ? '自定义贴纸' : '选择画布中的贴纸进行编辑') }}</strong>
+          </div>
+          <div class="selected-tools" :class="{ disabled: !selectedObject }">
+            <button title="缩小" @click="scaleSelected(0.9)">−</button>
+            <button title="放大" @click="scaleSelected(1.1)">＋</button>
+            <button title="左转 15°" @click="rotateSelected(-15)">↶</button>
+            <button title="右转 15°" @click="rotateSelected(15)">↷</button>
+            <button title="水平翻转" @click="flipSelected">翻转</button>
+            <button title="复制贴纸" @click="duplicateSelected">复制</button>
+            <button title="上移一层" @click="moveLayer('forward')">上移</button>
+            <button title="下移一层" @click="moveLayer('backward')">下移</button>
+            <button class="danger" title="删除" @click="deleteSelected">删除</button>
           </div>
         </div>
-      </div>
 
-      <!-- 画布区域 -->
-      <div
-        class="rounded-xl overflow-auto border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 p-2 flex justify-center"
-        :class="{ 'min-h-[200px] flex items-center justify-center': !hasBackground }"
-      >
-        <div v-if="!hasBackground" class="text-slate-400 dark:text-slate-500 text-sm text-center pointer-events-none select-none">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-2 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          请先上传受害者图片
+        <div class="stage-controls">
+          <span>画布背景</span>
+          <button :class="{ active: stageTheme === 'checker' }" @click="stageTheme = 'checker'">网格</button>
+          <button :class="{ active: stageTheme === 'light' }" @click="stageTheme = 'light'">浅色</button>
+          <button :class="{ active: stageTheme === 'dark' }" @click="stageTheme = 'dark'">深色</button>
         </div>
-        <canvas ref="canvasEl" />
-      </div>
 
-    </div>
+        <div ref="stageRef" class="canvas-stage" :class="stageTheme">
+          <div v-if="!hasBackground" class="empty-stage">
+            <div class="empty-glyph">🖼</div><strong>先上传一张底图</strong><p>图片只在浏览器本地读取，不会上传到服务器。</p>
+            <button @click="backgroundInputRef?.click()">选择图片</button>
+          </div>
+          <canvas ref="canvasEl" :class="{ hidden: !hasBackground }" />
+        </div>
+
+        <div class="canvas-footer">
+          <div><span>显示尺寸</span><strong>{{ hasBackground ? `${Math.round(originalWidth * displayScale)} × ${Math.round(originalHeight * displayScale)}` : '—' }}</strong></div>
+          <div><span>原始尺寸</span><strong>{{ hasBackground ? `${originalWidth} × ${originalHeight}` : '—' }}</strong></div>
+          <button v-if="stickerCount" @click="clearStickers">清空贴纸</button>
+          <button v-if="hasBackground" @click="resetWorkspace">重新开始</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="export-card">
+      <div><span class="export-icon">出</span><div><strong>导出成品</strong><p>默认按照底图原始分辨率导出，画布缩小预览不会降低清晰度。</p></div></div>
+      <div class="export-options">
+        <label>格式<select v-model="exportFormat"><option value="png">PNG</option><option value="jpeg">JPG</option></select></label>
+        <label>倍率<select v-model.number="exportScale"><option :value="1">1×</option><option :value="2">2×</option></select></label>
+        <span>{{ hasBackground ? `${exportDimensions.width} × ${exportDimensions.height}` : '等待底图' }}</span>
+        <button :disabled="!hasBackground" @click="download">下载图片</button>
+      </div>
+    </section>
 
     <ToolDetail title="使用说明">
       <el-text>
-        1. 点击「选择受害者图片」上传一张底图（支持 PNG / JPG / WebP）<br />
-        2. 在贴纸面板中 <b>拖拽</b>（桌面端）或 <b>点击</b>（移动端）头像添加到画布<br />
-        3. 点选画布上的贴纸可进行：拖动移位、角点缩放/旋转；左上角蓝色图标可水平翻转，右上角红色图标可删除<br />
-        4. 迫害完成后点击「下载」保存合成图片
+        上传底图后，可点击素材库头像将其居中添加，也可在桌面端直接拖到画布指定位置。选中贴纸后可拖动、角点缩放旋转，并使用工具栏翻转、复制、调整图层或删除；Delete / Backspace 也能删除当前贴纸。默认按底图原始分辨率导出，透明贴纸建议使用 PNG。
       </el-text>
     </ToolDetail>
   </div>
 </template>
+
+<style scoped>
+.sticker-tool { --accent:#7157d9; --ink:#292b38; --muted:#737789; }.hero-card { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; padding:26px; border:1px solid #e0ddf0; border-radius:24px; background:linear-gradient(135deg,#faf9ff,#f1edff 55%,#fff1f5); box-shadow:0 14px 34px rgba(73,62,114,.07); }.eyebrow,.panel-heading span { color:#7665a5; font-size:13px; font-weight:800; letter-spacing:.12em; }.hero-card h2 { margin:6px 0 8px; color:var(--ink); font-size:25px; line-height:1.3; font-weight:800; }.hero-card p { margin:0; color:var(--muted); font-size:14px; line-height:1.7; }.hero-metrics { display:grid; grid-template-columns:repeat(3,minmax(108px,1fr)); min-width:430px; padding:13px 0; border:1px solid rgba(137,118,188,.22); border-radius:17px; background:rgba(255,255,255,.72); }.hero-metrics div { padding:0 16px; border-right:1px solid #e5e0ef; }.hero-metrics div:last-child { border-right:0; }.hero-metrics span { display:block; color:#8b8797; font-size:13px; }.hero-metrics strong { display:block; margin-top:5px; overflow:hidden; color:#453f55; font-size:14px; white-space:nowrap; text-overflow:ellipsis; }
+.workspace-card { display:grid; grid-template-columns:280px minmax(0,1fr); margin-top:14px; overflow:hidden; border:1px solid #e1e3e9; border-radius:20px; background:#fff; box-shadow:0 11px 28px rgba(47,43,63,.05); }.asset-panel { padding:18px; border-right:1px solid #e4e5ea; background:#fafafb; }.panel-heading h3 { margin:4px 0 0; color:var(--ink); font-size:18px; }.background-upload,.custom-upload { display:flex; align-items:center; gap:11px; width:100%; margin-top:15px; padding:12px; border:1px solid #dcd9e7; border-radius:13px; background:#fff; text-align:left; cursor:pointer; }.upload-icon { display:grid; place-items:center; width:38px; height:38px; flex:none; border-radius:10px; background:#eee9fc; color:#7054b6; font-weight:800; }.background-upload strong,.background-upload small,.custom-upload strong,.custom-upload small { display:block; }.background-upload strong,.custom-upload strong { color:#494351; font-size:14px; }.background-upload small,.custom-upload small { max-width:170px; margin-top:3px; overflow:hidden; color:#8c8590; font-size:13px; white-space:nowrap; text-overflow:ellipsis; }.group-tabs { display:flex; gap:5px; margin-top:16px; overflow-x:auto; }.group-tabs button { display:flex; align-items:center; gap:5px; flex:none; padding:6px 8px; border:1px solid transparent; border-radius:9px; background:transparent; color:#716a77; font-size:13px; cursor:pointer; }.group-tabs button.active { border-color:#c5b9e5; background:#fff; color:#684cae; }.group-tabs img { width:24px; height:24px; object-fit:contain; }.sticker-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-top:10px; }.sticker-grid button { min-width:0; padding:6px; border:1px solid #e0dee6; border-radius:10px; background:#fff; cursor:grab; }.sticker-grid button:hover { border-color:#a996d8; transform:translateY(-1px); }.sticker-grid img { display:block; width:100%; aspect-ratio:1; object-fit:contain; }.sticker-grid span { display:block; margin-top:4px; overflow:hidden; color:#77717c; font-size:13px; white-space:nowrap; text-overflow:ellipsis; }.custom-upload { margin-top:12px; border-style:dashed; }.custom-upload>span { display:grid; place-items:center; width:36px; height:36px; border-radius:10px; background:#f2f0f6; color:#8069b6; font-size:19px; }
+.canvas-panel { min-width:0; }.canvas-toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:58px; padding:10px 16px; border-bottom:1px solid #e5e6eb; }.tool-status { display:flex; align-items:center; gap:8px; min-width:0; }.tool-status>span { width:9px; height:9px; flex:none; border-radius:50%; background:#c4c7ce; }.tool-status>span.active { background:#35a779; box-shadow:0 0 0 4px rgba(53,167,121,.12); }.tool-status strong { overflow:hidden; color:#55505c; font-size:13px; white-space:nowrap; text-overflow:ellipsis; }.selected-tools { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:5px; }.selected-tools.disabled { pointer-events:none; opacity:.38; }.selected-tools button { min-width:32px; height:32px; border:1px solid #dcdde4; border-radius:8px; background:#fff; color:#5d5865; font-size:13px; font-weight:700; cursor:pointer; }.selected-tools button.danger { color:#bd4953; }.stage-controls { display:flex; justify-content:flex-end; align-items:center; gap:5px; padding:9px 16px; background:#f8f9fb; }.stage-controls>span { margin-right:3px; color:#7f8390; font-size:13px; }.stage-controls button { border:1px solid transparent; border-radius:7px; padding:5px 8px; background:transparent; color:#737782; font-size:13px; cursor:pointer; }.stage-controls button.active { border-color:#d6d7df; background:#fff; color:#5e4c9c; }.canvas-stage { position:relative; display:flex; align-items:center; justify-content:center; min-height:520px; max-height:720px; padding:24px; overflow:auto; box-sizing:border-box; }.canvas-stage.checker { background-color:#eef0f4; background-image:linear-gradient(45deg,#dde0e7 25%,transparent 25%),linear-gradient(-45deg,#dde0e7 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#dde0e7 75%),linear-gradient(-45deg,transparent 75%,#dde0e7 75%); background-size:24px 24px; background-position:0 0,0 12px,12px -12px,-12px 0; }.canvas-stage.light { background:#f5f6f8; }.canvas-stage.dark { background:#20242d; }.canvas-stage :deep(.canvas-container) { flex:none; box-shadow:0 14px 34px rgba(29,31,39,.18); }.canvas-stage canvas.hidden,.canvas-stage :deep(.canvas-container:has(canvas.hidden)) { display:none!important; }.empty-stage { position:absolute; inset:24px; display:grid; place-items:center; align-content:center; border:1px dashed #bfc3ce; border-radius:16px; background:rgba(255,255,255,.78); text-align:center; }.empty-glyph { font-size:34px; }.empty-stage strong { margin-top:9px; color:#555966; font-size:15px; }.empty-stage p { margin:5px 0 13px; color:#858995; font-size:13px; }.empty-stage button { border:0; border-radius:9px; padding:9px 13px; background:var(--accent); color:white; font-size:13px; font-weight:700; cursor:pointer; }.canvas-footer { display:flex; align-items:center; gap:18px; min-height:55px; padding:9px 16px; border-top:1px solid #e5e6eb; }.canvas-footer div span,.canvas-footer div strong { display:block; }.canvas-footer div span { color:#8a8e99; font-size:13px; }.canvas-footer div strong { margin-top:2px; color:#505563; font-size:13px; }.canvas-footer button { margin-left:auto; border:0; background:transparent; color:#7560ac; font-size:13px; font-weight:700; cursor:pointer; }.canvas-footer button+button { margin-left:0; color:#aa5b64; }
+.export-card { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-top:14px; padding:16px 18px; border:1px solid #e1e3e9; border-radius:17px; background:#fff; }.export-card>div:first-child { display:flex; align-items:center; gap:11px; }.export-icon { display:grid; place-items:center; width:42px; height:42px; border-radius:11px; background:#eaf5f1; color:#28765c; font-weight:800; }.export-card strong { color:#484b57; font-size:14px; }.export-card p { margin:3px 0 0; color:#818591; font-size:13px; }.export-options { display:flex; align-items:center; gap:8px; }.export-options label { display:flex; align-items:center; gap:5px; color:#737784; font-size:13px; }.export-options select { height:36px; border:1px solid #d9dce3; border-radius:8px; padding:0 8px; background:#fff; color:#515662; }.export-options>span { min-width:110px; color:#777b87; font-size:13px; text-align:center; }.export-options>button { border:0; border-radius:9px; padding:10px 14px; background:var(--accent); color:#fff; font-size:14px; font-weight:750; cursor:pointer; }.export-options>button:disabled { opacity:.4; cursor:not-allowed; }
+:global(.dark) .sticker-tool { --ink:#f1edf5; --muted:#aaa3b1; }:global(.dark) .hero-card { border-color:#453d56; background:linear-gradient(135deg,#252032,#2b223b 55%,#38242e); }:global(.dark) .hero-metrics,:global(.dark) .workspace-card,:global(.dark) .export-card { border-color:#3f4756; background:#1b2637; }:global(.dark) .hero-metrics div,:global(.dark) .asset-panel,:global(.dark) .canvas-toolbar,:global(.dark) .canvas-footer { border-color:#414958; }:global(.dark) .hero-metrics strong,:global(.dark) .background-upload strong,:global(.dark) .custom-upload strong,:global(.dark) .tool-status strong,:global(.dark) .canvas-footer div strong,:global(.dark) .export-card strong { color:#ece7ef; }:global(.dark) .asset-panel,:global(.dark) .stage-controls { background:#202b3d; }:global(.dark) .background-upload,:global(.dark) .custom-upload,:global(.dark) .group-tabs button.active,:global(.dark) .sticker-grid button,:global(.dark) .selected-tools button,:global(.dark) .stage-controls button.active,:global(.dark) .export-options select { border-color:#465061; background:#1b2739; color:#c9c1ce; }:global(.dark) .empty-stage { border-color:#566173; background:rgba(27,38,55,.88); }
+@media (max-width:1000px) { .hero-card { align-items:stretch; flex-direction:column; }.hero-metrics { min-width:0; }.workspace-card { grid-template-columns:230px minmax(0,1fr); }.sticker-grid { grid-template-columns:repeat(2,1fr); }.canvas-toolbar { align-items:flex-start; flex-direction:column; }.selected-tools { justify-content:flex-start; } }
+@media (max-width:760px) { .workspace-card { grid-template-columns:1fr; }.asset-panel { border-right:0; border-bottom:1px solid #e4e5ea; }.sticker-grid { display:flex; overflow-x:auto; }.sticker-grid button { flex:0 0 84px; }.canvas-stage { min-height:360px; padding:14px; }.export-card { align-items:flex-start; flex-direction:column; }.export-options { width:100%; flex-wrap:wrap; }.export-options>button { width:100%; }.canvas-footer { flex-wrap:wrap; }.canvas-footer button { margin-left:0; } }
+@media (max-width:640px) { .hero-card { padding:18px 15px; }.hero-card h2 { font-size:21px; }.hero-metrics { grid-template-columns:1fr; padding:0; }.hero-metrics div { padding:10px 13px; border-right:0; border-bottom:1px solid #e5e0ef; }.hero-metrics div:last-child { border-bottom:0; }.canvas-stage { min-height:330px; }.stage-controls { justify-content:flex-start; }.export-options>span { min-width:0; margin-left:auto; } }
+</style>

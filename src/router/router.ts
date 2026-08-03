@@ -570,7 +570,7 @@ export const constantRoute = [
     meta: {
       title: "光棱坦克工厂",
       keywords: '光棱坦克,幻影坦克,图片隐写,图片混合,图片还原',
-      description: '光棱坦克工厂：将两张图片混合成一张，在白色背景下显现隐藏图，在深色背景下显现表面图，支持解码还原',
+      description: '在稳定画布中混合两张图片，提供效果预设、明暗背景检查、自动显形和原尺寸 PNG 导出',
     }
   },
   // 关于
@@ -601,7 +601,7 @@ export const constantRoute = [
     meta: {
       title: '接头霸王',
       keywords: '接头霸王,凯露,贴纸,图片合成,哈基米,耄耋,趣味工具',
-      description: '上传一张底图，拖拽凯露等角色的头像贴纸到画布合成有趣的图片，支持缩放、旋转、翻转、删除贴纸',
+      description: '上传底图并组合内置或自定义头像贴纸，支持图层、复制、翻转、删除和原图分辨率导出',
     }
   },
   {
@@ -621,7 +621,7 @@ export const constantRoute = [
     meta: {
       title: '日语动词变化',
       keywords: '日语动词变化,日语动词活用,日语变形,五段动词,一段动词,サ变动词,カ变动词',
-      description: '输入日语动词的任意常见形式，自动推断辞书形并展示ます形、て形、た形、ない形、可能形、被动形、使役形等活用形式',
+      description: '输入日语动词的任意常见形式，查看原形候选、推断置信度、分类活用卡片与て形、た形速查表',
     }
   },
   {
@@ -631,7 +631,7 @@ export const constantRoute = [
     meta: {
       title: '日语歌词学习工具',
       keywords: '日语歌词,歌词学习,LRC歌词,日语罗马音,日语助词,日语活用,双语歌词',
-      description: '输入日语歌词或 LRC 歌词，自动展示时间轴、日语分词标注、罗马音歌词和双语翻译，辅助日语听歌学习',
+      description: '把日语歌词或 LRC 整理成逐行学习稿，支持精准读音、专注模式、学习进度、复制和 TXT 导出',
     }
   },
   {
@@ -671,7 +671,7 @@ export const constantRoute = [
     meta: {
       title: '图片 EXIF 查看',
       keywords: 'EXIF,照片信息,拍摄参数,GPS定位,去除EXIF,图片元数据,相机参数,光圈快门ISO',
-      description: '上传图片查看完整 EXIF 信息（拍摄参数、设备型号、GPS 坐标），支持地图定位，一键下载去除 EXIF 的原图',
+      description: '查看、检索并导出照片元数据，集中提示位置、时间、设备等隐私字段并生成去除 EXIF 的副本',
     }
   },
   {
@@ -681,7 +681,7 @@ export const constantRoute = [
     meta: {
       title: 'ICO图标工具',
       keywords: 'ico图标生成,favicon生成,图标尺寸转换,png转ico,应用图标,圆角图标',
-      description: '上传图片后，一键生成多种尺寸的 PNG 和 ICO 图标，支持鼠标拖拽调整位置、缩放和圆角设置，并统一打包下载',
+      description: '按网站、Windows 或应用场景生成多尺寸 PNG 与多图层 ICO，支持裁切、圆角、底色、清晰度检查及 ZIP 交付',
     }
   },
   {
@@ -691,7 +691,7 @@ export const constantRoute = [
     meta: {
       title: '地图坐标系互转',
       keywords: '地图坐标系互转,WGS84,CGCS2000,GCJ-02,BD-09,EPSG:3857,Web Mercator,经纬度转换,地图选点',
-      description: '支持 WGS84、CGCS2000、GCJ-02、BD-09、Web Mercator 五种坐标系互转，提供地图选点、拖拽标记和坐标自动联动',
+      description: '支持五种坐标系单点与批量互转，提供地图选点、Excel 粘贴、逐行校验及 CSV、JSON 导出',
     }
   },
   {

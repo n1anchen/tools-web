@@ -22,6 +22,23 @@ export interface CoordinateSet {
   mercator: MercatorCoordinate
 }
 
+export interface BatchCoordinateRow {
+  line: number
+  label: string
+  primary: number
+  secondary: number
+}
+
+export interface BatchCoordinateError {
+  line: number
+  input: string
+  message: string
+}
+
+export interface BatchCoordinateResult extends BatchCoordinateRow {
+  coordinates: CoordinateSet
+}
+
 const EARTH_RADIUS = 6378137
 const MERCATOR_MAX_LAT = 85.05112878
 const MERCATOR_MAX_X = 20037508.34
@@ -122,6 +139,98 @@ export function buildCoordinateSet(source: CoordSystem, coordinate: AnyCoordinat
   if (source === 'mercator') set.mercator = { ...(coordinate as MercatorCoordinate) }
 
   return set
+}
+
+export function parseCoordinateRows(input: string, system: CoordSystem, limit = 500) {
+  const rows: BatchCoordinateRow[] = []
+  const errors: BatchCoordinateError[] = []
+
+  input.split(/\r?\n/).forEach((rawLine, index) => {
+    const line = index + 1
+    const normalized = rawLine.trim()
+    if (!normalized || normalized.startsWith('#')) return
+
+    const columns = normalized.includes('\t') || /[,，;；]/.test(normalized)
+      ? normalized.split(/[\t,，;；]+/).map(value => value.trim()).filter(Boolean)
+      : normalized.split(/\s+/).filter(Boolean)
+
+    const looksLikeHeader = columns.some(column => /^(name|label|名称|地点|lng|lon|longitude|经度|lat|latitude|纬度|x|y)$/i.test(column))
+      && columns.filter(column => Number.isFinite(Number(column))).length < 2
+    if (looksLikeHeader) return
+
+    if (columns.length < 2) {
+      errors.push({ line, input: rawLine, message: '每行至少需要两个坐标值。' })
+      return
+    }
+
+    const primary = Number(columns[columns.length - 2])
+    const secondary = Number(columns[columns.length - 1])
+    if (!Number.isFinite(primary) || !Number.isFinite(secondary)) {
+      errors.push({ line, input: rawLine, message: '末尾两列必须是有效数字。' })
+      return
+    }
+
+    const coordinate = fromCoordinatePair(system, primary, secondary)
+    const validationMessage = validateCoordinate(system, coordinate)
+    if (validationMessage) {
+      errors.push({ line, input: rawLine, message: validationMessage })
+      return
+    }
+
+    if (rows.length >= limit) {
+      errors.push({ line, input: rawLine, message: `单次最多转换 ${limit} 个坐标点。` })
+      return
+    }
+
+    rows.push({
+      line,
+      label: columns.slice(0, -2).join(' ') || `点 ${rows.length + 1}`,
+      primary,
+      secondary,
+    })
+  })
+
+  return { rows, errors }
+}
+
+export function buildBatchCoordinateSets(input: string, system: CoordSystem, limit = 500) {
+  const parsed = parseCoordinateRows(input, system, limit)
+  return {
+    ...parsed,
+    results: parsed.rows.map<BatchCoordinateResult>(row => ({
+      ...row,
+      coordinates: buildCoordinateSet(system, fromCoordinatePair(system, row.primary, row.secondary)),
+    })),
+  }
+}
+
+export function coordinateResultsToCsv(results: BatchCoordinateResult[]) {
+  const escapeCell = (value: string | number) => {
+    const text = String(value)
+    return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text
+  }
+  const header = [
+    '名称',
+    'WGS84 经度', 'WGS84 纬度',
+    'CGCS2000 经度', 'CGCS2000 纬度',
+    'GCJ-02 经度', 'GCJ-02 纬度',
+    'BD-09 经度', 'BD-09 纬度',
+    'Web Mercator X', 'Web Mercator Y',
+  ]
+  const rows = results.map(result => [
+    result.label,
+    formatCoordinateValue('wgs84', result.coordinates.wgs84.lng),
+    formatCoordinateValue('wgs84', result.coordinates.wgs84.lat),
+    formatCoordinateValue('cgcs2000', result.coordinates.cgcs2000.lng),
+    formatCoordinateValue('cgcs2000', result.coordinates.cgcs2000.lat),
+    formatCoordinateValue('gcj02', result.coordinates.gcj02.lng),
+    formatCoordinateValue('gcj02', result.coordinates.gcj02.lat),
+    formatCoordinateValue('bd09', result.coordinates.bd09.lng),
+    formatCoordinateValue('bd09', result.coordinates.bd09.lat),
+    formatCoordinateValue('mercator', result.coordinates.mercator.x),
+    formatCoordinateValue('mercator', result.coordinates.mercator.y),
+  ])
+  return [header, ...rows].map(row => row.map(escapeCell).join(',')).join('\n')
 }
 
 function wgs84ToMercator(lng: number, lat: number): [number, number] {

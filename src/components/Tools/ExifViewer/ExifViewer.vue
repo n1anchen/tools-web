@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onUnmounted, nextTick } from 'vue'
+import { ElMessage } from 'element-plus'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import exifr from 'exifr'
 import type { Map as LMap } from 'leaflet'
+import { copy } from '@/utils/string'
 
 const title = '图片 EXIF 查看'
 
@@ -26,6 +28,10 @@ const fileName = ref('')
 const fileSize = ref(0)
 const imageWidth = ref(0)
 const imageHeight = ref(0)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+const metadataSearch = ref('')
+const activeInfoGroup = ref('all')
+const rawMetadata = ref<Record<string, unknown> | null>(null)
 
 // EXIF 段中记录的像素尺寸（与 Image.naturalWidth 可能不同，优先展示）
 const exifDimW = ref<number | null>(null)
@@ -62,6 +68,40 @@ const activeCollapse = ref(['basic', 'shoot', 'device', 'gps'])
 
 // 原始文件引用，用于 canvas 下载
 const originalFile = ref<File | null>(null)
+const allMetadataRows = computed(() => exifGroups.value.flatMap(group => group.data.map(row => ({ ...row, group: group.label, groupKey: group.key }))))
+const metadataCount = computed(() => allMetadataRows.value.length + (hasGps.value ? 5 : 0))
+const filteredExifGroups = computed(() => {
+  const query = metadataSearch.value.trim().toLowerCase()
+  return exifGroups.value
+    .filter(group => activeInfoGroup.value === 'all' || group.key === activeInfoGroup.value)
+    .map(group => ({
+      ...group,
+      data: query ? group.data.filter(row => `${row.label} ${row.value}`.toLowerCase().includes(query)) : group.data,
+    }))
+    .filter(group => group.data.length)
+})
+const fileFormat = computed(() => originalFile.value ? formatMimeType(originalFile.value.type) : '等待图片')
+const privacyFindings = computed(() => {
+  if (!originalFile.value) return []
+  const findValue = (label: string) => allMetadataRows.value.find(row => row.label === label)?.value
+  const findings = [] as { key: string; label: string; value: string; risk: boolean }[]
+  findings.push({ key: 'gps', label: '拍摄位置', value: hasGps.value ? '包含精确 GPS 坐标' : '未发现 GPS 坐标', risk: hasGps.value })
+  const capturedAt = findValue('拍摄时间')
+  findings.push({ key: 'time', label: '拍摄时间', value: capturedAt ? capturedAt : '未发现拍摄时间', risk: Boolean(capturedAt) })
+  const device = [findValue('相机厂商'), findValue('相机型号')].filter(Boolean).join(' ')
+  findings.push({ key: 'device', label: '拍摄设备', value: device || '未发现设备型号', risk: Boolean(device) })
+  const identity = [findValue('作者'), findValue('版权')].filter(Boolean).join(' / ')
+  findings.push({ key: 'identity', label: '作者信息', value: identity || '未发现作者或版权字段', risk: Boolean(identity) })
+  return findings
+})
+const privacyRiskCount = computed(() => privacyFindings.value.filter(item => item.risk).length)
+const privacyLabel = computed(() => {
+  if (!originalFile.value) return '等待检查'
+  if (!hasExif.value) return '未发现 EXIF'
+  if (privacyRiskCount.value >= 3) return '隐私信息较多'
+  if (privacyRiskCount.value) return '含可识别信息'
+  return '未发现敏感字段'
+})
 
 // ──────────────────────────────────────────────
 // 工具：Orientation → CSS rotate
@@ -265,6 +305,7 @@ async function parseExif(file: File) {
   exifDimH.value = null
   dimSource.value = 'pending'
   quickInfo.value = []
+  rawMetadata.value = null
 
   try {
     // 读取全部 IFD 段
@@ -289,6 +330,7 @@ async function parseExif(file: File) {
     }
 
     hasExif.value = true
+    rawMetadata.value = data as Record<string, unknown>
 
     // 处理方向
     const ifd0 = data.ifd0 || {}
@@ -497,7 +539,10 @@ function onFileChange(e: Event) {
 }
 
 async function handleFile(file: File) {
-  if (!file.type.startsWith('image/')) return
+  if (!file.type.startsWith('image/')) {
+    ElMessage.warning('请选择图片文件')
+    return
+  }
   originalFile.value = file
   fileName.value = file.name
   fileSize.value = file.size
@@ -522,7 +567,7 @@ async function handleFile(file: File) {
     img.src = url
   })
 
-  parseExif(file)
+  await parseExif(file)
 }
 
 function onDragOver(e: DragEvent) {
@@ -537,6 +582,63 @@ function onDrop(e: DragEvent) {
   isDragging.value = false
   const file = e.dataTransfer?.files[0]
   if (file) handleFile(file)
+}
+
+function openFilePicker() {
+  fileInputRef.value?.click()
+}
+
+function resetViewer() {
+  if (imageUrl.value) URL.revokeObjectURL(imageUrl.value)
+  if (mapInstance) {
+    mapInstance.remove()
+    mapInstance = null
+  }
+  imageUrl.value = ''
+  fileName.value = ''
+  fileSize.value = 0
+  imageWidth.value = 0
+  imageHeight.value = 0
+  originalFile.value = null
+  rawMetadata.value = null
+  exifGroups.value = []
+  quickInfo.value = []
+  hasExif.value = false
+  noExifMsg.value = ''
+  metadataSearch.value = ''
+  activeInfoGroup.value = 'all'
+  gpsInfo.lat = null
+  gpsInfo.lon = null
+  gpsInfo.gcjLat = null
+  gpsInfo.gcjLon = null
+}
+
+function copyMetadataSummary() {
+  if (!originalFile.value) return
+  const lines = [
+    `文件：${fileName.value}`,
+    `格式：${fileFormat.value}`,
+    `尺寸：${exifDimW.value ?? imageWidth.value} × ${exifDimH.value ?? imageHeight.value}`,
+    ...allMetadataRows.value.map(row => `${row.group} / ${row.label}：${row.value}`),
+    ...(hasGps.value ? [`GPS / WGS84：${gpsInfo.lat?.toFixed(6)}, ${gpsInfo.lon?.toFixed(6)}`] : []),
+  ]
+  copy(lines.join('\n'))
+  ElMessage.success('元数据摘要已复制')
+}
+
+function downloadMetadataJson() {
+  if (!rawMetadata.value) return
+  const anchor = document.createElement('a')
+  anchor.download = `${fileName.value.replace(/\.[^.]+$/, '') || 'image'}_metadata.json`
+  anchor.href = URL.createObjectURL(new Blob([JSON.stringify(rawMetadata.value, null, 2)], { type: 'application/json;charset=utf-8' }))
+  anchor.click()
+  URL.revokeObjectURL(anchor.href)
+}
+
+function copyGpsCoordinate() {
+  if (!hasGps.value) return
+  copy(`${gpsInfo.lat?.toFixed(6)}, ${gpsInfo.lon?.toFixed(6)}`)
+  ElMessage.success('WGS84 坐标已复制')
 }
 
 // ──────────────────────────────────────────────
@@ -632,24 +734,37 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col mt-3 flex-1">
+  <div class="exif-tool flex flex-col mt-3 flex-1">
     <DetailHeader :title="title" />
 
+    <section class="exif-hero">
+      <div>
+        <div class="exif-eyebrow">PHOTO METADATA INSPECTOR</div>
+        <h2>看清照片携带的信息，再决定如何分享</h2>
+        <p>集中检查拍摄参数、设备、时间与位置，并可导出元数据或生成去除 EXIF 的副本。</p>
+      </div>
+      <div class="exif-metrics">
+        <div><span>文件格式</span><strong>{{ fileFormat }}</strong></div>
+        <div><span>元数据字段</span><strong>{{ metadataCount }}</strong></div>
+        <div><span>隐私检查</span><strong>{{ privacyLabel }}</strong></div>
+      </div>
+    </section>
+
     <!-- 主内容 -->
-    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="exif-workbench p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm transition-shadow duration-300">
 
       <!-- 上传区 -->
       <div
-        class="relative flex flex-col items-center justify-center w-full h-36 rounded-xl border-2 border-dashed cursor-pointer transition-all select-none mb-4"
+        class="exif-upload relative flex flex-col items-center justify-center w-full h-36 rounded-xl border-2 border-dashed cursor-pointer transition-all select-none mb-4"
         :class="isDragging
           ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20'
           : 'border-slate-300 dark:border-slate-600 hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700/50'"
         @dragover="onDragOver"
         @dragleave="onDragLeave"
         @drop="onDrop"
-        @click="($refs.fileInput as HTMLInputElement).click()"
+        @click="openFilePicker"
       >
-        <input ref="fileInput" type="file" accept="image/*" class="hidden" @change="onFileChange" />
+        <input ref="fileInputRef" type="file" accept="image/*" class="hidden" @change="onFileChange" />
         <div class="flex flex-col items-center gap-1 pointer-events-none">
           <svg class="w-10 h-10 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -671,7 +786,7 @@ onUnmounted(() => {
 
       <!-- 无 EXIF 提示 -->
       <div v-else-if="imageUrl && !hasExif && !isLoading"
-        class="flex flex-col items-center gap-2 py-8 text-slate-400 dark:text-slate-500">
+        class="no-exif-state flex flex-col items-center gap-2 py-8 text-slate-400 dark:text-slate-500">
         <svg class="w-12 h-12 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
@@ -679,6 +794,11 @@ onUnmounted(() => {
         <p class="text-sm font-medium">{{ noExifMsg }}</p>
         <!-- 仍然显示图片预览 -->
         <img :src="imageUrl" class="mt-3 max-h-48 rounded-lg shadow" style="max-width:100%" />
+        <div class="no-exif-actions">
+          <el-button type="primary" :loading="isDownloading" @click="downloadClean">下载重新编码副本</el-button>
+          <el-button @click="openFilePicker">更换图片</el-button>
+          <el-button @click="resetViewer">重新开始</el-button>
+        </div>
       </div>
 
       <!-- EXIF 内容 -->
@@ -743,13 +863,37 @@ onUnmounted(() => {
                 </svg>
                 在高德地图中打开
               </el-button>
+              <el-button size="small" @click="copyMetadataSummary">复制元数据摘要</el-button>
+              <el-button size="small" @click="downloadMetadataJson">导出 JSON</el-button>
+              <el-button size="small" @click="resetViewer">重新开始</el-button>
             </div>
           </div>
         </div>
 
+        <section class="privacy-workbench" :class="{ danger: privacyRiskCount >= 3 }">
+          <header>
+            <div><span>PRIVACY CHECK</span><h3>分享前隐私检查</h3><p>自动提示最容易暴露位置、时间和身份的信息。</p></div>
+            <strong>{{ privacyRiskCount }} 项需注意</strong>
+          </header>
+          <div class="privacy-grid">
+            <article v-for="item in privacyFindings" :key="item.key" :class="{ risk: item.risk }">
+              <span>{{ item.risk ? '!' : '✓' }}</span>
+              <div><strong>{{ item.label }}</strong><p>{{ item.value }}</p></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="metadata-toolbar">
+          <div class="metadata-tabs">
+            <button :class="{ active: activeInfoGroup === 'all' }" @click="activeInfoGroup = 'all'">全部 {{ allMetadataRows.length }}</button>
+            <button v-for="group in exifGroups" :key="group.key" :class="{ active: activeInfoGroup === group.key }" @click="activeInfoGroup = group.key">{{ group.label }} {{ group.data.length }}</button>
+          </div>
+          <el-input v-model="metadataSearch" clearable placeholder="搜索字段或值" />
+        </section>
+
         <!-- EXIF 分组 -->
         <el-collapse v-model="activeCollapse" class="exif-collapse">
-          <el-collapse-item v-for="group in exifGroups" :key="group.key" :name="group.key">
+          <el-collapse-item v-for="group in filteredExifGroups" :key="group.key" :name="group.key">
             <template #title>
               <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ group.label }}</span>
               <span class="ml-2 text-xs text-slate-400 dark:text-slate-500">{{ group.data.length }} 项</span>
@@ -767,6 +911,7 @@ onUnmounted(() => {
           <el-collapse-item v-if="hasGps" name="gps">
             <template #title>
               <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">GPS 位置</span>
+              <button class="gps-copy" @click.stop="copyGpsCoordinate">复制 WGS84</button>
             </template>
             <div class="flex flex-col gap-3">
               <!-- 坐标信息 -->
@@ -893,4 +1038,60 @@ onUnmounted(() => {
 .exif-collapse :deep(.el-collapse) {
   @apply border-0;
 }
+
+.exif-tool { --exif-ink:#273247; --exif-muted:#69778c; }
+.exif-hero { display:flex; justify-content:space-between; gap:28px; padding:26px 28px; margin-bottom:14px; border:1px solid #dbe5ef; border-radius:24px; background:linear-gradient(135deg,#edf8ff,#f5f1ff); box-shadow:0 12px 30px rgba(51,65,85,.06); }
+.exif-eyebrow,.privacy-workbench header span { font-size:12px; font-weight:800; letter-spacing:.14em; color:#52779e; }
+.exif-hero h2 { margin:6px 0 8px; font-size:24px; color:var(--exif-ink); }
+.exif-hero p { margin:0; font-size:14px; line-height:1.7; color:var(--exif-muted); }
+.exif-metrics { display:grid; grid-template-columns:repeat(3,minmax(105px,1fr)); min-width:420px; overflow:hidden; border:1px solid #d7e2ec; border-radius:18px; background:rgba(255,255,255,.75); }
+.exif-metrics div { padding:16px; border-right:1px solid #d7e2ec; }
+.exif-metrics div:last-child { border-right:0; }
+.exif-metrics span,.exif-metrics strong { display:block; }
+.exif-metrics span { font-size:12px; color:#7e8b9c; }
+.exif-metrics strong { margin-top:5px; font-size:15px; color:var(--exif-ink); }
+.exif-workbench { border-radius:24px!important; box-shadow:0 12px 30px rgba(51,65,85,.06)!important; }
+.exif-upload { min-height:165px; height:auto!important; background:#f8fbff; }
+.privacy-workbench { padding:16px; border:1px solid #d9e8df; border-radius:18px; background:#f7fcf9; }
+.privacy-workbench.danger { border-color:#f2d5cc; background:#fff9f6; }
+.privacy-workbench header { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; }
+.privacy-workbench h3 { margin:4px 0; font-size:17px; color:var(--exif-ink); }
+.privacy-workbench header p { margin:0; font-size:12px; color:var(--exif-muted); }
+.privacy-workbench header>strong { padding:6px 9px; border-radius:999px; background:#e5f5eb; font-size:12px; color:#347d55; }
+.privacy-workbench.danger header>strong { background:#ffe9e2; color:#af563f; }
+.privacy-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin-top:12px; }
+.privacy-grid article { display:flex; gap:9px; min-width:0; padding:10px; border-radius:12px; background:#edf8f1; }
+.privacy-grid article.risk { background:#fff0eb; }
+.privacy-grid article>span { display:grid; place-items:center; flex:0 0 26px; height:26px; border-radius:8px; background:#d6efdf; font-weight:800; color:#327a53; }
+.privacy-grid article.risk>span { background:#ffd9ce; color:#ad523c; }
+.privacy-grid article strong { display:block; font-size:13px; color:var(--exif-ink); }
+.privacy-grid article p { overflow:hidden; margin:3px 0 0; font-size:12px; color:#6e7b8f; text-overflow:ellipsis; white-space:nowrap; }
+.metadata-toolbar { display:grid; grid-template-columns:minmax(0,1fr) 260px; gap:12px; align-items:center; padding:12px; border:1px solid #e0e7ee; border-radius:15px; background:#fafcff; }
+.metadata-tabs { display:flex; gap:7px; flex-wrap:wrap; }
+.metadata-tabs button { padding:7px 10px; border:1px solid #d8e2eb; border-radius:9px; background:#fff; font-size:12px; color:#617085; }
+.metadata-tabs button.active { border-color:#70a3dc; background:#eaf4ff; color:#326fae; }
+.gps-copy { margin-left:12px; padding:5px 8px; border:1px solid #cdddeb; border-radius:8px; background:#f4f9fd; font-size:12px; color:#3e73aa; }
+.no-exif-state { min-height:380px; border:1px dashed #cfdbe7; border-radius:18px; background:#fafcff; }
+.no-exif-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.exif-collapse :deep(.el-collapse-item__header) { min-height:52px; font-size:14px; }
+.exif-collapse :deep(.el-collapse-item__content) { font-size:13px; }
+.exif-collapse .text-\[10px\],.exif-collapse .text-\[11px\],.exif-collapse .text-xs { font-size:12px!important; }
+.dark .exif-hero { border-color:#344155; background:linear-gradient(135deg,#172d40,#251d3c); }
+.dark .exif-hero h2,.dark .exif-metrics strong,.dark .privacy-workbench h3,.dark .privacy-grid article strong { color:#e7edf6; }
+.dark .exif-hero p { color:#aab6c6; }
+.dark .exif-metrics { border-color:#425169; background:rgba(15,23,42,.5); }
+.dark .exif-metrics div { border-color:#425169; }
+.dark .exif-upload { background:#111c2d; }
+.dark .privacy-workbench,.dark .privacy-workbench.danger { border-color:#344155; background:#111a2a; }
+.dark .privacy-grid article { background:#14291f; }
+.dark .privacy-grid article.risk { background:#34211d; }
+.dark .metadata-toolbar { border-color:#344155; background:#111a2a; }
+.dark .metadata-tabs button { border-color:#3b495d; background:#182438; color:#b4c0ce; }
+.dark .metadata-tabs button.active { border-color:#477fbe; background:#172d45; color:#aad1f8; }
+.dark .no-exif-state { border-color:#3a485c; background:#111a2a; }
+@media (max-width:1000px) { .exif-hero{flex-direction:column}.exif-metrics{min-width:0}.privacy-grid{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:650px) { .exif-hero{padding:20px 16px}.exif-hero h2{font-size:21px}.exif-metrics{grid-template-columns:1fr}.exif-metrics div{padding:12px;border-right:0;border-bottom:1px solid #d7e2ec}.exif-metrics div:last-child{border-bottom:0}.privacy-workbench header{flex-direction:column}.privacy-grid{grid-template-columns:1fr}.metadata-toolbar{grid-template-columns:1fr}.no-exif-actions{justify-content:center} }
+.exif-workbench :deep(.text-\[9px\]),
+.exif-workbench :deep(.text-\[10px\]),
+.exif-workbench :deep(.text-\[11px\]){font-size:12px!important}
 </style>
