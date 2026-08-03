@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
@@ -7,9 +7,25 @@ import { copy } from '@/utils/string'
 import { removeTrackingParams } from '@/utils/url'
 
 const title = '短链接解析'
-
-// 云函数 API 地址（通过环境变量配置）
 const apiBase = (import.meta.env.VITE_UNSHORTEN_API as string | undefined)?.trim()
+const inputUrl = ref('')
+const touched = ref(false)
+const pastedInvalid = ref(false)
+const enableFollow = ref(true)
+const maxHops = ref(5)
+const cleanupMode = ref<'tracking' | 'none' | 'all'>('tracking')
+const loading = ref(false)
+const resultVisible = ref(false)
+const resultKind = ref<'local' | 'resolved'>('local')
+const finalRawUrl = ref('')
+const chain = ref<string[]>([])
+
+const knownShorteners = ['t.cn', 'bit.ly', 'dwz.cn', 'suo.im', 'tinyurl.com', 'url.cn', 'b23.tv', 'v.douyin.com', 'goo.gl', 'is.gd', 'reurl.cc']
+const examples = [
+  { label: '带营销参数', value: 'https://example.com/products?id=42&utm_source=newsletter&fbclid=demo#detail' },
+  { label: '短链接示例', value: 'https://t.cn/A6example' },
+]
+
 const isConfigured = computed(() => {
   if (!apiBase) return false
   try {
@@ -19,318 +35,300 @@ const isConfigured = computed(() => {
   }
 })
 
-// 表单状态
-const inputUrl = ref('')
-const inputError = ref(false) // 粘贴相关错误
-const isTouched = ref(false)  // 手动输入后 blur 过
-const enableFollow = ref(false)
-const maxHops = ref(5)
-const loading = ref(false)
+const parsedInput = computed(() => parsePublicUrl(inputUrl.value))
+const isValidUrl = computed(() => parsedInput.value !== null)
+const showError = computed(() => Boolean(inputUrl.value.trim()) && !isValidUrl.value && (touched.value || pastedInvalid.value))
+const urlErrorText = computed(() => explainUrlError(inputUrl.value))
+const inputDiagnostics = computed(() => {
+  const parsed = parsedInput.value
+  if (!parsed) return null
+  const keys = [...parsed.searchParams.keys()]
+  const clean = removeTrackingParams(parsed.href)
+  const cleanKeys = new Set([...new URL(clean).searchParams.keys()].map(key => key.toLowerCase()))
+  const trackingKeys = [...new Set(keys.filter(key => !cleanKeys.has(key.toLowerCase())))]
+  const host = parsed.hostname.toLowerCase()
+  return {
+    protocol: parsed.protocol.replace(':', '').toUpperCase(),
+    host: parsed.hostname,
+    path: `${parsed.pathname}${parsed.hash}`,
+    queryCount: keys.length,
+    trackingKeys,
+    looksShort: knownShorteners.some(domain => host === domain || host.endsWith(`.${domain}`)),
+  }
+})
 
-// 结果状态
-const resultVisible = ref(false)
-const finalUrl = ref('')
-const chain = ref<string[]>([])
-
-// URL 合法性校验（仅允许域名，不允许 IP 或带端口号）
-const isValidUrl = computed(() => {
-  const val = inputUrl.value.trim()
-  if (!val) return false
+const finalUrl = computed(() => cleanUrl(finalRawUrl.value, cleanupMode.value))
+const removedParams = computed(() => {
+  if (!finalRawUrl.value || cleanupMode.value === 'none') return [] as string[]
   try {
-    const u = new URL(val)
-    if (!['http:', 'https:'].includes(u.protocol)) return false
-    // 不允许带端口号
-    if (u.port !== '') return false
-    const host = u.hostname
-    // 不允许 IPv4
-    if (/^(\d{1,3}\.){3}\d{1,3}$/.test(host)) return false
-    // 不允许 IPv6（hostname 形如 [::1] 或解析后为纯 IPv6 格式）
-    if (host.startsWith('[') || /^[0-9a-f:]+$/i.test(host)) return false
-    // 必须包含至少一个点（排除纯裸主机名）
-    if (!host.includes('.')) return false
-    return true
+    const before = new URL(finalRawUrl.value)
+    const afterKeys = new Set([...new URL(finalUrl.value).searchParams.keys()].map(key => key.toLowerCase()))
+    return [...new Set([...before.searchParams.keys()].filter(key => !afterKeys.has(key.toLowerCase())))]
   } catch {
-    return false
+    return [] as string[]
   }
 })
+const targetHost = computed(() => {
+  try { return new URL(finalUrl.value).hostname } catch { return '—' }
+})
+const hopCount = computed(() => Math.max(0, chain.value.length - 1))
 
-// 输入内容变化时，若已合法或已清空则消除错误状态
-watch(inputUrl, (val) => {
-  if (!val || isValidUrl.value) {
-    inputError.value = false
-  }
+watch(inputUrl, () => {
+  pastedInvalid.value = false
+  resultVisible.value = false
+  finalRawUrl.value = ''
+  chain.value = []
 })
 
-// 统一的错误显示判断：有内容 + 不合法 + (粘贴出错 OR 已 blur)
-const showError = computed(() =>
-  !!inputUrl.value && !isValidUrl.value && (inputError.value || isTouched.value)
-)
-
-const normalizeResultUrl = (value: unknown) => {
-  if (typeof value !== 'string') throw new Error('接口返回了无效链接')
-  const parsed = new URL(value)
-  if (!['http:', 'https:'].includes(parsed.protocol)) {
-    throw new Error('接口返回了不安全的链接')
+function parsePublicUrl(value: string) {
+  const trimmed = value.trim()
+  if (!trimmed) return null
+  try {
+    const parsed = new URL(trimmed)
+    if (!['http:', 'https:'].includes(parsed.protocol)) return null
+    if (parsed.username || parsed.password || parsed.port) return null
+    const host = parsed.hostname
+    if (!host.includes('.') || host.startsWith('[') || /^\d{1,3}(?:\.\d{1,3}){3}$/.test(host) || /^[0-9a-f:]+$/i.test(host)) return null
+    return parsed
+  } catch {
+    return null
   }
-  return parsed.href
 }
 
-const resolve = async () => {
-  if (!isValidUrl.value) return
+function explainUrlError(value: string) {
+  if (!value.trim()) return ''
+  try {
+    const parsed = new URL(value.trim())
+    if (!['http:', 'https:'].includes(parsed.protocol)) return '仅支持以 http:// 或 https:// 开头的链接'
+    if (parsed.username || parsed.password) return '出于安全考虑，不支持包含账号密码的链接'
+    if (parsed.port) return '跳转追踪不支持自定义端口'
+    return '请输入公开域名链接，不支持 IP 地址或本地主机名'
+  } catch {
+    return '链接格式不完整，请保留 http:// 或 https://'
+  }
+}
 
+function cleanUrl(value: string, mode: typeof cleanupMode.value) {
+  if (!value) return ''
+  if (mode === 'none') return value
+  if (mode === 'tracking') return removeTrackingParams(value)
+  try {
+    const parsed = new URL(value)
+    parsed.search = ''
+    return parsed.href
+  } catch {
+    return value
+  }
+}
+
+function runLocalAnalysis() {
+  const parsed = parsedInput.value
+  if (!parsed) {
+    touched.value = true
+    return
+  }
+  finalRawUrl.value = parsed.href
+  chain.value = [parsed.href]
+  resultKind.value = 'local'
+  resultVisible.value = true
+}
+
+async function resolveRedirect() {
+  if (!isValidUrl.value || !isConfigured.value || loading.value) return
   loading.value = true
   resultVisible.value = false
-
   try {
     const params = new URLSearchParams({
-      url: inputUrl.value.trim(),
+      url: parsedInput.value!.href,
       follow: String(enableFollow.value),
       maxHops: String(maxHops.value),
     })
-
     const endpoint = new URL(apiBase!)
     params.forEach((value, key) => endpoint.searchParams.set(key, value))
-    const resp = await fetch(endpoint)
-    const data = await resp.json()
+    const response = await fetch(endpoint)
+    const data = await response.json()
+    if (!response.ok) throw new Error(data.error || `请求失败 (${response.status})`)
 
-    if (!resp.ok) {
-      throw new Error(data.error || `请求失败 (${resp.status})`)
-    }
-
-    finalUrl.value = removeTrackingParams(normalizeResultUrl(data.finalUrl))
-    chain.value = Array.isArray(data.chain)
-      ? data.chain.map(normalizeResultUrl)
-      : []
+    const normalizedFinal = normalizeResultUrl(data.finalUrl)
+    const normalizedChain = Array.isArray(data.chain) ? data.chain.map(normalizeResultUrl) : []
+    if (!normalizedChain.length) normalizedChain.push(parsedInput.value!.href)
+    if (normalizedChain.at(-1) !== normalizedFinal) normalizedChain.push(normalizedFinal)
+    finalRawUrl.value = normalizedFinal
+    chain.value = normalizedChain
+    resultKind.value = 'resolved'
     resultVisible.value = true
-  } catch (err: any) {
-    ElMessage.error(err.message || '解析失败，请稍后重试')
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '解析失败，请稍后重试')
   } finally {
     loading.value = false
   }
 }
 
-const copyResult = () => {
-  copy(finalUrl.value)
+function normalizeResultUrl(value: unknown) {
+  if (typeof value !== 'string') throw new Error('接口返回了无效链接')
+  const parsed = new URL(value)
+  if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('接口返回了不安全的链接')
+  return parsed.href
 }
 
-const onClear = () => {
-  resultVisible.value = false
-  finalUrl.value = ''
-  chain.value = []
-  inputError.value = false
-  isTouched.value = false
-}
-
-// 粘贴按钮：从剪贴板提取合法网址
-const pasteFromClipboard = async () => {
+async function pasteFromClipboard() {
   try {
     const text = await navigator.clipboard.readText()
-    if (!text) return
-    // 从文本中提取第一个 http/https URL
-    const urlRegex = /https?:\/\/[^\s"'<>\]\[）（]+/
-    const match = text.match(urlRegex)
-    if (match) {
-      inputUrl.value = match[0]
-      // 提取到 URL 形式字符串后，仍需严格校验（如含 IP、端口等）
-      inputError.value = !isValidUrl.value
-    } else {
-      inputUrl.value = text
-      inputError.value = true
-    }
-    resultVisible.value = false
-    finalUrl.value = ''
-    chain.value = []
+    const match = text.match(/https?:\/\/[^\s"'<>\]\[）（]+/)
+    inputUrl.value = match?.[0] || text.trim()
+    pastedInvalid.value = !parsePublicUrl(inputUrl.value)
   } catch {
     ElMessage.error('无法读取剪贴板，请检查浏览器权限')
   }
 }
+
+function clearAll() {
+  inputUrl.value = ''
+  touched.value = false
+  pastedInvalid.value = false
+  resultVisible.value = false
+}
+
+function copyChain() {
+  copy(chain.value.map((url, index) => `${index}. ${url}`).join('\n'))
+}
+
+function loadExample(value: string) {
+  inputUrl.value = value
+}
 </script>
 
 <template>
-  <div class="flex flex-col mt-3 flex-1">
+  <div class="url-tool flex flex-col mt-3 flex-1">
     <DetailHeader :title="title" />
 
-    <!-- 未配置提示 -->
-    <el-alert
-      v-if="!isConfigured"
-      title="功能未启用"
-      type="warning"
-      :closable="false"
-      show-icon
-      class="mb-4"
-      description="短链接解析需要配置云函数接口地址，请在环境变量中设置 VITE_UNSHORTEN_API 后重新构建。"
-    />
+    <section class="hero-card">
+      <div>
+        <div class="eyebrow">LINK INSPECTOR</div>
+        <h2>先看清链接，再决定要不要打开</h2>
+        <p>本地检查链接结构和营销参数；配置解析服务后，还能安全追踪完整重定向链。</p>
+      </div>
+      <div class="service-state" :class="{ online: isConfigured }">
+        <span class="state-dot"></span>
+        <div><strong>{{ isConfigured ? '跳转追踪已就绪' : '本地分析可用' }}</strong><small>{{ isConfigured ? '可解析服务端重定向' : '当前未配置云端解析服务' }}</small></div>
+      </div>
+    </section>
 
-    <!-- 输入区 -->
-    <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
-      <div class="flex flex-wrap gap-2 items-start">
-        <div class="flex-1 min-w-[200px] flex flex-col gap-1">
-          <el-input
-            v-model="inputUrl"
-            :disabled="!isConfigured"
-            :status="showError ? 'error' : ''"
-            placeholder="输入短链接，如 https://t.cn/xxxxxx"
-            size="large"
-            clearable
-            @clear="onClear"
-            @blur="isTouched = true"
-            @keyup.enter="resolve"
-          />
-          <Transition name="fade">
-            <div v-if="showError" class="text-xs text-red-500 pl-1">
-              {{ inputError && !isTouched ? '没有找到合法网址' : '请输入合法的域名链接（不支持 IP 和端口号）' }}
-            </div>
-          </Transition>
-        </div>
-        <div class="flex gap-2 w-full sm:w-auto">
-          <el-button
-            size="large"
-            :disabled="!isConfigured"
-            class="shrink-0"
-            @click="pasteFromClipboard"
-          >
-            粘贴
-          </el-button>
-          <el-button
-            type="primary"
-            size="large"
-            :loading="loading"
-            :disabled="!isConfigured || !isValidUrl"
-            class="flex-1 sm:flex-none"
-            @click="resolve"
-          >
-            解析
-          </el-button>
+    <section class="input-card">
+      <div class="input-heading">
+        <div><span>STEP 1</span><h3>粘贴需要检查的链接</h3></div>
+        <button v-if="inputUrl" class="text-button" @click="clearAll">清空</button>
+      </div>
+      <div class="url-input-shell" :class="{ invalid: showError }">
+        <span class="lock-mark">↗</span>
+        <input
+          v-model="inputUrl"
+          type="url"
+          spellcheck="false"
+          placeholder="https://t.cn/xxxxxx 或带跟踪参数的完整链接"
+          @blur="touched = true"
+          @keyup.enter="isConfigured ? resolveRedirect() : runLocalAnalysis()"
+        />
+        <button class="paste-button" @click="pasteFromClipboard">粘贴</button>
+      </div>
+      <div v-if="showError" class="field-error">{{ urlErrorText }}</div>
+
+      <div v-if="inputDiagnostics" class="diagnostics-row">
+        <div><span>协议</span><strong>{{ inputDiagnostics.protocol }}</strong></div>
+        <div><span>域名</span><strong>{{ inputDiagnostics.host }}</strong></div>
+        <div><span>查询参数</span><strong>{{ inputDiagnostics.queryCount }}</strong></div>
+        <div><span>链接判断</span><strong>{{ inputDiagnostics.looksShort ? '疑似短链接' : '普通链接' }}</strong></div>
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <div class="settings-main">
+        <div class="setting-heading"><span>STEP 2</span><h3>选择处理方式</h3></div>
+        <div class="cleanup-options">
+          <button :class="{ active: cleanupMode === 'tracking' }" @click="cleanupMode = 'tracking'">
+            <strong>移除营销参数</strong><span>推荐 · 保留业务查询参数</span>
+          </button>
+          <button :class="{ active: cleanupMode === 'none' }" @click="cleanupMode = 'none'">
+            <strong>保留原始链接</strong><span>不对目标地址做清理</span>
+          </button>
+          <button :class="{ active: cleanupMode === 'all' }" @click="cleanupMode = 'all'">
+            <strong>移除全部参数</strong><span>可能影响登录、分享或资源定位</span>
+          </button>
         </div>
       </div>
 
-      <!-- 多跳追踪开关 -->
-      <div class="mt-4 flex flex-wrap items-center gap-4">
-        <div class="flex items-center gap-2">
-          <el-switch
-            v-model="enableFollow"
-            :disabled="!isConfigured"
-            active-text="多跳追踪"
-            inactive-text="单跳模式"
-          />
-          <el-tooltip content="开启后追踪完整跳转链路，关闭则只获取第一跳目标地址" placement="top">
-            <el-icon class="text-slate-400 cursor-help"><InfoFilled /></el-icon>
-          </el-tooltip>
+      <div class="tracking-settings" :class="{ disabled: !isConfigured }">
+        <div class="tracking-title">
+          <div><strong>服务端跳转追踪</strong><span>{{ isConfigured ? '逐跳验证公开 HTTP(S) 地址' : '需要配置 VITE_UNSHORTEN_API' }}</span></div>
+          <el-switch v-model="enableFollow" :disabled="!isConfigured" />
         </div>
-
-        <Transition name="fade">
-          <div v-if="enableFollow" class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <span>最大跳数</span>
-            <el-slider
-              v-model="maxHops"
-              :min="2"
-              :max="10"
-              :step="1"
-              :show-tooltip="true"
-              :disabled="!isConfigured"
-              style="width: 120px"
-            />
-            <span class="w-4 text-center font-medium text-slate-700 dark:text-slate-300">{{ maxHops }}</span>
-          </div>
-        </Transition>
+        <label v-if="enableFollow"><span>最大跳数</span><strong>{{ maxHops }}</strong><input v-model.number="maxHops" type="range" min="2" max="10" :disabled="!isConfigured" /></label>
       </div>
-    </div>
 
-    <!-- 结果区 -->
-    <Transition name="slide-up">
-      <div
-        v-if="resultVisible"
-        class="mt-3 p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm"
-      >
-        <div class="text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-2">解析结果</div>
-
-        <!-- 最终链接 -->
-        <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600">
-          <div class="flex-1 min-w-0">
-            <a
-              :href="finalUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-blue-600 dark:text-blue-400 hover:underline break-all text-sm font-medium"
-            >
-              {{ finalUrl }}
-            </a>
-          </div>
-          <div class="flex flex-row gap-1 flex-shrink-0">
-            <el-button
-              type="primary"
-              plain
-              size="small"
-              style="width: 56px"
-              @click="copyResult"
-            >
-              复制
-            </el-button>
-            <el-button
-              type="success"
-              plain
-              size="small"
-              style="width: 56px; margin-left: 0"
-              tag="a"
-              :href="finalUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              访问
-            </el-button>
-          </div>
-        </div>
-
-        <!-- 跳转链路（始终展示，只要 chain 有内容） -->
-        <div v-if="chain.length > 0" class="mt-4">
-          <div class="text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-3">
-            跳转链路（共 {{ chain.length }} 条）
-          </div>
-          <el-timeline style="padding-left: 0; margin-top: 0;">
-            <el-timeline-item
-              v-for="(hop, index) in chain"
-              :key="index"
-              :type="index === chain.length - 1 ? 'primary' : 'info'"
-              :hollow="index !== chain.length - 1"
-              size="normal"
-            >
-              <span class="text-xs text-slate-600 dark:text-slate-300 break-all leading-5">{{ hop }}</span>
-            </el-timeline-item>
-          </el-timeline>
-        </div>
+      <div class="action-row">
+        <button class="secondary-button" :disabled="!isValidUrl" @click="runLocalAnalysis">仅本地检查与清理</button>
+        <button class="primary-button" :disabled="!isConfigured || !isValidUrl || loading" @click="resolveRedirect">
+          <span v-if="loading" class="spinner"></span>{{ loading ? '正在追踪跳转' : '追踪并解析最终链接' }}
+        </button>
       </div>
-    </Transition>
+      <p v-if="!isConfigured" class="service-note">即使未配置解析服务，你仍可使用本地链接诊断与参数清理；只有 HTTP 重定向追踪暂不可用。</p>
+    </section>
 
-    <!-- 描述区 -->
-    <ToolDetail title="描述">
+    <section v-if="resultVisible" class="result-card">
+      <div class="result-heading">
+        <div><span>RESULT</span><h3>{{ resultKind === 'resolved' ? '最终目标链接' : '本地清理结果' }}</h3></div>
+        <span class="result-badge">{{ resultKind === 'resolved' ? `已追踪 ${hopCount} 跳` : '未发起网络请求' }}</span>
+      </div>
+
+      <div class="result-summary">
+        <div><span>目标域名</span><strong>{{ targetHost }}</strong></div>
+        <div><span>跳转次数</span><strong>{{ resultKind === 'resolved' ? hopCount : '—' }}</strong></div>
+        <div><span>已移除参数</span><strong>{{ removedParams.length }}</strong></div>
+        <div><span>清理策略</span><strong>{{ cleanupMode === 'tracking' ? '营销参数' : cleanupMode === 'all' ? '全部参数' : '不清理' }}</strong></div>
+      </div>
+
+      <div class="final-url-box">
+        <div class="url-status-icon">✓</div>
+        <div><span>可复制或在新标签页打开</span><a :href="finalUrl" target="_blank" rel="noopener noreferrer">{{ finalUrl }}</a></div>
+        <div class="url-actions"><button @click="copy(finalUrl)">复制</button><a :href="finalUrl" target="_blank" rel="noopener noreferrer">访问</a></div>
+      </div>
+
+      <div v-if="removedParams.length" class="removed-list">
+        <span>已移除</span><code v-for="key in removedParams" :key="key">{{ key }}</code>
+      </div>
+
+      <div v-if="resultKind === 'resolved' && chain.length" class="chain-section">
+        <div class="chain-heading"><strong>跳转链路</strong><button @click="copyChain">复制链路</button></div>
+        <ol>
+          <li v-for="(hop, index) in chain" :key="`${hop}-${index}`">
+            <span>{{ index }}</span>
+            <div><strong>{{ index === 0 ? '起始链接' : index === chain.length - 1 ? '最终目标' : `第 ${index} 跳` }}</strong><code>{{ hop }}</code></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="safety-card">
+      <div><span>盾</span><p><strong>解析服务的安全边界</strong>仅允许公开 HTTP(S) 域名，拒绝私网、环回、特殊 IP、账号密码和自定义端口；每一跳都会重新校验。</p></div>
+      <div class="example-buttons"><button v-for="example in examples" :key="example.label" @click="loadExample(example.value)">{{ example.label }}</button></div>
+    </section>
+
+    <ToolDetail title="使用说明">
       <el-text>
-        输入短链接，自动追踪 HTTP 重定向，获取完整的原始链接，并移除常见营销跟踪参数（保留链接正常访问所需的业务参数）。
-        支持多跳追踪模式，可查看完整跳转链路。
+        本地分析不会发起网络请求，可直接检查 URL 结构并移除常见 UTM、广告点击等营销参数。短链接的真实目标只能通过服务端请求 HTTP 重定向后确认；配置 VITE_UNSHORTEN_API 后可开启完整跳转链追踪。访问陌生目标前仍建议确认域名与页面内容。
       </el-text>
     </ToolDetail>
   </div>
 </template>
 
-<script lang="ts">
-import { InfoFilled } from '@element-plus/icons-vue'
-export default { components: { InfoFilled } }
-</script>
-
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.slide-up-enter-active {
-  transition: all 0.25s ease-out;
-}
-.slide-up-enter-from {
-  opacity: 0;
-  transform: translateY(8px);
-}
+.url-tool { --accent:#0f766e; --ink:#1f2937; --muted:#667085; }
+.hero-card { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:26px; border:1px solid #d7e8e5; border-radius:24px; background:linear-gradient(135deg,#f3fbf9,#ebf8f5 55%,#eff6ff); box-shadow:0 14px 34px rgba(26,88,83,.07); }.eyebrow,.input-heading span,.setting-heading span,.result-heading span { color:#4c837e; font-size:13px; font-weight:800; letter-spacing:.12em; }.hero-card h2 { margin:6px 0 8px; color:var(--ink); font-size:25px; font-weight:800; line-height:1.3; }.hero-card p { margin:0; color:var(--muted); font-size:14px; line-height:1.7; }.service-state { display:flex; align-items:center; gap:11px; flex:none; padding:12px 15px; border:1px solid #e0d8c7; border-radius:15px; background:rgba(255,252,245,.82); }.state-dot { width:10px; height:10px; border-radius:50%; background:#d99b35; box-shadow:0 0 0 4px rgba(217,155,53,.13); }.service-state.online { border-color:#bee2d5; background:rgba(242,252,248,.86); }.service-state.online .state-dot { background:#19a36f; box-shadow:0 0 0 4px rgba(25,163,111,.13); }.service-state strong,.service-state small { display:block; }.service-state strong { color:#405064; font-size:14px; }.service-state small { margin-top:3px; color:#7a8798; font-size:13px; }
+.input-card,.settings-card,.result-card,.safety-card { margin-top:14px; padding:21px; border:1px solid #dfe7e9; border-radius:19px; background:#fff; box-shadow:0 10px 26px rgba(31,57,61,.045); }.input-heading,.result-heading,.chain-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }.input-heading h3,.setting-heading h3,.result-heading h3 { margin:4px 0 0; color:var(--ink); font-size:18px; font-weight:800; }.text-button,.chain-heading button { border:0; background:transparent; color:#197a70; font-size:13px; font-weight:700; cursor:pointer; }.url-input-shell { display:flex; align-items:center; gap:8px; margin-top:15px; padding:6px; border:1px solid #cfdcdf; border-radius:14px; background:#fafcfc; }.url-input-shell:focus-within { border-color:#69afa8; box-shadow:0 0 0 3px rgba(15,118,110,.08); }.url-input-shell.invalid { border-color:#e1797e; }.lock-mark { display:grid; place-items:center; width:40px; height:40px; border-radius:10px; background:#e8f5f2; color:#197a70; font-size:18px; }.url-input-shell input { flex:1; min-width:0; border:0; outline:0; background:transparent; color:#293543; font:500 14px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; }.paste-button { border:0; border-radius:9px; padding:10px 13px; background:#edf3f3; color:#4e6d6a; font-size:13px; font-weight:700; cursor:pointer; }.field-error { margin-top:8px; color:#bd3d46; font-size:13px; font-weight:650; }.diagnostics-row,.result-summary { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:14px; overflow:hidden; border:1px solid #e2e9eb; border-radius:13px; }.diagnostics-row div,.result-summary div { min-width:0; padding:11px 14px; border-right:1px solid #e2e9eb; }.diagnostics-row div:last-child,.result-summary div:last-child { border-right:0; }.diagnostics-row span,.result-summary span { display:block; color:#7c8996; font-size:13px; }.diagnostics-row strong,.result-summary strong { display:block; margin-top:4px; overflow:hidden; color:#415162; font-size:14px; white-space:nowrap; text-overflow:ellipsis; }
+.settings-card { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr); gap:20px; }.cleanup-options { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:15px; }.cleanup-options button { padding:13px; border:1px solid #dfe6e8; border-radius:13px; background:#fafcfc; text-align:left; cursor:pointer; }.cleanup-options button.active { border-color:#5da49c; background:#f0faf7; box-shadow:0 0 0 2px rgba(15,118,110,.07); }.cleanup-options strong,.cleanup-options span { display:block; }.cleanup-options strong { color:#3f4e5d; font-size:14px; }.cleanup-options span { margin-top:4px; color:#81909d; font-size:13px; line-height:1.45; }.cleanup-options button.active strong { color:#126f67; }.tracking-settings { padding:15px; border:1px solid #dfe7e9; border-radius:14px; background:#f8fbfb; }.tracking-settings.disabled { opacity:.68; }.tracking-title { display:flex; align-items:center; justify-content:space-between; gap:10px; }.tracking-title strong,.tracking-title span { display:block; }.tracking-title strong { color:#42515e; font-size:14px; }.tracking-title span { margin-top:3px; color:#82909c; font-size:13px; line-height:1.4; }.tracking-settings label { display:grid; grid-template-columns:auto auto; gap:7px 10px; margin-top:17px; color:#687683; font-size:13px; }.tracking-settings label strong { color:#226f69; }.tracking-settings input { grid-column:1/-1; width:100%; accent-color:#0f766e; }.action-row { grid-column:1/-1; display:flex; justify-content:flex-end; gap:9px; padding-top:16px; border-top:1px solid #e8edef; }.primary-button,.secondary-button { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:42px; border-radius:11px; padding:10px 16px; font-size:14px; font-weight:750; cursor:pointer; }.primary-button { border:0; background:var(--accent); color:white; }.secondary-button { border:1px solid #cddcde; background:white; color:#356c68; }.primary-button:disabled,.secondary-button:disabled { opacity:.42; cursor:not-allowed; }.spinner { width:13px; height:13px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:spin .8s linear infinite; }@keyframes spin{to{transform:rotate(360deg)}}.service-note { grid-column:1/-1; margin:-8px 0 0; color:#8a7752; font-size:13px; text-align:right; }
+.result-badge { padding:7px 10px; border-radius:9px; background:#eaf6f3; color:#18756d!important; font-size:13px!important; letter-spacing:0!important; }.final-url-box { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px; margin-top:14px; padding:15px; border:1px solid #cfe3de; border-radius:14px; background:#f5fbf9; }.url-status-icon { display:grid; place-items:center; width:38px; height:38px; border-radius:50%; background:#dff4ed; color:#168365; font-weight:900; }.final-url-box>div:nth-child(2) { min-width:0; }.final-url-box span,.final-url-box a { display:block; }.final-url-box span { color:#7c8a95; font-size:13px; }.final-url-box a { margin-top:5px; overflow-wrap:anywhere; color:#176f8a; font:650 14px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace; }.url-actions { display:flex; gap:6px; }.url-actions button,.url-actions>a { margin:0; border:1px solid #bdd8d3; border-radius:8px; padding:7px 10px; background:#fff; color:#176f68; font:700 13px/1.2 sans-serif; text-decoration:none; cursor:pointer; }.removed-list { display:flex; align-items:center; flex-wrap:wrap; gap:7px; margin-top:12px; }.removed-list>span { color:#778590; font-size:13px; font-weight:700; }.removed-list code { padding:5px 8px; border-radius:7px; background:#fff1e8; color:#ad5c2f; font-size:13px; }.chain-section { margin-top:19px; padding-top:18px; border-top:1px solid #e5ebec; }.chain-heading strong { color:#384957; font-size:15px; }.chain-section ol { margin:14px 0 0; padding:0; list-style:none; }.chain-section li { position:relative; display:grid; grid-template-columns:auto 1fr; gap:12px; padding-bottom:16px; }.chain-section li:not(:last-child)::after { content:""; position:absolute; left:15px; top:31px; bottom:2px; width:1px; background:#cadbd8; }.chain-section li>span { display:grid; place-items:center; align-self:start; width:31px; height:31px; border-radius:50%; background:#e7f4f1; color:#197a70; font-size:13px; font-weight:800; }.chain-section li strong,.chain-section li code { display:block; }.chain-section li strong { color:#566674; font-size:13px; }.chain-section li code { margin-top:4px; overflow-wrap:anywhere; color:#6f7d89; font-size:13px; line-height:1.5; }
+.safety-card { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:15px 18px; }.safety-card>div:first-child { display:flex; align-items:center; gap:11px; }.safety-card>div:first-child>span { display:grid; place-items:center; width:38px; height:38px; flex:none; border-radius:11px; background:#eef5ff; color:#4b73a4; font-size:13px; font-weight:800; }.safety-card p { margin:0; color:#73808d; font-size:13px; line-height:1.55; }.safety-card p strong { display:block; color:#455462; font-size:14px; }.example-buttons { display:flex; gap:7px; flex:none; }.example-buttons button { border:1px solid #dbe4e6; border-radius:9px; padding:8px 10px; background:#fff; color:#52706e; font-size:13px; cursor:pointer; }
+:global(.dark) .url-tool { --ink:#eef5f4; --muted:#a1b0b4; }:global(.dark) .hero-card { border-color:#304c4c; background:linear-gradient(135deg,#172b2b,#16312f 55%,#18283b); }:global(.dark) .input-card,:global(.dark) .settings-card,:global(.dark) .result-card,:global(.dark) .safety-card { border-color:#344850; background:#17242f; }:global(.dark) .service-state,:global(.dark) .tracking-settings,:global(.dark) .url-input-shell,:global(.dark) .cleanup-options button { border-color:#3c5057; background:#1c2b36; }:global(.dark) .url-input-shell input,:global(.dark) .cleanup-options strong,:global(.dark) .tracking-title strong,:global(.dark) .diagnostics-row strong,:global(.dark) .result-summary strong,:global(.dark) .chain-heading strong,:global(.dark) .safety-card p strong { color:#dce7e8; }:global(.dark) .cleanup-options button.active { border-color:#4e958d; background:#183632; }:global(.dark) .diagnostics-row,:global(.dark) .result-summary,:global(.dark) .diagnostics-row div,:global(.dark) .result-summary div,:global(.dark) .action-row,:global(.dark) .chain-section { border-color:#354950; }:global(.dark) .secondary-button,:global(.dark) .url-actions button,:global(.dark) .url-actions>a,:global(.dark) .example-buttons button { border-color:#3c5358; background:#1b2b36; color:#8dc4bd; }:global(.dark) .final-url-box { border-color:#315951; background:#17332f; }:global(.dark) .final-url-box a { color:#74c0d2; }
+@media (max-width:900px) { .hero-card { align-items:flex-start; flex-direction:column; }.settings-card { grid-template-columns:1fr; }.cleanup-options { grid-template-columns:1fr; }.action-row,.service-note { grid-column:1; }.safety-card { align-items:flex-start; flex-direction:column; }.example-buttons { flex-wrap:wrap; } }
+@media (max-width:640px) { .hero-card,.input-card,.settings-card,.result-card { padding:18px 15px; }.hero-card h2 { font-size:21px; }.service-state { width:100%; box-sizing:border-box; }.url-input-shell { flex-wrap:wrap; }.url-input-shell input { min-width:calc(100% - 56px); }.paste-button { width:100%; }.diagnostics-row,.result-summary { grid-template-columns:repeat(2,1fr); }.diagnostics-row div:nth-child(2),.result-summary div:nth-child(2) { border-right:0; }.diagnostics-row div:nth-child(-n+2),.result-summary div:nth-child(-n+2) { border-bottom:1px solid #e2e9eb; }.action-row { flex-direction:column; }.service-note { text-align:left; }.final-url-box { grid-template-columns:auto 1fr; }.url-actions { grid-column:1/-1; }.url-actions button,.url-actions>a { flex:1; text-align:center; }.safety-card>div:first-child { align-items:flex-start; } }
 </style>

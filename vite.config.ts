@@ -237,10 +237,6 @@ export default defineConfig(({command, mode}) => {
             'minifiers': [
               'csso',
               'terser'
-            ],
-            // 日语精准读音分析，进入相关功能并启用后才加载
-            'japanese-kuromoji': [
-              'kuromoji'
             ]
           }
         }

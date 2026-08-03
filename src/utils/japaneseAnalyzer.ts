@@ -45,44 +45,48 @@ export function getKuromojiTokenizer() {
 async function buildBrowserTokenizer() {
   const [
     tokenizerModule,
-    dictionaryLoaderModule,
+    dictionariesModule,
   ] = await Promise.all([
     import('kuromoji/src/Tokenizer'),
-    import('kuromoji/src/loader/DictionaryLoader'),
+    import('kuromoji/src/dict/DynamicDictionaries'),
   ])
 
   const TokenizerClass = getDefaultExport(tokenizerModule)
-  const DictionaryLoaderClass = getDefaultExport(dictionaryLoaderModule)
+  const DynamicDictionariesClass = getDefaultExport(dictionariesModule)
 
-  class BrowserDictionaryLoader extends DictionaryLoaderClass {
-    constructor(dicPath: string) {
-      super(dicPath)
-    }
+  try {
+    const loadedFiles = await Promise.all(DICT_FILES.map(async file => {
+      const response = await fetch(`${DICT_PATH}${file}`)
+      if (!response.ok) throw new Error(response.statusText || `HTTP ${response.status}`)
+      return [file, await gunzipIfNeeded(await response.arrayBuffer())] as const
+    }))
+    const buffers = Object.fromEntries(loadedFiles) as Record<string, ArrayBuffer>
+    const dictionary = new DynamicDictionariesClass()
 
-    loadArrayBuffer(url: string, callback: (err: Error | null, buffer: ArrayBuffer | null) => void) {
-      fetch(url)
-        .then(response => {
-          if (!response.ok) throw new Error(response.statusText || `HTTP ${response.status}`)
-          return response.arrayBuffer()
-        })
-        .then(async arrayBuffer => {
-          callback(null, await gunzipIfNeeded(arrayBuffer))
-        })
-        .catch(error => callback(error, null))
-    }
+    dictionary.loadTrie(
+      new Int32Array(buffers['base.dat.gz']),
+      new Int32Array(buffers['check.dat.gz']),
+    )
+    dictionary.loadTokenInfoDictionaries(
+      new Uint8Array(buffers['tid.dat.gz']),
+      new Uint8Array(buffers['tid_pos.dat.gz']),
+      new Uint8Array(buffers['tid_map.dat.gz']),
+    )
+    dictionary.loadConnectionCosts(new Int16Array(buffers['cc.dat.gz']))
+    dictionary.loadUnknownDictionaries(
+      new Uint8Array(buffers['unk.dat.gz']),
+      new Uint8Array(buffers['unk_pos.dat.gz']),
+      new Uint8Array(buffers['unk_map.dat.gz']),
+      new Uint8Array(buffers['unk_char.dat.gz']),
+      new Uint32Array(buffers['unk_compat.dat.gz']),
+      new Uint8Array(buffers['unk_invoke.dat.gz']),
+    )
+
+    return new TokenizerClass(dictionary) as Tokenizer
+  } catch (error) {
+    tokenizerPromise = null
+    throw error
   }
-
-  return new Promise<Tokenizer>((resolve, reject) => {
-    const loader = new BrowserDictionaryLoader(DICT_PATH)
-    loader.load((err, dictionary) => {
-      if (err) {
-        tokenizerPromise = null
-        reject(err)
-        return
-      }
-      resolve(new TokenizerClass(dictionary))
-    })
-  })
 }
 
 export async function analyzeJapaneseText(text: string) {

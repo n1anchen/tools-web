@@ -591,7 +591,7 @@ export const constantRoute = [
     meta: {
       title: "短链接解析",
       keywords: '短链接解析,短链接还原,URL还原,去跟踪参数,url追踪',
-      description: '输入短链接，自动追踪重定向并还原完整链接，同时清除所有URL参数（包含跟踪参数）',
+      description: '本地检查链接结构并清理营销参数，配置解析服务后可安全追踪重定向并查看完整跳转链路',
     }
   },
   {
@@ -611,7 +611,7 @@ export const constantRoute = [
     meta: {
       title: '日语转罗马音',
       keywords: '日语罗马音,日文罗马音,假名转罗马音,平假名,片假名,罗马字,wanakana',
-      description: '将日语平假名/片假名输入，一键转换为平文式罗马音，支持复制结果',
+      description: '支持日语假名快速转换与汉字精准读音分析，可对照罗马音、平假名、片假名和词元信息',
     }
   },
   {
@@ -661,7 +661,7 @@ export const constantRoute = [
     meta: {
       title: '谜语人',
       keywords: '谜语人,佛曰,如是我闻,与佛论禅,加密,编码,趣味',
-      description: '多种趣味编码语言互转：佛曰、如是我闻等，任意框输入自动同步所有语言',
+      description: '佛曰、如是我闻、兽语与 Base 编码统一互转，支持七种结果对照、方案说明和本次转换历史。',
     }
   },
   {
@@ -701,7 +701,7 @@ export const constantRoute = [
     meta: {
       title: 'IP 计算器',
       keywords: 'IP计算器,子网掩码,CIDR,网络地址,广播地址,IP进制转换,子网划分',
-      description: '快速计算 IP 段、子网掩码、网络地址、广播地址及可用主机数，支持 IP 进制转换与子网掩码换算',
+      description: '快速计算 CIDR 边界、地址属性与可用主机范围，支持子网拆分规划、IP 进制转换及掩码换算',
     }
   },
   {
@@ -791,7 +791,7 @@ export const constantRoute = [
     meta: {
       title: '词云图',
       keywords: '词云,词频,可视化,文字云,ECharts',
-      description: '在线词云生成工具，自动统计词频并生成美观的词云图，支持多种形状和配色',
+      description: '支持中英文分词、停用词过滤、词频明细、实时布局预览，并可导出高清 PNG 与词频 CSV。',
     }
   },
   {
@@ -821,7 +821,7 @@ export const constantRoute = [
     meta: {
       title: 'Emoji 大全',
       keywords: 'Emoji,表情,符号,大全,复制',
-      description: '完整的 Emoji 表情大全，按分类浏览，支持搜索，点击一键复制',
+      description: '按分类浏览和搜索 Emoji，支持一键复制、最近使用以及浏览器本地收藏。',
     }
   },
   {
