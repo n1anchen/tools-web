@@ -227,9 +227,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Bar/Bar.vue'),
     name: 'bar',
     meta: {
-      title: "柱状图",
-      keywords: '柱状图',
-      description: '在线制作柱状图，像做表格一样制作可视化图表，支持导出静态或动态图表',
+      title: "柱状图工作台",
+      keywords: '柱状图,横向柱状图,条形图,CSV图表,ECharts配置,PNG导出',
+      description: '直接编辑表格或粘贴 Excel / WPS 数据，实时生成柱状图与横向排行，也支持 CSV、TSV、JSON、主题配色与高清导出。',
     }
   },
   {
@@ -237,9 +237,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Line/Line.vue'),
     name: 'line',
     meta: {
-      title: "折线图",
-      keywords: '折线图',
-      description: '在线制作折线图，像做表格一样制作可视化图表，支持导出静态或动态图表',
+      title: "折线图工作台",
+      keywords: '折线图,面积图,趋势图,CSV图表,ECharts配置,PNG导出',
+      description: '使用表格或 JSON 实时制作折线图与面积图，支持平滑曲线、坐标轴、标签、主题配色和高清导出。',
     }
   },
   {
@@ -247,9 +247,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Pie/Pie.vue'),
     name: 'pie',
     meta: {
-      title: "饼图",
-      keywords: '饼图',
-      description: '在线制作饼图，像做表格一样制作可视化图表，支持导出静态或动态图表',
+      title: "饼图工作台",
+      keywords: '饼图,环形图,占比图,JSON图表,ECharts配置,PNG导出',
+      description: '实时制作饼图与环形图，支持占比示例、数据校验、图例标签、成套配色、配置复制与 PNG 导出。',
     }
   },
   {
@@ -257,9 +257,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Scatter/Scatter.vue'),
     name: 'scatter',
     meta: {
-      title: "散点图",
-      keywords: '散点图',
-      description: '在线制作散点图，像做表格一样制作可视化图表，支持导出静态或动态图表',
+      title: "散点图工作台",
+      keywords: '散点图,气泡图,相关性,二维数据,CSV图表,ECharts配置',
+      description: '输入 X、Y 与可选名称制作散点图，支持标准点和强调气泡、轴标题、数据校验、主题配色与高清导出。',
     }
   },
   {
@@ -267,9 +267,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Funnel/Funnel.vue'),
     name: 'funnel',
     meta: {
-      title: "漏斗图",
-      keywords: '漏斗图,漏斗,在线图表',
-      description: '在线制作漏斗图，像做表格一样制作可视化图表，支持导出静态或动态图表',
+      title: "漏斗图工作台",
+      keywords: '漏斗图,转化漏斗,流程分析,CSV图表,ECharts配置,PNG导出',
+      description: '用表格或 JSON 制作转化漏斗，支持阶段排序、内外标签、示例数据、配置复制与高清 PNG 导出。',
     }
   },
   {
@@ -277,9 +277,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Radar/Radar.vue'),
     name: 'radar',
     meta: {
-      title: "雷达图",
-      keywords: '雷达图,能力图,在线图表',
-      description: '在线制作雷达图，支持多维度数据对比分析，支持导出静态图表',
+      title: "雷达图工作台",
+      keywords: '雷达图,能力图,多系列雷达图,CSV图表,ECharts配置',
+      description: '使用多系列宽表制作雷达图，支持每维最大值、自动刻度、多边形与圆形、主题配色和高清导出。',
     }
   },
   {
@@ -287,9 +287,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Gauge/Gauge.vue'),
     name: 'gauge',
     meta: {
-      title: "仪表盘",
-      keywords: '仪表盘,进度指针,在线图表',
-      description: '在线制作仪表盘，直观展示关键指标的完成进度或当前状态，支持导出静态图表',
+      title: "仪表盘工作台",
+      keywords: '仪表盘,进度指针,多指标仪表盘,范围校验,ECharts配置',
+      description: '制作单指标或多指标仪表盘，支持范围越界提示、刻度、单位、指针与进度盘切换及高清导出。',
     }
   },
   {
@@ -297,9 +297,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Heatmap/Heatmap.vue'),
     name: 'heatmap',
     meta: {
-      title: "热力图",
-      keywords: '热力图,在线图表,活跃度',
-      description: '在线制作热力图，通过色阶变化直观展示二维矩阵数据分布，支持导出静态图表',
+      title: "热力图工作台",
+      keywords: '热力图,二维矩阵,色阶图,CSV图表,ECharts配置',
+      description: '使用 X、Y 分类和数值生成二维热力矩阵，支持结构校验、自动色阶、数值标签、颜色端点和高清导出。',
     }
   },
   {
@@ -307,9 +307,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Candlestick/Candlestick.vue'),
     name: 'candlestick',
     meta: {
-      title: "K线图",
-      keywords: 'K线图,蜡烛图,股票图表',
-      description: '在线制作 K 线图（蜡烛图），展示价格开收高低，支持导出静态图表',
+      title: "K 线图工作台",
+      keywords: 'K线图,蜡烛图,OHLC,开盘收盘,行情图表',
+      description: '录入日期与开收低高数据生成 K 线图，提供 OHLC 关系校验、涨跌色、数据缩放和高清 PNG 导出。',
     }
   },
   {
@@ -317,9 +317,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Stack/Stack.vue'),
     name: 'stack',
     meta: {
-      title: "堆叠柱/线图",
-      keywords: '堆叠柱状图,堆叠折线图,多系列,在线图表',
-      description: '在线制作堆叠柱/线图，展示多系列数据的累积对比，支持柱图与折线图切换，支持导出静态图表',
+      title: "堆叠图工作台",
+      keywords: '堆叠柱状图,堆叠面积图,多系列,宽表,ECharts配置',
+      description: '使用多系列宽表生成堆叠柱与堆叠面积线，支持总量标签、图例、主题配色、配置复制和高清导出。',
     }
   },
   {
@@ -327,9 +327,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Treemap/Treemap.vue'),
     name: 'treemap',
     meta: {
-      title: "矩形树图",
-      keywords: '矩形树图,Treemap,层级占比,在线图表',
-      description: '在线制作矩形树图（Treemap），用嵌套矩形展示层级占比，支持导出静态图表',
+      title: "矩形树图工作台",
+      keywords: '矩形树图,Treemap,层级路径,父子关系,层级占比,ECharts配置',
+      description: '用斜线路径构建多层矩形树图，提供父子关系校验、钻取深度、面包屑、配置复制和高清 PNG 导出。',
     }
   },
   {
@@ -337,9 +337,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Sankey/Sankey.vue'),
     name: 'sankey',
     meta: {
-      title: "桑基图",
-      keywords: '桑基图,流量流向,Sankey,在线图表',
-      description: '在线制作桑基图，展示流量与流向关系，常用于网站流量分析、能源分布等场景，支持导出静态图表',
+      title: "桑基图工作台",
+      keywords: '桑基图,流量流向,Sankey,节点关系,环路校验,ECharts配置',
+      description: '录入来源、目标与流量生成桑基图，自动检查重复、自环和成环连线，支持布局配置与高清 PNG 导出。',
     }
   },
   {
@@ -347,9 +347,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Boxplot/Boxplot.vue'),
     name: 'boxplot',
     meta: {
-      title: "箱线图",
-      keywords: '箱线图,Box Plot,统计分析,在线图表',
-      description: '在线制作箱线图，展示数据分布的最小值、Q1、中位数、Q3、最大值，适合统计分析，支持导出静态图表',
+      title: "箱线图工作台",
+      keywords: '箱线图,Box Plot,原始样本,五数概括,四分位数,异常值',
+      description: '从原始样本计算五数概括与 Tukey 异常值，或直接录入统计摘要，支持多组比较、配置复制和高清导出。',
     }
   },
   {
@@ -357,9 +357,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Chart/Calendar/Calendar.vue'),
     name: 'calendar',
     meta: {
-      title: "日历图",
-      keywords: '日历图,活跃度,GitHub热图,在线图表',
-      description: '在线制作日历图，以日历形式展示时间序列数据，类似 GitHub 活跃度热图，支持导出静态图表',
+      title: "日历图工作台",
+      keywords: '日历图,活跃度,年度热图,日期校验,缺失日期,ECharts配置',
+      description: '校验每日数据并生成年度日历热图，支持多年份切换、缺失日期统计、色阶配置和高清 PNG 导出。',
     }
   },
   {
