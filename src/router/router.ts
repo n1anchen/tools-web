@@ -117,9 +117,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/ASCII/ASCII.vue'),
     name: 'ascii',
     meta: {
-      title: "ASCII码表",
-      keywords: 'ascii，ascii码表,ascii对照表，ascii控制字符，ascii打印字符，ascii扩展码',
-      description: 'ascii全面对照表，包含控制字符，打印字符，扩展码',
+      title: 'ASCII 字符工作台',
+      keywords: 'ASCII码表,ASCII字符,ASCII转换,十六进制,二进制,控制字符,Windows-1252',
+      description: '搜索、筛选和换算 ASCII 字符，集中查看十进制、十六进制、二进制、Unicode 与 HTML 实体。',
     }
   },
   {
@@ -207,9 +207,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Diff/Diff.vue'),
     name: 'diff',
     meta: {
-      title: "文本对比",
-      keywords: '中文比对,代码比对，代码对比，文本比对，英文比对',
-      description: '文本差异比对支持中文、英文、代码比对',
+      title: "文本差异工作台",
+      keywords: '文本对比,差异比对,代码对比,忽略空格,差异导出,diff',
+      description: '并排、混合或逐行对比中英文与代码，支持忽略空白和大小写、变更统计、文件导入与 .diff 导出。',
     }
   },
   {
@@ -217,9 +217,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Markdown/Markdown.vue'),
     name: 'markdown',
     meta: {
-      title: "markdown编辑器",
-      keywords: '在线创建或编辑markdown, 实时预览，导出markdown',
-      description: '在线markdown编辑器',
+      title: "Markdown 文档工作台",
+      keywords: 'Markdown编辑器,Markdown实时预览,Markdown模板,Markdown导出,本地草稿',
+      description: '实时编写与预览 Markdown，支持模板、本地草稿、文档统计和 MD/HTML 导出。',
     }
   },
   {
@@ -437,9 +437,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/ElectronicPatina/ElectronicPatina.vue'),
     name: 'electronicpatina',
     meta: {
-      title: "电子包浆模拟器",
-      keywords: '电子包浆,图片做旧,图片生成,图片处理',
-      description: '图片做旧工具，生成电子包浆效果的图片，支持自定义参数和效果预览',
+      title: '电子包浆实验室',
+      keywords: '电子包浆,图片做旧,JPEG压缩,图片失真,图片处理,梗图',
+      description: '使用预设或自定义压缩配方模拟图片多次转发后的色偏、噪点与 JPEG 做旧效果',
     }
   },
   {
@@ -477,9 +477,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/ColorPicker/ColorPicker.vue'),
     name: 'ColorPicker',
     meta: {
-      title: "Color选择器",
-      keywords: '颜色选择器,Color选择器',
-      description: '颜色选择器、在各种颜色空间如十六进制、rgb、hsl、css等等之间转换颜色',
+      title: 'Color 配色工作台',
+      keywords: '颜色选择器,颜色转换,HEX,RGB,HSL,LAB,LCH,CMYK,WCAG对比度,色阶',
+      description: '转换常用颜色格式、生成 50–900 色阶，并检查正文、大号文字和 UI 图形的 WCAG 对比度。',
     }
   },
   {
@@ -497,9 +497,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Cron/Cron.vue'),
     name: 'cron',
     meta: {
-      title: "CRON表达式",
-      keywords: 'cron,cron表达式,cron生成,cron解析',
-      description: 'CRON表达式生成与解析',
+      title: 'CRON 调度工作台',
+      keywords: 'cron,cron表达式,cron生成,cron解析,执行时间,定时任务,crontab',
+      description: '生成和解析五位或六位 CRON 表达式，提供自然语言摘要、字段解释和后续执行时间计划。',
     }
   },
   {
@@ -548,9 +548,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/TextEdit/TextEdit.vue'),
     name: 'TextEdit',
     meta: {
-      title: "在线文本编辑/HTML获取",
-      keywords: '文本编辑，富文本预览，在线编辑文本，文本编辑获取html',
-      description: '在线富文本编辑, html实时预览，在线编辑文本，文本编辑获取html',
+      title: "富文本与 HTML 工作台",
+      keywords: '富文本编辑器,在线HTML编辑,HTML源码,纯文本导出,本地草稿',
+      description: '可视化编辑富文本，实时获取 HTML 与纯文本，支持模板、本地草稿和多格式导出。',
     }
   },
   {
@@ -629,9 +629,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/MemeCaption/MemeCaption.vue'),
     name: 'memecaption',
     meta: {
-      title: '表情包配字',
-      keywords: '表情包,字幕,配字,meme,图片加字,字幕生成,搞笑图',
-      description: '上传图片后实时添加字幕文字，支持黑白透明背景、文字描边、字体大小调整及图片缩放，一键保存为 JPG 或 PNG',
+      title: '字幕梗图工作室',
+      keywords: '表情包,字幕,配字,meme,图片加字,自动换行,梗图生成',
+      description: '为图片添加自动换行字幕，支持视觉模板、顶部或底部位置、文字描边、多尺寸和 JPG/PNG 导出',
     }
   },
   {
@@ -699,9 +699,9 @@ export const constantRoute = [
     component: () => import('@/components/Tools/Base64/Base64.vue'),
     name: 'base64',
     meta: {
-      title: 'Base64 加解密',
-      keywords: 'Base64,编码,解码,加密,解密,在线工具',
-      description: '在线 Base64 编码与解码工具，支持 Unicode 文字，一键复制结果',
+      title: 'Base64 数据工作台',
+      keywords: 'Base64编码,Base64解码,Base64 URL,Data URL,文件转Base64,Base64转文件',
+      description: '在浏览器本地进行 UTF-8 文本、Base64 URL、Data URL 与文件的双向转换，支持类型识别、图片预览和文件下载。',
     }
   },
   {

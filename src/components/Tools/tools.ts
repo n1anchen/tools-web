@@ -53,9 +53,9 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'markdown编辑器',
+          title: 'Markdown 文档工作台',
           logo: 'Markdown',
-          desc: '在线创建或编辑markdown, 实时预览，导出markdown',
+          desc: '实时编写与预览 Markdown，支持模板、本地草稿、文档统计和 MD/HTML 导出',
           url: '/markdown/',
           cateId: 1,
           cate: '在线编辑'
@@ -98,9 +98,9 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '在线文本编辑/HTML获取',
+          title: '富文本与 HTML 工作台',
           logo: 'Edit',
-          desc: '在线富文本编辑, html实时预览，在线编辑文本，文本编辑获取html',
+          desc: '可视化编辑富文本，实时获取 HTML 与纯文本，支持模板、本地草稿和多格式导出',
           url: '/textedit/',
           cateId: 1,
           cate: '在线编辑'
@@ -123,9 +123,9 @@ export function getToolsCate() {
       list: [
         {
           id: 1,
-          title: '文本对比',
+          title: '文本差异工作台',
           logo: '/images/logo/diff.png',
-          desc: '文本差异比对支持中文、英文、代码比对',
+          desc: '并排、混合或逐行对比文本，支持忽略规则、变更统计、文件导入和差异导出',
           url: '/diff/',
           cateId: 2,
           cate: '文本处理'
@@ -247,9 +247,9 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'CRON表达式',
+          title: 'CRON 调度工作台',
           logo: 'Clock',
-          desc: 'CRON表达式生成与解析并列出后5次执行时间',
+          desc: '生成、解析 CRON 表达式，解释字段并预览后续执行计划',
           url: '/cron/',
           cateId: 3,
           cate: '开发运维'
@@ -319,18 +319,18 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'ASCII码表',
+          title: 'ASCII 字符工作台',
           logo: '/images/logo/ascii.png',
-          desc: 'ASCII码表,控制代码、标准ASCII字符和非标准ASCII字符对照表',
+          desc: '搜索和换算 ASCII 字符，查看多进制、Unicode 与 HTML 实体',
           url: '/ascii/',
           cateId: 3,
           cate: '开发运维'
         },
         {
           id: 1,
-          title: 'Color选择器',
+          title: 'Color 配色工作台',
           logo: '/images/logo/color_picker.png',
-          desc: '颜色选择器、在各种颜色空间如十六进制、rgb、hsl、css等等之间转换颜色',
+          desc: '颜色格式转换、色阶生成与 WCAG 对比度可访问性检查',
           url: '/colorpicker/',
           cateId: 3,
           cate: '开发运维'
@@ -364,9 +364,9 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'Base64 编解码',
+          title: 'Base64 数据工作台',
           logo: 'Lock',
-          desc: '在线 Base64 编码与解码工具，支持 Unicode 文字，一键复制结果',
+          desc: '支持 UTF-8 文本、Base64 URL、Data URL 和文件双向转换，可识别类型、预览并下载',
           url: '/base64/',
           cateId: 3,
           cate: '开发运维',
@@ -513,18 +513,18 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '电子包浆模拟器',
+          title: '电子包浆实验室',
           logo: 'Image',
-          desc: '图片做旧工具，生成电子包浆效果的图片，支持自定义参数和效果预览',
+          desc: '用预设或自定义压缩配方模拟多次转发后的色偏、噪点与做旧效果',
           url: '/electronicpatina/',
           cateId: 5,
           cate: '图片处理',
         },
         {
           id: 1,
-          title: '表情包配字',
+          title: '字幕梗图工作室',
           logo: 'CommentDots',
-          desc: '上传图片实时添加字幕，支持黑/白/透明背景、文字描边、大小调整和图片缩放，一键保存为 JPG/PNG',
+          desc: '为图片添加自动换行字幕，支持视觉模板、位置、描边和多尺寸导出',
           url: '/memecaption/',
           cateId: 5,
           cate: '图片处理',
