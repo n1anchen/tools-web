@@ -1,28 +1,10 @@
+import { parseDelimited, serializeDelimited } from './spreadsheetConverter.ts'
+
 export interface GridLimits { maxRows?: number; maxColumns?: number }
 
-function splitDelimitedLine(line: string, delimiter: string) {
-  const cells: string[] = []; let current = ''; let quoted = false
-  for (let index = 0; index < line.length; index += 1) {
-    const char = line[index]
-    if (char === '"') {
-      if (quoted && line[index + 1] === '"') { current += '"'; index += 1 } else quoted = !quoted
-    } else if (char === delimiter && !quoted) { cells.push(current); current = '' } else current += char
-  }
-  cells.push(current)
-  return cells
-}
-
 export function parseChartGrid(text: string) {
-  const source = text.replace(/^\uFEFF/, '').replace(/\r/g, '')
-  if (!source.trim()) return [] as string[][]
-  const lines = source.split('\n')
-  while (lines.length && !lines[lines.length - 1].trim()) lines.pop()
-  const delimiter = (lines[0] ?? '').includes('\t') ? '\t' : ','
-  return lines.map(line => splitDelimitedLine(line, delimiter).map(cell => cell.trim()))
-}
-
-function csvCell(value: string) {
-  return /[",\n\t]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value
+  if (!text.trim()) return [] as string[][]
+  return parseDelimited(text)
 }
 
 export function serializeChartGrid(source: string[][]) {
@@ -31,7 +13,8 @@ export function serializeChartGrid(source: string[][]) {
   if (!rows.length) return ''
   let columnCount = Math.max(...rows.map(row => row.reduce((last, cell, index) => cell.trim() ? index + 1 : last, 0)), 1)
   columnCount = Math.max(columnCount, rows[0].length ? rows[0].reduce((last, cell, index) => cell.trim() ? index + 1 : last, 0) : 0)
-  return rows.map(row => Array.from({ length: columnCount }, (_, index) => csvCell(row[index] ?? '')).join(',')).join('\n')
+  const normalized = rows.map(row => Array.from({ length: columnCount }, (_, index) => row[index] ?? ''))
+  return serializeDelimited(normalized).replace(/\r\n/g, '\n')
 }
 
 export function parseSpreadsheetClipboard(text: string) {

@@ -62,6 +62,15 @@ export function getToolsCate() {
         },
         {
           id: 1,
+          title: '表格数据转换工作台',
+          logo: 'FileExcel',
+          desc: '直接粘贴 CSV / TSV 或 JSON 转成表格，也可导入工作簿并在线编辑，再输出为 XLSX、CSV 或 JSON',
+          url: '/spreadsheet-converter/',
+          cateId: 1,
+          cate: '在线编辑'
+        },
+        {
+          id: 1,
           title: 'JSON 工作台',
           logo: '/images/logo/json.png',
           desc: '校验、格式化和安全压缩 JSON，支持错误定位、键名排序与字符串转义',

@@ -223,6 +223,16 @@ export const constantRoute = [
     }
   },
   {
+    path: '/spreadsheet-converter',
+    component: () => import('@/components/Tools/SpreadsheetConverter/SpreadsheetConverter.vue'),
+    name: 'spreadsheetConverter',
+    meta: {
+      title: '表格数据转换工作台',
+      keywords: 'XLSX转CSV,Excel转JSON,CSV转Excel,JSON转XLSX,在线表格编辑,工作表转换',
+      description: '直接粘贴 CSV / TSV 或 JSON 转成可视表格，也可导入工作簿在线编辑，再输出为 XLSX、CSV 或 JSON。',
+    }
+  },
+  {
     path: '/bar',
     component: () => import('@/components/Tools/Chart/Bar/Bar.vue'),
     name: 'bar',

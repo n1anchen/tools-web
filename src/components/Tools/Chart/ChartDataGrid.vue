@@ -2,8 +2,8 @@
 import { nextTick, ref, watch } from 'vue'
 import { gridColumnLabel, mergeGridPaste, parseChartGrid, parseSpreadsheetClipboard, serializeChartGrid } from '@/utils/chartGrid'
 
-const props = withDefaults(defineProps<{ modelValue: string; minColumns?: number; maxRows?: number; ariaLabel?: string }>(), {
-  minColumns: 2, maxRows: 1001, ariaLabel: '图表数据表格',
+const props = withDefaults(defineProps<{ modelValue: string; minColumns?: number; maxRows?: number; maxColumns?: number; ariaLabel?: string; footerHint?: string }>(), {
+  minColumns: 2, maxRows: 1001, maxColumns: 30, ariaLabel: '图表数据表格', footerHint: 'Enter 跳到下一行，修改后图表实时刷新',
 })
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
 const gridRoot = ref<HTMLElement | null>(null)
@@ -45,7 +45,7 @@ function pasteCells(event: ClipboardEvent, rowIndex: number, columnIndex: number
   if (!text.includes('\t') && !/[\r\n]/.test(text)) return
   event.preventDefault()
   const pasted = parseSpreadsheetClipboard(text)
-  cells.value = mergeGridPaste(cells.value, pasted, rowIndex, columnIndex, { maxRows: props.maxRows, maxColumns: 30 })
+  cells.value = mergeGridPaste(cells.value, pasted, rowIndex, columnIndex, { maxRows: props.maxRows, maxColumns: props.maxColumns })
   emitGrid()
   showNotice(`已粘贴 ${pasted.length} 行 × ${Math.max(...pasted.map(row => row.length))} 列`)
 }
@@ -63,7 +63,7 @@ function removeRow(rowIndex: number) {
 }
 
 function addColumn() {
-  if ((cells.value[0]?.length ?? 0) >= 30) return showNotice('最多支持 30 列')
+  if ((cells.value[0]?.length ?? 0) >= props.maxColumns) return showNotice(`最多支持 ${props.maxColumns} 列`)
   cells.value.forEach(row => row.push(''))
   nextTick(() => focusCell(0, cells.value[0].length - 1))
 }
@@ -121,7 +121,7 @@ function handleKeydown(event: KeyboardEvent, rowIndex: number, columnIndex: numb
         </tbody>
       </table>
     </div>
-    <div class="grid-footer"><span><i></i>{{ cells.length - 1 }} 个可编辑数据行 · {{ cells[0]?.length ?? 0 }} 列</span><b v-if="pasteNotice">{{ pasteNotice }}</b><small v-else>Enter 跳到下一行，修改后图表实时刷新</small></div>
+    <div class="grid-footer"><span><i></i>{{ cells.length - 1 }} 个可编辑数据行 · {{ cells[0]?.length ?? 0 }} 列</span><b v-if="pasteNotice">{{ pasteNotice }}</b><small v-else>{{ footerHint }}</small></div>
   </div>
 </template>
 
