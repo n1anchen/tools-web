@@ -124,7 +124,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="reaction-page flex flex-col mt-3 flex-1">
-    <ToolHero title="反应速度测试" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">REACTION CHALLENGE</span><h2>不是点一次，而是一场完整测试</h2><p>多轮采样、抢跑检测、稳定度与个人最佳，让偶然的一次点击变成更可信的结果。</p></div>

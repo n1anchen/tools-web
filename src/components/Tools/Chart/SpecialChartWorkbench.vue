@@ -8,7 +8,9 @@ import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import ChartToolNav from '@/components/Tools/Chart/ChartToolNav.vue'
 import { useSettingStore } from '@/store/modules/setting'
-import { copy } from '@/utils/string'
+import { useRoute } from 'vue-router'
+import { getTools } from '@/components/Tools/tools.ts'
+import { copy, rtrim } from '@/utils/string'
 import { CHART_PALETTES } from '@/utils/chartStudio'
 import {
   SPECIAL_SAMPLES,
@@ -22,7 +24,13 @@ import {
 } from '@/utils/specialChartStudio'
 
 const props = defineProps<{ type: SpecialChartKind }>()
+const route = useRoute()
 const settingStore = useSettingStore()
+// 工具标题以 tools.ts 为唯一来源，按当前路由派生（与 ToolHero 一致）
+const workbenchTitle = computed(() => {
+  const tool = getTools({ cateId: 0, title: '', route: rtrim(route.path, '/') })
+  return tool.title || ''
+})
 const chartElement = ref<HTMLElement | null>(null)
 const fileInput = ref<HTMLInputElement | null>(null)
 type EditorMode = 'grid' | SpecialDataMode
@@ -34,10 +42,10 @@ let chart: echarts.ECharts | null = null
 let resizeObserver: ResizeObserver | null = null
 
 const typeMeta = {
-  treemap: { title: '矩形树图工作台', eyebrow: 'TREEMAP STUDIO', headline: '从层级路径中看见结构与占比', description: '用斜线描述任意层级，自动构建父子树、计算叶节点占比，并通过面包屑与钻取层级浏览复杂结构。', accent: '#059669', soft: '#D1FAE5', detail: '矩形树图用面积表达数量、用嵌套表达层级。表格模式中的“层级路径”使用 / 分隔，例如 产品/专业版；每条路径应指向叶节点，同一路径不能既作为数据项又作为其他路径的父级。' },
-  sankey: { title: '桑基图工作台', eyebrow: 'SANKEY STUDIO', headline: '让来源、去向和流量关系一目了然', description: '逐行录入来源、目标与流量，自动提取节点，并在绘制前检查重复连接、自环与有向环路。', accent: '#EA580C', soft: '#FFEDD5', detail: '桑基图适合展示守恒或近似守恒的流量关系。连接必须大于 0，并保持从上游到下游的无环方向；节点流入与流出不相等时图表仍可绘制，但解读时应说明差额的业务含义。' },
-  boxplot: { title: '箱线图工作台', eyebrow: 'BOX PLOT STUDIO', headline: '同时比较集中趋势、离散程度与异常点', description: '既可逐条输入原始样本并自动计算 Tukey 箱线，也可直接提供五数概括与异常值。', accent: '#4F46E5', soft: '#E0E7FF', detail: '原始样本模式按分组重复输入样本值，每组至少 4 个值；工作台会用线性插值计算 Q1、中位数和 Q3，并以 1.5 倍四分位距识别异常值。五数概括模式要求最小值、Q1、中位数、Q3、最大值依次不减。' },
-  calendar: { title: '日历图工作台', eyebrow: 'CALENDAR HEATMAP STUDIO', headline: '把每日变化放回真实的年度节奏', description: '严格校验 YYYY-MM-DD 日期，自动识别多个年份、统计缺失天数，并通过年度色阶观察活跃度与周期。', accent: '#15803D', soft: '#DCFCE7', detail: '日历图适合每日打卡、活跃度、销售或事件数量。重复日期与不存在的日期不会进入图表；缺失天数按所选年度的 365 或 366 天计算。窄屏下预览区可横向滑动，避免压缩全年 53 周的单元格。' },
+  treemap: { eyebrow: 'TREEMAP STUDIO', headline: '从层级路径中看见结构与占比', description: '用斜线描述任意层级，自动构建父子树、计算叶节点占比，并通过面包屑与钻取层级浏览复杂结构。', accent: '#059669', soft: '#D1FAE5', detail: '矩形树图用面积表达数量、用嵌套表达层级。表格模式中的“层级路径”使用 / 分隔，例如 产品/专业版；每条路径应指向叶节点，同一路径不能既作为数据项又作为其他路径的父级。' },
+  sankey: { eyebrow: 'SANKEY STUDIO', headline: '让来源、去向和流量关系一目了然', description: '逐行录入来源、目标与流量，自动提取节点，并在绘制前检查重复连接、自环与有向环路。', accent: '#EA580C', soft: '#FFEDD5', detail: '桑基图适合展示守恒或近似守恒的流量关系。连接必须大于 0，并保持从上游到下游的无环方向；节点流入与流出不相等时图表仍可绘制，但解读时应说明差额的业务含义。' },
+  boxplot: { eyebrow: 'BOX PLOT STUDIO', headline: '同时比较集中趋势、离散程度与异常点', description: '既可逐条输入原始样本并自动计算 Tukey 箱线，也可直接提供五数概括与异常值。', accent: '#4F46E5', soft: '#E0E7FF', detail: '原始样本模式按分组重复输入样本值，每组至少 4 个值；工作台会用线性插值计算 Q1、中位数和 Q3，并以 1.5 倍四分位距识别异常值。五数概括模式要求最小值、Q1、中位数、Q3、最大值依次不减。' },
+  calendar: { eyebrow: 'CALENDAR HEATMAP STUDIO', headline: '把每日变化放回真实的年度节奏', description: '严格校验 YYYY-MM-DD 日期，自动识别多个年份、统计缺失天数，并通过年度色阶观察活跃度与周期。', accent: '#15803D', soft: '#DCFCE7', detail: '日历图适合每日打卡、活跃度、销售或事件数量。重复日期与不存在的日期不会进入图表；缺失天数按所选年度的 365 或 366 天计算。窄屏下预览区可横向滑动，避免压缩全年 53 周的单元格。' },
 } as const
 
 const meta = computed(() => typeMeta[props.type])
@@ -105,7 +113,7 @@ async function importData(event: Event) {
   const content = await file.text(); dataMode.value = file.name.toLowerCase().endsWith('.json') || content.trimStart().startsWith('[') ? 'json' : 'grid'; dataText.value = content; activeSample.value = ''; nextTick(syncCalendarYear); ElMessage.success(`已载入 ${file.name}`)
 }
 function downloadData() { if (!stats.value.count) return ElMessage.warning('没有可导出的有效数据'); const content = serializeSpecialChartData(data.value, parserMode.value); const blob = new Blob([content], { type: parserMode.value === 'json' ? 'application/json;charset=utf-8' : 'text/csv;charset=utf-8' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `chart-data.${parserMode.value === 'json' ? 'json' : 'csv'}`; link.click(); URL.revokeObjectURL(url) }
-function downloadPng() { if (!chart || !stats.value.count) return ElMessage.warning('请先输入有效数据'); const link = document.createElement('a'); link.href = chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: settingStore.isDark ? '#0F172A' : '#FFFFFF' }); link.download = `${(settings.title || meta.value.title).replace(/[\\/:*?"<>|]/g, '-')}.png`; link.click() }
+function downloadPng() { if (!chart || !stats.value.count) return ElMessage.warning('请先输入有效数据'); const link = document.createElement('a'); link.href = chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: settingStore.isDark ? '#0F172A' : '#FFFFFF' }); link.download = `${(settings.title || workbenchTitle.value).replace(/[\\/:*?"<>|]/g, '-')}.png`; link.click() }
 
 watch(option, () => nextTick(renderChart), { deep: true })
 watch(availableYears, syncCalendarYear)
@@ -116,7 +124,7 @@ onBeforeUnmount(() => { resizeObserver?.disconnect(); chart?.dispose(); chart = 
 
 <template>
   <div class="special-page flex flex-col mt-3 flex-1" :style="{ '--accent': meta.accent, '--accent-soft': meta.soft }">
-    <ToolHero :title="meta.title" legacy>
+    <ToolHero legacy>
     <section class="hero-card"><div><span class="eyebrow">{{ meta.eyebrow }}</span><h2>{{ meta.headline }}</h2><p>{{ meta.description }}</p></div><div class="hero-stats"><div v-for="item in heroMetrics" :key="item.label"><strong>{{ item.value }}</strong><span>{{ item.label }}</span></div></div></section>
     </ToolHero>
 
@@ -125,9 +133,9 @@ onBeforeUnmount(() => { resizeObserver?.disconnect(); chart?.dispose(); chart = 
     <section class="sample-card"><div class="section-heading"><div><span class="eyebrow">START WITH DATA</span><h3>选择专业示例</h3></div><p>示例覆盖不同业务结构，载入后可以继续编辑。</p></div><div class="sample-list"><button v-for="sample in samples" :key="sample.id" type="button" :class="{ active: activeSample === sample.id }" @click="applySample(sample.id)"><span>{{ sample.title }}</span><small>{{ sample.hint }}</small></button></div></section>
 
     <section class="workspace-grid">
-      <article class="data-card"><header class="card-header"><div><span class="eyebrow">STRUCTURED DATA</span><h3>数据输入与校验</h3></div><div class="header-actions"><button type="button" @click="fileInput?.click()"><el-icon><UploadFilled /></el-icon>导入</button><button type="button" @click="downloadData">导出</button><input ref="fileInput" type="file" accept=".csv,.tsv,.txt,.json" hidden @change="importData"></div></header><div class="mode-tabs" aria-label="数据输入方式"><button type="button" :class="{ active: dataMode === 'grid' }" @click="changeMode('grid')">可视表格</button><button type="button" :class="{ active: dataMode === 'table' }" @click="changeMode('table')">CSV / TSV</button><button type="button" :class="{ active: dataMode === 'json' }" @click="changeMode('json')">JSON</button></div><ChartDataGrid v-if="dataMode === 'grid'" v-model="dataText" :min-columns="gridColumns" :aria-label="`${meta.title}可视数据表格`" @update:model-value="activeSample = ''" /><textarea v-else v-model="dataText" spellcheck="false" :aria-label="`${meta.title}数据输入`" @input="activeSample = ''"></textarea><div class="format-hint"><span>{{ formatHint }}</span><b>{{ stats.count }} 条有效记录</b></div><div v-if="allErrors.length" class="validation-box" role="alert"><strong>有 {{ allErrors.length }} 处需要检查</strong><ul><li v-for="error in allErrors.slice(0, 4)" :key="error">{{ error }}</li></ul></div><div v-else class="validation-box success"><strong>数据结构有效</strong><span>预览、年度范围与统计会随输入实时更新。</span></div></article>
+      <article class="data-card"><header class="card-header"><div><span class="eyebrow">STRUCTURED DATA</span><h3>数据输入与校验</h3></div><div class="header-actions"><button type="button" @click="fileInput?.click()"><el-icon><UploadFilled /></el-icon>导入</button><button type="button" @click="downloadData">导出</button><input ref="fileInput" type="file" accept=".csv,.tsv,.txt,.json" hidden @change="importData"></div></header><div class="mode-tabs" aria-label="数据输入方式"><button type="button" :class="{ active: dataMode === 'grid' }" @click="changeMode('grid')">可视表格</button><button type="button" :class="{ active: dataMode === 'table' }" @click="changeMode('table')">CSV / TSV</button><button type="button" :class="{ active: dataMode === 'json' }" @click="changeMode('json')">JSON</button></div><ChartDataGrid v-if="dataMode === 'grid'" v-model="dataText" :min-columns="gridColumns" :aria-label="`${workbenchTitle}可视数据表格`" @update:model-value="activeSample = ''" /><textarea v-else v-model="dataText" spellcheck="false" :aria-label="`${workbenchTitle}数据输入`" @input="activeSample = ''"></textarea><div class="format-hint"><span>{{ formatHint }}</span><b>{{ stats.count }} 条有效记录</b></div><div v-if="allErrors.length" class="validation-box" role="alert"><strong>有 {{ allErrors.length }} 处需要检查</strong><ul><li v-for="error in allErrors.slice(0, 4)" :key="error">{{ error }}</li></ul></div><div v-else class="validation-box success"><strong>数据结构有效</strong><span>预览、年度范围与统计会随输入实时更新。</span></div></article>
 
-      <article class="preview-card"><header class="card-header"><div><span class="eyebrow">LIVE PREVIEW</span><h3>实时预览</h3></div><div class="header-actions"><button type="button" aria-label="复制 ECharts 配置" @click="copy(JSON.stringify(option, null, 2))"><el-icon><CopyDocument /></el-icon>复制配置</button><button type="button" class="primary" @click="downloadPng"><el-icon><Download /></el-icon>导出 PNG</button></div></header><div class="chart-shell" :class="{ 'calendar-shell': props.type === 'calendar' }" :style="{ height: `${chartHeight}px` }"><div ref="chartElement" class="chart-canvas" :class="{ 'calendar-canvas': props.type === 'calendar' }" role="img" :aria-label="`${meta.title}实时预览，共 ${stats.count} 条记录`"></div><div v-if="!stats.count" class="chart-empty">输入有效数据后，这里会显示图表</div></div><div class="preview-summary"><span><i></i>实时同步</span><span>{{ stats.count }} 条记录</span><span>{{ stats.groups }} 个分组 / 节点组</span><span>{{ stats.detail }}</span></div><p v-if="props.type === 'calendar'" class="mobile-hint">窄屏下可在预览区域左右滑动查看完整年度。</p></article>
+      <article class="preview-card"><header class="card-header"><div><span class="eyebrow">LIVE PREVIEW</span><h3>实时预览</h3></div><div class="header-actions"><button type="button" aria-label="复制 ECharts 配置" @click="copy(JSON.stringify(option, null, 2))"><el-icon><CopyDocument /></el-icon>复制配置</button><button type="button" class="primary" @click="downloadPng"><el-icon><Download /></el-icon>导出 PNG</button></div></header><div class="chart-shell" :class="{ 'calendar-shell': props.type === 'calendar' }" :style="{ height: `${chartHeight}px` }"><div ref="chartElement" class="chart-canvas" :class="{ 'calendar-canvas': props.type === 'calendar' }" role="img" :aria-label="`${workbenchTitle}实时预览，共 ${stats.count} 条记录`"></div><div v-if="!stats.count" class="chart-empty">输入有效数据后，这里会显示图表</div></div><div class="preview-summary"><span><i></i>实时同步</span><span>{{ stats.count }} 条记录</span><span>{{ stats.groups }} 个分组 / 节点组</span><span>{{ stats.detail }}</span></div><p v-if="props.type === 'calendar'" class="mobile-hint">窄屏下可在预览区域左右滑动查看完整年度。</p></article>
     </section>
 
     <section class="config-card"><header class="card-header"><div><span class="eyebrow">PRO SETTINGS</span><h3>专业配置</h3><p>通用排版与当前图表的专属参数集中在这里。</p></div><button type="button" class="reset-button" @click="resetWorkbench"><el-icon><Refresh /></el-icon>恢复默认</button></header><div class="config-grid">

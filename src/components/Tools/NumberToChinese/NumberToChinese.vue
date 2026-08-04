@@ -5,7 +5,6 @@ import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy, numberToChinese } from '@/utils/string'
 
-const title = '数字转金额大写'
 const inputValue = ref('100001')
 
 const examples = [
@@ -48,7 +47,7 @@ function clear() {
 
 <template>
   <div class="number-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="section-heading">

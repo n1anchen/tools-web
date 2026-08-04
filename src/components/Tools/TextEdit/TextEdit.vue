@@ -220,7 +220,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="rich-page flex flex-col mt-3 flex-1">
-    <ToolHero title="富文本与 HTML 工作台" legacy>
+    <ToolHero legacy>
 
     <section class="studio-hero">
       <div><span class="eyebrow">RICH CONTENT STUDIO</span><h2>专注写内容，HTML 交付自然完成</h2><p>使用可视化工具栏编排正文，同时获得干净的 HTML 和纯文本；支持模板、导入、本地草稿与多格式导出。</p></div>

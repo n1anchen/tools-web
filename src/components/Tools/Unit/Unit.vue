@@ -171,7 +171,7 @@ watch(() => route.query.active, value => {
 
 <template>
   <div class="unit-page flex flex-col mt-3 flex-1" :data-accent="categoryVisuals[activeId].accent">
-    <ToolHero title="单位转换" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div>

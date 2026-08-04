@@ -8,7 +8,6 @@ import { copy } from '@/utils/string'
 type Mode = 'encode' | 'decode'
 type Scope = 'component' | 'url'
 
-const title = 'URL编码/解码'
 const mode = ref<Mode>('encode')
 const scope = ref<Scope>('component')
 const input = ref('')
@@ -79,7 +78,7 @@ function useExample(value: string) {
 
 <template>
   <div class="url-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="mode-panel">

@@ -180,7 +180,7 @@ onUnmounted(() => {
 
 <template>
   <div class="blue-logo-page flex flex-col mt-3 flex-1">
-    <ToolHero title="蔚蓝标题工作室" legacy>
+    <ToolHero legacy>
 
     <section class="studio-hero">
       <div><span class="eyebrow">BLUE TITLE COMPOSER</span><h2>拆分文字，组合一枚清透标题</h2><p>左右文字、光环位置、画布形状与导出倍率都可实时调整；所有合成均在浏览器画布中完成。</p></div>

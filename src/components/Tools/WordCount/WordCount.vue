@@ -6,7 +6,6 @@ import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { analyzeText } from '@/utils/textTools'
 
-const title = '在线字数统计'
 const content = ref('')
 const statistics = computed(() => analyzeText(content.value))
 
@@ -57,7 +56,7 @@ function useSample(value: string) {
 
 <template>
   <div class="word-count-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="editor-header">

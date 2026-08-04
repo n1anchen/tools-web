@@ -101,7 +101,7 @@ function copyAll() {
 
 <template>
   <div class="md5-page flex flex-col mt-3 flex-1">
-    <ToolHero title="MD5 摘要计算" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">MD5 DIGEST LAB</span><h2>计算摘要，不再误叫“加密”</h2><p>支持文本与大文件分块计算、16/32 位格式转换和校验值比对，全程在本地完成。</p></div>

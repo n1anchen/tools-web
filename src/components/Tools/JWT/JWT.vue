@@ -94,7 +94,7 @@ function loadSample() {
 
 <template>
   <div class="jwt-page flex flex-col mt-3 flex-1">
-    <ToolHero title="JWT 解析" />
+    <ToolHero />
 
     <section class="security-banner">
       <el-icon><WarningFilled /></el-icon>

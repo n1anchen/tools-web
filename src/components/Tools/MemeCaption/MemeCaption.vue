@@ -247,7 +247,7 @@ onUnmounted(() => themeObserver?.disconnect())
 
 <template>
   <div class="meme-page flex flex-col mt-3 flex-1">
-    <ToolHero title="字幕梗图工作室" legacy>
+    <ToolHero legacy>
 
     <section class="studio-hero">
       <div><span class="eyebrow">MEME CAPTION STUDIO</span><h2>把一句话，放到最有戏的位置</h2><p>载入图片后实时调整字幕、位置与描边，自动换行并输出适合聊天、社交平台和二次创作的成品。</p></div>

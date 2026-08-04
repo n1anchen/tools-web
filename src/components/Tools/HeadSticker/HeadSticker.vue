@@ -12,7 +12,6 @@ import {
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 
-const title = '接头霸王'
 
 interface HeadGroup {
   name: string
@@ -363,7 +362,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="sticker-tool flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div>

@@ -6,7 +6,6 @@ import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { removeTrackingParams } from '@/utils/url'
 
-const title = '短链接解析'
 const apiBase = (import.meta.env.VITE_UNSHORTEN_API as string | undefined)?.trim()
 const inputUrl = ref('')
 const touched = ref(false)
@@ -200,7 +199,7 @@ function loadExample(value: string) {
 
 <template>
   <div class="url-tool flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div>

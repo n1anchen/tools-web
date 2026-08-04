@@ -146,7 +146,7 @@ onUnmounted(() => {
 
 <template>
   <div class="ascii-page flex flex-col mt-3 flex-1">
-    <ToolHero title="ASCII 字形工作室" legacy>
+    <ToolHero legacy>
 
     <section class="ascii-hero">
       <div>

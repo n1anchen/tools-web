@@ -40,7 +40,6 @@ interface SystemMetaItem {
   helper?: string
 }
 
-const title = '地图坐标系互转'
 const workMode = ref<'single' | 'batch'>('single')
 const defaultGcj02: GeoCoordinate = {
   lng: 116.397428,
@@ -425,7 +424,7 @@ onUnmounted(() => {
 
 <template>
   <div class="coord-tool flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div>

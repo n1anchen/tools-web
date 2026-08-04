@@ -355,7 +355,7 @@ function copyPreview() {
 
 <template>
   <div class="sheet-page flex flex-col mt-3 flex-1">
-    <ToolHero title="表格数据转换工作台" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div class="hero-copy">

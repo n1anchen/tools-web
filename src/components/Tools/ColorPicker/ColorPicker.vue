@@ -89,7 +89,7 @@ watch(backgroundHex, value => { if (value) backgroundInput.value = value.toUpper
 
 <template>
   <div class="color-page flex flex-col mt-3 flex-1" :style="{ '--selected': selectedHex }">
-    <ToolHero title="Color 配色工作台" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">COLOR ACCESSIBILITY STUDIO</span><h2>选颜色，也检查它是否真的好读</h2><p>统一转换常用颜色格式、生成 50–900 色阶，并用 WCAG 对比度判断正文、大号文字和 UI 图形是否清晰。</p></div>

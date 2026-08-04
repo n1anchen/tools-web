@@ -173,7 +173,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="wordcloud-page flex flex-col mt-3 flex-1">
-    <ToolHero title="词云图" legacy>
+    <ToolHero legacy>
 
     <section class="wordcloud-hero">
       <div><span class="eyebrow">WORD CLOUD STUDIO</span><h2>从一段文字，到可解释、可导出的词云</h2><p>自动完成中英文分词、词频统计与停用词过滤；调整形状、配色和布局后实时预览，并导出高清 PNG 或完整词频 CSV。</p></div>

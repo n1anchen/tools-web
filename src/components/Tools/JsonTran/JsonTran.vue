@@ -112,7 +112,6 @@ function loadSample(sample: { value: string }) {
 <template>
   <CodeWorkbench
     v-model="code"
-    page-title="JSON 工作台"
     eyebrow="JSON DOCUMENT LAB"
     headline="看清结构，也看得见错误位置"
     description="安全格式化、压缩、递归排序和字符串转义分开处理，避免一个按钮悄悄破坏数据。"

@@ -14,7 +14,6 @@ interface HistoryItem {
   optionCount: number
 }
 
-const title = '帮我决定'
 const presetOptions = [
   { key: 'food' as const, label: '今天吃什么' },
   { key: 'activity' as const, label: '现在做什么' },
@@ -110,7 +109,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="decision-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <div class="workspace-grid">
       <section class="settings-card">

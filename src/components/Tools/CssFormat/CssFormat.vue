@@ -109,7 +109,6 @@ function loadSample(sample: { value: string; note: string }) {
   <CodeWorkbench
     ref="workbenchRef"
     v-model="code"
-    page-title="CSS 格式化与优化"
     eyebrow="CSS OPTIMIZATION LAB"
     headline="从可读样式，到可发布体积"
     description="格式化负责审阅，CSSO 负责语法解析和优化压缩；结果、体积收益与错误诊断都清晰可见。"

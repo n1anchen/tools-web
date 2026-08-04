@@ -16,7 +16,6 @@ import {
   type CidrResult,
 } from '@/utils/ipCalc'
 
-const title = 'IP 计算器'
 const activeTab = ref<'network' | 'split' | 'convert' | 'mask'>('network')
 const cidrInput = ref('192.168.1.34/24')
 const result = ref<CidrResult | null>(null)
@@ -190,7 +189,7 @@ maskFromPrefix()
 
 <template>
   <div class="ip-tool flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div>

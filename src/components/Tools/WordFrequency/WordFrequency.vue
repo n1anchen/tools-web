@@ -7,7 +7,6 @@ import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { analyzeWordFrequency } from '@/utils/textTools'
 
-const title = '词频统计'
 const inputText = ref('')
 const customStopWords = ref('')
 const searchQuery = ref('')
@@ -65,7 +64,7 @@ function copyAll() {
 
 <template>
   <div class="frequency-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="workspace-header">

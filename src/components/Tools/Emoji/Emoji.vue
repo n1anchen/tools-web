@@ -4,7 +4,6 @@ import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 
-const title = 'Emoji 大全'
 
 const categories = [
   { key: 'face', label: '表情脸部', icon: '😀' },
@@ -314,7 +313,7 @@ onMounted(() => {
 
 <template>
   <div class="emoji-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" legacy>
+    <ToolHero legacy>
 
     <section class="emoji-hero">
       <div><span class="eyebrow">EMOJI LIBRARY</span><h2>找到表情，收藏起来，点一下就复制</h2><p>按场景分类浏览，也可以搜索中文名称、Emoji 本身或 Unicode 编码。收藏和最近使用仅保存在当前浏览器。</p></div>

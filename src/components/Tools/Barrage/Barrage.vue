@@ -158,7 +158,7 @@ onUnmounted(() => {
 
 <template>
   <div class="barrage-page flex flex-col mt-3 flex-1">
-    <ToolHero title="手持弹幕工作台" legacy>
+    <ToolHero legacy>
 
     <section class="barrage-hero">
       <div>

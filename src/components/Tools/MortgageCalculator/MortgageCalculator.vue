@@ -49,7 +49,6 @@ interface HoldingPair {
   equalPrincipal: HoldingSnapshot
 }
 
-const title = '房贷计算器'
 const form = reactive<MortgageInput>({
   totalPrice: 300,
   downPayment: 90,
@@ -304,7 +303,7 @@ calculate()
 
 <template>
   <div class="mortgage-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="calculator-card">
       <div class="section-heading">

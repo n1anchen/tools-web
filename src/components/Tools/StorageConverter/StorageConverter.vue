@@ -7,7 +7,6 @@ import { copy } from '@/utils/string'
 
 type Standard = 'binary' | 'decimal'
 
-const title = '数据存储单位换算'
 const inputValue = ref('1024')
 const fromUnit = ref('B')
 const standard = ref<Standard>('binary')
@@ -82,7 +81,7 @@ function copyAll() {
 
 <template>
   <div class="storage-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="section-heading">

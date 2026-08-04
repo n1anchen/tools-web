@@ -13,7 +13,6 @@ interface HistoryItem {
   values: number[]
 }
 
-const title = '随机数生成器'
 const minimum = ref(1)
 const maximum = ref(100)
 const count = ref(1)
@@ -84,7 +83,7 @@ onMounted(generate)
 
 <template>
   <div class="random-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="section-heading">

@@ -14,7 +14,6 @@ import {
   type JapaneseAnalysisToken,
 } from '@/utils/japaneseAnalyzer'
 
-const title = '日语转罗马音'
 const input = ref('')
 const baseResult = ref('')
 const tokenLines = ref<JapaneseAnalysisToken[][]>([])
@@ -167,7 +166,7 @@ function formatRomaji(value: string, style: typeof letterCase.value) {
 
 <template>
   <div class="romaji-tool flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div>

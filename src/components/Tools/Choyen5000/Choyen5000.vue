@@ -204,7 +204,7 @@ onUnmounted(() => {
 
 <template>
   <div class="choyen-page flex flex-col mt-3 flex-1">
-    <ToolHero title="金属冲击标题工作室" legacy>
+    <ToolHero legacy>
 
     <section class="studio-hero">
       <div>

@@ -245,7 +245,7 @@ onUnmounted(() => {
 
 <template>
   <div class="split-logo-page flex flex-col mt-3 flex-1">
-    <ToolHero title="双栏徽标工作室" legacy>
+    <ToolHero legacy>
 
     <section class="studio-hero">
       <div><span class="eyebrow">SPLIT BADGE LOGO STUDIO</span><h2>一半是标题，一半是视觉锚点</h2><p>自由组合左右文字、双栏配色、圆角与画布形状，实时生成适合头像、封面和梗图的高对比徽标。</p></div>

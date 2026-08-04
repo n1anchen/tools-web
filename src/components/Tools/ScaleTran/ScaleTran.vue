@@ -64,7 +64,7 @@ function continueFromResult(base: SupportedRadix, value: string) {
 
 <template>
   <div class="radix-page flex flex-col mt-3 flex-1">
-    <ToolHero title="常用进制转换" />
+    <ToolHero />
 
     <section class="input-card">
       <div class="input-heading">

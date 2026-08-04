@@ -12,7 +12,6 @@ interface TossRecord {
   face: CoinFace
 }
 
-const title = '抛硬币'
 const headsLabel = ref('正面')
 const tailsLabel = ref('反面')
 const tossCount = ref(1)
@@ -58,7 +57,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="coin-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <div class="workspace-grid">
       <section class="settings-card">

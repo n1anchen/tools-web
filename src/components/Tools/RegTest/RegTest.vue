@@ -54,7 +54,7 @@ function clearAll() {
 
 <template>
   <div class="regex-page flex flex-col mt-3 flex-1">
-    <ToolHero title="正则表达式测试" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">REGEX LAB</span><h2>边写边看见每一次匹配</h2><p>实时高亮、捕获组拆解、替换预览和准确的错误定位。</p></div>

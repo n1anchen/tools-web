@@ -10,7 +10,6 @@ import { copy } from '@/utils/string'
 
 type OutputFormat = 'hex' | 'base64'
 
-const title = 'Hash 计算器'
 const inputText = ref('Hello, tools-web!')
 const algorithm = ref('SHA-256')
 const hmacKey = ref('')
@@ -134,7 +133,7 @@ function copyResult() {
 
 <template>
   <div class="hash-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="workspace-grid">

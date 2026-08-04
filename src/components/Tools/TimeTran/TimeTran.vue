@@ -113,7 +113,7 @@ onUnmounted(stopClock)
 
 <template>
   <div class="time-page flex flex-col mt-3 flex-1">
-    <ToolHero title="时间戳转换" />
+    <ToolHero />
 
     <section class="clock-card">
       <div class="clock-icon"><el-icon><Clock /></el-icon></div>

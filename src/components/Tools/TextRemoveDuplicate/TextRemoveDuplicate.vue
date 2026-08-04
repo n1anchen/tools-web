@@ -6,7 +6,6 @@ import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { dedupeLines, type DedupeMode } from '@/utils/textTools'
 
-const title = '文本去重'
 const content = ref('')
 const options = reactive({
   trimLines: true,
@@ -48,7 +47,7 @@ function useResultAsInput() {
 
 <template>
   <div class="dedupe-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="settings-header">

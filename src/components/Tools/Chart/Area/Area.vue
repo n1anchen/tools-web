@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, reactive, onMounted, watch } from 'vue'
+import {ref, onMounted, watch } from 'vue'
 import Spreadsheet from 'x-data-spreadsheet'
 import 'x-data-spreadsheet/dist/locale/zh-cn';
 import { UploadProps,UploadRawFile,genFileId } from 'element-plus'
@@ -9,9 +9,6 @@ import { toEchartsData, toSpreadsheetData } from '@/utils/echarts'
 import * as echarts from 'echarts'
 import * as XLSX from 'xlsx'
 import { useSettingStore } from '@/store/modules/setting'
-const info = reactive({
-  title: "面积图",
-})
 const settingStore = useSettingStore()
 
 const chartDom = ref<HTMLElement|null>()
@@ -232,7 +229,7 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <ToolHero :title="info.title"></ToolHero>
+    <ToolHero />
 
     <div class="p-4 rounded-2xl flex bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="w-4/6">

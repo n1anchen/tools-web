@@ -233,7 +233,7 @@ onBeforeUnmount(releaseObjectUrl)
 
 <template>
   <div class="watermark-page flex flex-col mt-3 flex-1">
-    <ToolHero title="图片水印" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div>

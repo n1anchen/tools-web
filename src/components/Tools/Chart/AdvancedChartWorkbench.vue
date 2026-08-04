@@ -8,7 +8,9 @@ import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import ChartToolNav from '@/components/Tools/Chart/ChartToolNav.vue'
 import { useSettingStore } from '@/store/modules/setting'
-import { copy } from '@/utils/string'
+import { useRoute } from 'vue-router'
+import { getTools } from '@/components/Tools/tools.ts'
+import { copy, rtrim } from '@/utils/string'
 import { CHART_PALETTES } from '@/utils/chartStudio'
 import {
   ADVANCED_SAMPLES,
@@ -22,7 +24,13 @@ import {
 } from '@/utils/advancedChartStudio'
 
 const props = defineProps<{ type: AdvancedChartKind }>()
+const route = useRoute()
 const settingStore = useSettingStore()
+// 工具标题以 tools.ts 为唯一来源，按当前路由派生（与 ToolHero 一致）
+const workbenchTitle = computed(() => {
+  const tool = getTools({ cateId: 0, title: '', route: rtrim(route.path, '/') })
+  return tool.title || ''
+})
 const chartElement = ref<HTMLElement | null>(null)
 const fileInput = ref<HTMLInputElement | null>(null)
 type EditorMode = 'grid' | AdvancedDataMode
@@ -34,11 +42,11 @@ let chart: echarts.ECharts | null = null
 let resizeObserver: ResizeObserver | null = null
 
 const typeMeta = {
-  radar: { title: '雷达图工作台', eyebrow: 'RADAR CHART STUDIO', headline: '把多维能力与差距放在同一张图里', description: '使用宽表录入维度与多个系列，自动计算或指定各维度最大值，并切换多边形、圆形与填充强度。', accent: '#7C3AED', soft: '#EDE9FE', detail: '雷达图适合对比多个对象在相同维度下的相对表现。各维度量纲不一致时，应通过“最大值”列完成归一化；维度太多会显著降低可读性，通常建议控制在 5–8 个。' },
-  gauge: { title: '仪表盘工作台', eyebrow: 'GAUGE CHART STUDIO', headline: '用明确的范围读懂当前指标状态', description: '录入一个或多个指标，设置最小值、最大值、刻度和单位，并在指针盘与进度盘之间实时切换。', accent: '#0D9488', soft: '#CCFBF1', detail: '仪表盘适合突出少量关键指标的当前状态，不适合精确比较大量数值。所有指标应共享同一范围和单位；若指标超出范围，工作台会保留数据并明确提示。' },
-  heatmap: { title: '热力图工作台', eyebrow: 'HEATMAP STUDIO', headline: '从二维矩阵中快速找到高峰与空白', description: '按 X、Y 分类和数值录入数据，自动生成矩阵与视觉色阶，支持颜色端点、数值标签和圆角单元格。', accent: '#DB2777', soft: '#FCE7F3', detail: '热力图适合展示两个离散维度交叉后的强弱分布。色阶会按当前数据最小值与最大值自动映射；比较多张图时，应使用相同色阶范围，避免颜色相同但实际数值不同。' },
-  candlestick: { title: 'K 线图工作台', eyebrow: 'CANDLESTICK STUDIO', headline: '检查开收高低，也看清一段行情走势', description: '录入日期与 OHLC 数据，逐行验证价格关系，自定义涨跌色并通过缩放条浏览较长序列。', accent: '#DC2626', soft: '#FEE2E2', detail: 'K 线每项数据依次为开盘、收盘、最低和最高。最低价必须不高于开收盘，最高价必须不低于开收盘。本工具只负责数据可视化，不构成投资建议。' },
-  stack: { title: '堆叠图工作台', eyebrow: 'STACK CHART STUDIO', headline: '同时比较总量、构成与时间变化', description: '使用多系列宽表生成堆叠柱状图或堆叠面积线，支持图例、总量标签、主题配色和高清导出。', accent: '#2563EB', soft: '#DBEAFE', detail: '堆叠图适合观察各分类总量及组成。堆叠柱便于比较离散分类，堆叠面积线更适合连续趋势；除最底层系列外，其余系列不共享零基线，不宜用于精确比较细微差异。' },
+  radar: { eyebrow: 'RADAR CHART STUDIO', headline: '把多维能力与差距放在同一张图里', description: '使用宽表录入维度与多个系列，自动计算或指定各维度最大值，并切换多边形、圆形与填充强度。', accent: '#7C3AED', soft: '#EDE9FE', detail: '雷达图适合对比多个对象在相同维度下的相对表现。各维度量纲不一致时，应通过“最大值”列完成归一化；维度太多会显著降低可读性，通常建议控制在 5–8 个。' },
+  gauge: { eyebrow: 'GAUGE CHART STUDIO', headline: '用明确的范围读懂当前指标状态', description: '录入一个或多个指标，设置最小值、最大值、刻度和单位，并在指针盘与进度盘之间实时切换。', accent: '#0D9488', soft: '#CCFBF1', detail: '仪表盘适合突出少量关键指标的当前状态，不适合精确比较大量数值。所有指标应共享同一范围和单位；若指标超出范围，工作台会保留数据并明确提示。' },
+  heatmap: { eyebrow: 'HEATMAP STUDIO', headline: '从二维矩阵中快速找到高峰与空白', description: '按 X、Y 分类和数值录入数据，自动生成矩阵与视觉色阶，支持颜色端点、数值标签和圆角单元格。', accent: '#DB2777', soft: '#FCE7F3', detail: '热力图适合展示两个离散维度交叉后的强弱分布。色阶会按当前数据最小值与最大值自动映射；比较多张图时，应使用相同色阶范围，避免颜色相同但实际数值不同。' },
+  candlestick: { eyebrow: 'CANDLESTICK STUDIO', headline: '检查开收高低，也看清一段行情走势', description: '录入日期与 OHLC 数据，逐行验证价格关系，自定义涨跌色并通过缩放条浏览较长序列。', accent: '#DC2626', soft: '#FEE2E2', detail: 'K 线每项数据依次为开盘、收盘、最低和最高。最低价必须不高于开收盘，最高价必须不低于开收盘。本工具只负责数据可视化，不构成投资建议。' },
+  stack: { eyebrow: 'STACK CHART STUDIO', headline: '同时比较总量、构成与时间变化', description: '使用多系列宽表生成堆叠柱状图或堆叠面积线，支持图例、总量标签、主题配色和高清导出。', accent: '#2563EB', soft: '#DBEAFE', detail: '堆叠图适合观察各分类总量及组成。堆叠柱便于比较离散分类，堆叠面积线更适合连续趋势；除最底层系列外，其余系列不共享零基线，不宜用于精确比较细微差异。' },
 } as const
 
 const meta = computed(() => typeMeta[props.type])
@@ -110,7 +118,7 @@ async function importData(event: Event) {
   const content = await file.text(); dataMode.value = file.name.toLowerCase().endsWith('.json') || content.trimStart().startsWith('{') || content.trimStart().startsWith('[') ? 'json' : 'grid'; dataText.value = content; activeSample.value = ''; ElMessage.success(`已载入 ${file.name}`)
 }
 function downloadData() { if (!stats.value.count) return ElMessage.warning('没有可导出的有效数据'); const content = serializeAdvancedChartData(data.value, parserMode.value); const blob = new Blob([content], { type: parserMode.value === 'json' ? 'application/json;charset=utf-8' : 'text/csv;charset=utf-8' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `chart-data.${parserMode.value === 'json' ? 'json' : 'csv'}`; link.click(); URL.revokeObjectURL(url) }
-function downloadPng() { if (!chart || !stats.value.count) return ElMessage.warning('请先输入有效数据'); const link = document.createElement('a'); link.href = chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: settingStore.isDark ? '#0F172A' : '#FFFFFF' }); link.download = `${(settings.title || meta.value.title).replace(/[\\/:*?"<>|]/g, '-')}.png`; link.click() }
+function downloadPng() { if (!chart || !stats.value.count) return ElMessage.warning('请先输入有效数据'); const link = document.createElement('a'); link.href = chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: settingStore.isDark ? '#0F172A' : '#FFFFFF' }); link.download = `${(settings.title || workbenchTitle.value).replace(/[\\/:*?"<>|]/g, '-')}.png`; link.click() }
 
 watch(option, () => nextTick(renderChart), { deep: true })
 watch(() => settingStore.isDark, recreateChart)
@@ -120,7 +128,7 @@ onBeforeUnmount(() => { resizeObserver?.disconnect(); chart?.dispose(); chart = 
 
 <template>
   <div class="advanced-page flex flex-col mt-3 flex-1" :style="{ '--accent': meta.accent, '--accent-soft': meta.soft }">
-    <ToolHero :title="meta.title" legacy>
+    <ToolHero legacy>
     <section class="hero-card"><div><span class="eyebrow">{{ meta.eyebrow }}</span><h2>{{ meta.headline }}</h2><p>{{ meta.description }}</p></div><div class="hero-stats"><div v-for="item in heroMetrics" :key="item.label"><strong>{{ item.value }}</strong><span>{{ item.label }}</span></div></div></section>
     </ToolHero>
 
@@ -129,9 +137,9 @@ onBeforeUnmount(() => { resizeObserver?.disconnect(); chart?.dispose(); chart = 
     <section class="sample-card"><div class="section-heading"><div><span class="eyebrow">START WITH DATA</span><h3>选择专业示例</h3></div><p>示例会替换当前数据，之后仍可自由编辑。</p></div><div class="sample-list"><button v-for="sample in samples" :key="sample.id" type="button" :class="{ active: activeSample === sample.id }" @click="applySample(sample.id)"><span>{{ sample.title }}</span><small>{{ sample.hint }}</small></button></div></section>
 
     <section class="workspace-grid">
-      <article class="data-card"><header class="card-header"><div><span class="eyebrow">STRUCTURED DATA</span><h3>数据输入</h3></div><div class="header-actions"><button type="button" @click="fileInput?.click()"><el-icon><UploadFilled /></el-icon>导入</button><button type="button" @click="downloadData">导出</button><input ref="fileInput" type="file" accept=".csv,.tsv,.txt,.json" hidden @change="importData"></div></header><div class="mode-tabs" aria-label="数据输入方式"><button type="button" :class="{ active: dataMode === 'grid' }" @click="changeMode('grid')">可视表格</button><button type="button" :class="{ active: dataMode === 'table' }" @click="changeMode('table')">CSV / TSV</button><button type="button" :class="{ active: dataMode === 'json' }" @click="changeMode('json')">JSON</button></div><ChartDataGrid v-if="dataMode === 'grid'" v-model="dataText" :min-columns="gridColumns" :aria-label="`${meta.title}可视数据表格`" @update:model-value="activeSample = ''" /><textarea v-else v-model="dataText" spellcheck="false" :aria-label="`${meta.title}数据输入`" @input="activeSample = ''"></textarea><div class="format-hint"><span>{{ formatHint }}</span><b>{{ stats.count }} 条有效记录</b></div><div v-if="allErrors.length" class="validation-box" role="alert"><strong>有 {{ allErrors.length }} 处需要检查</strong><ul><li v-for="error in allErrors.slice(0, 4)" :key="error">{{ error }}</li></ul></div><div v-else class="validation-box success"><strong>数据结构有效</strong><span>修改数据后，预览和统计会自动更新。</span></div></article>
+      <article class="data-card"><header class="card-header"><div><span class="eyebrow">STRUCTURED DATA</span><h3>数据输入</h3></div><div class="header-actions"><button type="button" @click="fileInput?.click()"><el-icon><UploadFilled /></el-icon>导入</button><button type="button" @click="downloadData">导出</button><input ref="fileInput" type="file" accept=".csv,.tsv,.txt,.json" hidden @change="importData"></div></header><div class="mode-tabs" aria-label="数据输入方式"><button type="button" :class="{ active: dataMode === 'grid' }" @click="changeMode('grid')">可视表格</button><button type="button" :class="{ active: dataMode === 'table' }" @click="changeMode('table')">CSV / TSV</button><button type="button" :class="{ active: dataMode === 'json' }" @click="changeMode('json')">JSON</button></div><ChartDataGrid v-if="dataMode === 'grid'" v-model="dataText" :min-columns="gridColumns" :aria-label="`${workbenchTitle}可视数据表格`" @update:model-value="activeSample = ''" /><textarea v-else v-model="dataText" spellcheck="false" :aria-label="`${workbenchTitle}数据输入`" @input="activeSample = ''"></textarea><div class="format-hint"><span>{{ formatHint }}</span><b>{{ stats.count }} 条有效记录</b></div><div v-if="allErrors.length" class="validation-box" role="alert"><strong>有 {{ allErrors.length }} 处需要检查</strong><ul><li v-for="error in allErrors.slice(0, 4)" :key="error">{{ error }}</li></ul></div><div v-else class="validation-box success"><strong>数据结构有效</strong><span>修改数据后，预览和统计会自动更新。</span></div></article>
 
-      <article class="preview-card"><header class="card-header"><div><span class="eyebrow">LIVE PREVIEW</span><h3>实时预览</h3></div><div class="header-actions"><button type="button" aria-label="复制 ECharts 配置" @click="copy(JSON.stringify(option, null, 2))"><el-icon><CopyDocument /></el-icon>复制配置</button><button type="button" class="primary" @click="downloadPng"><el-icon><Download /></el-icon>导出 PNG</button></div></header><div class="chart-shell" :style="{ height: `${chartHeight}px` }"><div ref="chartElement" class="chart-canvas" role="img" :aria-label="`${meta.title}实时预览，共 ${stats.count} 条记录`"></div><div v-if="!stats.count" class="chart-empty">输入有效数据后，这里会显示图表</div></div><div class="preview-summary"><span><i></i>实时同步</span><span>{{ stats.count }} 条记录</span><span>{{ stats.series }} 个系列 / 维度组</span><span>峰值 {{ format(stats.max) }}</span></div></article>
+      <article class="preview-card"><header class="card-header"><div><span class="eyebrow">LIVE PREVIEW</span><h3>实时预览</h3></div><div class="header-actions"><button type="button" aria-label="复制 ECharts 配置" @click="copy(JSON.stringify(option, null, 2))"><el-icon><CopyDocument /></el-icon>复制配置</button><button type="button" class="primary" @click="downloadPng"><el-icon><Download /></el-icon>导出 PNG</button></div></header><div class="chart-shell" :style="{ height: `${chartHeight}px` }"><div ref="chartElement" class="chart-canvas" role="img" :aria-label="`${workbenchTitle}实时预览，共 ${stats.count} 条记录`"></div><div v-if="!stats.count" class="chart-empty">输入有效数据后，这里会显示图表</div></div><div class="preview-summary"><span><i></i>实时同步</span><span>{{ stats.count }} 条记录</span><span>{{ stats.series }} 个系列 / 维度组</span><span>峰值 {{ format(stats.max) }}</span></div></article>
     </section>
 
     <section class="config-card"><header class="card-header"><div><span class="eyebrow">PRO SETTINGS</span><h3>专业配置</h3><p>通用排版与当前图表的专属参数集中在这里。</p></div><button type="button" class="reset-button" @click="resetWorkbench"><el-icon><Refresh /></el-icon>恢复默认</button></header><div class="config-grid">

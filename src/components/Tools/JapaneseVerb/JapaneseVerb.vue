@@ -32,7 +32,6 @@ interface Result {
   matchedLabels: string[]
 }
 
-const title = '日语动词变化'
 const input = ref('')
 const analysisInput = ref('')
 const activeResultKey = ref('')
@@ -639,7 +638,7 @@ function copyResult(result: Result) {
 
 <template>
   <div class="verb-tool flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div>

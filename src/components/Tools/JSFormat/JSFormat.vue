@@ -145,7 +145,6 @@ function loadSample(sample: { value: string; label: string }) {
 <template>
   <CodeWorkbench
     v-model="code"
-    page-title="JavaScript 格式化与压缩"
     eyebrow="JAVASCRIPT BUILD LAB"
     headline="先验证代码，再决定压缩强度"
     description="格式化和发布压缩都由 Terser 解析，目标语法、模块模式、变量改名和 Console 策略由你明确控制。"

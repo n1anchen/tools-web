@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Setting, StarFilled } from '@element-plus/icons-vue'
 import { Star, StarRegular } from '@vicons/fa'
@@ -7,11 +7,12 @@ import { Icon } from '@vicons/utils'
 import { useRoute } from 'vue-router'
 import ToolIcon from '@/components/Common/ToolIcon.vue'
 import ToastNotification from '@/components/Common/ToastNotification.vue'
+import { getTools } from '@/components/Tools/tools.ts'
 import { useToolsStore } from '@/store/modules/tools'
 import { rtrim } from '@/utils/string'
 
 const props = withDefaults(defineProps<{
-  title: string
+  title?: string
   eyebrow?: string
   summary?: string
   description?: string
@@ -25,11 +26,11 @@ const props = withDefaults(defineProps<{
 
 const route = useRoute()
 const toolsStore = useToolsStore()
-const searchParam = reactive({ cateId: 0, title: '', route: '' })
 const toast = ref(false)
 const toastType = ref<'add' | 'remove'>('add')
 const toastTimer = ref<ReturnType<typeof setTimeout> | null>(null)
-const toolInfo = computed(() => toolsStore.toolInfo)
+// 以 tools.ts 为唯一数据源，按当前路由同步派生工具信息（标题/描述/图标/分类）
+const toolInfo = computed(() => getTools({ cateId: 0, title: '', route: rtrim(route.path, '/') }))
 const favorited = computed(() => toolsStore.isFavorite(toolInfo.value.url))
 const resolvedDescription = computed(() => props.description || toolInfo.value.desc || '在线处理，简单高效')
 
@@ -58,11 +59,6 @@ function toggleFavorite() {
   showToast(wasFavorited ? 'remove' : 'add')
 }
 
-onMounted(async () => {
-  searchParam.route = rtrim(route.path, '/')
-  await toolsStore.getToolInfo(searchParam)
-})
-
 onBeforeUnmount(() => {
   if (toastTimer.value) clearTimeout(toastTimer.value)
 })
@@ -82,7 +78,7 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <h1>{{ props.title }}</h1>
+      <h1>{{ toolInfo.title || props.title }}</h1>
       <div v-if="props.legacy" class="legacy-content"><slot /></div>
       <template v-else>
         <strong v-if="props.summary" class="summary">{{ props.summary }}</strong>

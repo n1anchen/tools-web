@@ -17,7 +17,6 @@ interface RollHistory {
   total: number
 }
 
-const title = '投骰子'
 const diceCount = ref(2)
 const modifier = ref(0)
 const rolling = ref(false)
@@ -74,7 +73,7 @@ function copyCurrent() {
 
 <template>
   <div class="dice-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="workspace-header">

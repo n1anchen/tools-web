@@ -196,7 +196,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="markdown-page flex flex-col mt-3 flex-1">
-    <ToolHero title="Markdown 文档工作台" legacy>
+    <ToolHero legacy>
 
     <section class="studio-hero">
       <div>

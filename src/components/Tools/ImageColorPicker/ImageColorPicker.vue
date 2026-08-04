@@ -206,7 +206,7 @@ function copyPaletteVariables() {
 
 <template>
   <div class="color-page flex flex-col mt-3 flex-1">
-    <ToolHero title="传图取色" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">IMAGE COLOR LAB</span><h2>从一张图片，读懂整套色彩</h2><p>像素级取色、主色提取与格式转换均在本地完成，图片不会上传。</p></div>

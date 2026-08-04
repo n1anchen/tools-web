@@ -121,7 +121,7 @@ onUnmounted(stopPlayback)
 
 <template>
   <div class="morse-page flex flex-col mt-3 flex-1">
-    <ToolHero title="摩斯电码" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div>

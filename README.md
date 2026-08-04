@@ -150,9 +150,9 @@ pnpm build:pro
 Q: 我应该如何添加新功能？
 
 A: 
-  - 在`components/Tools/tools.ts`文件中添加工具信息
-  - 在`router/router.ts`中添加路由
-  - 拷贝示例目录`components/Tools/Example`修改名称，在这个拷贝出来的目录中开发工具即可
+  - 在`components/Tools/tools.ts`中添加工具信息（`title`/`desc`/`logo`/`url`/`cate` 统一在此维护，页面标题与浏览器标题会自动同步，改名只需改这一处）
+  - 在`router/router.ts`中添加路由（工具页无需再写 `meta.title`，由路由守卫自动从 `tools.ts` 派生）
+  - 拷贝示例目录`components/Tools/Example`修改名称，在这个拷贝出来的目录中开发工具即可（页面标题由 `ToolHero` 自动从 `tools.ts` 获取，无需传入 `title`）
 
 <br/>
 

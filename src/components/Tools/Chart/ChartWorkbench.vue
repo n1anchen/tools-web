@@ -8,7 +8,9 @@ import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import ChartToolNav from '@/components/Tools/Chart/ChartToolNav.vue'
 import { useSettingStore } from '@/store/modules/setting'
-import { copy } from '@/utils/string'
+import { useRoute } from 'vue-router'
+import { getTools } from '@/components/Tools/tools.ts'
+import { copy, rtrim } from '@/utils/string'
 import {
   CHART_PALETTES,
   CHART_SAMPLES,
@@ -22,7 +24,13 @@ import {
 } from '@/utils/chartStudio'
 
 const props = defineProps<{ type: ChartKind }>()
+const route = useRoute()
 const settingStore = useSettingStore()
+// 工具标题以 tools.ts 为唯一来源，按当前路由派生（与 ToolHero 一致）
+const workbenchTitle = computed(() => {
+  const tool = getTools({ cateId: 0, title: '', route: rtrim(route.path, '/') })
+  return tool.title || ''
+})
 const chartElement = ref<HTMLElement | null>(null)
 const fileInput = ref<HTMLInputElement | null>(null)
 type EditorMode = 'grid' | ChartDataMode
@@ -33,7 +41,6 @@ let chart: echarts.ECharts | null = null
 let resizeObserver: ResizeObserver | null = null
 
 const typeMeta: Record<ChartKind, {
-  title: string
   eyebrow: string
   headline: string
   description: string
@@ -44,31 +51,31 @@ const typeMeta: Record<ChartKind, {
   detail: string
 }> = {
   bar: {
-    title: '柱状图工作台', eyebrow: 'BAR CHART STUDIO', headline: '把分类差异做得一眼可见',
+    eyebrow: 'BAR CHART STUDIO', headline: '把分类差异做得一眼可见',
     description: '粘贴表格或 JSON 数据，实时切换纵向与横向布局，统一完成标签、坐标轴、配色和高清导出。',
     accent: '#2563EB', accentSoft: '#DBEAFE', axisX: '分类', axisY: '数值',
     detail: '柱状图适合比较离散分类。分类名称较短时优先使用纵向布局；排行榜或标签较长时，横向布局通常更易阅读。坐标轴默认从自动范围开始，使用前应确认是否需要从零展示，避免夸大微小差异。',
   },
   line: {
-    title: '折线图工作台', eyebrow: 'LINE CHART STUDIO', headline: '让趋势、拐点与变化速度更清楚',
+    eyebrow: 'LINE CHART STUDIO', headline: '让趋势、拐点与变化速度更清楚',
     description: '输入连续序列，一键切换折线图与面积图，并控制平滑曲线、标签、坐标轴和主题配色。',
     accent: '#7C3AED', accentSoft: '#EDE9FE', axisX: '时间 / 序列', axisY: '数值',
     detail: '折线图适合展示有顺序的数据变化，面积图还能强调累计规模。平滑曲线会改善视觉连续性，但也可能让读者误判数据点之间的真实波动；精确分析时建议保留原始折线和数据标签。',
   },
   pie: {
-    title: '饼图工作台', eyebrow: 'PIE CHART STUDIO', headline: '快速看懂整体由哪些部分构成',
+    eyebrow: 'PIE CHART STUDIO', headline: '快速看懂整体由哪些部分构成',
     description: '用饼图或环形图展示占比，实时调整图例、标签和配色，并复制配置或导出透明高清 PNG。',
     accent: '#EA580C', accentSoft: '#FFEDD5', axisX: '', axisY: '',
     detail: '饼图适合展示少量、互斥且合计构成整体的分类。分类超过 6 项或数值非常接近时，柱状图通常更易比较；请避免输入负数作为占比，并确认数据口径一致。',
   },
   scatter: {
-    title: '散点图工作台', eyebrow: 'SCATTER CHART STUDIO', headline: '从两个变量中寻找关系与异常点',
+    eyebrow: 'SCATTER CHART STUDIO', headline: '从两个变量中寻找关系与异常点',
     description: '输入 X、Y 与可选名称，实时观察数据分布，支持标准点与强调气泡两种表现和轴标题配置。',
     accent: '#0891B2', accentSoft: '#CFFAFE', axisX: 'X 变量', axisY: 'Y 变量',
     detail: '散点图用于观察两个数值变量的相关关系、聚类和异常值。点的分布只能提示关联，不能单独证明因果；样本量较大时应降低点尺寸或透明度，减少遮挡。',
   },
   funnel: {
-    title: '漏斗图工作台', eyebrow: 'FUNNEL CHART STUDIO', headline: '把流程流失和关键转化节点摆出来',
+    eyebrow: 'FUNNEL CHART STUDIO', headline: '把流程流失和关键转化节点摆出来',
     description: '录入各流程阶段数值，调整排序与标签位置，快速生成营销、招聘、销售等转化漏斗。',
     accent: '#059669', accentSoft: '#D1FAE5', axisX: '', axisY: '',
     detail: '漏斗图适合展示按阶段递减的流程数据，例如访问、下单和支付。各阶段必须使用同一统计口径；若某一步数值上升，应先确认是流程回流、重复计数还是排序选择造成。',
@@ -208,7 +215,7 @@ function downloadPng() {
   }
   const link = document.createElement('a')
   link.href = chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: settingStore.isDark ? '#0F172A' : '#FFFFFF' })
-  link.download = `${(settings.title || meta.value.title).replace(/[\\/:*?"<>|]/g, '-')}.png`
+  link.download = `${(settings.title || workbenchTitle.value).replace(/[\\/:*?"<>|]/g, '-')}.png`
   link.click()
 }
 
@@ -249,7 +256,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="chart-page flex flex-col mt-3 flex-1" :style="{ '--accent': meta.accent, '--accent-soft': meta.accentSoft }">
-    <ToolHero :title="meta.title" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div class="hero-copy">
@@ -289,8 +296,8 @@ onBeforeUnmount(() => {
           <button type="button" :class="{ active: dataMode === 'table' }" @click="changeMode('table')">CSV / TSV</button>
           <button type="button" :class="{ active: dataMode === 'json' }" @click="changeMode('json')">JSON</button>
         </div>
-        <ChartDataGrid v-if="dataMode === 'grid'" v-model="dataText" :min-columns="gridColumns" :aria-label="`${meta.title}可视数据表格`" @update:model-value="activeSample = ''" />
-        <textarea v-else v-model="dataText" spellcheck="false" :aria-label="`${meta.title}数据输入`" @input="activeSample = ''"></textarea>
+        <ChartDataGrid v-if="dataMode === 'grid'" v-model="dataText" :min-columns="gridColumns" :aria-label="`${workbenchTitle}可视数据表格`" @update:model-value="activeSample = ''" />
+        <textarea v-else v-model="dataText" spellcheck="false" :aria-label="`${workbenchTitle}数据输入`" @input="activeSample = ''"></textarea>
         <div class="format-hint"><span>{{ formatHint }}</span><b>{{ rows.length }} 条有效数据</b></div>
         <div v-if="parsed.errors.length" class="validation-box" role="alert">
           <strong>有 {{ parsed.errors.length }} 处需要检查</strong>
@@ -309,7 +316,7 @@ onBeforeUnmount(() => {
           </div>
         </header>
         <div class="chart-shell" :style="{ height: `${chartHeight}px` }">
-          <div ref="chartElement" class="chart-canvas" role="img" :aria-label="`${meta.title}实时预览，共 ${rows.length} 条数据`"></div>
+          <div ref="chartElement" class="chart-canvas" role="img" :aria-label="`${workbenchTitle}实时预览，共 ${rows.length} 条数据`"></div>
           <div v-if="!rows.length" class="chart-empty">输入有效数据后，这里会显示图表</div>
         </div>
         <div class="preview-summary">

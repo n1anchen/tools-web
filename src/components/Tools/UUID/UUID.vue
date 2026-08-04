@@ -10,7 +10,6 @@ import { copy } from '@/utils/string'
 
 type UuidVersion = 'v4' | 'v7'
 
-const title = 'UUID 生成器'
 const version = ref<UuidVersion>('v4')
 const count = ref(5)
 const rawUuids = ref<string[]>([])
@@ -51,7 +50,7 @@ onMounted(generateAll)
 
 <template>
   <div class="uuid-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="section-heading">

@@ -8,7 +8,6 @@ import { countHtmlEntityChanges, decodeHtmlEntities, encodeHtmlEntities } from '
 
 type Mode = 'encode' | 'decode'
 
-const title = 'HTML实体转义'
 const mode = ref<Mode>('encode')
 const input = ref('')
 const encodeNonAscii = ref(false)
@@ -50,7 +49,7 @@ function useSample(sample: typeof samples[number]) {
 
 <template>
   <div class="entity-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="settings-header">

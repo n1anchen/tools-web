@@ -122,7 +122,7 @@ function downloadDiff() {
 
 <template>
   <div class="diff-page flex flex-col mt-3 flex-1">
-    <ToolHero title="文本差异工作台" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">TEXT DIFFERENCE STUDIO</span><h2>不只标红，还要看清改了多少</h2><p>并排核对两个版本，按字符或词组高亮；支持忽略规则、文件导入、交换文本和差异导出。</p></div>

@@ -71,7 +71,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'Json 工作台',
+          title: 'JSON 工作台',
           logo: '/images/logo/json.png',
           desc: '校验、格式化和安全压缩 JSON，支持错误定位、键名排序与字符串转义',
           url: '/json/',

@@ -7,7 +7,6 @@ import exifr from 'exifr'
 import type { Map as LMap } from 'leaflet'
 import { copy } from '@/utils/string'
 
-const title = '图片 EXIF 查看'
 
 // ──────────────────────────────────────────────
 // 网络状态
@@ -735,7 +734,7 @@ onUnmounted(() => {
 
 <template>
   <div class="exif-tool flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" legacy>
+    <ToolHero legacy>
 
     <section class="exif-hero">
       <div>

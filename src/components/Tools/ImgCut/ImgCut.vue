@@ -248,7 +248,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="cut-page flex flex-col mt-3 flex-1">
-    <ToolHero title="图片分割" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">PRECISION IMAGE SLICER</span><h2>每一格，都完整覆盖原图</h2><p>自由设置行列、即时查看切线，并将全部切片按顺序打包为 ZIP；除不尽的尺寸也不会丢失边缘像素。</p></div>

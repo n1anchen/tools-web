@@ -52,7 +52,6 @@ interface StatItem {
   count: number
 }
 
-const title = '日语歌词学习工具'
 const LYRIC_FONT_SIZE_STORAGE_KEY = 'japaneseLyricsFontSize'
 const DEFAULT_LYRIC_FONT_SIZE = 16
 const MIN_LYRIC_FONT_SIZE = 14
@@ -935,7 +934,7 @@ function downloadStudyNotes() {
 
 <template>
   <div class="lyrics-tool flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div><div class="eyebrow">JAPANESE LYRIC STUDIO</div><h2>把一段歌词，拆成可以逐行学习的材料</h2><p>自动识别时间轴与双语行，并将假名、罗马音、助词和活用语尾整理成清晰对照。</p></div>

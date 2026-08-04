@@ -28,7 +28,6 @@ import {
   type RetirementResult,
 } from './retirement'
 
-const title = '延迟退休计算器'
 const now = new Date()
 const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
 
@@ -148,7 +147,7 @@ calculate()
 
 <template>
   <div class="retirement-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="calculator-card">
       <div class="section-heading">

@@ -6,7 +6,6 @@ import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { adjustContrast, drawToCanvas, getImageData, loadImageFromFile, resizeCover, toGray } from './imageUtils'
 import { prismDecode, prismEncode, type DecodeMethod } from './mirage'
 
-const title = '光棱坦克工厂'
 const activeMode = ref<'encode' | 'decode'>('encode')
 
 const innerInputRef = ref<HTMLInputElement | null>(null)
@@ -250,7 +249,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="mirage-tool flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div>

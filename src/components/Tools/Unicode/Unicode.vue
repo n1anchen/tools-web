@@ -8,7 +8,6 @@ import { decodeUnicode, encodeUnicode, type UnicodeFormat } from '@/utils/textTo
 
 type Mode = 'encode' | 'decode'
 
-const title = 'Unicode转中文'
 const mode = ref<Mode>('encode')
 const input = ref('')
 const format = ref<UnicodeFormat>('javascript')
@@ -47,7 +46,7 @@ function useSample(sample: typeof samples[number]) {
 
 <template>
   <div class="unicode-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="settings-header">

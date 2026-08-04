@@ -7,7 +7,6 @@ import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { estimatePasswordEntropy, generatePassword } from '@/utils/generators'
 import { copy } from '@/utils/string'
 
-const title = '随机密码生成器'
 const ambiguousCharacters = new Set(Array.from('O0oIl1|'))
 const characterGroups = [
   { key: 'digits', label: '数字', sample: '0–9', chars: '0123456789' },
@@ -79,7 +78,7 @@ onMounted(generateAll)
 
 <template>
   <div class="password-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <div class="workspace-grid">
       <section class="settings-card">

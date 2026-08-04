@@ -1,6 +1,7 @@
 //通过vue-router插件实现模板路由配置
 import { createRouter, createWebHistory } from 'vue-router'
 import { constantRoute } from './router'
+import { getTools } from '@/components/Tools/tools.ts'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
@@ -33,10 +34,14 @@ router.onError(() => NProgress.done())
 router.afterEach((to) => {
   NProgress.done()
   //填充mate元信息
-  const { title, keywords, description } = to.meta
+  const { keywords, description } = to.meta
   const appTitle = import.meta.env.VITE_APP_TITLE || '在线工具箱'
   const appDescription = import.meta.env.VITE_APP_DESC || '一个轻量的在线工具箱'
-  const detailTitle = typeof title === 'string' ? title : ''
+  // 优先从 tools.ts 单一数据源派生工具标题（按当前路由匹配），路由 meta 仅作兜底
+  const tool = getTools({ cateId: 0, title: '', route: to.path })
+  const detailTitle = typeof tool.title === 'string' && tool.title
+    ? tool.title
+    : (typeof to.meta.title === 'string' ? to.meta.title : '')
   const pageDescription = typeof description === 'string' ? description : appDescription
   //设置title
   if (detailTitle) {
@@ -73,12 +78,12 @@ router.afterEach((to) => {
   if (to.path === '/') {
     // 首页回到静态 WebSite schema，移除动态注入的标签
     pageJsonLdEl?.remove()
-  } else if (title && description) {
+  } else if (detailTitle && description) {
     // 工具页面：注入 WebApplication 结构化数据
     const schema = {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
-      'name': String(title),
+      'name': detailTitle,
       'url': canonicalUrl,
       'description': String(description),
       'applicationCategory': 'UtilitiesApplication',

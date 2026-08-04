@@ -25,7 +25,6 @@ export interface WorkbenchTip {
 
 const props = withDefaults(defineProps<{
   modelValue: string
-  pageTitle: string
   eyebrow: string
   headline: string
   description: string
@@ -113,7 +112,7 @@ defineExpose({ formatEditor, openSearchBox })
 
 <template>
   <div :class="['code-workbench-page', `accent-${accent}`, 'flex', 'flex-col', 'mt-3', 'flex-1']">
-    <ToolHero :title="pageTitle" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">{{ eyebrow }}</span><h2>{{ headline }}</h2><p>{{ description }}</p></div>

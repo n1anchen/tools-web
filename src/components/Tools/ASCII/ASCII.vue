@@ -50,7 +50,7 @@ function copyValue(value: string) {
 
 <template>
   <div class="ascii-page flex flex-col mt-3 flex-1">
-    <ToolHero title="ASCII 字符工作台" legacy>
+    <ToolHero legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">ASCII CHARACTER STUDIO</span><h2>搜索、换算、复制，不再翻一张长表</h2><p>覆盖 ASCII 标准字符、控制字符和 Windows-1252 扩展区；按字符、名称或任意进制定位，并集中查看完整编码详情。</p></div>

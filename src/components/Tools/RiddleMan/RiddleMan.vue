@@ -139,7 +139,7 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 
 <template>
   <div class="riddle-page flex flex-col mt-3 flex-1">
-    <ToolHero title="谜语人" legacy>
+    <ToolHero legacy>
 
     <section class="riddle-hero">
       <div>

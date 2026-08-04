@@ -110,7 +110,6 @@ function loadSample(sample: { label: string; note: string; value: string }) {
 <template>
   <CodeWorkbench
     v-model="code"
-    page-title="HTML / XML 工作台"
     eyebrow="MARKUP STRUCTURE LAB"
     headline="整理标记，也保护页面语义"
     description="在格式化、结构校验和保守压缩之间切换，预格式文本、脚本与样式块不会被意外改写。"

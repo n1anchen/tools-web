@@ -6,7 +6,6 @@ import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { replaceText, type ReplaceScope } from '@/utils/textTools'
 
-const title = '文本替换'
 const inputText = ref('')
 const findText = ref('')
 const replacementText = ref('')
@@ -43,7 +42,7 @@ function useResultAsInput() {
 
 <template>
   <div class="replace-page flex flex-col mt-3 flex-1">
-    <ToolHero :title="title" />
+    <ToolHero />
 
     <section class="workspace-card">
       <div class="settings-header">
