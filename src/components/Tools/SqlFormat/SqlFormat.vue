@@ -156,10 +156,10 @@ function downloadSql() {
 
 <template>
   <div class="sql-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">SQL WORKBENCH</span><h2>从一行查询，到清晰可审阅的 SQL</h2><p>选择方言与排版规则，格式化、保守压缩、撤回和导出都在同一个工作台完成。</p></div>
+      <div><span class="eyebrow">SQL WORKBENCH</span><h2>从一行查询，到清晰可审阅的 SQL</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-dialect"><span>当前方言</span><strong>{{ currentDialect.label }}</strong><small>{{ currentDialect.badge }}</small></div>
     </section>
     </ToolHero>

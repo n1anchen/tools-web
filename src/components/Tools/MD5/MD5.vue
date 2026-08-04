@@ -101,10 +101,10 @@ function copyAll() {
 
 <template>
   <div class="md5-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">MD5 DIGEST LAB</span><h2>计算摘要，不再误叫“加密”</h2><p>支持文本与大文件分块计算、16/32 位格式转换和校验值比对，全程在本地完成。</p></div>
+      <div><span class="eyebrow">MD5 DIGEST LAB</span><h2>计算摘要，不再误叫“加密”</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="security-note"><el-icon><Warning /></el-icon><span><b>兼容用途</b>MD5 不适合密码存储或安全签名</span></div>
     </section>
     </ToolHero>

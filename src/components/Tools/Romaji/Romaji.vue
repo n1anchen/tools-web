@@ -166,13 +166,13 @@ function formatRomaji(value: string, style: typeof letterCase.value) {
 
 <template>
   <div class="romaji-tool flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
       <div>
         <div class="eyebrow">JAPANESE READING STUDIO</div>
         <h2>把日语读音拆开看，也能直接带走</h2>
-        <p>轻量模式适合假名，精准模式会分析汉字读音；结果可切换罗马音、平假名与片假名。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-stats">
         <div><span>字符</span><strong>{{ inputStats.characters }}</strong></div>

@@ -249,13 +249,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="mirage-tool flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
       <div>
         <div class="eyebrow">MIRAGE IMAGE LAB</div>
         <h2>制作与显形，在同一个工作台完成</h2>
-        <p>两张图片在像素层交错混合，也可以把已有坦克图中的隐藏内容重新显现。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-metrics">
         <div><span>当前模式</span><strong>{{ activeMode === 'encode' ? '制作坦克图' : '显形解码' }}</strong></div>

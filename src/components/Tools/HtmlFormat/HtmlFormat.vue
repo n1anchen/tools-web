@@ -112,7 +112,6 @@ function loadSample(sample: { label: string; note: string; value: string }) {
     v-model="code"
     eyebrow="MARKUP STRUCTURE LAB"
     headline="整理标记，也保护页面语义"
-    description="在格式化、结构校验和保守压缩之间切换，预格式文本、脚本与样式块不会被意外改写。"
     :language="documentMode === 'html' ? 'HTML5' : 'XML 1.0'"
     :mode="documentMode"
     accent="orange"

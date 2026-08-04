@@ -139,13 +139,13 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 
 <template>
   <div class="riddle-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="riddle-hero">
       <div>
         <span class="eyebrow">PLAYFUL CODEC STUDIO</span>
         <h2>一句话，同时看看七种“谜语”写法</h2>
-        <p>选择任意可逆方案作为来源，自动解码后生成佛曰、如是我闻、兽语、Base64、Base32 与 MD5 对照结果。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-metrics">
         <div><strong>{{ encoders.length }}</strong><span>转换方案</span></div>

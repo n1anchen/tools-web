@@ -113,10 +113,10 @@ function downloadQrCode() {
 
 <template>
   <div class="qr-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">QR STUDIO</span><h2>内容、样式与预览，一处完成</h2><p>支持网址、Wi-Fi、邮件和电话模板，所有内容只在本地浏览器中生成。</p></div>
+      <div><span class="eyebrow">QR STUDIO</span><h2>内容、样式与预览，一处完成</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-badges"><span>实时预览</span><span>PNG 导出</span><span>Logo 定制</span></div>
     </section>
     </ToolHero>

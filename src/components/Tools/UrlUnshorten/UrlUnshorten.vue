@@ -199,13 +199,13 @@ function loadExample(value: string) {
 
 <template>
   <div class="url-tool flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
       <div>
         <div class="eyebrow">LINK INSPECTOR</div>
         <h2>先看清链接，再决定要不要打开</h2>
-        <p>本地检查链接结构和营销参数；配置解析服务后，还能安全追踪完整重定向链。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="service-state" :class="{ online: isConfigured }">
         <span class="state-dot"></span>

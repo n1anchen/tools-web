@@ -42,10 +42,10 @@ let chart: echarts.ECharts | null = null
 let resizeObserver: ResizeObserver | null = null
 
 const typeMeta = {
-  treemap: { eyebrow: 'TREEMAP STUDIO', headline: '从层级路径中看见结构与占比', description: '用斜线描述任意层级，自动构建父子树、计算叶节点占比，并通过面包屑与钻取层级浏览复杂结构。', accent: '#059669', soft: '#D1FAE5', detail: '矩形树图用面积表达数量、用嵌套表达层级。表格模式中的“层级路径”使用 / 分隔，例如 产品/专业版；每条路径应指向叶节点，同一路径不能既作为数据项又作为其他路径的父级。' },
-  sankey: { eyebrow: 'SANKEY STUDIO', headline: '让来源、去向和流量关系一目了然', description: '逐行录入来源、目标与流量，自动提取节点，并在绘制前检查重复连接、自环与有向环路。', accent: '#EA580C', soft: '#FFEDD5', detail: '桑基图适合展示守恒或近似守恒的流量关系。连接必须大于 0，并保持从上游到下游的无环方向；节点流入与流出不相等时图表仍可绘制，但解读时应说明差额的业务含义。' },
-  boxplot: { eyebrow: 'BOX PLOT STUDIO', headline: '同时比较集中趋势、离散程度与异常点', description: '既可逐条输入原始样本并自动计算 Tukey 箱线，也可直接提供五数概括与异常值。', accent: '#4F46E5', soft: '#E0E7FF', detail: '原始样本模式按分组重复输入样本值，每组至少 4 个值；工作台会用线性插值计算 Q1、中位数和 Q3，并以 1.5 倍四分位距识别异常值。五数概括模式要求最小值、Q1、中位数、Q3、最大值依次不减。' },
-  calendar: { eyebrow: 'CALENDAR HEATMAP STUDIO', headline: '把每日变化放回真实的年度节奏', description: '严格校验 YYYY-MM-DD 日期，自动识别多个年份、统计缺失天数，并通过年度色阶观察活跃度与周期。', accent: '#15803D', soft: '#DCFCE7', detail: '日历图适合每日打卡、活跃度、销售或事件数量。重复日期与不存在的日期不会进入图表；缺失天数按所选年度的 365 或 366 天计算。窄屏下预览区可横向滑动，避免压缩全年 53 周的单元格。' },
+  treemap: { eyebrow: 'TREEMAP STUDIO', headline: '从层级路径中看见结构与占比', accent: '#059669', soft: '#D1FAE5', detail: '矩形树图用面积表达数量、用嵌套表达层级。表格模式中的“层级路径”使用 / 分隔，例如 产品/专业版；每条路径应指向叶节点，同一路径不能既作为数据项又作为其他路径的父级。' },
+  sankey: { eyebrow: 'SANKEY STUDIO', headline: '让来源、去向和流量关系一目了然', accent: '#EA580C', soft: '#FFEDD5', detail: '桑基图适合展示守恒或近似守恒的流量关系。连接必须大于 0，并保持从上游到下游的无环方向；节点流入与流出不相等时图表仍可绘制，但解读时应说明差额的业务含义。' },
+  boxplot: { eyebrow: 'BOX PLOT STUDIO', headline: '同时比较集中趋势、离散程度与异常点', accent: '#4F46E5', soft: '#E0E7FF', detail: '原始样本模式按分组重复输入样本值，每组至少 4 个值；工作台会用线性插值计算 Q1、中位数和 Q3，并以 1.5 倍四分位距识别异常值。五数概括模式要求最小值、Q1、中位数、Q3、最大值依次不减。' },
+  calendar: { eyebrow: 'CALENDAR HEATMAP STUDIO', headline: '把每日变化放回真实的年度节奏', accent: '#15803D', soft: '#DCFCE7', detail: '日历图适合每日打卡、活跃度、销售或事件数量。重复日期与不存在的日期不会进入图表；缺失天数按所选年度的 365 或 366 天计算。窄屏下预览区可横向滑动，避免压缩全年 53 周的单元格。' },
 } as const
 
 const meta = computed(() => typeMeta[props.type])
@@ -124,8 +124,8 @@ onBeforeUnmount(() => { resizeObserver?.disconnect(); chart?.dispose(); chart = 
 
 <template>
   <div class="special-page flex flex-col mt-3 flex-1" :style="{ '--accent': meta.accent, '--accent-soft': meta.soft }">
-    <ToolHero legacy>
-    <section class="hero-card"><div><span class="eyebrow">{{ meta.eyebrow }}</span><h2>{{ meta.headline }}</h2><p>{{ meta.description }}</p></div><div class="hero-stats"><div v-for="item in heroMetrics" :key="item.label"><strong>{{ item.value }}</strong><span>{{ item.label }}</span></div></div></section>
+    <ToolHero legacy #default="{ toolInfo }">
+    <section class="hero-card"><div><span class="eyebrow">{{ meta.eyebrow }}</span><h2>{{ meta.headline }}</h2><p>{{ toolInfo.desc }}</p></div><div class="hero-stats"><div v-for="item in heroMetrics" :key="item.label"><strong>{{ item.value }}</strong><span>{{ item.label }}</span></div></div></section>
     </ToolHero>
 
     <ChartToolNav :current="props.type" />

@@ -204,13 +204,13 @@ onUnmounted(() => {
 
 <template>
   <div class="choyen-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="studio-hero">
       <div>
         <span class="eyebrow">METALLIC IMPACT TITLE LAB</span>
         <h2>把一句愿望，做成冲出画面的标题</h2>
-        <p>组合红金主标题与银色副标题，拖动微调错位关系，并输出适合表情包、封面和视频贴纸的透明 PNG。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-stats">
         <div><strong>{{ exportDimensions.width }}</strong><span>导出宽度</span></div>

@@ -189,13 +189,13 @@ maskFromPrefix()
 
 <template>
   <div class="ip-tool flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
       <div>
         <div class="eyebrow">NETWORK WORKBENCH</div>
         <h2>从一个 IP，看清整个网络边界</h2>
-        <p>输入 IP/CIDR，即时计算网段、主机范围与地址属性，也可继续拆分子网。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-metrics" v-if="result">
         <div><span>当前网络</span><strong>{{ result.cidr }}</strong></div>

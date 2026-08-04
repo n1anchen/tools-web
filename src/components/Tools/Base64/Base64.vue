@@ -231,10 +231,10 @@ onBeforeUnmount(revokePreview)
 
 <template>
   <div class="base64-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">BASE64 DATA STUDIO</span><h2>文字与文件，都走清晰的转换流程</h2><p>支持 UTF-8 文本、Base64 URL、Data URL 和常见文件类型；所有内容只在当前浏览器中处理。</p></div>
+      <div><span class="eyebrow">BASE64 DATA STUDIO</span><h2>文字与文件，都走清晰的转换流程</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-stats"><div v-for="metric in heroMetrics" :key="metric.label"><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></div></div>
     </section>
     </ToolHero>

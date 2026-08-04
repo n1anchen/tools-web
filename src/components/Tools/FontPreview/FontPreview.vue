@@ -226,13 +226,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="font-preview-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="studio-hero">
       <div>
         <span class="eyebrow">LOCAL TYPE SPECIMEN STUDIO</span>
         <h2>不只看一个字，而是检查整套阅读气质</h2>
-        <p>内置常用字体栈可直接试用，也可载入字体文件或授权读取本机字体；在真实段落与字号瀑布中比较字形、密度和节奏。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-stats">
         <div><strong>{{ selectedFont.source }}</strong><span>当前来源</span></div>

@@ -248,10 +248,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="cut-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">PRECISION IMAGE SLICER</span><h2>每一格，都完整覆盖原图</h2><p>自由设置行列、即时查看切线，并将全部切片按顺序打包为 ZIP；除不尽的尺寸也不会丢失边缘像素。</p></div>
+      <div><span class="eyebrow">PRECISION IMAGE SLICER</span><h2>每一格，都完整覆盖原图</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-formula"><strong>{{ sourceUrl ? `${state.rows} × ${state.columns}` : 'R × C' }}</strong><span>{{ sourceUrl ? `${sliceCount} 张切片` : '自由网格' }}</span></div>
     </section>
     </ToolHero>

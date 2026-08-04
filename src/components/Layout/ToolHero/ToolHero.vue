@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
       </div>
 
       <h1>{{ toolInfo.title || props.title }}</h1>
-      <div v-if="props.legacy" class="legacy-content"><slot /></div>
+      <div v-if="props.legacy" class="legacy-content"><slot :tool-info="toolInfo" /></div>
       <template v-else>
         <strong v-if="props.summary" class="summary">{{ props.summary }}</strong>
         <p>{{ resolvedDescription }}</p>

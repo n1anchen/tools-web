@@ -233,13 +233,13 @@ onBeforeUnmount(releaseObjectUrl)
 
 <template>
   <div class="watermark-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
       <div>
         <span class="eyebrow">LOCAL WATERMARK STUDIO</span>
         <h2>边调参数，边看最终成片</h2>
-        <p>单点与平铺水印实时预览，描边、阴影、透明度和导出质量全部在浏览器本地完成。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-stats">
         <div><strong>6</strong><span>定位模式</span></div>

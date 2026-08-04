@@ -171,13 +171,13 @@ watch(() => route.query.active, value => {
 
 <template>
   <div class="unit-page flex flex-col mt-3 flex-1" :data-accent="categoryVisuals[activeId].accent">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
       <div>
         <span class="eyebrow">UNIVERSAL CONVERSION DESK</span>
         <h2>一次输入，读懂整组单位关系</h2>
-        <p>覆盖公制、市制、英美制、航海、工程和温标；结果实时计算，并明确标注近似值与定义来源。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-stats"><div><strong>8</strong><span>换算分类</span></div><div><strong>100+</strong><span>单位定义</span></div><div><strong>0</strong><span>网络请求</span></div></div>
     </section>

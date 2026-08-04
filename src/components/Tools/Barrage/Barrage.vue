@@ -158,13 +158,13 @@ onUnmounted(() => {
 
 <template>
   <div class="barrage-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="barrage-hero">
       <div>
         <span class="eyebrow">HANDHELD DISPLAY STUDIO</span>
         <h2>先在页面里看清，再举起你的大屏</h2>
-        <p>支持多条内容、滚动/常亮/呼吸模式、方向与对比度检查；全屏失败时也会自动使用沉浸式覆盖层。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <button type="button" :disabled="!messages.length" @click="startDisplay"><el-icon><FullScreen /></el-icon><span><strong>进入全屏展示</strong><small>ESC 或按钮退出</small></span></button>
     </section>

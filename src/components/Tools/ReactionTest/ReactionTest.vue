@@ -124,10 +124,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="reaction-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">REACTION CHALLENGE</span><h2>不是点一次，而是一场完整测试</h2><p>多轮采样、抢跑检测、稳定度与个人最佳，让偶然的一次点击变成更可信的结果。</p></div>
+      <div><span class="eyebrow">REACTION CHALLENGE</span><h2>不是点一次，而是一场完整测试</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="best-badge"><el-icon><Trophy /></el-icon><span>个人最佳<strong>{{ personalBest ? `${personalBest} ms` : '等待记录' }}</strong></span></div>
     </section>
     </ToolHero>

@@ -355,13 +355,13 @@ function copyPreview() {
 
 <template>
   <div class="sheet-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
       <div class="hero-copy">
         <span class="eyebrow">SPREADSHEET CONVERTER</span>
         <h2>XLSX、CSV 与 JSON，在一张表里自由往返</h2>
-        <p>直接粘贴 CSV / TSV 或 JSON 转成表格，也可以导入完整工作簿；编辑后再按需要输出为 Excel、CSV / TSV 或结构化 JSON。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-stats">
         <div><strong>{{ sheets.length }}</strong><span>工作表</span></div>

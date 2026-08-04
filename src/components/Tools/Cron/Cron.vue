@@ -125,10 +125,10 @@ watch(expression, parseExpression, { immediate: true })
 
 <template>
   <div class="cron-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">CRON SCHEDULE STUDIO</span><h2>从表达式到执行计划，一次看懂</h2><p>用常用周期快速生成，也可以直接编辑表达式；实时解释每个字段，并在浏览器本地时区预览后续执行时间。</p></div>
+      <div><span class="eyebrow">CRON SCHEDULE STUDIO</span><h2>从表达式到执行计划，一次看懂</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-stats"><div v-for="metric in heroMetrics" :key="metric.label"><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></div></div>
     </section>
     </ToolHero>

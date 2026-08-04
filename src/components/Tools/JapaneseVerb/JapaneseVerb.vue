@@ -638,13 +638,13 @@ function copyResult(result: Result) {
 
 <template>
   <div class="verb-tool flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
       <div>
         <div class="eyebrow">JAPANESE VERB LAB</div>
         <h2>从任意活用形，反推动词原形</h2>
-        <p>识别输入属于哪种变化，再按基础形、礼貌体、语气和语态整理完整活用。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-metrics">
         <div><span>识别原形</span><strong>{{ activeResult?.dictionary || '—' }}</strong></div>

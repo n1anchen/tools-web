@@ -35,10 +35,10 @@ function selectStatus(status: HttpStatusCode) {
 
 <template>
   <div class="http-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">HTTP STATUS EXPLORER</span><h2>先理解响应，再定位问题</h2><p>搜索状态码、英文名称或中文场景，快速找到含义与处理建议。</p></div>
+      <div><span class="eyebrow">HTTP STATUS EXPLORER</span><h2>先理解响应，再定位问题</h2><p>{{ toolInfo.desc }}</p></div>
       <a href="https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml" target="_blank" rel="noopener noreferrer">IANA 登记表 · 2025-09-15</a>
     </section>
     </ToolHero>

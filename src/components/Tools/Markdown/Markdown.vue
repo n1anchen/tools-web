@@ -196,13 +196,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="markdown-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="studio-hero">
       <div>
         <span class="eyebrow">MARKDOWN DOCUMENT STUDIO</span>
         <h2>从一个想法，到一份可以交付的文档</h2>
-        <p>实时编写与预览 Markdown，随时导入、复制或导出；草稿只保存在当前浏览器，不会上传。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-stats">
         <div><strong>{{ statistics.charactersWithoutWhitespace }}</strong><span>有效字符</span></div>

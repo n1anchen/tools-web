@@ -934,10 +934,10 @@ function downloadStudyNotes() {
 
 <template>
   <div class="lyrics-tool flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><div class="eyebrow">JAPANESE LYRIC STUDIO</div><h2>把一段歌词，拆成可以逐行学习的材料</h2><p>自动识别时间轴与双语行，并将假名、罗马音、助词和活用语尾整理成清晰对照。</p></div>
+      <div><div class="eyebrow">JAPANESE LYRIC STUDIO</div><h2>把一段歌词，拆成可以逐行学习的材料</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-metrics">
         <div><span>歌词行</span><strong>{{ lyricLines.length }}</strong></div>
         <div><span>学习词块</span><strong>{{ tokenCount }}</strong></div>

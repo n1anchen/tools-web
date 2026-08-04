@@ -146,13 +146,13 @@ onUnmounted(() => {
 
 <template>
   <div class="ascii-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="ascii-hero">
       <div>
         <span class="eyebrow">FIGLET TYPE STUDIO</span>
         <h2>把普通文字，变成终端里的标题</h2>
-        <p>21 种本地字体、宽度与字距实时可调；确认效果后可复制或下载纯文本，不上传输入内容。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-stats">
         <div><strong>21</strong><span>本地字体</span></div>

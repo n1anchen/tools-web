@@ -206,10 +206,10 @@ function copyPaletteVariables() {
 
 <template>
   <div class="color-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">IMAGE COLOR LAB</span><h2>从一张图片，读懂整套色彩</h2><p>像素级取色、主色提取与格式转换均在本地完成，图片不会上传。</p></div>
+      <div><span class="eyebrow">IMAGE COLOR LAB</span><h2>从一张图片，读懂整套色彩</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-stats"><div><strong>5</strong><span>色彩格式</span></div><div><strong>8</strong><span>智能主色</span></div><div><strong>20</strong><span>历史记录</span></div></div>
     </section>
     </ToolHero>

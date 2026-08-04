@@ -180,10 +180,10 @@ onUnmounted(() => {
 
 <template>
   <div class="blue-logo-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="studio-hero">
-      <div><span class="eyebrow">BLUE TITLE COMPOSER</span><h2>拆分文字，组合一枚清透标题</h2><p>左右文字、光环位置、画布形状与导出倍率都可实时调整；所有合成均在浏览器画布中完成。</p></div>
+      <div><span class="eyebrow">BLUE TITLE COMPOSER</span><h2>拆分文字，组合一枚清透标题</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-stats"><div><strong>{{ dimensions.width }}</strong><span>导出宽度</span></div><div><strong>{{ dimensions.height }}</strong><span>导出高度</span></div><div><strong>{{ state.scale }}×</strong><span>清晰倍率</span></div></div>
     </section>
     </ToolHero>

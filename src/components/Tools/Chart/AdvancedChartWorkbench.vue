@@ -42,11 +42,11 @@ let chart: echarts.ECharts | null = null
 let resizeObserver: ResizeObserver | null = null
 
 const typeMeta = {
-  radar: { eyebrow: 'RADAR CHART STUDIO', headline: '把多维能力与差距放在同一张图里', description: '使用宽表录入维度与多个系列，自动计算或指定各维度最大值，并切换多边形、圆形与填充强度。', accent: '#7C3AED', soft: '#EDE9FE', detail: '雷达图适合对比多个对象在相同维度下的相对表现。各维度量纲不一致时，应通过“最大值”列完成归一化；维度太多会显著降低可读性，通常建议控制在 5–8 个。' },
-  gauge: { eyebrow: 'GAUGE CHART STUDIO', headline: '用明确的范围读懂当前指标状态', description: '录入一个或多个指标，设置最小值、最大值、刻度和单位，并在指针盘与进度盘之间实时切换。', accent: '#0D9488', soft: '#CCFBF1', detail: '仪表盘适合突出少量关键指标的当前状态，不适合精确比较大量数值。所有指标应共享同一范围和单位；若指标超出范围，工作台会保留数据并明确提示。' },
-  heatmap: { eyebrow: 'HEATMAP STUDIO', headline: '从二维矩阵中快速找到高峰与空白', description: '按 X、Y 分类和数值录入数据，自动生成矩阵与视觉色阶，支持颜色端点、数值标签和圆角单元格。', accent: '#DB2777', soft: '#FCE7F3', detail: '热力图适合展示两个离散维度交叉后的强弱分布。色阶会按当前数据最小值与最大值自动映射；比较多张图时，应使用相同色阶范围，避免颜色相同但实际数值不同。' },
-  candlestick: { eyebrow: 'CANDLESTICK STUDIO', headline: '检查开收高低，也看清一段行情走势', description: '录入日期与 OHLC 数据，逐行验证价格关系，自定义涨跌色并通过缩放条浏览较长序列。', accent: '#DC2626', soft: '#FEE2E2', detail: 'K 线每项数据依次为开盘、收盘、最低和最高。最低价必须不高于开收盘，最高价必须不低于开收盘。本工具只负责数据可视化，不构成投资建议。' },
-  stack: { eyebrow: 'STACK CHART STUDIO', headline: '同时比较总量、构成与时间变化', description: '使用多系列宽表生成堆叠柱状图或堆叠面积线，支持图例、总量标签、主题配色和高清导出。', accent: '#2563EB', soft: '#DBEAFE', detail: '堆叠图适合观察各分类总量及组成。堆叠柱便于比较离散分类，堆叠面积线更适合连续趋势；除最底层系列外，其余系列不共享零基线，不宜用于精确比较细微差异。' },
+  radar: { eyebrow: 'RADAR CHART STUDIO', headline: '把多维能力与差距放在同一张图里', accent: '#7C3AED', soft: '#EDE9FE', detail: '雷达图适合对比多个对象在相同维度下的相对表现。各维度量纲不一致时，应通过“最大值”列完成归一化；维度太多会显著降低可读性，通常建议控制在 5–8 个。' },
+  gauge: { eyebrow: 'GAUGE CHART STUDIO', headline: '用明确的范围读懂当前指标状态', accent: '#0D9488', soft: '#CCFBF1', detail: '仪表盘适合突出少量关键指标的当前状态，不适合精确比较大量数值。所有指标应共享同一范围和单位；若指标超出范围，工作台会保留数据并明确提示。' },
+  heatmap: { eyebrow: 'HEATMAP STUDIO', headline: '从二维矩阵中快速找到高峰与空白', accent: '#DB2777', soft: '#FCE7F3', detail: '热力图适合展示两个离散维度交叉后的强弱分布。色阶会按当前数据最小值与最大值自动映射；比较多张图时，应使用相同色阶范围，避免颜色相同但实际数值不同。' },
+  candlestick: { eyebrow: 'CANDLESTICK STUDIO', headline: '检查开收高低，也看清一段行情走势', accent: '#DC2626', soft: '#FEE2E2', detail: 'K 线每项数据依次为开盘、收盘、最低和最高。最低价必须不高于开收盘，最高价必须不低于开收盘。本工具只负责数据可视化，不构成投资建议。' },
+  stack: { eyebrow: 'STACK CHART STUDIO', headline: '同时比较总量、构成与时间变化', accent: '#2563EB', soft: '#DBEAFE', detail: '堆叠图适合观察各分类总量及组成。堆叠柱便于比较离散分类，堆叠面积线更适合连续趋势；除最底层系列外，其余系列不共享零基线，不宜用于精确比较细微差异。' },
 } as const
 
 const meta = computed(() => typeMeta[props.type])
@@ -128,8 +128,8 @@ onBeforeUnmount(() => { resizeObserver?.disconnect(); chart?.dispose(); chart = 
 
 <template>
   <div class="advanced-page flex flex-col mt-3 flex-1" :style="{ '--accent': meta.accent, '--accent-soft': meta.soft }">
-    <ToolHero legacy>
-    <section class="hero-card"><div><span class="eyebrow">{{ meta.eyebrow }}</span><h2>{{ meta.headline }}</h2><p>{{ meta.description }}</p></div><div class="hero-stats"><div v-for="item in heroMetrics" :key="item.label"><strong>{{ item.value }}</strong><span>{{ item.label }}</span></div></div></section>
+    <ToolHero legacy #default="{ toolInfo }">
+    <section class="hero-card"><div><span class="eyebrow">{{ meta.eyebrow }}</span><h2>{{ meta.headline }}</h2><p>{{ toolInfo.desc }}</p></div><div class="hero-stats"><div v-for="item in heroMetrics" :key="item.label"><strong>{{ item.value }}</strong><span>{{ item.label }}</span></div></div></section>
     </ToolHero>
 
     <ChartToolNav :current="props.type" />

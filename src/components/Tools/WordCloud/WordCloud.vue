@@ -173,10 +173,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="wordcloud-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="wordcloud-hero">
-      <div><span class="eyebrow">WORD CLOUD STUDIO</span><h2>从一段文字，到可解释、可导出的词云</h2><p>自动完成中英文分词、词频统计与停用词过滤；调整形状、配色和布局后实时预览，并导出高清 PNG 或完整词频 CSV。</p></div>
+      <div><span class="eyebrow">WORD CLOUD STUDIO</span><h2>从一段文字，到可解释、可导出的词云</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-metrics"><div><strong>{{ analysis.totalWords }}</strong><span>有效词次</span></div><div><strong>{{ analysis.uniqueWords }}</strong><span>不同词语</span></div><div><strong>{{ analysis.diversity.toFixed(0) }}%</strong><span>词汇多样性</span></div></div>
     </section>
     </ToolHero>

@@ -278,10 +278,10 @@ onBeforeUnmount(clearAll)
 
 <template>
   <div class="stitch-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">MULTI IMAGE COMPOSER</span><h2>排序、裁切、拼接，一块画布完成</h2><p>纵向、横向与影视台词三种工作流实时预览；桌面可拖拽排序，手机也能用上下按钮精确调整顺序。</p></div>
+      <div><span class="eyebrow">MULTI IMAGE COMPOSER</span><h2>排序、裁切、拼接，一块画布完成</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-stats"><div><strong>{{ images.length }}</strong><span>图片</span></div><div><strong>{{ plan.width || '—' }}</strong><span>输出宽</span></div><div><strong>{{ plan.height || '—' }}</strong><span>输出高</span></div></div>
     </section>
     </ToolHero>

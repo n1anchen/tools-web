@@ -734,13 +734,13 @@ onUnmounted(() => {
 
 <template>
   <div class="exif-tool flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="exif-hero">
       <div>
         <div class="exif-eyebrow">PHOTO METADATA INSPECTOR</div>
         <h2>看清照片携带的信息，再决定如何分享</h2>
-        <p>集中检查拍摄参数、设备、时间与位置，并可导出元数据或生成去除 EXIF 的副本。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="exif-metrics">
         <div><span>文件格式</span><strong>{{ fileFormat }}</strong></div>

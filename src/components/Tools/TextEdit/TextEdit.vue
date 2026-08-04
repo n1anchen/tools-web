@@ -220,10 +220,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="rich-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="studio-hero">
-      <div><span class="eyebrow">RICH CONTENT STUDIO</span><h2>专注写内容，HTML 交付自然完成</h2><p>使用可视化工具栏编排正文，同时获得干净的 HTML 和纯文本；支持模板、导入、本地草稿与多格式导出。</p></div>
+      <div><span class="eyebrow">RICH CONTENT STUDIO</span><h2>专注写内容，HTML 交付自然完成</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-stats"><div><strong>{{ statistics.charactersWithoutWhitespace }}</strong><span>有效字符</span></div><div><strong>{{ statistics.paragraphs }}</strong><span>内容段落</span></div><div><strong>{{ statistics.readingMinutes || '—' }}</strong><span>分钟阅读</span></div></div>
     </section>
     </ToolHero>

@@ -111,7 +111,6 @@ function loadSample(sample: { value: string; note: string }) {
     v-model="code"
     eyebrow="CSS OPTIMIZATION LAB"
     headline="从可读样式，到可发布体积"
-    description="格式化负责审阅，CSSO 负责语法解析和优化压缩；结果、体积收益与错误诊断都清晰可见。"
     language="CSS"
     mode="css"
     accent="cyan"

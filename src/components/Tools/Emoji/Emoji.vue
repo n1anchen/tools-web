@@ -313,10 +313,10 @@ onMounted(() => {
 
 <template>
   <div class="emoji-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="emoji-hero">
-      <div><span class="eyebrow">EMOJI LIBRARY</span><h2>找到表情，收藏起来，点一下就复制</h2><p>按场景分类浏览，也可以搜索中文名称、Emoji 本身或 Unicode 编码。收藏和最近使用仅保存在当前浏览器。</p></div>
+      <div><span class="eyebrow">EMOJI LIBRARY</span><h2>找到表情，收藏起来，点一下就复制</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-metrics"><div><strong>{{ emojiData.length }}</strong><span>收录表情</span></div><div><strong>{{ favorites.length }}</strong><span>我的收藏</span></div><div><strong>{{ recent.length }}</strong><span>最近使用</span></div></div>
     </section>
     </ToolHero>

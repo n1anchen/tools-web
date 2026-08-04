@@ -247,10 +247,10 @@ onUnmounted(() => themeObserver?.disconnect())
 
 <template>
   <div class="meme-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="studio-hero">
-      <div><span class="eyebrow">MEME CAPTION STUDIO</span><h2>把一句话，放到最有戏的位置</h2><p>载入图片后实时调整字幕、位置与描边，自动换行并输出适合聊天、社交平台和二次创作的成品。</p></div>
+      <div><span class="eyebrow">MEME CAPTION STUDIO</span><h2>把一句话，放到最有戏的位置</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-stats"><div><strong>{{ outputDimensions.width || '—' }}</strong><span>输出宽度</span></div><div><strong>{{ renderedLines.length || '—' }}</strong><span>字幕行数</span></div><div><strong>{{ state.format.toUpperCase() }}</strong><span>导出格式</span></div></div>
     </section>
     </ToolHero>

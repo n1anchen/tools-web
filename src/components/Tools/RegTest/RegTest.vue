@@ -54,10 +54,10 @@ function clearAll() {
 
 <template>
   <div class="regex-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">REGEX LAB</span><h2>边写边看见每一次匹配</h2><p>实时高亮、捕获组拆解、替换预览和准确的错误定位。</p></div>
+      <div><span class="eyebrow">REGEX LAB</span><h2>边写边看见每一次匹配</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-expression">/ pattern / <strong>{{ activeFlags || '—' }}</strong></div>
     </section>
     </ToolHero>

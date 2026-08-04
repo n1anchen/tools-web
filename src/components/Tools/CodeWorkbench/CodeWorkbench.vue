@@ -27,7 +27,6 @@ const props = withDefaults(defineProps<{
   modelValue: string
   eyebrow: string
   headline: string
-  description: string
   language: string
   mode: string
   accent?: 'blue' | 'violet' | 'orange' | 'cyan'
@@ -112,10 +111,10 @@ defineExpose({ formatEditor, openSearchBox })
 
 <template>
   <div :class="['code-workbench-page', `accent-${accent}`, 'flex', 'flex-col', 'mt-3', 'flex-1']">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">{{ eyebrow }}</span><h2>{{ headline }}</h2><p>{{ description }}</p></div>
+      <div><span class="eyebrow">{{ eyebrow }}</span><h2>{{ headline }}</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="language-badge"><span>当前语言</span><strong>{{ language }}</strong><small>LOCAL ONLY</small></div>
     </section>
     </ToolHero>

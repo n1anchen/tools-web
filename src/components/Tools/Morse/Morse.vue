@@ -121,13 +121,13 @@ onUnmounted(stopPlayback)
 
 <template>
   <div class="morse-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
       <div>
         <span class="eyebrow">MORSE WORKBENCH</span>
         <h2>把文字变成节奏，也把节奏还原成文字</h2>
-        <p>支持英文、数字、常用标点与中文编码，输入后即时转换。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-signal" aria-hidden="true">
         <span>···</span><span>———</span><span>···</span>

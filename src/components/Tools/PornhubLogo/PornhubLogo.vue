@@ -245,10 +245,10 @@ onUnmounted(() => {
 
 <template>
   <div class="split-logo-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="studio-hero">
-      <div><span class="eyebrow">SPLIT BADGE LOGO STUDIO</span><h2>一半是标题，一半是视觉锚点</h2><p>自由组合左右文字、双栏配色、圆角与画布形状，实时生成适合头像、封面和梗图的高对比徽标。</p></div>
+      <div><span class="eyebrow">SPLIT BADGE LOGO STUDIO</span><h2>一半是标题，一半是视觉锚点</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-stats"><div><strong>{{ exportDimensions.width }}</strong><span>导出宽度</span></div><div><strong>{{ exportDimensions.height }}</strong><span>导出高度</span></div><div><strong>{{ state.scale }}×</strong><span>清晰倍率</span></div></div>
     </section>
     </ToolHero>

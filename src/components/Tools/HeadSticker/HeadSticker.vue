@@ -362,13 +362,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="sticker-tool flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
       <div>
         <div class="eyebrow">STICKER COMPOSER</div>
         <h2>选一张底图，开始自由接头</h2>
-        <p>内置角色贴纸，也支持上传自定义素材；画布可缩放、旋转、翻转和调整图层。</p>
+        <p>{{ toolInfo.desc }}</p>
       </div>
       <div class="hero-metrics">
         <div><span>底图</span><strong>{{ hasBackground ? `${originalWidth} × ${originalHeight}` : '未选择' }}</strong></div>

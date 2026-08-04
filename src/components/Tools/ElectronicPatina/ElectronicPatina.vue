@@ -216,10 +216,10 @@ onUnmounted(() => {
 
 <template>
   <div class="patina-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="studio-hero">
-      <div><span class="eyebrow">DIGITAL PATINA LAB</span><h2>模拟一张图片，被反复转发后的痕迹</h2><p>通过多轮 JPEG 压缩、色度偏移和像素抖动生成做旧效果；用预设快速开始，也可以精确控制损伤程度。</p></div>
+      <div><span class="eyebrow">DIGITAL PATINA LAB</span><h2>模拟一张图片，被反复转发后的痕迹</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-stats"><div><strong>{{ profile.score }}</strong><span>强度评分</span></div><div><strong>{{ compressionCount }}×</strong><span>压缩轮次</span></div><div><strong>{{ quality }}%</strong><span>单轮质量</span></div></div>
     </section>
     </ToolHero>

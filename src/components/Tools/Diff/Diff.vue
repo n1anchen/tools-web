@@ -122,10 +122,10 @@ function downloadDiff() {
 
 <template>
   <div class="diff-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">TEXT DIFFERENCE STUDIO</span><h2>不只标红，还要看清改了多少</h2><p>并排核对两个版本，按字符或词组高亮；支持忽略规则、文件导入、交换文本和差异导出。</p></div>
+      <div><span class="eyebrow">TEXT DIFFERENCE STUDIO</span><h2>不只标红，还要看清改了多少</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="hero-stats"><div><strong>{{ summary.similarity }}%</strong><span>行相似度</span></div><div><strong>{{ changedLines }}</strong><span>增删行数</span></div><div><strong>{{ summary.changedBlocks }}</strong><span>变更区块</span></div></div>
     </section>
     </ToolHero>

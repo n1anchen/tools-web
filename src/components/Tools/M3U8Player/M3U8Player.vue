@@ -252,10 +252,10 @@ onBeforeUnmount(() => destroyHls())
 
 <template>
   <div class="hls-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy>
+    <ToolHero legacy #default="{ toolInfo }">
 
     <section class="hero-card">
-      <div><span class="eyebrow">HLS STREAM INSPECTOR</span><h2>播放之外，也看得懂流状态</h2><p>解析清单、切换清晰度、查看缓冲与错误建议，适合播放和排查 HLS 直播或点播地址。</p></div>
+      <div><span class="eyebrow">HLS STREAM INSPECTOR</span><h2>播放之外，也看得懂流状态</h2><p>{{ toolInfo.desc }}</p></div>
       <div class="capability"><span>当前环境</span><strong>{{ Hls.isSupported() ? 'Media Source 可用' : '检测原生 HLS' }}</strong><small>{{ engine }}</small></div>
     </section>
     </ToolHero>
