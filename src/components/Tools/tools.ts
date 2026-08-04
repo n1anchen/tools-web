@@ -44,7 +44,7 @@ export function getToolsCate() {
       list: [
         {
           id: 1,
-          title: '字体标本工作室',
+          title: '字体在线预览',
           logo: 'Font',
           desc: '用真实样文和字号瀑布预览字体，支持本机字体、字体文件与 CSS 复制',
           url: '/fontpreview/',
@@ -53,16 +53,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'Markdown 文档工作台',
-          logo: 'Markdown',
-          desc: '实时编写与预览 Markdown，支持模板、本地草稿、文档统计和 MD/HTML 导出',
-          url: '/markdown/',
-          cateId: 1,
-          cate: '在线编辑'
-        },
-        {
-          id: 1,
-          title: '表格数据转换工作台',
+          title: '表格数据转换',
           logo: 'FileExcel',
           desc: '直接粘贴 CSV / TSV 或 JSON 转成表格，也可导入工作簿并在线编辑，再输出为 XLSX、CSV 或 JSON',
           url: '/spreadsheet-converter/',
@@ -71,7 +62,16 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'JSON 工作台',
+          title: 'Markdown 工作台',
+          logo: 'Markdown',
+          desc: '实时编写与预览 Markdown，支持模板、本地草稿、文档统计和 MD/HTML 导出',
+          url: '/markdown/',
+          cateId: 1,
+          cate: '在线编辑'
+        },
+        {
+          id: 1,
+          title: 'Json 工作台',
           logo: '/images/logo/json.png',
           desc: '校验、格式化和安全压缩 JSON，支持错误定位、键名排序与字符串转义',
           url: '/json/',
@@ -80,7 +80,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'JavaScript 格式化与压缩',
+          title: 'JavaScript 工作台',
           logo: 'Js',
           desc: '使用 Terser 校验、格式化与压缩 JavaScript，提供明确的构建选项',
           url: '/jsformat/',
@@ -98,7 +98,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'CSS 格式化与优化',
+          title: 'CSS 工作台',
           logo: 'Css3',
           desc: 'CSS 格式化、语法解析、结构优化与压缩收益统计',
           url: '/cssformat/',
@@ -116,7 +116,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'SQL 格式化',
+          title: 'SQL 工作台',
           logo: 'Database',
           desc: '在线 SQL 格式化与压缩工具，支持 MySQL、PostgreSQL、SQLite、T-SQL 等多种方言',
           url: '/sqlformat/',
@@ -132,7 +132,7 @@ export function getToolsCate() {
       list: [
         {
           id: 1,
-          title: '文本差异工作台',
+          title: '文本对比',
           logo: '/images/logo/diff.png',
           desc: '并排、混合或逐行对比文本，支持忽略规则、变更统计、文件导入和差异导出',
           url: '/diff/',
@@ -159,7 +159,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'ASCII 字形工作室',
+          title: 'ASCII 字形生成器',
           logo: '/images/logo/ascii_word_pic.png',
           desc: '21 种 FIGlet 字体实时预览，支持版式调节与 TXT 导出',
           url: '/asciiwordpic/',
@@ -256,7 +256,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'CRON 调度工作台',
+          title: 'CRON 表达式',
           logo: 'Clock',
           desc: '生成、解析 CRON 表达式，解释字段并预览后续执行计划',
           url: '/cron/',
@@ -328,7 +328,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'ASCII 字符工作台',
+          title: 'ASCII 字符对照表',
           logo: '/images/logo/ascii.png',
           desc: '搜索和换算 ASCII 字符，查看多进制、Unicode 与 HTML 实体',
           url: '/ascii/',
@@ -337,7 +337,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'Color 配色工作台',
+          title: 'Color 选择器',
           logo: '/images/logo/color_picker.png',
           desc: '颜色格式转换、色阶生成与 WCAG 对比度可访问性检查',
           url: '/colorpicker/',
@@ -373,7 +373,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'Base64 数据工作台',
+          title: 'Base64 编解码',
           logo: 'Lock',
           desc: '支持 UTF-8 文本、Base64 URL、Data URL 和文件双向转换，可识别类型、预览并下载',
           url: '/base64/',
@@ -522,7 +522,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '电子包浆实验室',
+          title: '电子包浆模拟器',
           logo: 'Image',
           desc: '用预设或自定义压缩配方模拟多次转发后的色偏、噪点与做旧效果',
           url: '/electronicpatina/',
@@ -531,7 +531,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '字幕梗图工作室',
+          title: '表情包配字',
           logo: 'CommentDots',
           desc: '为图片添加自动换行字幕，支持视觉模板、位置、描边和多尺寸导出',
           url: '/memecaption/',
@@ -592,27 +592,27 @@ export function getToolsCate() {
       list: [
         {
           id: 1,
-          title: '双栏徽标工作室',
+          title: 'P站风格Logo生成',
           logo: '/images/logo/hub.png',
-          desc: '自定义双栏文字、配色、圆角与画布形状，支持高清 PNG',
+          desc: '生成P站风格的黑黄 Logo 图片，可自定义双栏文字、配色、圆角与画布形状，支持高清 PNG',
           url: '/pornhublogo/',
           cateId: 6,
           cate: '趣味工具',
         },
         {
           id: 1,
-          title: '金属冲击标题工作室',
+          title: '5000兆円生成器',
           logo: '/images/logo/5000choyen.png',
-          desc: '生成红金与银色错位标题，支持拖拽定位、透明背景和高清 PNG',
+          desc: '生成5000兆円风格图片的工具。可自定义文本内容和字体颜色，支持拖拽定位、透明背景和高清 PNG。',
           url: '/choyen5000/',
           cateId: 6,
           cate: '趣味工具',
         },
         {
           id: 1,
-          title: '蔚蓝标题工作室',
+          title: '蔚蓝档案标题生成',
           logo: '/images/logo/bluearchive.png',
-          desc: '实时调整双栏标题与光环位置，支持透明背景和多倍率导出',
+          desc: '生成类似《蔚蓝档案》(Blue Archive) 游戏主标题 Logo 风格的图片，可实时调整双栏标题与光环位置，支持透明背景和多倍率导出。',
           url: '/bluearchive/',
           cateId: 6,
           cate: '趣味工具',
@@ -621,7 +621,7 @@ export function getToolsCate() {
           id: 1,
           title: '光棱坦克工厂',
           logo: 'LayerGroup',
-          desc: '在稳定画布中混合两张图片，提供效果预设、明暗背景检查、自动显形和原尺寸 PNG 导出',
+          desc: '将两张图片混合成一张光棱坦克图：白色背景下显现隐藏图，深色背景下显现表面图，支持解码还原',
           url: '/miragetank/',
           cateId: 6,
           cate: '趣味工具',
@@ -662,7 +662,7 @@ export function getToolsCate() {
       list: [
         {
           id: 1,
-          title: '柱状图工作台',
+          title: '柱状图 / 横向柱状图',
           logo: '/images/logo/bar.png',
           desc: '直接编辑表格或粘贴 Excel / WPS 数据生成柱状图与横向排行，也支持 CSV、JSON、主题配色、配置复制与高清导出',
           url: '/bar/',
@@ -670,7 +670,7 @@ export function getToolsCate() {
           cate: '数据图表',
         },{
           id: 1,
-          title: '折线图工作台',
+          title: '折线图 / 面积图',
           logo: '/images/logo/line.png',
           desc: '使用表格或 JSON 数据制作折线图与面积图，支持平滑曲线、坐标轴、标签、主题配色和高清导出',
           url: '/line/',
@@ -679,7 +679,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '饼图工作台',
+          title: '饼图 / 环形图',
           logo: '/images/logo/pie.png',
           desc: '实时制作饼图与环形图，提供占比示例、数据校验、图例标签、成套配色、ECharts 配置复制与 PNG 导出',
           url: '/pie/',
@@ -688,7 +688,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '散点图工作台',
+          title: '散点图',
           logo: '/images/logo/scatter.png',
           desc: '输入 X、Y 与可选名称观察变量关系，支持标准散点与强调气泡、轴标题、数据校验、主题配色和高清导出',
           url: '/scatter/',
@@ -697,7 +697,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '漏斗图工作台',
+          title: '漏斗图',
           logo: 'Filter',
           desc: '用表格或 JSON 制作业务流程漏斗，支持排序、内外标签、示例数据、配置复制和高清 PNG 导出',
           url: '/funnel/',
@@ -706,7 +706,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '雷达图工作台',
+          title: '雷达图',
           logo: 'Bullseye',
           desc: '使用多系列宽表制作能力雷达图，支持每维最大值、自动刻度、多边形与圆形、主题配色和高清导出',
           url: '/radar/',
@@ -715,7 +715,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '仪表盘工作台',
+          title: '仪表盘',
           logo: 'TachometerAlt',
           desc: '制作单指标或多指标仪表盘，支持范围越界提示、刻度、单位、指针与进度盘切换及高清导出',
           url: '/gauge/',
@@ -724,7 +724,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '热力图工作台',
+          title: '热力图',
           logo: 'Fire',
           desc: '使用 X、Y 分类和数值生成二维热力矩阵，支持结构校验、自动色阶、数值标签、颜色端点和高清导出',
           url: '/heatmap/',
@@ -733,7 +733,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: 'K 线图工作台',
+          title: 'K线图',
           logo: 'ChartLine',
           desc: '录入日期与开收低高数据生成 K 线图，提供 OHLC 关系校验、涨跌色、数据缩放和高清 PNG 导出',
           url: '/candlestick/',
@@ -742,7 +742,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '堆叠图工作台',
+          title: '堆叠柱 / 堆叠面积线',
           logo: 'LayerGroup',
           desc: '使用多系列宽表生成堆叠柱与堆叠面积线，支持总量标签、图例、主题配色、配置复制和高清导出',
           url: '/stack/',
@@ -751,7 +751,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '矩形树图工作台',
+          title: '矩形树图',
           logo: 'ThLarge',
           desc: '用斜线路径构建多层矩形树图，支持层级校验、钻取深度、面包屑、主题配色和高清导出',
           url: '/treemap/',
@@ -760,7 +760,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '桑基图工作台',
+          title: '桑基图',
           logo: 'ProjectDiagram',
           desc: '录入来源、目标和流量生成桑基图，自动检查重复、自环和成环连线，支持方向、对齐与曲率配置',
           url: '/sankey/',
@@ -769,7 +769,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '箱线图工作台',
+          title: '箱线图',
           logo: 'BoxOpen',
           desc: '从原始样本自动计算五数概括与 Tukey 异常值，也可直接录入统计摘要，支持分组比较和高清导出',
           url: '/boxplot/',
@@ -778,7 +778,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '日历图工作台',
+          title: '日历图',
           logo: 'CalendarAlt',
           desc: '严格校验每日数据并生成年度日历热图，支持多年份切换、缺失日期提示、色阶配置和高清导出',
           url: '/calendar/',
@@ -880,7 +880,7 @@ export function getToolsCate() {
         },
         {
           id: 1,
-          title: '手持弹幕工作台',
+          title: '手持弹幕',
           logo: '/images/logo/dm.png',
           desc: '多条消息、实时预览、场景配色与全屏展示',
           url: '/barrage/',
