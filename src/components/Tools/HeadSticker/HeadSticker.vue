@@ -9,8 +9,8 @@ import {
   util,
   type Transform,
 } from 'fabric'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 
 const title = '接头霸王'
 
@@ -363,7 +363,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="sticker-tool flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" legacy>
 
     <section class="hero-card">
       <div>
@@ -377,6 +377,7 @@ onBeforeUnmount(() => {
         <div><span>导出</span><strong>{{ exportFormat.toUpperCase() }} · {{ exportScale }}×</strong></div>
       </div>
     </section>
+    </ToolHero>
 
     <section class="workspace-card">
       <aside class="asset-panel">
@@ -465,11 +466,11 @@ onBeforeUnmount(() => {
       </div>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <el-text>
         上传底图后，可点击素材库头像将其居中添加，也可在桌面端直接拖到画布指定位置。选中贴纸后可拖动、角点缩放旋转，并使用工具栏翻转、复制、调整图层或删除；Delete / Backspace 也能删除当前贴纸。默认按底图原始分辨率导出，透明贴纸建议使用 PNG。
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

@@ -3,8 +3,8 @@ import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { CopyDocument, Download, Loading, Refresh } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import debounce from 'lodash/debounce'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { buildLogoFilename } from '@/utils/logoStudio'
 import { loadFontStylesheet, ensureFontsLoaded } from '@/utils/font'
 import { LogoCanvas } from './canvas'
@@ -180,12 +180,13 @@ onUnmounted(() => {
 
 <template>
   <div class="blue-logo-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="蔚蓝标题工作室" />
+    <ToolHero title="蔚蓝标题工作室" legacy>
 
     <section class="studio-hero">
       <div><span class="eyebrow">BLUE TITLE COMPOSER</span><h2>拆分文字，组合一枚清透标题</h2><p>左右文字、光环位置、画布形状与导出倍率都可实时调整；所有合成均在浏览器画布中完成。</p></div>
       <div class="hero-stats"><div><strong>{{ dimensions.width }}</strong><span>导出宽度</span></div><div><strong>{{ dimensions.height }}</strong><span>导出高度</span></div><div><strong>{{ state.scale }}×</strong><span>清晰倍率</span></div></div>
     </section>
+    </ToolHero>
 
     <section class="preview-card">
       <header class="preview-heading">
@@ -221,9 +222,9 @@ onUnmounted(() => {
       </aside>
     </div>
 
-    <ToolDetail title="使用与版权说明">
+    <ToolGuide title="使用与版权说明">
       <el-text>本工具用于生成受《蔚蓝档案》标题视觉语言启发的同人风格图片，并非官方工具。自适应画布会裁切多余留白，方形和圆形适合作为头像底图；透明背景仅保留文字、描边与图形。导出倍率只影响 PNG 像素尺寸，不改变预览构图。商用前请自行确认文字、作品与相关标识的使用权限。</el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

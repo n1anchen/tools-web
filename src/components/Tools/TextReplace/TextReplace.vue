@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { CopyDocument, Delete, EditPen, RefreshRight, Search, Switch } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { replaceText, type ReplaceScope } from '@/utils/textTools'
 
@@ -43,7 +43,7 @@ function useResultAsInput() {
 
 <template>
   <div class="replace-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="settings-header">
@@ -140,13 +140,13 @@ function useResultAsInput() {
       <div><span>处理模式</span><strong>{{ options.useRegex ? '正则' : '普通' }}</strong><small>{{ options.caseSensitive ? '区分大小写' : '忽略大小写' }}</small></div>
     </section>
 
-    <ToolDetail title="使用技巧">
+    <ToolGuide title="使用技巧">
       <div class="guide-grid">
         <div><strong>普通替换更直观</strong><span>输入内容会按纯文字匹配，替换值中的 $、\ 等字符也会原样保留。</span></div>
         <div><strong>正则处理结构化文本</strong><span>可用括号捕获内容，并在替换值中通过 $1、$2 调整顺序或格式。</span></div>
         <div><strong>逐步清洗复杂数据</strong><span>完成一次替换后选择“用结果继续处理”，可连续应用多组规则。</span></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

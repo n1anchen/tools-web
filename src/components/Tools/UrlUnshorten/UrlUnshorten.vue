@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { removeTrackingParams } from '@/utils/url'
 
@@ -200,7 +200,7 @@ function loadExample(value: string) {
 
 <template>
   <div class="url-tool flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" legacy>
 
     <section class="hero-card">
       <div>
@@ -213,6 +213,7 @@ function loadExample(value: string) {
         <div><strong>{{ isConfigured ? '跳转追踪已就绪' : '本地分析可用' }}</strong><small>{{ isConfigured ? '可解析服务端重定向' : '当前未配置云端解析服务' }}</small></div>
       </div>
     </section>
+    </ToolHero>
 
     <section class="input-card">
       <div class="input-heading">
@@ -313,11 +314,11 @@ function loadExample(value: string) {
       <div class="example-buttons"><button v-for="example in examples" :key="example.label" @click="loadExample(example.value)">{{ example.label }}</button></div>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <el-text>
         本地分析不会发起网络请求，可直接检查 URL 结构并移除常见 UTM、广告点击等营销参数。短链接的真实目标只能通过服务端请求 HTTP 重定向后确认；配置 VITE_UNSHORTEN_API 后可开启完整跳转链追踪。访问陌生目标前仍建议确认域名与页面内容。
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

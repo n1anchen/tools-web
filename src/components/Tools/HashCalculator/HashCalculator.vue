@@ -4,8 +4,8 @@ import { CopyDocument, DocumentChecked, Key, MagicStick, WarningFilled } from '@
 import { ElMessage } from 'element-plus'
 import { Md5 } from 'ts-md5'
 import CryptoJS from 'crypto-js'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 
 type OutputFormat = 'hex' | 'base64'
@@ -134,7 +134,7 @@ function copyResult() {
 
 <template>
   <div class="hash-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="workspace-grid">
@@ -231,7 +231,7 @@ function copyResult() {
       </div>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <div class="detail-grid">
         <div>
           <h4>普通 Hash</h4>
@@ -246,7 +246,7 @@ function copyResult() {
           <p>文本和密钥都只在浏览器中计算，不会发送到服务器；关闭或刷新页面后不会保留。</p>
         </div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

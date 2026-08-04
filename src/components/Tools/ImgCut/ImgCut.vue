@@ -3,8 +3,8 @@ import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { BlobReader, BlobWriter, ZipWriter } from '@zip.js/zip.js'
 import { Delete, Download, Grid, Picture, UploadFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { autoDown } from '@/utils/file'
 import { buildSliceRects, type SliceRect } from '@/utils/imageStudio'
 
@@ -248,12 +248,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="cut-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="图片分割" />
+    <ToolHero title="图片分割" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">PRECISION IMAGE SLICER</span><h2>每一格，都完整覆盖原图</h2><p>自由设置行列、即时查看切线，并将全部切片按顺序打包为 ZIP；除不尽的尺寸也不会丢失边缘像素。</p></div>
       <div class="hero-formula"><strong>{{ sourceUrl ? `${state.rows} × ${state.columns}` : 'R × C' }}</strong><span>{{ sourceUrl ? `${sliceCount} 张切片` : '自由网格' }}</span></div>
     </section>
+    </ToolHero>
 
     <input ref="fileInput" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="handleInput">
 
@@ -320,7 +321,7 @@ onBeforeUnmount(() => {
 
     <section class="feature-strip"><article><b>01</b><div><strong>行列可独立设置</strong><p>不仅支持四宫格和九宫格，也能拆成长条、轮播切片或任意矩形网格。</p></div></article><article><b>02</b><div><strong>完整像素覆盖</strong><p>修复旧版整除取整导致右侧与底部像素被遗失的问题。</p></div></article><article><b>03</b><div><strong>ZIP 批量导出</strong><p>切片按行列编号保存，也可以点击缩略图单独下载。</p></div></article></section>
 
-    <ToolDetail title="使用说明"><p>上传图片后选择预设或分别设置行数、列数，页面会实时显示切线并重新生成切片。PNG 保留透明通道；JPG/WebP 可控制输出质量。点击切片可单独保存，也可以一键打包为 ZIP。</p></ToolDetail>
+    <ToolGuide title="使用说明"><p>上传图片后选择预设或分别设置行数、列数，页面会实时显示切线并重新生成切片。PNG 保留透明通道；JPG/WebP 可控制输出质量。点击切片可单独保存，也可以一键打包为 ZIP。</p></ToolGuide>
   </div>
 </template>
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { encoders } from './encoders/index'
 
@@ -139,7 +139,7 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 
 <template>
   <div class="riddle-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="谜语人" />
+    <ToolHero title="谜语人" legacy>
 
     <section class="riddle-hero">
       <div>
@@ -153,6 +153,7 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
         <div><strong>{{ sourceLength }}</strong><span>输入字符</span></div>
       </div>
     </section>
+    </ToolHero>
 
     <section class="workspace-card">
       <div class="section-heading">
@@ -203,13 +204,13 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
       </aside>
     </section>
 
-    <ToolDetail title="兼容性与安全说明">
+    <ToolGuide title="兼容性与安全说明">
       <div class="detail-notes">
         <p><strong>佛曰 / 如是我闻：</strong>兼容对应 Tudou 版本；如遇来源被截断、缺少前缀或字符被替换，会提示解码失败。</p>
         <p><strong>兽语 / Base 系列：</strong>属于可逆表示方式，任何获得结果的人都能还原明文，请勿把它们当作密码学加密。</p>
         <p><strong>本地处理：</strong>所有编解码均在浏览器完成，输入内容不会上传；本次历史也只保存在当前页面内存中。</p>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

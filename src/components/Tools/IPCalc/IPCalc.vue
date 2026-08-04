@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import {
   calculateCidr,
@@ -190,7 +190,7 @@ maskFromPrefix()
 
 <template>
   <div class="ip-tool flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" legacy>
 
     <section class="hero-card">
       <div>
@@ -204,6 +204,7 @@ maskFromPrefix()
         <div><span>地址属性</span><strong>{{ result.classification.label }}</strong></div>
       </div>
     </section>
+    </ToolHero>
 
     <section class="workbench-card">
       <div class="cidr-input-row">
@@ -359,11 +360,11 @@ maskFromPrefix()
       <button @click="useExample('203.0.113.8/29')">小型公网 /29</button>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <el-text>
         「网络概览」用于确认 CIDR 边界、地址范围和 IP 属性；「子网拆分」可按新前缀预览更小网段；「进制转换」支持十进制、二进制、十六进制和 32 位整数互转；「掩码换算」支持前缀与连续子网掩码双向换算。/31 按点对点网络计为 2 个可用地址，/32 按单主机路由计为 1 个地址。
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

@@ -2,8 +2,8 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import * as wanakana from 'wanakana'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import {
   analyzeJapaneseText,
@@ -167,7 +167,7 @@ function formatRomaji(value: string, style: typeof letterCase.value) {
 
 <template>
   <div class="romaji-tool flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" legacy>
 
     <section class="hero-card">
       <div>
@@ -182,6 +182,7 @@ function formatRomaji(value: string, style: typeof letterCase.value) {
         <div><span>行数</span><strong>{{ inputStats.lines }}</strong></div>
       </div>
     </section>
+    </ToolHero>
 
     <section class="mode-grid" aria-label="转换模式">
       <button type="button" :class="{ active: mode === 'fast' }" @click="mode = 'fast'">
@@ -290,11 +291,11 @@ function formatRomaji(value: string, style: typeof letterCase.value) {
       </div>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <el-text>
         轻量模式使用 WanaKana，适合平假名和片假名；精准模式使用 Kuromoji 分词并补全汉字读音，适合普通句子。精准模式首次需要加载日语词典，开启离线缓存后可与“日语歌词学习”工具共用。人名、地名、歌词特殊读法仍可能存在多音或分词差异，重要内容建议人工核对。
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

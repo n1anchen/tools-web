@@ -2,8 +2,8 @@
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { buildDocumentFilename, formatDocumentBytes } from '@/utils/documentStudio'
 import {
@@ -231,12 +231,13 @@ onBeforeUnmount(revokePreview)
 
 <template>
   <div class="base64-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="Base64 数据工作台" />
+    <ToolHero title="Base64 数据工作台" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">BASE64 DATA STUDIO</span><h2>文字与文件，都走清晰的转换流程</h2><p>支持 UTF-8 文本、Base64 URL、Data URL 和常见文件类型；所有内容只在当前浏览器中处理。</p></div>
       <div class="hero-stats"><div v-for="metric in heroMetrics" :key="metric.label"><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></div></div>
     </section>
+    </ToolHero>
 
     <nav class="mode-nav" aria-label="Base64 工作模式"><button v-for="item in modes" :key="item.value" type="button" :class="{ active: mode === item.value }" @click="mode = item.value"><b>{{ item.step }}</b><span><strong>{{ item.label }}</strong><small>{{ item.note }}</small></span></button></nav>
 
@@ -288,7 +289,7 @@ onBeforeUnmount(revokePreview)
       </section>
     </template>
 
-    <ToolDetail title="编码边界与隐私说明"><div class="detail-copy">Base64 是编码而不是加密，任何人都可以还原内容，不适合隐藏密码或敏感信息。文本模式使用严格 UTF-8 编解码；文件模式支持常见魔数识别，未识别文件仍可按指定扩展名下载。所有文本和文件都只在当前浏览器中处理，不会上传到服务器。</div></ToolDetail>
+    <ToolGuide title="编码边界与隐私说明"><div class="detail-copy">Base64 是编码而不是加密，任何人都可以还原内容，不适合隐藏密码或敏感信息。文本模式使用严格 UTF-8 编解码；文件模式支持常见魔数识别，未识别文件仍可按指定扩展名下载。所有文本和文件都只在当前浏览器中处理，不会上传到服务器。</div></ToolGuide>
   </div>
 </template>
 

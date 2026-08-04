@@ -14,8 +14,8 @@ import {
   User,
   Warning,
 } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import {
   calculateRetirement,
   formatAge,
@@ -148,7 +148,7 @@ calculate()
 
 <template>
   <div class="retirement-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="calculator-card">
       <div class="section-heading">
@@ -363,13 +363,13 @@ calculate()
       </section>
     </template>
 
-    <ToolDetail title="政策依据与使用说明">
+    <ToolGuide title="政策依据与使用说明">
       <div class="policy-notes">
         <div><el-icon><Document /></el-icon><p><strong>官方政策依据</strong><span>依据2024年9月全国人大常委会决定及2025年起施行的弹性退休制度暂行办法。</span><a href="https://www.npc.gov.cn/npc/c2/kgfb/202409/t20240913_439534.html" target="_blank" rel="noopener noreferrer">查看全国人大决定</a></p></div>
         <div><el-icon><TrendCharts /></el-icon><p><strong>弹性退休并非自动提前</strong><span>弹性提前退休需要满足最低缴费年限；弹性延迟退休需职工与单位协商一致。</span><a href="https://www.mohrss.gov.cn/wap/zc/zcwj/202501/t20250101_533701.html" target="_blank" rel="noopener noreferrer">查看人社部办法</a></p></div>
         <div><el-icon><InfoFilled /></el-icon><p><strong>结果仅供参考</strong><span>特殊工种、病残津贴、人员类别认定及地方办理口径不在通用计算范围内，请以档案和人社部门核定为准。</span><a href="https://fuwu.rsj.beijing.gov.cn/zhrs/zgtx/retire-calculator" target="_blank" rel="noopener noreferrer">官方计算器参考</a></p></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

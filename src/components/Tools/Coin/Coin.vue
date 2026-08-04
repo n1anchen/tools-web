@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { Aim, Clock, Delete, MagicStick, Setting, TrendCharts } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { secureRandomInt } from '@/utils/random'
 
 type CoinFace = 'heads' | 'tails'
@@ -58,7 +58,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="coin-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <div class="workspace-grid">
       <section class="settings-card">
@@ -146,13 +146,13 @@ onBeforeUnmount(() => {
       <div v-else class="empty-history"><el-icon><Clock /></el-icon><span>抛掷后会在这里记录结果</span></div>
     </section>
 
-    <ToolDetail title="概率说明">
+    <ToolGuide title="概率说明">
       <div class="guide-grid">
         <div><strong>短期结果可能不均衡</strong><span>连续几次都是同一面属于正常随机现象，并不表示概率异常。</span></div>
         <div><strong>自定义选择方案</strong><span>将两面名称改成“方案 A / 方案 B”或“去 / 不去”，结果会同步显示。</span></div>
         <div><strong>批量抛掷观察分布</strong><span>选择 5 次或 10 次可以快速累积样本，并查看两面的实际占比。</span></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

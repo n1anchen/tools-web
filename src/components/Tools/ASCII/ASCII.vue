@@ -2,8 +2,8 @@
 import { computed, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { CopyDocument, Search } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { createAsciiEntries, filterAsciiEntries, findAsciiEntry, type AsciiEntry, type AsciiGroup } from '@/utils/asciiTools'
 
@@ -50,12 +50,13 @@ function copyValue(value: string) {
 
 <template>
   <div class="ascii-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="ASCII 字符工作台" />
+    <ToolHero title="ASCII 字符工作台" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">ASCII CHARACTER STUDIO</span><h2>搜索、换算、复制，不再翻一张长表</h2><p>覆盖 ASCII 标准字符、控制字符和 Windows-1252 扩展区；按字符、名称或任意进制定位，并集中查看完整编码详情。</p></div>
       <div class="hero-stats"><div v-for="metric in heroMetrics" :key="metric.label"><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></div></div>
     </section>
+    </ToolHero>
 
     <section class="lookup-card">
       <div><span class="eyebrow">DIRECT LOOKUP</span><h3>字符与编码互查</h3><p>输入单个字符、十进制、<code>0x41</code> 或 <code>U+0041</code>。</p></div>
@@ -97,7 +98,7 @@ function copyValue(value: string) {
       </aside>
     </section>
 
-    <ToolDetail title="编码范围说明"><div class="detail-copy">标准 ASCII 严格定义 0–127：其中 0–31 与 127 是控制字符，32–126 是可打印字符。128–255 并不属于原始 ASCII，本工具为实用查询沿用 Windows-1252 显示方式；不同旧系统或代码页中的扩展字符可能不同。现代文本建议优先使用 Unicode 与 UTF-8。</div></ToolDetail>
+    <ToolGuide title="编码范围说明"><div class="detail-copy">标准 ASCII 严格定义 0–127：其中 0–31 与 127 是控制字符，32–126 是可打印字符。128–255 并不属于原始 ASCII，本工具为实用查询沿用 Windows-1252 显示方式；不同旧系统或代码页中的扩展字符可能不同。现代文本建议优先使用 Unicode 与 UTF-8。</div></ToolGuide>
   </div>
 </template>
 

@@ -3,8 +3,8 @@ import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { CopyDocument, Download, Loading, Refresh } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import debounce from 'lodash/debounce'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import {
   buildLogoFilename,
   calculateSplitLogoLayout,
@@ -245,12 +245,13 @@ onUnmounted(() => {
 
 <template>
   <div class="split-logo-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="双栏徽标工作室" />
+    <ToolHero title="双栏徽标工作室" legacy>
 
     <section class="studio-hero">
       <div><span class="eyebrow">SPLIT BADGE LOGO STUDIO</span><h2>一半是标题，一半是视觉锚点</h2><p>自由组合左右文字、双栏配色、圆角与画布形状，实时生成适合头像、封面和梗图的高对比徽标。</p></div>
       <div class="hero-stats"><div><strong>{{ exportDimensions.width }}</strong><span>导出宽度</span></div><div><strong>{{ exportDimensions.height }}</strong><span>导出高度</span></div><div><strong>{{ state.scale }}×</strong><span>清晰倍率</span></div></div>
     </section>
+    </ToolHero>
 
     <section class="preview-card">
       <header class="preview-heading">
@@ -285,9 +286,9 @@ onUnmounted(() => {
       </aside>
     </div>
 
-    <ToolDetail title="使用与版权说明">
+    <ToolGuide title="使用与版权说明">
       <el-text>双栏徽标是一种通用视觉构图，本工具不包含或导出任何第三方品牌素材。自适应画布适合横向标题，方形与圆形适合头像；透明模式只保留文字和色块。导出倍率只增加像素尺寸，不改变构图。请勿使用他人商标、姓名或受保护内容进行误导性传播。</el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

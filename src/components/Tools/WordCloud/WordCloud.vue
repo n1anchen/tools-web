@@ -3,8 +3,8 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import * as echarts from 'echarts'
 import 'echarts-wordcloud'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { analyzeWordFrequency } from '@/utils/textTools'
 
 const sampleText = `在线工具让复杂的工作变得简单。数据分析帮助我们理解趋势，数据可视化帮助我们表达趋势。好的工具应该清晰、快速、可靠，也应该让每一次操作都有明确反馈。设计服务于内容，内容服务于用户。`
@@ -173,12 +173,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="wordcloud-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="词云图" />
+    <ToolHero title="词云图" legacy>
 
     <section class="wordcloud-hero">
       <div><span class="eyebrow">WORD CLOUD STUDIO</span><h2>从一段文字，到可解释、可导出的词云</h2><p>自动完成中英文分词、词频统计与停用词过滤；调整形状、配色和布局后实时预览，并导出高清 PNG 或完整词频 CSV。</p></div>
       <div class="hero-metrics"><div><strong>{{ analysis.totalWords }}</strong><span>有效词次</span></div><div><strong>{{ analysis.uniqueWords }}</strong><span>不同词语</span></div><div><strong>{{ analysis.diversity.toFixed(0) }}%</strong><span>词汇多样性</span></div></div>
     </section>
+    </ToolHero>
 
     <section class="studio-grid">
       <div class="control-column">
@@ -222,9 +223,9 @@ onBeforeUnmount(() => {
       <div v-else class="frequency-empty">暂无词频明细</div>
     </section>
 
-    <ToolDetail title="分析规则与导出说明">
+    <ToolGuide title="分析规则与导出说明">
       <div class="detail-grid"><article><strong>分词规则</strong><p>优先使用浏览器的 Unicode 分词能力识别中英文词语；英文默认合并大小写，数字可作为词语参与统计。</p></article><article><strong>停用词</strong><p>内置常见中英文虚词，可自行开关；自定义停用词支持换行、空格或中英文逗号分隔。</p></article><article><strong>高清导出</strong><p>PNG 可选择 2–4 倍像素倍率并保留当前背景；透明背景适合后续排版，CSV 包含词语、次数和占比。</p></article></div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

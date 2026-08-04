@@ -2,8 +2,8 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { Aim, Clock, Collection, Delete, MagicStick, RefreshRight } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { parseDecisionOptions, pickDecision } from '@/utils/generators'
 
 type PresetKey = 'food' | 'activity' | 'custom'
@@ -110,7 +110,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="decision-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <div class="workspace-grid">
       <section class="settings-card">
@@ -207,13 +207,13 @@ onBeforeUnmount(() => {
       </div>
     </section>
 
-    <ToolDetail title="权重与随机说明">
+    <ToolGuide title="权重与随机说明">
       <div class="guide-grid">
         <div><strong>普通模式</strong><span>每个候选项机会相同，适合抽签、轮值和日常选择。</span></div>
         <div><strong>权重模式</strong><span>写成“火锅 | 3”表示它的机会是权重 1 选项的三倍。</span></div>
         <div><strong>避免连续重复</strong><span>开启后仅排除上一次最终结果，不影响其他选项原有权重。</span></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

@@ -2,8 +2,8 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { Download, MagicStick, Refresh, VideoPlay } from '@element-plus/icons-vue'
 import figlet, { type FontName } from 'figlet'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { getAsciiMetrics } from '@/utils/displayStudio'
 import { secureRandomInt } from '@/utils/random'
 import { copy } from '@/utils/string'
@@ -146,7 +146,7 @@ onUnmounted(() => {
 
 <template>
   <div class="ascii-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="ASCII 字形工作室" />
+    <ToolHero title="ASCII 字形工作室" legacy>
 
     <section class="ascii-hero">
       <div>
@@ -160,6 +160,7 @@ onUnmounted(() => {
         <div><strong>{{ metrics.columns || '—' }}</strong><span>最大列宽</span></div>
       </div>
     </section>
+    </ToolHero>
 
     <div class="studio-grid">
       <section class="control-card">
@@ -225,9 +226,9 @@ onUnmounted(() => {
       </section>
     </div>
 
-    <ToolDetail title="使用与兼容说明">
+    <ToolGuide title="使用与兼容说明">
       <el-text>FIGlet 字体主要面向英文字母、数字和常用 ASCII 符号；中文等扩展字符取决于具体字体，建议先查看预览。输出宽度决定自动换行位置，“紧凑”和“展开”会改变字符间距。所有字体均从本站本地资源加载，生成过程不上传文本。</el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

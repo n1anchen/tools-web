@@ -4,8 +4,8 @@ import { MdEditor, type ToolbarNames } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { useSettingStore } from '@/store/modules/setting'
 import { copy } from '@/utils/string'
 import { analyzeText } from '@/utils/textTools'
@@ -196,7 +196,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="markdown-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="Markdown 文档工作台" />
+    <ToolHero title="Markdown 文档工作台" legacy>
 
     <section class="studio-hero">
       <div>
@@ -210,6 +210,7 @@ onBeforeUnmount(() => {
         <div><strong>{{ statistics.readingMinutes || '—' }}</strong><span>分钟阅读</span></div>
       </div>
     </section>
+    </ToolHero>
 
     <section class="document-bar">
       <label class="title-field"><span>文档名称</span><el-input v-model="title" maxlength="60" aria-label="Markdown 文档名称" /></label>
@@ -268,7 +269,7 @@ onBeforeUnmount(() => {
       </aside>
     </div>
 
-    <ToolDetail title="本地草稿与导出说明"><div class="detail-copy">编辑内容会在停止输入后自动保存到当前浏览器，本工具不会把正文发送到服务器。导入支持 Markdown 与纯文本文件，导出可选择原始 Markdown 或带基础排版样式的独立 HTML；清除浏览器数据后，本地草稿也会一并消失，重要内容请及时下载备份。</div></ToolDetail>
+    <ToolGuide title="本地草稿与导出说明"><div class="detail-copy">编辑内容会在停止输入后自动保存到当前浏览器，本工具不会把正文发送到服务器。导入支持 Markdown 与纯文本文件，导出可选择原始 Markdown 或带基础排版样式的独立 HTML；清除浏览器数据后，本地草稿也会一并消失，重要内容请及时下载备份。</div></ToolGuide>
   </div>
 </template>
 

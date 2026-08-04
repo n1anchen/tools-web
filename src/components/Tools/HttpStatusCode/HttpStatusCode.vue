@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { CopyDocument, Search } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { filterHttpStatuses } from '@/utils/developerTools'
 import {
@@ -35,12 +35,13 @@ function selectStatus(status: HttpStatusCode) {
 
 <template>
   <div class="http-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="HTTP 状态码" />
+    <ToolHero title="HTTP 状态码" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">HTTP STATUS EXPLORER</span><h2>先理解响应，再定位问题</h2><p>搜索状态码、英文名称或中文场景，快速找到含义与处理建议。</p></div>
       <a href="https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml" target="_blank" rel="noopener noreferrer">IANA 登记表 · 2025-09-15</a>
     </section>
+    </ToolHero>
 
     <section class="category-grid">
       <button v-for="item in HTTP_STATUS_CATEGORIES" :key="item.value" :class="[item.tone, { active: category === item.value }]" @click="chooseCategory(item.value)">
@@ -89,9 +90,9 @@ function selectStatus(status: HttpStatusCode) {
       <div v-else class="empty-state">没有找到匹配的状态码，请尝试其他关键词或关闭筛选。</div>
     </section>
 
-    <ToolDetail title="分类说明">
+    <ToolGuide title="分类说明">
       <el-text>1xx 表示继续处理；2xx 表示成功；3xx 表示需要重定向或使用缓存；4xx 通常与请求、认证或资源状态有关；5xx 表示服务端或上游未能完成请求。状态码只能说明协议层结果，实际排查仍需结合 HTTP 方法、响应头、响应体和服务日志。</el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

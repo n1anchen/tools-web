@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Collection, CopyDocument, DataLine, Files, InfoFilled } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 
 type Standard = 'binary' | 'decimal'
@@ -82,7 +82,7 @@ function copyAll() {
 
 <template>
   <div class="storage-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="section-heading">
@@ -168,7 +168,7 @@ function copyAll() {
       </div>
     </section>
 
-    <ToolDetail title="换算标准与参考">
+    <ToolGuide title="换算标准与参考">
       <div class="detail-layout">
         <div class="reference-card">
           <el-icon><Collection /></el-icon>
@@ -192,7 +192,7 @@ function copyAll() {
           </div>
         </div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

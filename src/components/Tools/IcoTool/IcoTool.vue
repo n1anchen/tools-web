@@ -3,8 +3,8 @@ import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { BlobReader, BlobWriter, ZipWriter } from '@zip.js/zip.js'
 import { ElMessage, genFileId } from 'element-plus'
 import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { autoDown, getFileExtension } from '@/utils/file'
 import { copy } from '@/utils/string'
 import {
@@ -573,21 +573,21 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="ico-tool flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
-
-    <section class="ico-hero">
-      <div>
-        <span class="eyebrow">ICON EXPORT STUDIO</span>
-        <h2>一次裁切，交付整套图标</h2>
-        <p>面向网站、Windows 与应用场景生成多尺寸 PNG，并把兼容图层合并进一个标准 ICO 文件。</p>
-      </div>
-      <div class="hero-metrics">
-        <div><span>源图</span><strong>{{ hasImage ? `${state.naturalWidth} × ${state.naturalHeight}` : '等待导入' }}</strong></div>
-        <div><span>已选尺寸</span><strong>{{ state.selectedSizes.length }} 种</strong></div>
-        <div><span>预计文件</span><strong>{{ exportCount }} 个</strong></div>
-        <div><span>清晰度</span><strong :class="`quality-${sourceQuality.level}`">{{ sourceQuality.label }}</strong></div>
-      </div>
-    </section>
+    <ToolHero
+      :title="title"
+      eyebrow="ICON EXPORT STUDIO"
+      summary="一次裁切，交付整套图标"
+      description="面向网站、Windows 与应用场景生成多尺寸 PNG，并把兼容图层合并进一个标准 ICO 文件。"
+    >
+      <template #metrics>
+        <div class="hero-metrics">
+          <div><span>源图</span><strong>{{ hasImage ? `${state.naturalWidth} × ${state.naturalHeight}` : '等待导入' }}</strong></div>
+          <div><span>已选尺寸</span><strong>{{ state.selectedSizes.length }} 种</strong></div>
+          <div><span>预计文件</span><strong>{{ exportCount }} 个</strong></div>
+          <div><span>清晰度</span><strong :class="`quality-${sourceQuality.level}`">{{ sourceQuality.label }}</strong></div>
+        </div>
+      </template>
+    </ToolHero>
 
     <div class="ico-workbench p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm transition-shadow duration-300">
       <div class="workflow-strip">
@@ -835,14 +835,21 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <ToolDetail title="使用说明">
-      <el-text>
-        上传图片后，可在预览区直接用鼠标拖动图像位置，滚轮或缩放滑杆调整大小；选择需要的尺寸与格式后，一键打包导出。<br>
-        支持添加任意自定义尺寸；PNG 会按尺寸分别生成，ICO 会将 16–256px 的兼容尺寸合并为一个多图层文件。<br>
-        点击“一键套用 favicon 套件”后，会自动补齐常见尺寸，并按 favicon.ico、apple-touch-icon.png、android-chrome-192x192.png 等常见命名规则导出。<br>
-        当圆角拉到最大时会使用真正的圆形裁切；可为透明区域补充底色，超过 256 的尺寸默认仅导出 PNG。
-      </el-text>
-    </ToolDetail>
+    <ToolGuide
+      title="从源图到交付包"
+      description="按三个步骤完成图标生成；所有图片都在当前浏览器中处理，不会上传到服务器。"
+    >
+      <div class="ico-guide-grid">
+        <article><span>01</span><div><h4>选择使用场景</h4><p>先套用网站、Windows 或应用预设，再按项目需要增删尺寸。</p></div></article>
+        <article><span>02</span><div><h4>检查裁切与清晰度</h4><p>拖拽定位主体，用缩放、圆角和底色控制最终图标的识别度。</p></div></article>
+        <article><span>03</span><div><h4>选择交付方式</h4><p>可下载单张 PNG、多图层 ICO，或一次导出包含全部文件的 ZIP。</p></div></article>
+      </div>
+      <div class="guide-rules">
+        <div><span>ICO 图层</span><strong>8–256px</strong><p>普通模式会把所有兼容尺寸合并到一个 ICO 文件。</p></div>
+        <div><span>Favicon</span><strong>16 / 32 / 48</strong><p>网站套件同时提供 Apple Touch 与 Android Chrome 图标。</p></div>
+        <div><span>清晰度建议</span><strong>源图 ≥ 最大目标</strong><p>源图短边低于目标尺寸时会提示可能出现放大模糊。</p></div>
+      </div>
+    </ToolGuide>
   </div>
 </template>
 
@@ -886,4 +893,9 @@ onBeforeUnmount(() => {
 .dark .ico-hero{border-color:#334155;background:linear-gradient(135deg,#172c40,#241d3b 60%,#302619)}.dark .ico-hero h2,.dark .hero-metrics strong,.dark .preset-grid strong,.dark .panel-heading h3,.dark .source-summary strong,.dark .setting-title,.dark .snippet-card strong,.dark .quality-strip strong{color:#e7edf6}.dark .ico-hero p{color:#a8b4c5}.dark .hero-metrics{border-color:#40506a;background:rgba(15,23,42,.55)}.dark .hero-metrics div{border-color:#40506a}.dark .workflow-strip{border-color:#334155;background:#111b2b}.dark .workflow-strip span{border-color:#334155}.dark .workflow-strip span.active{background:#172b43}.dark .preset-grid button{border-color:#36465a;background:#172033}.dark .preset-grid button.active{border-color:#477fc7;background:#172b43}.dark .preset-grid button>span{background:#26364b}.dark .control-panel,.dark .preview-section{border-color:#334155!important;background:#111b2b!important}.dark .source-summary,.dark .quality-strip{border-color:#37465a;background:#172033}.dark .source-summary.ready,.dark .quality-strip.quality-excellent,.dark .quality-strip.quality-good{border-color:#285d4c;background:#142d28}.dark .settings-grid>div,.dark .background-options button,.dark .color-option{border-color:#37465a;background:#172033;color:#c4cfdd}.dark .background-options button.active{border-color:#477fc7;background:#172b43}.dark .snippet-card{border-color:#374b62;background:#172b3e}.dark .preview-download{border-color:#3a4b61;background:#172033;color:#a9c9ef}
 @media(max-width:1100px){.ico-hero{flex-direction:column}.hero-metrics{min-width:0}.preset-grid{grid-template-columns:1fr}.studio-layout{grid-template-columns:1fr!important}}
 @media(max-width:640px){.ico-hero{padding:20px 16px}.ico-hero h2{font-size:21px}.hero-metrics{grid-template-columns:1fr}.hero-metrics div{border-right:0;border-bottom:1px solid #dde6ef}.hero-metrics div:nth-last-child(2){border-bottom:1px solid #dde6ef}.workflow-strip span{padding:10px 5px;font-size:12px}.workflow-strip b{display:block;margin:0 0 3px}.preset-grid button{grid-template-columns:auto 1fr}.preset-grid em{display:none}.ico-workbench{padding:12px!important}.settings-grid{grid-template-columns:1fr!important}.background-options{grid-template-columns:repeat(2,1fr)}.export-actions{grid-template-columns:1fr}.quality-strip{align-items:flex-start;flex-wrap:wrap}.quality-strip em{width:100%;padding-left:0}.preview-section{padding:12px}.source-summary strong{max-width:220px}}
+.ico-guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.ico-guide-grid article{display:flex;align-items:flex-start;gap:12px;padding:15px;border:1px solid #dfe7f0;border-radius:15px;background:#fbfdff}.ico-guide-grid article>span{display:grid;place-items:center;flex:0 0 36px;height:36px;border-radius:10px;background:#eaf3ff;font-size:12px;font-weight:900;color:#3474bd}.ico-guide-grid h4{margin:0;font-size:14px;color:var(--ink)}.ico-guide-grid p,.guide-rules p{margin:5px 0 0;font-size:12px;line-height:1.65;color:#6f8095}
+.guide-rules{display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden;margin-top:10px;border:1px solid #e1e8f0;border-radius:15px;background:#f6f9fc}.guide-rules>div{padding:14px 15px;border-right:1px solid #e1e8f0}.guide-rules>div:last-child{border-right:0}.guide-rules span,.guide-rules strong{display:block}.guide-rules span{font-size:12px;font-weight:700;color:#7890aa}.guide-rules strong{margin-top:4px;font-size:14px;color:#334d6c}
+.source-summary>span,.quality-strip>span{font-size:12px}
+.dark .ico-guide-grid article{border-color:#334155;background:#172033}.dark .ico-guide-grid h4,.dark .guide-rules strong{color:#dce6f2}.dark .guide-rules{border-color:#334155;background:#172033}.dark .guide-rules>div{border-color:#334155}
+@media(max-width:640px){.hero-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-metrics div{border-right:1px solid #dde6ef}.hero-metrics div:nth-child(2n){border-right:0}.hero-metrics div:nth-last-child(-n+2){border-bottom:0}.ico-guide-grid,.guide-rules{grid-template-columns:1fr}.guide-rules>div{border-right:0;border-bottom:1px solid #e1e8f0}.guide-rules>div:last-child{border-bottom:0}.dark .hero-metrics div,.dark .guide-rules>div{border-color:#334155}}
 </style>

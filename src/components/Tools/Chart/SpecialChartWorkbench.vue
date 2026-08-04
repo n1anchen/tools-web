@@ -3,8 +3,8 @@ import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } 
 import { ElMessage } from 'element-plus'
 import { CopyDocument, Download, Refresh, UploadFilled } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import ChartToolNav from '@/components/Tools/Chart/ChartToolNav.vue'
 import { useSettingStore } from '@/store/modules/setting'
@@ -116,8 +116,9 @@ onBeforeUnmount(() => { resizeObserver?.disconnect(); chart?.dispose(); chart = 
 
 <template>
   <div class="special-page flex flex-col mt-3 flex-1" :style="{ '--accent': meta.accent, '--accent-soft': meta.soft }">
-    <DetailHeader :title="meta.title" />
+    <ToolHero :title="meta.title" legacy>
     <section class="hero-card"><div><span class="eyebrow">{{ meta.eyebrow }}</span><h2>{{ meta.headline }}</h2><p>{{ meta.description }}</p></div><div class="hero-stats"><div v-for="item in heroMetrics" :key="item.label"><strong>{{ item.value }}</strong><span>{{ item.label }}</span></div></div></section>
+    </ToolHero>
 
     <ChartToolNav :current="props.type" />
 
@@ -141,7 +142,7 @@ onBeforeUnmount(() => { resizeObserver?.disconnect(); chart?.dispose(); chart = 
     </div>
       <div v-if="props.type === 'treemap' || props.type === 'sankey'" class="palette-section"><div><span>系列配色</span><small>各节点会按顺序使用整组颜色。</small></div><div class="palette-list"><button v-for="item in CHART_PALETTES" :key="item.id" type="button" :class="{ active: currentPaletteId === item.id }" :aria-label="`使用${item.title}配色`" @click="choosePalette(item)"><i v-for="color in item.colors.slice(0, 4)" :key="color" :style="{ background: color }"></i><span>{{ item.title }}</span></button></div></div>
     </section>
-    <ToolDetail title="数据结构与图表使用说明"><div class="detail-copy">{{ meta.detail }} 默认使用可视表格，可直接编辑或粘贴 Excel / WPS 单元格区域；也支持 CSV、TSV 与 JSON。所有解析和绘制均在当前浏览器完成；PNG 使用 2 倍像素密度导出，复制配置可获得当前 ECharts option。</div></ToolDetail>
+    <ToolGuide title="数据结构与图表使用说明"><div class="detail-copy">{{ meta.detail }} 默认使用可视表格，可直接编辑或粘贴 Excel / WPS 单元格区域；也支持 CSV、TSV 与 JSON。所有解析和绘制均在当前浏览器完成；PNG 使用 2 倍像素密度导出，复制配置可获得当前 ECharts option。</div></ToolGuide>
   </div>
 </template>
 

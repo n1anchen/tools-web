@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 
 type VerbKind = 'godan' | 'ichidan' | 'suru' | 'kuru' | 'aru'
@@ -639,7 +639,7 @@ function copyResult(result: Result) {
 
 <template>
   <div class="verb-tool flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" legacy>
 
     <section class="hero-card">
       <div>
@@ -653,6 +653,7 @@ function copyResult(result: Result) {
         <div><span>候选数量</span><strong>{{ results.length }}</strong></div>
       </div>
     </section>
+    </ToolHero>
 
     <section class="search-card">
       <div class="search-heading">
@@ -760,11 +761,11 @@ function copyResult(result: Result) {
       </div>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <el-text>
         输入一个日语动词的常见活用形式，工具会尝试反推出辞书形，并列出ます形、て形、た形、ない形、意向形、命令形、条件形、可能形、被动形、使役形等形式。对「見る / 帰る」这类一段、五段都可能成立的形式，会保留多个候选；高亮项即为输入形式。本工具按常见规则在本地推导，不含完整词典，少数特殊动词、敬语或复合表达仍需人工确认。
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

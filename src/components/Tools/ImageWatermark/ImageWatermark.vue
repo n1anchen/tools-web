@@ -2,8 +2,8 @@
 import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { Delete, Download, Picture, Refresh, UploadFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { autoDown } from '@/utils/file'
 import {
   getRotatedBounds,
@@ -233,7 +233,7 @@ onBeforeUnmount(releaseObjectUrl)
 
 <template>
   <div class="watermark-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="图片水印" />
+    <ToolHero title="图片水印" legacy>
 
     <section class="hero-card">
       <div>
@@ -247,6 +247,7 @@ onBeforeUnmount(releaseObjectUrl)
         <div><strong>0</strong><span>图片上传</span></div>
       </div>
     </section>
+    </ToolHero>
 
     <input ref="fileInput" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="handleInput">
 
@@ -343,9 +344,9 @@ onBeforeUnmount(releaseObjectUrl)
       <article><b>03</b><div><strong>本地隐私</strong><p>读取、绘制和导出均在浏览器完成，不上传图片内容。</p></div></article>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <p>上传图片或载入示例后，可调整文字、字体、颜色、旋转、描边、阴影和定位。平铺模式会自动根据文字旋转后的尺寸分布水印；JPG/WebP 可进一步设置导出质量。透明 PNG 导出为 JPG 时会自动使用白色背景。</p>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

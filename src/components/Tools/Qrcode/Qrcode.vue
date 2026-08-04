@@ -3,8 +3,8 @@ import { computed, reactive, ref } from 'vue'
 import { CopyDocument, Delete, Download, Refresh } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import QRCodeVue3 from 'qrcode-vue3'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { buildQrPayload, type QrContentType } from '@/utils/qrTools'
 import { copy } from '@/utils/string'
 
@@ -113,12 +113,13 @@ function downloadQrCode() {
 
 <template>
   <div class="qr-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="二维码生成" />
+    <ToolHero title="二维码生成" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">QR STUDIO</span><h2>内容、样式与预览，一处完成</h2><p>支持网址、Wi-Fi、邮件和电话模板，所有内容只在本地浏览器中生成。</p></div>
       <div class="hero-badges"><span>实时预览</span><span>PNG 导出</span><span>Logo 定制</span></div>
     </section>
+    </ToolHero>
 
     <section class="workspace">
       <div class="editor-column">
@@ -194,9 +195,9 @@ function downloadQrCode() {
       </aside>
     </section>
 
-    <ToolDetail title="使用建议">
+    <ToolGuide title="使用建议">
       <el-text>二维码承载内容越短越容易识别。用于印刷时建议导出较大尺寸、保留足够边距，并避免前景色与背景色过于接近；Wi-Fi 密码与邮件内容都只在当前浏览器中编码，不会上传到服务器。</el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

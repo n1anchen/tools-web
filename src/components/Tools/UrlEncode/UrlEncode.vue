@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { CopyDocument, Delete, Link, Promotion, RefreshRight, Switch } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 
 type Mode = 'encode' | 'decode'
@@ -79,7 +79,7 @@ function useExample(value: string) {
 
 <template>
   <div class="url-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="mode-panel">
@@ -148,7 +148,7 @@ function useExample(value: string) {
       </div>
     </section>
 
-    <ToolDetail title="编码模式说明">
+    <ToolGuide title="编码模式说明">
       <div class="detail-grid">
         <div>
           <h4>参数 / 文本模式</h4>
@@ -163,7 +163,7 @@ function useExample(value: string) {
           <p>所有转换均在本地浏览器中完成，不会上传输入的网址或参数内容。</p>
         </div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

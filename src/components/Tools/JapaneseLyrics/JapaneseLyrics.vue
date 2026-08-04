@@ -2,8 +2,8 @@
 import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import * as wanakana from 'wanakana'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import {
   analyzeJapaneseText,
@@ -935,7 +935,7 @@ function downloadStudyNotes() {
 
 <template>
   <div class="lyrics-tool flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" legacy>
 
     <section class="hero-card">
       <div><div class="eyebrow">JAPANESE LYRIC STUDIO</div><h2>把一段歌词，拆成可以逐行学习的材料</h2><p>自动识别时间轴与双语行，并将假名、罗马音、助词和活用语尾整理成清晰对照。</p></div>
@@ -945,6 +945,7 @@ function downloadStudyNotes() {
         <div><span>学习进度</span><strong>{{ learningProgress }}%</strong></div>
       </div>
     </section>
+    </ToolHero>
 
     <section class="source-workbench">
       <div class="source-main">
@@ -1017,7 +1018,7 @@ function downloadStudyNotes() {
 
     <section v-else class="empty-study"><span>詞</span><strong>等待一段日语歌词</strong><p>可粘贴文本、读取 URL、上传文件，或先载入示例体验逐行学习。</p><button @click="fillSample">使用示例歌词</button></section>
 
-    <ToolDetail title="使用说明"><div class="detail-copy"><p>支持纯文本、LRC、同时间戳双语歌词、相邻翻译行和“日语 / 翻译”同行写法。</p><p>全部歌词适合整体浏览；逐行专注模式可前后切换并标记学习进度。显示开关只影响页面阅读，不会改变原始文本。</p><p>默认轻量模式主要转换假名；精准读音会加载 kuromoji 词典，改进汉字词读音、词性与原形信息。</p></div></ToolDetail>
+    <ToolGuide title="使用说明"><div class="detail-copy"><p>支持纯文本、LRC、同时间戳双语歌词、相邻翻译行和“日语 / 翻译”同行写法。</p><p>全部歌词适合整体浏览；逐行专注模式可前后切换并标记学习进度。显示开关只影响页面阅读，不会改变原始文本。</p><p>默认轻量模式主要转换假名；精准读音会加载 kuromoji 词典，改进汉字词读音、词性与原形信息。</p></div></ToolGuide>
   </div>
 </template>
 

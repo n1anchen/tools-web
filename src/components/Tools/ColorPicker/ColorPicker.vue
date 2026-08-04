@@ -2,8 +2,8 @@
 import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { CopyDocument, Refresh } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { contrastRatio, createColorScale, getContrastChecks, pickReadableText } from '@/utils/colorStudio'
 import { colord, extend } from 'colord'
@@ -89,12 +89,13 @@ watch(backgroundHex, value => { if (value) backgroundInput.value = value.toUpper
 
 <template>
   <div class="color-page flex flex-col mt-3 flex-1" :style="{ '--selected': selectedHex }">
-    <DetailHeader title="Color 配色工作台" />
+    <ToolHero title="Color 配色工作台" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">COLOR ACCESSIBILITY STUDIO</span><h2>选颜色，也检查它是否真的好读</h2><p>统一转换常用颜色格式、生成 50–900 色阶，并用 WCAG 对比度判断正文、大号文字和 UI 图形是否清晰。</p></div>
       <div class="hero-stats"><div v-for="metric in heroMetrics" :key="metric.label"><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></div></div>
     </section>
+    </ToolHero>
 
     <section class="picker-card">
       <div><span class="eyebrow">COLOR INPUT</span><h3>输入与快速色板</h3><p>支持 HEX、RGB、HSL 和 CSS 颜色名，所有格式会同步换算。</p></div>
@@ -130,7 +131,7 @@ watch(backgroundHex, value => { if (value) backgroundInput.value = value.toUpper
       <div class="scale-list"><button v-for="item in colorScale" :key="item.label" type="button" :style="{ color: pickReadableText(item.color), background: item.color }" :aria-label="`复制 ${item.label} 色阶 ${item.color}`" @click="copy(item.color)"><span>{{ item.label }}</span><strong>{{ item.color }}</strong></button></div>
     </section>
 
-    <ToolDetail title="颜色格式与对比度说明"><div class="detail-copy">HEX、RGB 与 HSL 常用于网页界面；LAB 与 LCH 更接近人眼感知，CMYK 主要面向印刷。WCAG 对比度按相对亮度计算：普通正文 AA 至少 4.5:1，大号文字和关键 UI 图形至少 3:1，普通正文 AAA 至少 7:1。颜色通过计算不等于所有场景都安全，还应避免仅用颜色表达状态。</div></ToolDetail>
+    <ToolGuide title="颜色格式与对比度说明"><div class="detail-copy">HEX、RGB 与 HSL 常用于网页界面；LAB 与 LCH 更接近人眼感知，CMYK 主要面向印刷。WCAG 对比度按相对亮度计算：普通正文 AA 至少 4.5:1，大号文字和关键 UI 图形至少 3:1，普通正文 AAA 至少 7:1。颜色通过计算不等于所有场景都安全，还应避免仅用颜色表达状态。</div></ToolGuide>
   </div>
 </template>
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { CopyDocument, Delete, MagicStick } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { analyzeRegex, buildHighlightSegments, replaceRegex } from '@/utils/developerTools'
 
@@ -54,12 +54,13 @@ function clearAll() {
 
 <template>
   <div class="regex-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="正则表达式测试" />
+    <ToolHero title="正则表达式测试" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">REGEX LAB</span><h2>边写边看见每一次匹配</h2><p>实时高亮、捕获组拆解、替换预览和准确的错误定位。</p></div>
       <div class="hero-expression">/ pattern / <strong>{{ activeFlags || '—' }}</strong></div>
     </section>
+    </ToolHero>
 
     <section class="pattern-card">
       <div class="section-heading">
@@ -141,9 +142,9 @@ function clearAll() {
       <p v-else>开启后可使用 JavaScript 替换语法，结果仅预览，不会修改原文。</p>
     </section>
 
-    <ToolDetail title="正则提示">
+    <ToolGuide title="正则提示">
       <el-text>本工具使用浏览器的 JavaScript 正则引擎。g 表示全局匹配，i 忽略大小写，m 改变 ^ 与 $ 的行行为，s 允许点号匹配换行，u 启用 Unicode 语义。复杂回溯表达式可能占用较长时间，请避免对不可信表达式输入超长文本。</el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

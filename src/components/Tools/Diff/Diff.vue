@@ -3,8 +3,8 @@ import { computed, ref } from 'vue'
 import * as Diff from 'diff'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { sanitizeDocumentName } from '@/utils/documentStudio'
 import { buildDiffRows, createUnifiedDiffText, normalizeComparisonText, summarizeDiffRows } from '@/utils/textDiff'
@@ -122,12 +122,13 @@ function downloadDiff() {
 
 <template>
   <div class="diff-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="文本差异工作台" />
+    <ToolHero title="文本差异工作台" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">TEXT DIFFERENCE STUDIO</span><h2>不只标红，还要看清改了多少</h2><p>并排核对两个版本，按字符或词组高亮；支持忽略规则、文件导入、交换文本和差异导出。</p></div>
       <div class="hero-stats"><div><strong>{{ summary.similarity }}%</strong><span>行相似度</span></div><div><strong>{{ changedLines }}</strong><span>增删行数</span></div><div><strong>{{ summary.changedBlocks }}</strong><span>变更区块</span></div></div>
     </section>
+    </ToolHero>
 
     <section class="command-card">
       <div class="sample-list"><span>载入示例</span><button v-for="sample in samples" :key="sample.title" type="button" @click="applySample(sample)"><strong>{{ sample.title }}</strong><small>{{ sample.note }}</small></button></div>
@@ -179,7 +180,7 @@ function downloadDiff() {
       </div>
     </section>
 
-    <ToolDetail title="对比范围与隐私说明"><div class="detail-copy">字符级适合短文本和精确校对，词组级更适合自然语言；并排视图便于逐行核对，混合视图用于观察局部字词变化，导出的 .diff 文件可用于留档。文件导入和所有差异计算都在当前浏览器完成，文本不会上传到服务器。</div></ToolDetail>
+    <ToolGuide title="对比范围与隐私说明"><div class="detail-copy">字符级适合短文本和精确校对，词组级更适合自然语言；并排视图便于逐行核对，混合视图用于观察局部字词变化，导出的 .diff 文件可用于留档。文件导入和所有差异计算都在当前浏览器完成，文本不会上传到服务器。</div></ToolGuide>
   </div>
 </template>
 

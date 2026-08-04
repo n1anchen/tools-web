@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { Aim, Refresh, Trophy } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { summarizeReactionTimes } from '@/utils/workbenchTools'
 
 type TestState = 'intro' | 'waiting' | 'active' | 'tooEarly' | 'roundResult' | 'complete'
@@ -124,12 +124,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="reaction-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="反应速度测试" />
+    <ToolHero title="反应速度测试" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">REACTION CHALLENGE</span><h2>不是点一次，而是一场完整测试</h2><p>多轮采样、抢跑检测、稳定度与个人最佳，让偶然的一次点击变成更可信的结果。</p></div>
       <div class="best-badge"><el-icon><Trophy /></el-icon><span>个人最佳<strong>{{ personalBest ? `${personalBest} ms` : '等待记录' }}</strong></span></div>
     </section>
+    </ToolHero>
 
     <section class="session-bar">
       <div class="round-options"><span>测试轮数</span><button v-for="rounds in [3, 5, 10]" :key="rounds" :class="{ active: targetRounds === rounds }" :disabled="['waiting', 'active'].includes(state)" @click="changeRounds(rounds)">{{ rounds }} 轮</button></div>
@@ -164,7 +165,7 @@ onBeforeUnmount(() => {
 
     <section class="tips-grid"><article><span>01</span><div><strong>保持相同姿势</strong><p>多轮测试尽量使用同一根手指或同一个鼠标按键。</p></div></article><article><span>02</span><div><strong>避免预判</strong><p>颜色变化前点击会被识别为抢跑，本轮不会计入结果。</p></div></article><article><span>03</span><div><strong>理解设备误差</strong><p>屏幕刷新率、浏览器调度和输入设备都会影响测量，仅供娱乐参考。</p></div></article></section>
 
-    <ToolDetail title="使用说明"><el-text>开始后测试区会先进入等待状态，随机延迟后变成绿色。此时立即点击或按 Space / Enter。完成设定轮数后会计算最佳、平均、中位数和稳定度；个人最佳仅保存在当前浏览器中。</el-text></ToolDetail>
+    <ToolGuide title="使用说明"><el-text>开始后测试区会先进入等待状态，随机延迟后变成绿色。此时立即点击或按 Space / Enter。完成设定轮数后会计算最佳、平均、中位数和稳定度；个人最佳仅保存在当前浏览器中。</el-text></ToolGuide>
   </div>
 </template>
 

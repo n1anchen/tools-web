@@ -3,8 +3,8 @@ import { computed, onUnmounted, ref } from 'vue'
 import type { UploadFile } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { Close, Download, Picture, Refresh, VideoPlay } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { applyPatinaPixels, buildPatinaFilename, getPatinaProfile } from '@/utils/electronicPatina'
 
 const patinaPresets = [
@@ -216,12 +216,13 @@ onUnmounted(() => {
 
 <template>
   <div class="patina-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="电子包浆实验室" />
+    <ToolHero title="电子包浆实验室" legacy>
 
     <section class="studio-hero">
       <div><span class="eyebrow">DIGITAL PATINA LAB</span><h2>模拟一张图片，被反复转发后的痕迹</h2><p>通过多轮 JPEG 压缩、色度偏移和像素抖动生成做旧效果；用预设快速开始，也可以精确控制损伤程度。</p></div>
       <div class="hero-stats"><div><strong>{{ profile.score }}</strong><span>强度评分</span></div><div><strong>{{ compressionCount }}×</strong><span>压缩轮次</span></div><div><strong>{{ quality }}%</strong><span>单轮质量</span></div></div>
     </section>
+    </ToolHero>
 
     <section class="comparison-card">
       <header class="comparison-heading"><div><span class="eyebrow">BEFORE / AFTER</span><h3>原图与包浆结果</h3><p>{{ status }}</p></div><div class="top-actions"><el-upload :show-file-list="false" accept="image/png,image/jpeg,image/webp,image/gif" :on-change="handleFileChange" :auto-upload="false"><template #trigger><button type="button" aria-label="载入需要包浆的图片"><el-icon><Picture /></el-icon>{{ originalImage ? '更换图片' : '载入图片' }}</button></template></el-upload><button v-if="resultImage" type="button" class="download" aria-label="下载电子包浆结果图片" @click="downloadResult"><el-icon><Download /></el-icon>下载结果</button></div></header>
@@ -252,7 +253,7 @@ onUnmounted(() => {
       </aside>
     </div>
 
-    <ToolDetail title="原理与使用建议"><div class="detail-copy"><strong>电子包浆</strong>是图片经历多次 JPEG 保存后产生的色偏、边缘模糊和块状噪点。本工具在浏览器内重复执行色度通道偏移、JPEG 有损压缩与轻微像素抖动：次数越多、质量越低，效果越强。建议先用“经典包浆”预设观察，再根据原图细节调整；大尺寸图片可限制最长边，以缩短处理时间并减少内存占用。</div></ToolDetail>
+    <ToolGuide title="原理与使用建议"><div class="detail-copy"><strong>电子包浆</strong>是图片经历多次 JPEG 保存后产生的色偏、边缘模糊和块状噪点。本工具在浏览器内重复执行色度通道偏移、JPEG 有损压缩与轻微像素抖动：次数越多、质量越低，效果越强。建议先用“经典包浆”预设观察，再根据原图细节调整；大尺寸图片可限制最长边，以缩短处理时间并减少内存占用。</div></ToolGuide>
   </div>
 </template>
 

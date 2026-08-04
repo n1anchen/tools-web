@@ -2,8 +2,8 @@
 import { computed, onMounted, ref } from 'vue'
 import { CircleCheck, CopyDocument, Key, Lock, RefreshRight, WarningFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { estimatePasswordEntropy, generatePassword } from '@/utils/generators'
 import { copy } from '@/utils/string'
 
@@ -79,7 +79,7 @@ onMounted(generateAll)
 
 <template>
   <div class="password-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <div class="workspace-grid">
       <section class="settings-card">
@@ -189,13 +189,13 @@ onMounted(generateAll)
       </div>
     </section>
 
-    <ToolDetail title="安全建议">
+    <ToolGuide title="安全建议">
       <div class="advice-grid">
         <div><strong>重要账户使用独立密码</strong><span>不要在邮箱、支付和社交账户间重复使用同一密码。</span></div>
         <div><strong>优先增加长度</strong><span>在字符类型足够时，16 位以上的随机密码通常比短而复杂的密码更稳妥。</span></div>
         <div><strong>配合密码管理器</strong><span>妥善保存随机密码，并为支持的账户开启双重验证。</span></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

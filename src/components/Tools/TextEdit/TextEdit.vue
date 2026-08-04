@@ -5,8 +5,8 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import '@wangeditor/editor/dist/css/style.css'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { analyzeText } from '@/utils/textTools'
 import {
@@ -220,12 +220,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="rich-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="富文本与 HTML 工作台" />
+    <ToolHero title="富文本与 HTML 工作台" legacy>
 
     <section class="studio-hero">
       <div><span class="eyebrow">RICH CONTENT STUDIO</span><h2>专注写内容，HTML 交付自然完成</h2><p>使用可视化工具栏编排正文，同时获得干净的 HTML 和纯文本；支持模板、导入、本地草稿与多格式导出。</p></div>
       <div class="hero-stats"><div><strong>{{ statistics.charactersWithoutWhitespace }}</strong><span>有效字符</span></div><div><strong>{{ statistics.paragraphs }}</strong><span>内容段落</span></div><div><strong>{{ statistics.readingMinutes || '—' }}</strong><span>分钟阅读</span></div></div>
     </section>
+    </ToolHero>
 
     <section class="document-bar">
       <label class="title-field"><span>内容名称</span><el-input v-model="title" maxlength="60" aria-label="富文本内容名称" /></label>
@@ -265,7 +266,7 @@ onBeforeUnmount(() => {
       <div class="delivery-actions"><button type="button" aria-label="导出富文本的纯文本内容" :disabled="!hasContent" @click="exportText"><el-icon><Download /></el-icon>导出纯文本</button><button type="button" class="danger" aria-label="新建空白富文本内容" @click="clearDocument"><el-icon><Delete /></el-icon>新建空白内容</button></div>
     </section>
 
-    <ToolDetail title="导入、安全与隐私说明"><div class="detail-copy">支持导入 HTML 与纯文本文件；导入 HTML 时会移除脚本、嵌入框架、事件属性和危险链接，再交给编辑器处理。正文、草稿和导出文件都在当前浏览器中生成，不会上传到服务器。工具栏不提供图片或视频上传，以避免误以为媒体文件会被托管。</div></ToolDetail>
+    <ToolGuide title="导入、安全与隐私说明"><div class="detail-copy">支持导入 HTML 与纯文本文件；导入 HTML 时会移除脚本、嵌入框架、事件属性和危险链接，再交给编辑器处理。正文、草稿和导出文件都在当前浏览器中生成，不会上传到服务器。工具栏不提供图片或视频上传，以避免误以为媒体文件会被托管。</div></ToolGuide>
   </div>
 </template>
 

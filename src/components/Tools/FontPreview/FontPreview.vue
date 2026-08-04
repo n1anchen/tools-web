@@ -2,8 +2,8 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { CopyDocument, FolderOpened, Monitor, Refresh, Upload } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { analyzeFontSample, buildFontCss, quoteFontFamily } from '@/utils/fontPreview'
 
 interface LocalFontEntry {
@@ -226,7 +226,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="font-preview-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="字体标本工作室" />
+    <ToolHero title="字体标本工作室" legacy>
 
     <section class="studio-hero">
       <div>
@@ -240,6 +240,7 @@ onBeforeUnmount(() => {
         <div><strong>{{ metrics.lines }}</strong><span>文本行数</span></div>
       </div>
     </section>
+    </ToolHero>
 
     <section class="preview-card">
       <header class="preview-heading">
@@ -313,9 +314,9 @@ onBeforeUnmount(() => {
       <div v-if="!filteredLocalFonts.length" class="empty-state">没有匹配的本机字体</div>
     </section>
 
-    <ToolDetail title="使用与兼容性说明">
+    <ToolGuide title="使用与兼容性说明">
       <div class="detail-copy">内置字体栈无需任何权限即可预览；打开 TTF、OTF、WOFF 或 WOFF2 文件后，字体只会加载到当前页面内存。读取本机字体使用浏览器 Local Font Access API，目前主要由新版 Chrome 与 Edge 支持，并会先请求用户授权。字号瀑布适合检查不同显示尺寸下的辨识度，标本模式则适合观察真实段落中的字距与行高。</div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

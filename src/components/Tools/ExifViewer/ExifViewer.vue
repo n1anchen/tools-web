@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onUnmounted, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import exifr from 'exifr'
 import type { Map as LMap } from 'leaflet'
 import { copy } from '@/utils/string'
@@ -735,7 +735,7 @@ onUnmounted(() => {
 
 <template>
   <div class="exif-tool flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" legacy>
 
     <section class="exif-hero">
       <div>
@@ -749,6 +749,7 @@ onUnmounted(() => {
         <div><span>隐私检查</span><strong>{{ privacyLabel }}</strong></div>
       </div>
     </section>
+    </ToolHero>
 
     <!-- 主内容 -->
     <div class="exif-workbench p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm transition-shadow duration-300">
@@ -1014,14 +1015,14 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <el-text>
         上传 JPEG / HEIC / TIFF 等格式的图片，自动解析拍摄参数（光圈、快门、ISO、焦距等）、设备信息（相机型号、镜头）、GPS 地理位置，并在地图上标注拍摄地点。<br />
         支持一键下载"去除 EXIF 的原图"——通过 Canvas 重绘导出，天然不携带任何元数据，适合上传前保护隐私。<br />
         如图片包含旋转信息（Orientation），预览和下载图片均会自动纠正方向。<br />
         地图使用高德瓦片，国内网络可正常访问；离线时会显示坐标占位界面。
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

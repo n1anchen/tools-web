@@ -3,8 +3,8 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { Clock, CopyDocument, DataBoard, DocumentCopy, RefreshRight } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { v4 as uuidv4, v7 as uuidv7 } from 'uuid'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { formatUuid } from '@/utils/generators'
 import { copy } from '@/utils/string'
 
@@ -51,7 +51,7 @@ onMounted(generateAll)
 
 <template>
   <div class="uuid-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="section-heading">
@@ -118,7 +118,7 @@ onMounted(generateAll)
       </div>
     </section>
 
-    <ToolDetail title="版本选择参考">
+    <ToolGuide title="版本选择参考">
       <div class="reference-grid">
         <article>
           <div class="reference-icon blue"><el-icon><DataBoard /></el-icon></div>
@@ -133,7 +133,7 @@ onMounted(generateAll)
           <div><strong>格式不改变 UUID 含义</strong><p>大小写、连字符和大括号只影响展示；接入系统前请确认对方要求的格式。</p></div>
         </article>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

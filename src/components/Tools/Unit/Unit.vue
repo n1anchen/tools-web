@@ -2,8 +2,8 @@
 import { computed, ref, watch } from 'vue'
 import { CopyDocument, Delete, RefreshRight, Search, Star, Switch as SwitchIcon, TrendCharts } from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import {
   UNIT_CATEGORIES,
@@ -171,7 +171,7 @@ watch(() => route.query.active, value => {
 
 <template>
   <div class="unit-page flex flex-col mt-3 flex-1" :data-accent="categoryVisuals[activeId].accent">
-    <DetailHeader title="单位转换" />
+    <ToolHero title="单位转换" legacy>
 
     <section class="hero-card">
       <div>
@@ -181,6 +181,7 @@ watch(() => route.query.active, value => {
       </div>
       <div class="hero-stats"><div><strong>8</strong><span>换算分类</span></div><div><strong>100+</strong><span>单位定义</span></div><div><strong>0</strong><span>网络请求</span></div></div>
     </section>
+    </ToolHero>
 
     <nav class="category-nav" aria-label="单位分类">
       <button
@@ -258,9 +259,9 @@ watch(() => route.query.active, value => {
       <div><button v-for="item in history" :key="item.id" type="button" @click="restoreHistory(item)"><span>{{ getUnitCategory(item.categoryId).shortTitle }}</span><strong>{{ item.value }} {{ getUnitCategory(item.categoryId).units.find(unit => unit.key === item.from)?.symbol }} → {{ item.result }} {{ getUnitCategory(item.categoryId).units.find(unit => unit.key === item.to)?.symbol }}</strong></button></div>
     </section>
 
-    <ToolDetail title="换算说明">
+    <ToolGuide title="换算说明">
       <p>比例单位先统一换算为该分类的基准单位，再换算为目标单位；温度等带零点偏移的单位使用独立公式。时间中的“月”和“年”为平均公历时长，不代表任意两个具体日期之间的日历差。结果显示精度只影响展示，不改变内部计算。</p>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

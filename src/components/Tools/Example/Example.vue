@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 // import { copy } from '@/utils/string'
 const info = reactive({
   title: "tool name",
@@ -15,18 +15,18 @@ const info = reactive({
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <ToolHero :title="info.title"></ToolHero>
 
     <div class="p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
       
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolGuide title="描述">
       <el-text>
         示例...
       </el-text> 
-    </ToolDetail>
+    </ToolGuide>
 
   </div>
 </template>

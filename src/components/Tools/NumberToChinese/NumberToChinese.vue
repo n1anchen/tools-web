@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { CopyDocument, Delete, Money, Reading, Tickets } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy, numberToChinese } from '@/utils/string'
 
 const title = '数字转金额大写'
@@ -48,7 +48,7 @@ function clear() {
 
 <template>
   <div class="number-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="section-heading">
@@ -124,7 +124,7 @@ function clear() {
       </div>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <div class="detail-grid">
         <div>
           <h4>适用场景</h4>
@@ -135,7 +135,7 @@ function clear() {
           <p>支持零及非负整数，不包含“人民币”“元整”等业务后缀，也不处理角、分小数位。</p>
         </div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

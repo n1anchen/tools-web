@@ -3,8 +3,8 @@ import { computed, reactive, ref } from 'vue'
 import { CopyDocument, Download, MagicStick, RefreshLeft, Search } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { format, type IndentStyle, type KeywordCase, type LogicalOperatorNewline, type SqlLanguage } from 'sql-formatter'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import AceEditor from '@/components/Common/AceEditor.vue'
 import { copy } from '@/utils/string'
 import { countSqlStatements, minifySqlSafely } from '@/utils/workbenchTools'
@@ -156,12 +156,13 @@ function downloadSql() {
 
 <template>
   <div class="sql-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="SQL 格式化" />
+    <ToolHero title="SQL 格式化" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">SQL WORKBENCH</span><h2>从一行查询，到清晰可审阅的 SQL</h2><p>选择方言与排版规则，格式化、保守压缩、撤回和导出都在同一个工作台完成。</p></div>
       <div class="hero-dialect"><span>当前方言</span><strong>{{ currentDialect.label }}</strong><small>{{ currentDialect.badge }}</small></div>
     </section>
+    </ToolHero>
 
     <section class="sample-card"><span>载入示例</span><button v-for="sample in samples" :key="sample.label" @click="loadSample(sample)"><strong>{{ sample.label }}</strong><small>{{ dialects.find(item => item.value === sample.dialect)?.badge }}</small></button></section>
 
@@ -194,7 +195,7 @@ function downloadSql() {
 
     <section class="stat-strip"><div><span>方言</span><strong>{{ currentDialect.badge }}</strong></div><div><span>语句</span><strong>{{ stats.statements }}</strong></div><div><span>行数</span><strong>{{ stats.lines }}</strong></div><div><span>字符</span><strong>{{ stats.characters }}</strong></div><div><span>上次操作</span><strong>{{ lastAction }}</strong></div></section>
 
-    <ToolDetail title="使用说明"><el-text>格式化由当前选择的 SQL 方言和排版参数驱动；如果语法不完整，错误会直接显示在编辑器下方。安全压缩采用保守策略，不删除注释，也不会改写单引号字符串、双引号标识符、反引号、方括号标识符或 PostgreSQL Dollar-quoted 字符串。</el-text></ToolDetail>
+    <ToolGuide title="使用说明"><el-text>格式化由当前选择的 SQL 方言和排版参数驱动；如果语法不完整，错误会直接显示在编辑器下方。安全压缩采用保守策略，不删除注释，也不会改写单引号字符串、双引号标识符、反引号、方括号标识符或 PostgreSQL Dollar-quoted 字符串。</el-text></ToolGuide>
   </div>
 </template>
 

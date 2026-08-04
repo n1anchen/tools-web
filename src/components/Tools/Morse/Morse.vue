@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref } from 'vue'
 import { CopyDocument, Delete, Switch, VideoPause, VideoPlay } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { morseCodeMap, toMorse, toText } from '@/utils/morse'
 
@@ -121,7 +121,7 @@ onUnmounted(stopPlayback)
 
 <template>
   <div class="morse-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="摩斯电码" />
+    <ToolHero title="摩斯电码" legacy>
 
     <section class="hero-card">
       <div>
@@ -133,6 +133,7 @@ onUnmounted(stopPlayback)
         <span>···</span><span>———</span><span>···</span>
       </div>
     </section>
+    </ToolHero>
 
     <section class="workspace-card">
       <div class="toolbar">
@@ -219,11 +220,11 @@ onUnmounted(stopPlayback)
       </div>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <el-text>
         国际摩斯电码使用短信号与长信号组合表示字符。本工具优先按国际标准解析英文、数字和标点；中文使用扩展编码，因此与不同中文摩斯实现之间可能不兼容。试听功能只在当前浏览器内生成声音，不会上传文本。
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

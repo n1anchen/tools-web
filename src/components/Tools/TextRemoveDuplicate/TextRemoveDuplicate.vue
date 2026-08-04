@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { CopyDocument, DataAnalysis, Delete, Filter, RefreshRight, Switch } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { dedupeLines, type DedupeMode } from '@/utils/textTools'
 
@@ -48,7 +48,7 @@ function useResultAsInput() {
 
 <template>
   <div class="dedupe-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="settings-header">
@@ -140,13 +140,13 @@ function useResultAsInput() {
       </div>
     </section>
 
-    <ToolDetail title="规则说明">
+    <ToolGuide title="规则说明">
       <div class="detail-grid">
         <div><h4>全局重复行</h4><p>整段文本中相同的内容只保留第一次出现，适合名单、链接和数据列表。</p></div>
         <div><h4>仅连续重复</h4><p>只合并相邻的相同行，后续再次出现的内容仍会保留，适合日志和段落清理。</p></div>
         <div><h4>匹配细节</h4><p>可选择忽略首尾空白和大小写；排序操作在去重完成后执行。</p></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

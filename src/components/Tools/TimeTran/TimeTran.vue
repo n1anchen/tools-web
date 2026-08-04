@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { Clock, CopyDocument, VideoPause, VideoPlay } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import {
   formatDateTime,
@@ -113,7 +113,7 @@ onUnmounted(stopClock)
 
 <template>
   <div class="time-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="时间戳转换" />
+    <ToolHero title="时间戳转换" />
 
     <section class="clock-card">
       <div class="clock-icon"><el-icon><Clock /></el-icon></div>
@@ -195,11 +195,11 @@ onUnmounted(stopClock)
       <p>时间戳表示同一个绝对时刻，显示成日期时才受到时区影响。自动识别依据数字位数推断单位；历史数据、负数时间戳或非标准精度建议手动指定单位。</p>
     </section>
 
-    <ToolDetail title="时间戳说明">
+    <ToolGuide title="时间戳说明">
       <el-text>
         Unix 时间戳以 1970-01-01 00:00:00 UTC 为起点，不计闰秒。常见后端使用秒，JavaScript 使用毫秒，部分数据库和日志系统使用微秒。本工具的所有计算都在浏览器本地完成。
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

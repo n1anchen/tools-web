@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Connection, CopyDocument, Document, Grid, Lock, Switch } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { countHtmlEntityChanges, decodeHtmlEntities, encodeHtmlEntities } from '@/utils/textTools'
 
@@ -50,7 +50,7 @@ function useSample(sample: typeof samples[number]) {
 
 <template>
   <div class="entity-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="settings-header">
@@ -131,13 +131,13 @@ function useSample(sample: typeof samples[number]) {
       </div>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <div class="detail-grid">
         <div><h4>HTML 转实体</h4><p>将 &、&lt;、&gt;、单双引号转换为安全实体，适合展示代码片段或避免文本被当作标签解析。</p></div>
         <div><h4>实体转文本</h4><p>支持常用命名实体、十进制数字实体与十六进制数字实体，未知实体会原样保留。</p></div>
         <div><h4>安全显示</h4><p>输入和输出始终使用只读文本框呈现，不会把转换后的标签插入页面执行。</p></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

@@ -2,8 +2,8 @@
 import { computed, onMounted, ref } from 'vue'
 import { CopyDocument, DataAnalysis, MagicStick, RefreshRight, SetUp } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { generateRandomIntegers } from '@/utils/generators'
 import { copy } from '@/utils/string'
 
@@ -84,7 +84,7 @@ onMounted(generate)
 
 <template>
   <div class="random-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="section-heading">
@@ -172,13 +172,13 @@ onMounted(generate)
       </div>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <div class="guide-grid">
         <div><strong>包含边界值</strong><span>最小值与最大值均可能出现在结果中。</span></div>
         <div><strong>安全随机源</strong><span>使用浏览器 Crypto API，并通过拒绝采样避免取模偏差。</span></div>
         <div><strong>不重复抽取</strong><span>开启后每批结果不会重复，数量不能超过范围内整数总数。</span></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

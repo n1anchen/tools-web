@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { adjustContrast, drawToCanvas, getImageData, loadImageFromFile, resizeCover, toGray } from './imageUtils'
 import { prismDecode, prismEncode, type DecodeMethod } from './mirage'
 
@@ -250,7 +250,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="mirage-tool flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" legacy>
 
     <section class="hero-card">
       <div>
@@ -264,6 +264,7 @@ onBeforeUnmount(() => {
         <div><span>输出尺寸</span><strong>{{ activeMode === 'encode' ? encodeDimensions : decodeDimensions }}</strong></div>
       </div>
     </section>
+    </ToolHero>
 
     <nav class="mode-tabs" aria-label="光棱坦克功能">
       <button :class="{ active: activeMode === 'encode' }" @click="activeMode = 'encode'">
@@ -369,11 +370,11 @@ onBeforeUnmount(() => {
       <span>原</span><div><strong>工作原理</strong><p>合成模式按亮度端点与交错纹理混合两张图片；显形模式筛选指定亮度范围，并用周边平均、黑白或透明方式处理其余像素。算法全部在浏览器本地运行。</p></div>
     </section>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <el-text>
         制作模式中，隐藏图决定最终输出尺寸，表面图会以 cover 方式居中裁切；可先使用预设，再微调色阶、对比度、交错间隔和方向。显形模式适合分析同类亮度隐写图片，“自动估算”会根据亮度分布给出起点，但不同图片仍可能需要手动调整。本工具参考 TankFactory/Mirage_Decode 的处理思路，并非所有幻影坦克或透明度隐写格式的通用解码器。
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

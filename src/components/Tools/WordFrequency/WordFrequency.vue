@@ -2,8 +2,8 @@
 import { computed, reactive, ref } from 'vue'
 import { CopyDocument, DataAnalysis, Delete, Filter, Search, TrendCharts } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { analyzeWordFrequency } from '@/utils/textTools'
 
@@ -65,7 +65,7 @@ function copyAll() {
 
 <template>
   <div class="frequency-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="workspace-header">
@@ -175,13 +175,13 @@ function copyAll() {
       </section>
     </template>
 
-    <ToolDetail title="统计规则">
+    <ToolGuide title="统计规则">
       <div class="guide-grid">
         <div><strong>智能中英文分词</strong><span>中文按词语边界切分，英文按单词处理，数字和字母组合会保留。</span></div>
         <div><strong>停用词过滤</strong><span>可排除“的、是、and、the”等高频但信息量较低的常用词。</span></div>
         <div><strong>词汇丰富度</strong><span>不同词语数除以有效词数，可作为文本用词多样性的简单参考。</span></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

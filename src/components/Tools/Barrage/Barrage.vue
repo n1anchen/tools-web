@@ -2,8 +2,8 @@
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { FullScreen, VideoPause } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { estimateBarrageDuration, getContrastSummary, normalizeBarrageMessages } from '@/utils/displayStudio'
 
 type Orientation = 'landscape' | 'portrait'
@@ -158,7 +158,7 @@ onUnmounted(() => {
 
 <template>
   <div class="barrage-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="手持弹幕工作台" />
+    <ToolHero title="手持弹幕工作台" legacy>
 
     <section class="barrage-hero">
       <div>
@@ -168,6 +168,7 @@ onUnmounted(() => {
       </div>
       <button type="button" :disabled="!messages.length" @click="startDisplay"><el-icon><FullScreen /></el-icon><span><strong>进入全屏展示</strong><small>ESC 或按钮退出</small></span></button>
     </section>
+    </ToolHero>
 
     <section class="preview-card">
       <header class="preview-heading">
@@ -221,9 +222,9 @@ onUnmounted(() => {
       </aside>
     </div>
 
-    <ToolDetail title="展示建议">
+    <ToolGuide title="展示建议">
       <el-text>输入内容按行组成消息序列，空行会自动忽略，最多展示 12 条且每条最多 80 字。滚动时长会根据内容长度、字号、速度和屏幕宽度估算；现场使用前建议调高屏幕亮度、关闭自动锁屏，并优先选择对比度 4.5:1 以上的配色。全屏状态可按 ESC 或点击右上角按钮退出。</el-text>
-    </ToolDetail>
+    </ToolGuide>
 
     <div v-if="isPlaying" ref="overlayRef" class="fullscreen-overlay" :style="{ backgroundColor: state.bgColor }" @dblclick="stopDisplay">
       <div :class="['fullscreen-canvas', activeOrientation]">

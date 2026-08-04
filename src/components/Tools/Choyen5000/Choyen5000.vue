@@ -3,8 +3,8 @@ import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { CopyDocument, Download, Loading, Refresh, Rank } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import debounce from 'lodash/debounce'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { buildChoyenFilename, Drawer } from './choyen'
 import { loadFontStylesheet, ensureFontsLoaded } from '@/utils/font'
 
@@ -204,7 +204,7 @@ onUnmounted(() => {
 
 <template>
   <div class="choyen-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="金属冲击标题工作室" />
+    <ToolHero title="金属冲击标题工作室" legacy>
 
     <section class="studio-hero">
       <div>
@@ -218,6 +218,7 @@ onUnmounted(() => {
         <div><strong>{{ state.scale }}×</strong><span>清晰倍率</span></div>
       </div>
     </section>
+    </ToolHero>
 
     <section class="preview-card">
       <header class="preview-heading">
@@ -293,12 +294,12 @@ onUnmounted(() => {
       </aside>
     </div>
 
-    <ToolDetail title="使用与版权说明">
+    <ToolGuide title="使用与版权说明">
       <div class="detail-copy">
         本工具用于生成受“5000 兆円欲しい!”网络标题视觉启发的同人风格图片，并非原项目官方工具。下排标题既可用滑块精确定位，也可直接在画布上左右拖动；透明背景适合叠加到视频、海报或聊天图片中。经典原图模式会保留原始日文副标题，自定义模式则使用本地字体绘制。公开或商用前，请自行确认文字、素材与相关作品标识的使用权限。
         <a href="https://github.com/yurafuca/5000choyen" target="_blank" rel="noreferrer">参考项目：yurafuca/5000choyen</a>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

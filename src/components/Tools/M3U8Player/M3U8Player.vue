@@ -3,8 +3,8 @@ import { computed, onBeforeUnmount, ref } from 'vue'
 import { CopyDocument, FullScreen, Refresh, VideoPlay } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import Hls from 'hls.js'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { formatMediaTime, validateHlsUrl } from '@/utils/workbenchTools'
 
@@ -252,12 +252,13 @@ onBeforeUnmount(() => destroyHls())
 
 <template>
   <div class="hls-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="M3U8 播放器" />
+    <ToolHero title="M3U8 播放器" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">HLS STREAM INSPECTOR</span><h2>播放之外，也看得懂流状态</h2><p>解析清单、切换清晰度、查看缓冲与错误建议，适合播放和排查 HLS 直播或点播地址。</p></div>
       <div class="capability"><span>当前环境</span><strong>{{ Hls.isSupported() ? 'Media Source 可用' : '检测原生 HLS' }}</strong><small>{{ engine }}</small></div>
     </section>
+    </ToolHero>
 
     <section class="source-card">
       <div class="url-row"><div class="url-input"><el-input v-model="streamUrl" size="large" placeholder="https://cdn.example.com/live/master.m3u8" clearable @keyup.enter="loadStream()" /><span v-if="streamUrl && !validation.valid">{{ validation.error }}</span></div><el-button type="primary" size="large" :icon="VideoPlay" @click="loadStream()">检测并播放</el-button><el-button size="large" @click="stopPlayback">停止</el-button></div>
@@ -289,7 +290,7 @@ onBeforeUnmount(() => destroyHls())
 
     <section class="tips-grid"><article><strong>CORS</strong><p>清单与媒体分片都需要允许当前站点跨域读取；能在新标签页打开不代表播放器一定可访问。</p></article><article><strong>HTTPS</strong><p>HTTPS 页面通常无法加载 HTTP 流。生产环境应让页面、清单和分片都使用 HTTPS。</p></article><article><strong>编码</strong><p>浏览器支持的编码取决于系统与设备；常见 H.264/AAC 流通常拥有更广泛的兼容性。</p></article></section>
 
-    <ToolDetail title="使用说明"><el-text>输入完整的 HTTP(S) M3U8 地址后点击“检测并播放”。支持 Media Source 的浏览器使用 hls.js，Safari 等环境会尝试原生 HLS。出现错误时，诊断区会区分清单、分片、网络和媒体问题；URL 可能包含临时令牌，请谨慎复制或分享。</el-text></ToolDetail>
+    <ToolGuide title="使用说明"><el-text>输入完整的 HTTP(S) M3U8 地址后点击“检测并播放”。支持 Media Source 的浏览器使用 hls.js，Safari 等环境会尝试原生 HLS。出现错误时，诊断区会区分清单、分片、网络和媒体问题；URL 可能包含临时令牌，请谨慎复制或分享。</el-text></ToolGuide>
   </div>
 </template>
 

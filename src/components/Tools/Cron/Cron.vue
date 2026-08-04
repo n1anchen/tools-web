@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { buildCronExpression, CRON_PRESETS, inspectCronFields, type CronCycle } from '@/utils/cronStudio'
 import cronstrue from 'cronstrue/i18n'
@@ -125,12 +125,13 @@ watch(expression, parseExpression, { immediate: true })
 
 <template>
   <div class="cron-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="CRON 调度工作台" />
+    <ToolHero title="CRON 调度工作台" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">CRON SCHEDULE STUDIO</span><h2>从表达式到执行计划，一次看懂</h2><p>用常用周期快速生成，也可以直接编辑表达式；实时解释每个字段，并在浏览器本地时区预览后续执行时间。</p></div>
       <div class="hero-stats"><div v-for="metric in heroMetrics" :key="metric.label"><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></div></div>
     </section>
+    </ToolHero>
 
     <section class="preset-card">
       <span>常用计划</span>
@@ -171,7 +172,7 @@ watch(expression, parseExpression, { immediate: true })
       <div v-else class="empty-state">修正表达式后，这里会显示未来执行时间。</div>
     </section>
 
-    <ToolDetail title="字段规则与使用提示"><div class="detail-copy">五位表达式依次表示“分钟、小时、日期、月份、星期”，六位格式在最前面增加“秒”。星号表示任意值，逗号表示多个值，短横线表示范围，斜杠表示步长。不同调度器对年份、问号和特殊字符的支持可能不同，正式部署前应以目标系统文档为准。</div></ToolDetail>
+    <ToolGuide title="字段规则与使用提示"><div class="detail-copy">五位表达式依次表示“分钟、小时、日期、月份、星期”，六位格式在最前面增加“秒”。星号表示任意值，逗号表示多个值，短横线表示范围，斜杠表示步长。不同调度器对年份、问号和特殊字符的支持可能不同，正式部署前应以目标系统文档为准。</div></ToolGuide>
   </div>
 </template>
 

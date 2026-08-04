@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { Clock, CopyDocument, Delete, MagicStick, RefreshRight, SetUp, TrendCharts } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import DiceCore from '@/components/Tools/Dice/DiceCore.vue'
 import { copy } from '@/utils/string'
 
@@ -74,7 +74,7 @@ function copyCurrent() {
 
 <template>
   <div class="dice-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="workspace-header">
@@ -159,13 +159,13 @@ function copyCurrent() {
       </div>
     </section>
 
-    <ToolDetail title="使用提示">
+    <ToolGuide title="使用提示">
       <div class="guide-grid">
         <div><strong>点击单颗重新投掷</strong><span>只想替换其中一个结果时，可以直接点击对应骰子，无需重投全部。</span></div>
         <div><strong>修正值自动计入总分</strong><span>适合桌游、跑团或属性检定，支持 -100 到 +100 的整数修正。</span></div>
         <div><strong>安全随机点数</strong><span>每颗骰子使用浏览器 Crypto API 独立生成 1～6 的均匀随机整数。</span></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

@@ -2,8 +2,8 @@
 import { computed, ref } from 'vue'
 import { CopyDocument, Delete, Download, RefreshLeft, Search } from '@element-plus/icons-vue'
 import AceEditor from '@/components/Common/AceEditor.vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { getCodeMetrics } from '@/utils/codeWorkbench'
 
@@ -113,12 +113,13 @@ defineExpose({ formatEditor, openSearchBox })
 
 <template>
   <div :class="['code-workbench-page', `accent-${accent}`, 'flex', 'flex-col', 'mt-3', 'flex-1']">
-    <DetailHeader :title="pageTitle" />
+    <ToolHero :title="pageTitle" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">{{ eyebrow }}</span><h2>{{ headline }}</h2><p>{{ description }}</p></div>
       <div class="language-badge"><span>当前语言</span><strong>{{ language }}</strong><small>LOCAL ONLY</small></div>
     </section>
+    </ToolHero>
 
     <section class="sample-card">
       <span>载入示例</span>
@@ -172,7 +173,7 @@ defineExpose({ formatEditor, openSearchBox })
 
     <section class="tips-grid"><article v-for="(tip, index) in tips" :key="tip.title"><span>0{{ index + 1 }}</span><div><strong>{{ tip.title }}</strong><p>{{ tip.description }}</p></div></article></section>
 
-    <ToolDetail title="使用说明"><slot name="usage" /></ToolDetail>
+    <ToolGuide title="使用说明"><slot name="usage" /></ToolGuide>
   </div>
 </template>
 

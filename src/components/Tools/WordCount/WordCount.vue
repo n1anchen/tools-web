@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { CopyDocument, DataAnalysis, Delete, Document, Reading, Timer } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { analyzeText } from '@/utils/textTools'
 
@@ -57,7 +57,7 @@ function useSample(value: string) {
 
 <template>
   <div class="word-count-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="editor-header">
@@ -152,13 +152,13 @@ function useSample(value: string) {
       </div>
     </section>
 
-    <ToolDetail title="统计口径">
+    <ToolGuide title="统计口径">
       <div class="detail-copy">
         <p><strong>总字符</strong>按 Unicode 码点统计，Emoji 会作为一个字符；空白字符包括空格、制表符和换行。</p>
         <p><strong>估算词数</strong>将每个汉字计为一个词，并识别连续的英文或数字单词，适合快速评估文本长度。</p>
         <p><strong>段落</strong>通过空行区分；仅换行但没有空行时仍视为同一段落。</p>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

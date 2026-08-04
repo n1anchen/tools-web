@@ -12,8 +12,8 @@ import {
   TrendCharts,
   Wallet,
 } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import {
   buildExtraPaymentScenario,
   buildHoldingSnapshot,
@@ -304,7 +304,7 @@ calculate()
 
 <template>
   <div class="mortgage-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="calculator-card">
       <div class="section-heading">
@@ -563,13 +563,13 @@ calculate()
       </section>
     </template>
 
-    <ToolDetail title="计算说明">
+    <ToolGuide title="计算说明">
       <div class="explanation-grid">
         <div><el-icon><Timer /></el-icon><p><strong>等额本息</strong><span>每月偿还相同金额，前期利息占比更高，适合希望现金流稳定的家庭。</span></p></div>
         <div><el-icon><TrendCharts /></el-icon><p><strong>等额本金</strong><span>每月本金相同、利息逐月减少，前期还款较高但总利息通常更少。</span></p></div>
         <div><el-icon><Coin /></el-icon><p><strong>结果仅供测算</strong><span>实际执行以银行重定价日、计息规则、提前还款违约金和审批结果为准。</span></p></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

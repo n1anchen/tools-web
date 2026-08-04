@@ -2,8 +2,8 @@
 import { computed, ref } from 'vue'
 import { CircleCheckFilled, CopyDocument, Delete, WarningFilled } from '@element-plus/icons-vue'
 import { jwtDecode } from 'jwt-decode'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { analyzeJwtClaims, formatUnixClaim } from '@/utils/converters'
 import { copy } from '@/utils/string'
 
@@ -94,7 +94,7 @@ function loadSample() {
 
 <template>
   <div class="jwt-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="JWT 解析" />
+    <ToolHero title="JWT 解析" />
 
     <section class="security-banner">
       <el-icon><WarningFilled /></el-icon>
@@ -172,11 +172,11 @@ function loadSample() {
       </section>
     </template>
 
-    <ToolDetail title="JWT 安全说明">
+    <ToolGuide title="JWT 安全说明">
       <el-text>
         JWT 由 Header、Payload、Signature 三部分组成。前两部分只是 Base64URL 编码，并未加密，任何人都可以读取，切勿在其中放入密码等敏感信息。浏览器端无法在不知道密钥的情况下证明签名有效；生产鉴权应在可信服务端校验签名、算法、签发方、接收方及有效期。
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

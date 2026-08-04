@@ -3,8 +3,8 @@ import {ref, reactive, onMounted, watch } from 'vue'
 import Spreadsheet from 'x-data-spreadsheet'
 import 'x-data-spreadsheet/dist/locale/zh-cn';
 import { UploadProps,UploadRawFile,genFileId } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { toEchartsData, toSpreadsheetData } from '@/utils/echarts'
 import * as echarts from 'echarts'
 import * as XLSX from 'xlsx'
@@ -232,7 +232,7 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <ToolHero :title="info.title"></ToolHero>
 
     <div class="p-4 rounded-2xl flex bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div class="w-4/6">
@@ -354,13 +354,13 @@ onMounted(() => {
     </el-drawer>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolGuide title="描述">
       <el-text>
         面积图是折线图的扩展，通过在折线与坐标轴之间填充颜色来直观展示数据量的大小，适合表现趋势变化与累积量。<br>
         可自定义填充颜色与透明度，轻松打造精美的视觉效果。<br>
         在线图表制作工具，在线制作面积图，支持导入表格并在线编辑，支持 PNG、JPEG 格式导出。<br>
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

@@ -3,8 +3,8 @@ import { computed, ref } from 'vue'
 import { Check, CopyDocument, Delete, Document, UploadFilled, Warning } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { Md5 } from 'ts-md5'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { buildMd5Variants, formatFileSize } from '@/utils/workbenchTools'
 
@@ -101,12 +101,13 @@ function copyAll() {
 
 <template>
   <div class="md5-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="MD5 摘要计算" />
+    <ToolHero title="MD5 摘要计算" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">MD5 DIGEST LAB</span><h2>计算摘要，不再误叫“加密”</h2><p>支持文本与大文件分块计算、16/32 位格式转换和校验值比对，全程在本地完成。</p></div>
       <div class="security-note"><el-icon><Warning /></el-icon><span><b>兼容用途</b>MD5 不适合密码存储或安全签名</span></div>
     </section>
+    </ToolHero>
 
     <section class="mode-tabs"><button :class="{ active: mode === 'text' }" @click="mode = 'text'"><span>01</span><div><strong>文本摘要</strong><small>输入即计算 · UTF-8</small></div></button><button :class="{ active: mode === 'file' }" @click="mode = 'file'"><span>02</span><div><strong>文件校验</strong><small>分块读取 · 不上传</small></div></button></section>
 
@@ -148,7 +149,7 @@ function copyAll() {
 
     <section class="knowledge-card"><div><span class="eyebrow">KNOW THE LIMIT</span><h3>摘要不是加密，也不能解密</h3></div><div class="knowledge-grid"><article><strong>适合</strong><p>文件完整性校验、缓存键、旧系统兼容、非安全场景的快速指纹。</p></article><article><strong>不适合</strong><p>密码存储、数字签名、防篡改认证或任何需要抗碰撞能力的安全用途。</p></article><article><strong>更安全的选择</strong><p>文件校验优先选择 SHA-256；密码应使用专门的慢哈希与随机盐。</p></article></div></section>
 
-    <ToolDetail title="使用说明"><el-text>文本模式使用 UTF-8 编码实时计算；文件模式按固定分块读取，因此不会一次性把大文件全部载入内存。16 位 MD5 是标准 32 位摘要的中间 16 个字符，仅用于兼容，并不是另一种算法。</el-text></ToolDetail>
+    <ToolGuide title="使用说明"><el-text>文本模式使用 UTF-8 编码实时计算；文件模式按固定分块读取，因此不会一次性把大文件全部载入内存。16 位 MD5 是标准 32 位摘要的中间 16 个字符，仅用于兼容，并不是另一种算法。</el-text></ToolGuide>
   </div>
 </template>
 

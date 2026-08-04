@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 
 const title = 'Emoji 大全'
@@ -314,12 +314,13 @@ onMounted(() => {
 
 <template>
   <div class="emoji-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" legacy>
 
     <section class="emoji-hero">
       <div><span class="eyebrow">EMOJI LIBRARY</span><h2>找到表情，收藏起来，点一下就复制</h2><p>按场景分类浏览，也可以搜索中文名称、Emoji 本身或 Unicode 编码。收藏和最近使用仅保存在当前浏览器。</p></div>
       <div class="hero-metrics"><div><strong>{{ emojiData.length }}</strong><span>收录表情</span></div><div><strong>{{ favorites.length }}</strong><span>我的收藏</span></div><div><strong>{{ recent.length }}</strong><span>最近使用</span></div></div>
     </section>
+    </ToolHero>
 
     <section class="browser-card">
       <div class="search-row">
@@ -352,9 +353,9 @@ onMounted(() => {
       <div v-else class="empty-state"><span>{{ viewMode === 'favorites' ? '☆' : '⌕' }}</span><strong>{{ viewMode === 'favorites' ? '还没有收藏 Emoji' : '没有找到匹配结果' }}</strong><p>{{ viewMode === 'favorites' ? '浏览表情时点击右上角星标，常用 Emoji 会更容易找到。' : '尝试更短的中文关键词、切换全部分类，或搜索 Unicode 编码。' }}</p><button v-if="searchText || viewMode !== 'all'" type="button" @click="searchText = ''; setViewMode('all')">查看全部 Emoji</button></div>
     </section>
 
-    <ToolDetail title="搜索、收藏与隐私说明">
+    <ToolGuide title="搜索、收藏与隐私说明">
       <div class="detail-grid"><article><strong>多维搜索</strong><p>支持中文名称、Emoji 字符、分类名称和 Unicode 编码；空格分隔的多个关键词需同时匹配。</p></article><article><strong>收藏与最近使用</strong><p>收藏最多保留 100 个，最近使用保留 24 个；两者均存放在当前浏览器的本地存储中。</p></article><article><strong>一键复制</strong><p>点击表情卡片即可复制，并自动进入最近使用。不同系统的 Emoji 字形可能略有差异。</p></article></div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

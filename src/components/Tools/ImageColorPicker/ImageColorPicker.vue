@@ -2,8 +2,8 @@
 import { computed, ref } from 'vue'
 import { CopyDocument, Delete, Picture, UploadFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import {
   extractDominantColors,
@@ -206,12 +206,13 @@ function copyPaletteVariables() {
 
 <template>
   <div class="color-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="传图取色" />
+    <ToolHero title="传图取色" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">IMAGE COLOR LAB</span><h2>从一张图片，读懂整套色彩</h2><p>像素级取色、主色提取与格式转换均在本地完成，图片不会上传。</p></div>
       <div class="hero-stats"><div><strong>5</strong><span>色彩格式</span></div><div><strong>8</strong><span>智能主色</span></div><div><strong>20</strong><span>历史记录</span></div></div>
     </section>
+    </ToolHero>
 
     <section
       v-if="!imageUrl"
@@ -272,9 +273,9 @@ function copyPaletteVariables() {
       </section>
     </template>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <el-text>上传图片后移动鼠标可实时预览像素颜色，点击后锁定该颜色并记录原图坐标。主色板通过本地像素采样生成，可一键复制为 CSS 变量；对于超大图片，工具会生成最长边不超过 2000px 的分析画布，以兼顾响应速度和取样稳定性。</el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

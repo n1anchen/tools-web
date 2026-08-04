@@ -3,8 +3,8 @@ import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from
 import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
 import { ElMessage, genFileId } from 'element-plus'
 import { CopyDocument, Download, Picture, Refresh, Upload } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import {
   buildMemeFilename,
   calculateCaptionLayout,
@@ -247,12 +247,13 @@ onUnmounted(() => themeObserver?.disconnect())
 
 <template>
   <div class="meme-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="字幕梗图工作室" />
+    <ToolHero title="字幕梗图工作室" legacy>
 
     <section class="studio-hero">
       <div><span class="eyebrow">MEME CAPTION STUDIO</span><h2>把一句话，放到最有戏的位置</h2><p>载入图片后实时调整字幕、位置与描边，自动换行并输出适合聊天、社交平台和二次创作的成品。</p></div>
       <div class="hero-stats"><div><strong>{{ outputDimensions.width || '—' }}</strong><span>输出宽度</span></div><div><strong>{{ renderedLines.length || '—' }}</strong><span>字幕行数</span></div><div><strong>{{ state.format.toUpperCase() }}</strong><span>导出格式</span></div></div>
     </section>
+    </ToolHero>
 
     <section class="preview-card">
       <header class="preview-heading">
@@ -291,7 +292,7 @@ onUnmounted(() => themeObserver?.disconnect())
       </aside>
     </div>
 
-    <ToolDetail title="使用与隐私说明"><div class="detail-copy">载入图片后可直接编辑多行字幕，也可以开启自动换行，让文字按图片宽度排成最多五行。黑底和白底适合信息型字幕，透明描边适合保留更多画面；输出比例只改变最终像素尺寸，不会修改原文件。图片读取、画布合成、复制与下载全部在当前浏览器完成，不会上传到服务器。</div></ToolDetail>
+    <ToolGuide title="使用与隐私说明"><div class="detail-copy">载入图片后可直接编辑多行字幕，也可以开启自动换行，让文字按图片宽度排成最多五行。黑底和白底适合信息型字幕，透明描边适合保留更多画面；输出比例只改变最终像素尺寸，不会修改原文件。图片读取、画布合成、复制与下载全部在当前浏览器完成，不会上传到服务器。</div></ToolGuide>
   </div>
 </template>
 

@@ -2,8 +2,8 @@
 import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { ArrowDown, ArrowUp, Delete, Download, Picture, Plus, Rank, UploadFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { autoDown } from '@/utils/file'
 import { buildStitchPlan, exceedsPixelBudget, type StitchMode } from '@/utils/imageStudio'
 
@@ -278,12 +278,13 @@ onBeforeUnmount(clearAll)
 
 <template>
   <div class="stitch-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="图片拼接" />
+    <ToolHero title="图片拼接" legacy>
 
     <section class="hero-card">
       <div><span class="eyebrow">MULTI IMAGE COMPOSER</span><h2>排序、裁切、拼接，一块画布完成</h2><p>纵向、横向与影视台词三种工作流实时预览；桌面可拖拽排序，手机也能用上下按钮精确调整顺序。</p></div>
       <div class="hero-stats"><div><strong>{{ images.length }}</strong><span>图片</span></div><div><strong>{{ plan.width || '—' }}</strong><span>输出宽</span></div><div><strong>{{ plan.height || '—' }}</strong><span>输出高</span></div></div>
     </section>
+    </ToolHero>
 
     <input ref="fileInput" class="sr-only" type="file" multiple accept="image/png,image/jpeg,image/webp" @change="handleInput">
 
@@ -341,7 +342,7 @@ onBeforeUnmount(clearAll)
 
     <section class="feature-strip"><article><b>01</b><div><strong>手机也能排序</strong><p>缩略图提供上移、下移按钮，不再依赖桌面端拖拽操作。</p></div></article><article><b>02</b><div><strong>台词裁切可解释</strong><p>首帧、中间帧、末帧使用不同保留规则，结果尺寸实时展示。</p></div></article><article><b>03</b><div><strong>画布安全检查</strong><p>在分配超大 Canvas 前提示像素与边长风险，避免页面崩溃。</p></div></article></section>
 
-    <ToolDetail title="使用说明"><p>添加多张图片后选择纵向、横向或影视台词模式。桌面端可拖动图片行，手机端可使用上下箭头排序。普通拼接可以调整间距与背景色；台词模式通过范围滑块指定字幕所在区域。超过浏览器安全画布范围时会停止绘制并给出调整建议。</p></ToolDetail>
+    <ToolGuide title="使用说明"><p>添加多张图片后选择纵向、横向或影视台词模式。桌面端可拖动图片行，手机端可使用上下箭头排序。普通拼接可以调整间距与背景色；台词模式通过范围滑块指定字幕所在区域。超过浏览器安全画布范围时会停止绘制并给出调整建议。</p></ToolGuide>
   </div>
 </template>
 

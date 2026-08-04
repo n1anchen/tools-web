@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Connection, CopyDocument, Grid, MagicStick, Switch } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import { decodeUnicode, encodeUnicode, type UnicodeFormat } from '@/utils/textTools'
 
@@ -47,7 +47,7 @@ function useSample(sample: typeof samples[number]) {
 
 <template>
   <div class="unicode-page flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" />
 
     <section class="workspace-card">
       <div class="settings-header">
@@ -133,13 +133,13 @@ function useSample(sample: typeof samples[number]) {
       <div v-else class="empty-inspector">输入内容后查看每个字符对应的 Unicode 码点</div>
     </section>
 
-    <ToolDetail title="格式说明">
+    <ToolGuide title="格式说明">
       <div class="detail-grid">
         <div><h4>JavaScript 转义</h4><p>基本平面字符使用 \uXXXX；Emoji 等增补平面字符会输出为一对 UTF-16 代理项。</p></div>
         <div><h4>Unicode 码点</h4><p>使用 \u&#123;1F600&#125; 形式直接表示完整码点，可读性更好，但需要目标环境支持。</p></div>
         <div><h4>解码兼容</h4><p>解码同时识别 \uXXXX、UTF-16 代理项和 \u&#123;...&#125; 三种常见写法。</p></div>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

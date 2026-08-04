@@ -3,8 +3,8 @@ import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } 
 import { ElMessage } from 'element-plus'
 import { CopyDocument, Download, Refresh, UploadFilled } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import ChartToolNav from '@/components/Tools/Chart/ChartToolNav.vue'
 import { useSettingStore } from '@/store/modules/setting'
@@ -249,7 +249,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="chart-page flex flex-col mt-3 flex-1" :style="{ '--accent': meta.accent, '--accent-soft': meta.accentSoft }">
-    <DetailHeader :title="meta.title" />
+    <ToolHero :title="meta.title" legacy>
 
     <section class="hero-card">
       <div class="hero-copy">
@@ -261,6 +261,7 @@ onBeforeUnmount(() => {
         <div v-for="metric in heroMetrics" :key="metric.label"><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></div>
       </div>
     </section>
+    </ToolHero>
 
     <ChartToolNav :current="props.type" />
 
@@ -353,7 +354,7 @@ onBeforeUnmount(() => {
       </div>
     </section>
 
-    <ToolDetail title="图表选择与数据说明"><div class="detail-copy">{{ meta.detail }} 默认使用可视表格，可直接编辑或粘贴 Excel / WPS 单元格区域；也支持 CSV、TSV 与 JSON。所有解析和绘制都在当前浏览器完成，不会上传数据。导出的 PNG 使用 2 倍像素密度；“复制配置”可获得当前 ECharts option。</div></ToolDetail>
+    <ToolGuide title="图表选择与数据说明"><div class="detail-copy">{{ meta.detail }} 默认使用可视表格，可直接编辑或粘贴 Excel / WPS 单元格区域；也支持 CSV、TSV 与 JSON。所有解析和绘制都在当前浏览器完成，不会上传数据。导出的 PNG 使用 2 倍像素密度；“复制配置”可获得当前 ECharts option。</div></ToolGuide>
   </div>
 </template>
 

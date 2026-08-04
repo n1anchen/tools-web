@@ -3,8 +3,8 @@ import { computed, ref } from 'vue'
 import * as XLSX from 'xlsx'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { CopyDocument, Delete, DocumentAdd, Download, EditPen, FolderOpened, Plus, Refresh, UploadFilled } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import { copy } from '@/utils/string'
 import {
@@ -355,7 +355,7 @@ function copyPreview() {
 
 <template>
   <div class="sheet-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="表格数据转换工作台" />
+    <ToolHero title="表格数据转换工作台" legacy>
 
     <section class="hero-card">
       <div class="hero-copy">
@@ -369,6 +369,7 @@ function copyPreview() {
         <div><strong>{{ totalCells.toLocaleString() }}</strong><span>有效单元格</span></div>
       </div>
     </section>
+    </ToolHero>
 
     <section class="source-card">
       <div class="section-title"><div><span class="eyebrow">01 · IMPORT</span><h3>导入文件或从示例开始</h3><p>XLSX / XLS / ODS 会保留多个工作表；CSV、TSV、JSON 与 JSON Lines 会自动识别结构。</p></div><el-button :icon="Refresh" @click="resetSample">恢复示例</el-button></div>
@@ -438,14 +439,14 @@ function copyPreview() {
       </div>
     </section>
 
-    <ToolDetail title="格式说明与使用建议">
+    <ToolGuide title="格式说明与使用建议">
       <div class="detail-grid">
         <article><strong>XLSX / XLS / ODS</strong><p>导入时读取所有工作表和单元格显示值；在线编辑后可重新生成 XLSX。为避免执行不可信内容，公式按当前结果值读取，宏不会被保留。</p></article>
         <article><strong>CSV / TSV</strong><p>自动识别逗号、Tab、分号和管道符，支持引号、字段内换行与中文 BOM。CSV 只能承载一个工作表，因此始终导出当前页。</p></article>
         <article><strong>JSON / JSON Lines</strong><p>支持对象数组、二维数组、单个对象及以工作表名分组的对象。重名表头导出对象时会自动追加编号，空单元格输出为 null。</p></article>
         <article><strong>处理边界</strong><p>单文件上限 25 MB；在线编辑保留每个工作表前 5,000 行、100 列。超大数据集建议使用桌面表格软件或数据库工具。</p></article>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

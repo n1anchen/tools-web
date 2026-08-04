@@ -2,8 +2,8 @@
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import type { Map as LMap, Marker as LMarker } from 'leaflet'
 import { ElMessage } from 'element-plus'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import {
   buildBatchCoordinateSets,
@@ -425,7 +425,7 @@ onUnmounted(() => {
 
 <template>
   <div class="coord-tool flex flex-col mt-3 flex-1">
-    <DetailHeader :title="title" />
+    <ToolHero :title="title" legacy>
 
     <section class="hero-card">
       <div>
@@ -439,6 +439,7 @@ onUnmounted(() => {
         <div><span>处理状态</span><strong>{{ workMode === 'single' ? sourcePairText : `${batchResults.length} 个结果` }}</strong></div>
       </div>
     </section>
+    </ToolHero>
 
     <nav class="mode-tabs" aria-label="坐标转换模式">
       <button :class="{ active: workMode === 'single' }" @click="workMode = 'single'">
@@ -549,13 +550,13 @@ onUnmounted(() => {
 
     <div class="precision-note"><span>准</span><div><strong>坐标精度说明</strong><p>WGS84、GCJ-02、BD-09 和 Web Mercator 适合常见互联网地图场景；CGCS2000 在本工具中按 WGS84 近似处理，不作为测绘级成果。</p></div></div>
 
-    <ToolDetail title="使用说明">
+    <ToolGuide title="使用说明">
       <div class="detail-copy">
         <p>单点模式支持编辑任意坐标系、地图点击和标记拖拽；“复制全部”会生成便于粘贴到表格的制表符文本。</p>
         <p>批量模式支持“名称 + 两列坐标”，也接受只有两列坐标的内容；转换结果包含全部五种坐标系并可导出 UTF-8 CSV。</p>
         <p>Web Mercator 使用 X、Y 投影坐标，单位为米。地图瓦片使用 GCJ-02，因此单点地图始终以 GCJ-02 结果定位。</p>
       </div>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 

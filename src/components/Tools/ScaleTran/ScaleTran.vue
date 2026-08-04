@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { CopyDocument, MagicStick } from '@element-plus/icons-vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
 import {
   RADIX_DEFINITIONS,
@@ -64,7 +64,7 @@ function continueFromResult(base: SupportedRadix, value: string) {
 
 <template>
   <div class="radix-page flex flex-col mt-3 flex-1">
-    <DetailHeader title="常用进制转换" />
+    <ToolHero title="常用进制转换" />
 
     <section class="input-card">
       <div class="input-heading">
@@ -148,11 +148,11 @@ function continueFromResult(base: SupportedRadix, value: string) {
       </div>
     </section>
 
-    <ToolDetail title="进制说明">
+    <ToolGuide title="进制说明">
       <el-text>
         进制是用固定数量的数字符号表示数值的方法。2、8、10、16 进制常用于计算机系统；Base58 常用于区块链地址；Base62 常用于短链接。本工具只转换整数表示，不等同于 Base64 文本编码，也不会处理小数部分。
       </el-text>
-    </ToolDetail>
+    </ToolGuide>
   </div>
 </template>
 
