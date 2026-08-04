@@ -11,6 +11,7 @@ import { useSettingStore } from '@/store/modules/setting'
 import { useRoute } from 'vue-router'
 import { getTools } from '@/components/Tools/tools.ts'
 import { copy, rtrim } from '@/utils/string'
+import { clearChartDraft, loadChartDraft, saveChartDraft } from '@/utils/chartDraft'
 import {
   CHART_PALETTES,
   CHART_SAMPLES,
@@ -116,6 +117,38 @@ const stats = computed(() => getChartStats(rows.value, props.type))
 const option = computed(() => buildChartOption(props.type, rows.value, settings, settingStore.isDark))
 const currentPaletteId = ref<string>(CHART_PALETTES[0].id)
 
+// 恢复该图表类型的本地草稿（跨工具切换 / 刷新后保留输入数据与配置）
+const restoredDraft = loadChartDraft<ChartSettings>(props.type)
+if (restoredDraft) {
+  dataMode.value = restoredDraft.dataMode as EditorMode
+  activeSample.value = restoredDraft.activeSample
+  chartHeight.value = restoredDraft.chartHeight
+  currentPaletteId.value = restoredDraft.currentPaletteId
+  dataText.value = restoredDraft.dataText
+  Object.assign(settings, { ...createSettings(), ...restoredDraft.settings })
+}
+
+// 草稿保存：变更后防抖写入；仅在有实际改动时才落盘，重置后清除
+let draftTimer: ReturnType<typeof setTimeout> | null = null
+let draftDirty = false
+function writeDraft() {
+  saveChartDraft(props.type, {
+    dataText: dataText.value,
+    dataMode: dataMode.value,
+    activeSample: activeSample.value,
+    chartHeight: chartHeight.value,
+    currentPaletteId: currentPaletteId.value,
+    settings: { ...settings },
+  })
+}
+function scheduleDraft() {
+  draftDirty = true
+  if (draftTimer) clearTimeout(draftTimer)
+  draftTimer = setTimeout(writeDraft, 400)
+}
+watch([dataMode, dataText, activeSample, chartHeight, currentPaletteId], scheduleDraft)
+watch(settings, scheduleDraft, { deep: true })
+
 const heroMetrics = computed(() => [
   { value: stats.value.count.toLocaleString('zh-CN'), label: stats.value.primaryLabel },
   { value: formatNumber(props.type === 'scatter' ? stats.value.average : stats.value.sum), label: props.type === 'scatter' ? 'Y 平均值' : '数值合计' },
@@ -182,6 +215,8 @@ function resetWorkbench() {
   dataText.value = serializeChartData(samples.value[0].rows, props.type, 'table')
   chartHeight.value = 440
   currentPaletteId.value = CHART_PALETTES[0].id
+  draftDirty = false
+  clearChartDraft(props.type)
   ElMessage.success('已恢复默认示例与配置')
 }
 
@@ -242,6 +277,9 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  // 组件销毁前把未落盘的草稿写入，保证跨工具切换后数据不丢失
+  if (draftTimer) { clearTimeout(draftTimer); draftTimer = null }
+  if (draftDirty) writeDraft()
   resizeObserver?.disconnect()
   chart?.dispose()
   chart = null
@@ -267,7 +305,7 @@ onBeforeUnmount(() => {
     <ChartToolNav :current="props.type" />
 
     <section class="sample-card">
-      <div class="section-heading"><div><span class="eyebrow">START WITH DATA</span><h3>载入一个示例</h3></div><p>示例会替换当前数据，之后可继续编辑。</p></div>
+      <div class="section-heading"><div><span class="eyebrow">START WITH DATA</span><h3>载入一个示例</h3></div><p>示例会替换当前数据，载入后可以继续编辑。</p></div>
       <div class="sample-list">
         <button v-for="sample in samples" :key="sample.id" type="button" :class="{ active: activeSample === sample.id }" @click="applySample(sample.id)">
           <span>{{ sample.title }}</span><small>{{ sample.hint }}</small>

@@ -11,6 +11,7 @@ import { useSettingStore } from '@/store/modules/setting'
 import { useRoute } from 'vue-router'
 import { getTools } from '@/components/Tools/tools.ts'
 import { copy, rtrim } from '@/utils/string'
+import { clearChartDraft, loadChartDraft, saveChartDraft } from '@/utils/chartDraft'
 import { CHART_PALETTES } from '@/utils/chartStudio'
 import {
   SPECIAL_SAMPLES,
@@ -71,6 +72,39 @@ function createSettings(): SpecialChartSettings {
 const settings = reactive<SpecialChartSettings>(createSettings())
 const parserMode = computed<SpecialDataMode>(() => dataMode.value === 'json' ? 'json' : 'table')
 const dataText = ref(serializeSpecialChartData(samples.value[0].data, 'table'))
+
+// 恢复该图表类型的本地草稿（跨工具切换 / 刷新后保留输入数据与配置）
+const restoredDraft = loadChartDraft<SpecialChartSettings>(props.type)
+if (restoredDraft) {
+  dataMode.value = restoredDraft.dataMode as EditorMode
+  activeSample.value = restoredDraft.activeSample
+  chartHeight.value = restoredDraft.chartHeight
+  currentPaletteId.value = restoredDraft.currentPaletteId
+  dataText.value = restoredDraft.dataText
+  Object.assign(settings, { ...createSettings(), ...restoredDraft.settings })
+  if (props.type === 'calendar') nextTick(syncCalendarYear)
+}
+
+// 草稿保存：变更后防抖写入；仅在有实际改动时才落盘，重置后清除
+let draftTimer: ReturnType<typeof setTimeout> | null = null
+let draftDirty = false
+function writeDraft() {
+  saveChartDraft(props.type, {
+    dataText: dataText.value,
+    dataMode: dataMode.value,
+    activeSample: activeSample.value,
+    chartHeight: chartHeight.value,
+    currentPaletteId: currentPaletteId.value,
+    settings: { ...settings },
+  })
+}
+function scheduleDraft() {
+  draftDirty = true
+  if (draftTimer) clearTimeout(draftTimer)
+  draftTimer = setTimeout(writeDraft, 400)
+}
+watch([dataMode, dataText, activeSample, chartHeight, currentPaletteId], scheduleDraft)
+watch(settings, scheduleDraft, { deep: true })
 const parsed = computed(() => parseSpecialChartData(dataText.value, props.type, parserMode.value))
 const data = computed(() => parsed.value.data)
 const availableYears = computed(() => data.value.kind === 'calendar' ? data.value.years : [])
@@ -105,7 +139,7 @@ function applySample(id: string) {
 }
 function changeMode(mode: EditorMode) { if (mode === dataMode.value) return; const nextParserMode: SpecialDataMode = mode === 'json' ? 'json' : 'table'; if (nextParserMode === parserMode.value) { dataMode.value = mode; return }; const current = stats.value.count ? data.value : samples.value[0].data; dataMode.value = mode; dataText.value = serializeSpecialChartData(current, nextParserMode) }
 function choosePalette(item: typeof CHART_PALETTES[number]) { currentPaletteId.value = item.id; settings.palette = [...item.colors] }
-function resetWorkbench() { Object.assign(settings, createSettings()); dataMode.value = 'grid'; activeSample.value = samples.value[0].id; dataText.value = serializeSpecialChartData(samples.value[0].data, 'table'); chartHeight.value = 480; currentPaletteId.value = CHART_PALETTES[0].id; ElMessage.success('已恢复默认示例与配置') }
+function resetWorkbench() { Object.assign(settings, createSettings()); dataMode.value = 'grid'; activeSample.value = samples.value[0].id; dataText.value = serializeSpecialChartData(samples.value[0].data, 'table'); chartHeight.value = 480; currentPaletteId.value = CHART_PALETTES[0].id; draftDirty = false; clearChartDraft(props.type); ElMessage.success('已恢复默认示例与配置') }
 
 async function importData(event: Event) {
   const input = event.target as HTMLInputElement; const file = input.files?.[0]; input.value = ''; if (!file) return
@@ -119,7 +153,7 @@ watch(option, () => nextTick(renderChart), { deep: true })
 watch(availableYears, syncCalendarYear)
 watch(() => settingStore.isDark, recreateChart)
 onMounted(() => nextTick(() => { renderChart(); if (chartElement.value) { resizeObserver = new ResizeObserver(() => chart?.resize()); resizeObserver.observe(chartElement.value) } }))
-onBeforeUnmount(() => { resizeObserver?.disconnect(); chart?.dispose(); chart = null })
+onBeforeUnmount(() => { if (draftTimer) { clearTimeout(draftTimer); draftTimer = null } if (draftDirty) writeDraft(); resizeObserver?.disconnect(); chart?.dispose(); chart = null })
 </script>
 
 <template>
@@ -130,7 +164,7 @@ onBeforeUnmount(() => { resizeObserver?.disconnect(); chart?.dispose(); chart = 
 
     <ChartToolNav :current="props.type" />
 
-    <section class="sample-card"><div class="section-heading"><div><span class="eyebrow">START WITH DATA</span><h3>选择专业示例</h3></div><p>示例覆盖不同业务结构，载入后可以继续编辑。</p></div><div class="sample-list"><button v-for="sample in samples" :key="sample.id" type="button" :class="{ active: activeSample === sample.id }" @click="applySample(sample.id)"><span>{{ sample.title }}</span><small>{{ sample.hint }}</small></button></div></section>
+    <section class="sample-card"><div class="section-heading"><div><span class="eyebrow">START WITH DATA</span><h3>载入一个示例</h3></div><p>示例会替换当前数据，载入后可以继续编辑。</p></div><div class="sample-list"><button v-for="sample in samples" :key="sample.id" type="button" :class="{ active: activeSample === sample.id }" @click="applySample(sample.id)"><span>{{ sample.title }}</span><small>{{ sample.hint }}</small></button></div></section>
 
     <section class="workspace-grid">
       <article class="data-card"><header class="card-header"><div><span class="eyebrow">STRUCTURED DATA</span><h3>数据输入与校验</h3></div><div class="header-actions"><button type="button" @click="fileInput?.click()"><el-icon><UploadFilled /></el-icon>导入</button><button type="button" @click="downloadData">导出</button><input ref="fileInput" type="file" accept=".csv,.tsv,.txt,.json" hidden @change="importData"></div></header><div class="mode-tabs" aria-label="数据输入方式"><button type="button" :class="{ active: dataMode === 'grid' }" @click="changeMode('grid')">可视表格</button><button type="button" :class="{ active: dataMode === 'table' }" @click="changeMode('table')">CSV / TSV</button><button type="button" :class="{ active: dataMode === 'json' }" @click="changeMode('json')">JSON</button></div><ChartDataGrid v-if="dataMode === 'grid'" v-model="dataText" :min-columns="gridColumns" :aria-label="`${workbenchTitle}可视数据表格`" @update:model-value="activeSample = ''" /><textarea v-else v-model="dataText" spellcheck="false" :aria-label="`${workbenchTitle}数据输入`" @input="activeSample = ''"></textarea><div class="format-hint"><span>{{ formatHint }}</span><b>{{ stats.count }} 条有效记录</b></div><div v-if="allErrors.length" class="validation-box" role="alert"><strong>有 {{ allErrors.length }} 处需要检查</strong><ul><li v-for="error in allErrors.slice(0, 4)" :key="error">{{ error }}</li></ul></div><div v-else class="validation-box success"><strong>数据结构有效</strong><span>预览、年度范围与统计会随输入实时更新。</span></div></article>

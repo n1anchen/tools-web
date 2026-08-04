@@ -2,6 +2,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { constantRoute } from './router'
 import { getTools } from '@/components/Tools/tools.ts'
+import { isSameFamily } from '@/utils/routeTransition'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
@@ -15,9 +16,11 @@ const router = createRouter({
   history: createWebHistory(),
   routes: constantRoute,
   //滚动行为
-  scrollBehavior(to) {
+  scrollBehavior(to, from) {
     // 首页由组件自行控制滚动（用于恢复离开时的位置）
     if (to.path === '/') return false
+    // 同类工具快速切换（图表 / 单位分类）：保持当前滚动位置，不回到顶部
+    if (isSameFamily(from.path, to.path)) return false
     return {
       left: 0,
       top: 0,

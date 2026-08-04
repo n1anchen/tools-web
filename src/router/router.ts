@@ -131,11 +131,91 @@ export const constantRoute = [
   },
   {
     path: '/unit',
-    component: () => import('@/components/Tools/Unit/Unit.vue'),
+    component: () => import('@/components/Tools/Unit/Length.vue'),
     name: 'unit',
+    // 兼容旧版 /unit/?active=xxx 分享链接：按参数重定向到独立分类路径
+    beforeEnter: (to) => {
+      const active = to.query.active
+      if (typeof active === 'string') {
+        const alias: Record<string, string> = { length: 'length', area: 'area', weight: 'weight', time: 'time', temperature: 'temperature', pressure: 'pressure', heat: 'heat', power: 'power' }
+        return { path: `/${alias[active] ?? 'length'}`, replace: true }
+      }
+    },
     meta: {
       keywords: '单位换算,长度,面积,重量,时间,温度,压力,能量,功率,公制,市制,英制',
       description: '统一换算长度、面积、重量、时间、温度、压力、能量和功率，一次输入查看全部单位与定义说明',
+    }
+  },
+  {
+    path: '/length',
+    component: () => import('@/components/Tools/Unit/Length.vue'),
+    name: 'unit-length',
+    meta: {
+      keywords: '长度换算,长度转换,公里,米,英里,海里,市制,英制,公制',
+      description: '支持公制、中国市制、英美制与航海长度，采用英寸、海里等精确定义',
+    }
+  },
+  {
+    path: '/area',
+    component: () => import('@/components/Tools/Unit/Area.vue'),
+    name: 'unit-area',
+    meta: {
+      keywords: '面积换算,面积转换,亩,公顷,英亩,平方千米,平方米',
+      description: '支持公制土地面积、中国市制与英美面积，包含亩、公顷、英亩等常用单位',
+    }
+  },
+  {
+    path: '/weight',
+    component: () => import('@/components/Tools/Unit/Weight.vue'),
+    name: 'unit-weight',
+    meta: {
+      keywords: '重量换算,重量转换,千克,磅,盎司,金衡制,市制',
+      description: '支持公制、中国市制、常衡制和金衡制，并区分日常盎司与金衡盎司',
+    }
+  },
+  {
+    path: '/time',
+    component: () => import('@/components/Tools/Unit/Time.vue'),
+    name: 'unit-time',
+    meta: {
+      keywords: '时间换算,时间转换,秒,分钟,小时,天,月,年',
+      description: '支持纳秒至平均公历年，并明确区分固定时长与月、年的日历近似值',
+    }
+  },
+  {
+    path: '/temperature',
+    component: () => import('@/components/Tools/Unit/Temperature.vue'),
+    name: 'unit-temperature',
+    meta: {
+      keywords: '温度换算,温度转换,摄氏,华氏,开尔文,列氏,兰氏',
+      description: '摄氏、华氏、开尔文、列氏和兰氏实时互转，并检查绝对零度边界',
+    }
+  },
+  {
+    path: '/pressure',
+    component: () => import('@/components/Tools/Unit/Pressure.vue'),
+    name: 'unit-pressure',
+    meta: {
+      keywords: '压力换算,压力转换,帕斯卡,巴,大气压,托,毫米汞柱,psi',
+      description: '覆盖 Pa、bar、atm、Torr、mmHg、psi 等工程、气象和轮胎常用单位',
+    }
+  },
+  {
+    path: '/heat',
+    component: () => import('@/components/Tools/Unit/Heat.vue'),
+    name: 'unit-heat',
+    meta: {
+      keywords: '能量换算,能量转换,瓦时,焦耳,卡路里,BTU,电子伏特',
+      description: '覆盖 Wh、J、cal、BTU 与电子伏特，可处理电能、机械能和热量换算',
+    }
+  },
+  {
+    path: '/power',
+    component: () => import('@/components/Tools/Unit/Power.vue'),
+    name: 'unit-power',
+    meta: {
+      keywords: '功率换算,功率转换,瓦,千瓦,马力,BTU/h,kcal/h',
+      description: '覆盖 W、kW、机械马力、公制马力、BTU/h 与 kcal/h 等功率单位',
     }
   },
   {

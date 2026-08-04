@@ -9,7 +9,8 @@ import { useComponentStore } from '@/store/modules/component'
 import { useSettingStore } from '@/store/modules/setting'
 import { provide, onMounted, onUnmounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { isSameFamily } from '@/utils/routeTransition'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { InfoFilled, CircleCheckFilled, Download } from '@element-plus/icons-vue'
 
@@ -58,8 +59,19 @@ const router = useRouter()
 
 // 路由加载状态
 const routeLoading = ref(false)
-const removeBeforeGuard = router.beforeEach(() => { routeLoading.value = true })
+// 同类工具快速切换（图表工具 / 单位换算分类）时跳过页面过渡动画与加载遮罩
+const skipPageTransition = ref(false)
+const removeBeforeGuard = router.beforeEach((to, from) => {
+  if (!isSameFamily(from.path, to.path)) routeLoading.value = true
+})
 const removeAfterGuard = router.afterEach(() => { routeLoading.value = false })
+// 路由变化时判断是否为同类切换，仅影响本次过渡
+const route = useRoute()
+let previousPath = route.path
+watch(() => route.fullPath, () => {
+  skipPageTransition.value = isSameFamily(previousPath, route.path)
+  previousPath = route.path
+})
 
 const getThemeTransitionOrigin = (event: MouseEvent) => {
   // `clientX/clientY` can be 0 or synthetic for keyboard/touch generated clicks.
@@ -251,8 +263,8 @@ onUnmounted(() => {
           </div>
         </transition>
         <router-view v-slot="{ Component, route }">
-          <transition name="page" mode="out-in">
-            <component :is="Component" :key="route.path"></component>
+          <transition :name="skipPageTransition ? '' : 'page'" mode="out-in">
+            <component :is="Component" :key="route.path.replace(/\/+$/, '') || '/'"></component>
           </transition>
         </router-view>
       </el-main>

@@ -1,7 +1,15 @@
 <script setup lang="ts">
 export type ChartToolKey = 'bar' | 'line' | 'pie' | 'scatter' | 'funnel' | 'radar' | 'gauge' | 'heatmap' | 'candlestick' | 'stack' | 'treemap' | 'sankey' | 'boxplot' | 'calendar'
 
-defineProps<{ current: ChartToolKey }>()
+const props = defineProps<{ current: ChartToolKey }>()
+
+// 点击当前工具则不导航（同类切换的动画与滚动由 App 层按家族判断统一处理）
+function onNavClick(event: MouseEvent, type: ChartToolKey) {
+  if (type === props.current) {
+    event.preventDefault()
+    return
+  }
+}
 
 const groups: { title: string; description: string; tools: { type: ChartToolKey; label: string }[] }[] = [
   { title: '常用比较', description: '分类、趋势、占比与转化', tools: [{ type: 'bar', label: '柱状图' }, { type: 'line', label: '折线图' }, { type: 'pie', label: '饼图' }, { type: 'scatter', label: '散点图' }, { type: 'funnel', label: '漏斗图' }] },
@@ -16,7 +24,7 @@ const groups: { title: string; description: string; tools: { type: ChartToolKey;
     <div class="nav-groups">
       <section v-for="group in groups" :key="group.title" class="nav-group">
         <header><strong>{{ group.title }}</strong><small>{{ group.description }}</small></header>
-        <div><router-link v-for="tool in group.tools" :key="tool.type" :to="`/${tool.type}`" :class="{ active: current === tool.type }" :aria-current="current === tool.type ? 'page' : undefined">{{ tool.label }}</router-link></div>
+        <div><router-link v-for="tool in group.tools" :key="tool.type" :to="`/${tool.type}/`" :class="{ active: current === tool.type }" :aria-current="current === tool.type ? 'page' : undefined" @click="onNavClick($event, tool.type)">{{ tool.label }}</router-link></div>
       </section>
     </div>
   </nav>

@@ -167,6 +167,18 @@ export const UNIT_CATEGORIES: UnitCategory[] = [
 
 const categoryMap = new Map(UNIT_CATEGORIES.map(category => [category.id, category]))
 
+// 各分类对应的独立路由路径（用于同类工具快速切换 / 深链）
+export const UNIT_CATEGORY_PATHS: Record<UnitCategoryId, string> = {
+  length: 'length',
+  area: 'area',
+  mass: 'weight',
+  time: 'time',
+  temperature: 'temperature',
+  pressure: 'pressure',
+  energy: 'heat',
+  power: 'power',
+}
+
 export function normalizeUnitCategory(value: unknown): UnitCategoryId {
   if (value === 'weight') return 'mass'
   if (value === 'heat') return 'energy'
