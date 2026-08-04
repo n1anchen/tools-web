@@ -734,20 +734,14 @@ onUnmounted(() => {
 
 <template>
   <div class="exif-tool flex flex-col mt-3 flex-1">
-    <ToolHero legacy #default="{ toolInfo }">
-
-    <section class="exif-hero">
-      <div>
-        <div class="exif-eyebrow">PHOTO METADATA INSPECTOR</div>
-        <h2>看清照片携带的信息，再决定如何分享</h2>
-        <p>{{ toolInfo.desc }}</p>
-      </div>
-      <div class="exif-metrics">
-        <div><span>文件格式</span><strong>{{ fileFormat }}</strong></div>
-        <div><span>元数据字段</span><strong>{{ metadataCount }}</strong></div>
-        <div><span>隐私检查</span><strong>{{ privacyLabel }}</strong></div>
-      </div>
-    </section>
+    <ToolHero summary="看清照片携带的信息，再决定如何分享">
+      <template #metrics>
+        <div class="hero-metrics">
+          <div><span>文件格式</span><strong>{{ fileFormat }}</strong></div>
+          <div><span>元数据字段</span><strong>{{ metadataCount }}</strong></div>
+          <div><span>隐私检查</span><strong>{{ privacyLabel }}</strong></div>
+        </div>
+      </template>
     </ToolHero>
 
     <!-- 主内容 -->
@@ -1040,16 +1034,13 @@ onUnmounted(() => {
 }
 
 .exif-tool { --exif-ink:#273247; --exif-muted:#69778c; }
-.exif-hero { display:flex; justify-content:space-between; gap:28px; padding:26px 28px; margin-bottom:14px; border:1px solid #dbe5ef; border-radius:24px; background:linear-gradient(135deg,#edf8ff,#f5f1ff); box-shadow:0 12px 30px rgba(51,65,85,.06); }
-.exif-eyebrow,.privacy-workbench header span { font-size:12px; font-weight:800; letter-spacing:.14em; color:#52779e; }
-.exif-hero h2 { margin:6px 0 8px; font-size:24px; color:var(--exif-ink); }
-.exif-hero p { margin:0; font-size:14px; line-height:1.7; color:var(--exif-muted); }
-.exif-metrics { display:grid; grid-template-columns:repeat(3,minmax(105px,1fr)); min-width:420px; overflow:hidden; border:1px solid #d7e2ec; border-radius:18px; background:rgba(255,255,255,.75); }
-.exif-metrics div { padding:16px; border-right:1px solid #d7e2ec; }
-.exif-metrics div:last-child { border-right:0; }
-.exif-metrics span,.exif-metrics strong { display:block; }
-.exif-metrics span { font-size:12px; color:#7e8b9c; }
-.exif-metrics strong { margin-top:5px; font-size:15px; color:var(--exif-ink); }
+.privacy-workbench header span { font-size:12px; font-weight:800; letter-spacing:.14em; color:#52779e; }
+.hero-metrics { display:grid; grid-template-columns:repeat(3,minmax(96px,1fr)); min-width:320px; overflow:hidden; border:1px solid #e0e9f4; border-radius:18px; background:rgba(255,255,255,.78); }
+.hero-metrics div { padding:12px 14px; text-align:center; border-left:1px solid #e5edf6; }
+.hero-metrics div:first-child { border-left:0; }
+.hero-metrics span,.hero-metrics strong { display:block; }
+.hero-metrics span { margin-top:4px; color:#7a899c; font-size:12px; }
+.hero-metrics strong { overflow:hidden; color:#334155; font-size:18px; text-overflow:ellipsis; white-space:nowrap; }
 .exif-workbench { border-radius:24px!important; box-shadow:0 12px 30px rgba(51,65,85,.06)!important; }
 .exif-upload { min-height:165px; height:auto!important; background:#f8fbff; }
 .privacy-workbench { padding:16px; border:1px solid #d9e8df; border-radius:18px; background:#f7fcf9; }
@@ -1076,11 +1067,11 @@ onUnmounted(() => {
 .exif-collapse :deep(.el-collapse-item__header) { min-height:52px; font-size:14px; }
 .exif-collapse :deep(.el-collapse-item__content) { font-size:13px; }
 .exif-collapse .text-\[10px\],.exif-collapse .text-\[11px\],.exif-collapse .text-xs { font-size:12px!important; }
-.dark .exif-hero { border-color:#344155; background:linear-gradient(135deg,#172d40,#251d3c); }
-.dark .exif-hero h2,.dark .exif-metrics strong,.dark .privacy-workbench h3,.dark .privacy-grid article strong { color:#e7edf6; }
-.dark .exif-hero p { color:#aab6c6; }
-.dark .exif-metrics { border-color:#425169; background:rgba(15,23,42,.5); }
-.dark .exif-metrics div { border-color:#425169; }
+.dark .hero-metrics { border-color:#425169; background:rgba(15,23,42,.5); }
+.dark .hero-metrics div { border-color:#425169; }
+.dark .hero-metrics strong { color:#e7edf6; }
+.dark .hero-metrics span { color:#a8b4c5; }
+.dark .privacy-workbench h3,.dark .privacy-grid article strong { color:#e7edf6; }
 .dark .exif-upload { background:#111c2d; }
 .dark .privacy-workbench,.dark .privacy-workbench.danger { border-color:#344155; background:#111a2a; }
 .dark .privacy-grid article { background:#14291f; }
@@ -1089,8 +1080,8 @@ onUnmounted(() => {
 .dark .metadata-tabs button { border-color:#3b495d; background:#182438; color:#b4c0ce; }
 .dark .metadata-tabs button.active { border-color:#477fbe; background:#172d45; color:#aad1f8; }
 .dark .no-exif-state { border-color:#3a485c; background:#111a2a; }
-@media (max-width:1000px) { .exif-hero{flex-direction:column}.exif-metrics{min-width:0}.privacy-grid{grid-template-columns:repeat(2,1fr)} }
-@media (max-width:650px) { .exif-hero{padding:20px 16px}.exif-hero h2{font-size:21px}.exif-metrics{grid-template-columns:1fr}.exif-metrics div{padding:12px;border-right:0;border-bottom:1px solid #d7e2ec}.exif-metrics div:last-child{border-bottom:0}.privacy-workbench header{flex-direction:column}.privacy-grid{grid-template-columns:1fr}.metadata-toolbar{grid-template-columns:1fr}.no-exif-actions{justify-content:center} }
+@media (max-width:1000px) { .privacy-grid{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:650px) { .hero-metrics{grid-template-columns:1fr}.hero-metrics div{border-left:0;border-bottom:1px solid #e5edf6}.hero-metrics div:last-child{border-bottom:0}.privacy-workbench header{flex-direction:column}.privacy-grid{grid-template-columns:1fr}.metadata-toolbar{grid-template-columns:1fr}.no-exif-actions{justify-content:center} }
 .exif-workbench :deep(.text-\[9px\]),
 .exif-workbench :deep(.text-\[10px\]),
 .exif-workbench :deep(.text-\[11px\]){font-size:12px!important}

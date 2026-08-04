@@ -1,4 +1,23 @@
-<script lang="ts">
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import { CopyDocument, Delete, RefreshRight, Search, Star, Switch as SwitchIcon, TrendCharts } from '@element-plus/icons-vue'
+import { useRoute, useRouter } from 'vue-router'
+import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { copy } from '@/utils/string'
+import {
+  UNIT_CATEGORIES,
+  convertAllUnits,
+  convertUnitValue,
+  formatUnitValue,
+  getBaseValue,
+  getUnitCategory,
+  isBelowAbsoluteZero,
+  normalizeUnitCategory,
+  type UnitCategoryId,
+  type UnitDefinition,
+} from '@/utils/unitConverter'
+
 interface HistoryItem {
   id: number
   categoryId: UnitCategoryId
@@ -8,49 +27,17 @@ interface HistoryItem {
   result: string
 }
 
-// 单位换算 8 个分类页面共享同一份「最近保存」，跨路由切换不丢失
-const sharedHistory = ref<HistoryItem[]>([])
-let sharedHistoryId = 0
-</script>
-
-<script setup lang="ts">
-import { computed, ref } from 'vue'
-import { CopyDocument, Delete, RefreshRight, Search, Star, Switch as SwitchIcon, TrendCharts } from '@element-plus/icons-vue'
-import { useRoute, useRouter } from 'vue-router'
-import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
-import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
-import { copy } from '@/utils/string'
-import {
-  UNIT_CATEGORIES,
-  UNIT_CATEGORY_PATHS,
-  convertAllUnits,
-  convertUnitValue,
-  formatUnitValue,
-  getBaseValue,
-  getUnitCategory,
-  isBelowAbsoluteZero,
-  type UnitCategoryId,
-  type UnitDefinition,
-} from '@/utils/unitConverter'
-
-const props = defineProps<{ categoryId: UnitCategoryId }>()
-
 const route = useRoute()
 const router = useRouter()
-const activeId = computed<UnitCategoryId>(() => props.categoryId)
-const initialCategory = getUnitCategory(props.categoryId)
-
-// 分类由路由路径决定；query 仅承载“最近保存”恢复的具体换算数据
-const queryFrom = typeof route.query.from === 'string' ? route.query.from : ''
-const queryTo = typeof route.query.to === 'string' ? route.query.to : ''
-const queryValue = typeof route.query.value === 'string' ? route.query.value : ''
-
-const inputValue = ref(queryValue || '1')
-const fromUnit = ref(initialCategory.units.some(unit => unit.key === queryFrom) ? queryFrom : initialCategory.defaults[0])
-const toUnit = ref(initialCategory.units.some(unit => unit.key === queryTo) ? queryTo : initialCategory.defaults[1])
+const activeId = ref<UnitCategoryId>(normalizeUnitCategory(route.query.active))
+const initialCategory = getUnitCategory(activeId.value)
+const inputValue = ref('1')
+const fromUnit = ref(initialCategory.defaults[0])
+const toUnit = ref(initialCategory.defaults[1])
 const precision = ref(10)
 const resultSearch = ref('')
-const history = computed(() => sharedHistory.value)
+const history = ref<HistoryItem[]>([])
+let historyId = 0
 
 const categoryVisuals: Record<UnitCategoryId, { symbol: string; accent: string }> = {
   length: { symbol: '↔', accent: 'blue' },
@@ -99,11 +86,21 @@ const oneUnitRatio = computed(() => {
   return `1 ${sourceDefinition.value.symbol} = ${formatUnitValue(result, precision.value)} ${targetDefinition.value.symbol}`
 })
 const visibleResultCount = computed(() => resultGroups.value.reduce((sum, group) => sum + group.items.length, 0))
-const categoryPath = (id: UnitCategoryId) => `/${UNIT_CATEGORY_PATHS[id]}`
+const queryForCategory = (id: UnitCategoryId) => id === 'mass' ? 'weight' : id === 'energy' ? 'heat' : id
+
+function resetUnits(id: UnitCategoryId) {
+  const category = getUnitCategory(id)
+  fromUnit.value = category.defaults[0]
+  toUnit.value = category.defaults[1]
+  resultSearch.value = ''
+}
 
 function selectCategory(id: UnitCategoryId) {
-  if (id === activeId.value) return
-  router.push(categoryPath(id))
+  if (id !== activeId.value) {
+    activeId.value = id
+    resetUnits(id)
+  }
+  router.replace({ query: { ...route.query, active: queryForCategory(id) } })
 }
 
 function usePreset(preset: typeof activeCategory.value.presets[number]) {
@@ -140,38 +137,36 @@ function copyAllResults() {
 function saveHistory() {
   if (!hasValidInput.value || !sourceDefinition.value || !targetDefinition.value) return
   const item: HistoryItem = {
-    id: ++sharedHistoryId,
+    id: ++historyId,
     categoryId: activeId.value,
     value: inputValue.value,
     from: fromUnit.value,
     to: toUnit.value,
     result: formattedResult.value,
   }
-  sharedHistory.value = [item, ...sharedHistory.value.filter(existing => !(
+  history.value = [item, ...history.value.filter(existing => !(
     existing.categoryId === item.categoryId && existing.value === item.value && existing.from === item.from && existing.to === item.to
   ))].slice(0, 6)
 }
 
-function clearHistory() {
-  sharedHistory.value = []
-}
-
 function restoreHistory(item: HistoryItem) {
-  if (item.categoryId === activeId.value) {
-    inputValue.value = item.value
-    fromUnit.value = item.from
-    toUnit.value = item.to
-    return
-  }
-  router.push({
-    path: categoryPath(item.categoryId),
-    query: { value: item.value, from: item.from, to: item.to },
-  })
+  activeId.value = item.categoryId
+  inputValue.value = item.value
+  fromUnit.value = item.from
+  toUnit.value = item.to
+  router.replace({ query: { ...route.query, active: queryForCategory(item.categoryId) } })
 }
 
 function clearInput() {
   inputValue.value = ''
 }
+
+watch(() => route.query.active, value => {
+  const nextId = normalizeUnitCategory(value)
+  if (nextId === activeId.value) return
+  activeId.value = nextId
+  resetUnits(nextId)
+})
 </script>
 
 <template>
@@ -258,7 +253,7 @@ function clearInput() {
     </section>
 
     <section v-if="history.length" class="history-card">
-      <header><div><span class="eyebrow">RECENT CONVERSIONS</span><h3>最近保存</h3></div><button type="button" @click="clearHistory"><el-icon><Delete /></el-icon>清空</button></header>
+      <header><div><span class="eyebrow">RECENT CONVERSIONS</span><h3>最近保存</h3></div><button type="button" @click="history = []"><el-icon><Delete /></el-icon>清空</button></header>
       <div><button v-for="item in history" :key="item.id" type="button" @click="restoreHistory(item)"><span>{{ getUnitCategory(item.categoryId).shortTitle }}</span><strong>{{ item.value }} {{ getUnitCategory(item.categoryId).units.find(unit => unit.key === item.from)?.symbol }} → {{ item.result }} {{ getUnitCategory(item.categoryId).units.find(unit => unit.key === item.to)?.symbol }}</strong></button></div>
     </section>
 

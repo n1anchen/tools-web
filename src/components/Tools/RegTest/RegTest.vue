@@ -54,13 +54,7 @@ function clearAll() {
 
 <template>
   <div class="regex-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy #default="{ toolInfo }">
-
-    <section class="hero-card">
-      <div><span class="eyebrow">REGEX LAB</span><h2>边写边看见每一次匹配</h2><p>{{ toolInfo.desc }}</p></div>
-      <div class="hero-expression">/ pattern / <strong>{{ activeFlags || '—' }}</strong></div>
-    </section>
-    </ToolHero>
+    <ToolHero summary="边写边看见每一次匹配" />
 
     <section class="pattern-card">
       <div class="section-heading">
@@ -150,13 +144,9 @@ function clearAll() {
 
 <style scoped>
 .regex-page { --accent: #2563eb; gap: 16px; }
-.hero-card, .pattern-card, .preset-card, .editor-card, .preview-card, .matches-card, .replacement-card { border: 1px solid #e2e8f0; border-radius: 22px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }
-.hero-card { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 25px 28px; background: radial-gradient(circle at 90% 20%, #dbeafe, transparent 30%), linear-gradient(135deg, #eff6ff, #fff); }
+.pattern-card, .preset-card, .editor-card, .preview-card, .matches-card, .replacement-card { border: 1px solid #e2e8f0; border-radius: 22px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }
 .eyebrow { color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: .15em; }
-.hero-card h2 { margin: 6px 0 4px; color: #0f172a; font-size: clamp(21px, 3vw, 28px); }
-.hero-card p, .replacement-card > p { margin: 0; color: #64748b; font-size: 13px; }
-.hero-expression { padding: 13px 17px; border: 1px solid #bfdbfe; border-radius: 14px; color: #1e40af; background: rgb(255 255 255 / 80%); font: 700 14px ui-monospace, monospace; }
-.hero-expression strong { color: #dc2626; }
+.replacement-card > p { margin: 0; color: #64748b; font-size: 13px; }
 .pattern-card, .matches-card, .replacement-card { padding: 22px; }
 .section-heading, .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .section-heading h3, .panel-heading h3 { margin: 4px 0 0; color: #0f172a; font-size: 18px; }
@@ -192,10 +182,8 @@ function clearAll() {
 .replacement-grid { display: grid; grid-template-columns: minmax(220px, .55fr) minmax(0, 1.45fr); gap: 13px; margin-top: 16px; }.replacement-grid > div { min-width: 0; }.replacement-grid label { display: block; margin-bottom: 7px; color: #64748b; font-size: 11px; }.replacement-grid pre { min-height: 70px; margin: 0; padding: 12px; border-radius: 12px; color: #334155; overflow-wrap: anywhere; white-space: pre-wrap; background: #f8fafc; font: 12px/1.6 ui-monospace, monospace; }
 .replacement-card > p { margin-top: 13px; }
 
-:global(html.dark .regex-page .hero-card), :global(html.dark .regex-page .pattern-card), :global(html.dark .regex-page .preset-card), :global(html.dark .regex-page .editor-card), :global(html.dark .regex-page .preview-card), :global(html.dark .regex-page .matches-card), :global(html.dark .regex-page .replacement-card), :global(html.dark .regex-page .stats-grid > div) { border-color: #334155; background: #1e293b; box-shadow: none; }
-:global(html.dark .regex-page .hero-card) { background: radial-gradient(circle at 90% 20%, #1e3a8a, transparent 30%), #1e293b; }
-:global(html.dark .regex-page h2), :global(html.dark .regex-page h3), :global(html.dark .regex-page .stats-grid strong) { color: #f8fafc; }
-:global(html.dark .regex-page .hero-expression) { border-color: #1d4ed8; color: #93c5fd; background: #0f172a; }
+:global(html.dark .regex-page .pattern-card), :global(html.dark .regex-page .preset-card), :global(html.dark .regex-page .editor-card), :global(html.dark .regex-page .preview-card), :global(html.dark .regex-page .matches-card), :global(html.dark .regex-page .replacement-card), :global(html.dark .regex-page .stats-grid > div) { border-color: #334155; background: #1e293b; box-shadow: none; }
+:global(html.dark .regex-page h3), :global(html.dark .regex-page .stats-grid strong) { color: #f8fafc; }
 :global(html.dark .regex-page .pattern-input), :global(html.dark .regex-page .editor-card .el-textarea__inner), :global(html.dark .regex-page .highlight-box), :global(html.dark .regex-page .match-list article), :global(html.dark .regex-page .empty-state), :global(html.dark .regex-page .replacement-grid pre) { border-color: #334155; color: #cbd5e1; background: #0f172a; }
 :global(html.dark .regex-page .pattern-input.invalid) { border-color: #ef4444; box-shadow: 0 0 0 3px rgb(127 29 29 / 45%); }
 :global(html.dark .regex-page .pattern-input .el-input__inner), :global(html.dark .regex-page .match-value code) { color: #e2e8f0; }
@@ -204,5 +192,5 @@ function clearAll() {
 :global(html.dark .regex-page .highlight-box mark) { color: #dbeafe; background: #1e40af; box-shadow: inset 0 -2px #60a5fa; }
 
 @media (max-width: 820px) { .workspace-grid { grid-template-columns: 1fr; }.stats-grid { grid-template-columns: repeat(2, 1fr); }.match-list article { grid-template-columns: 36px minmax(0, 1fr) auto; }.group-list { grid-column: 2 / -1; } }
-@media (max-width: 640px) { .hero-card { align-items: flex-start; flex-direction: column; padding: 21px; }.hero-expression { align-self: stretch; text-align: center; }.pattern-card, .matches-card, .replacement-card, .editor-card, .preview-card { padding: 17px; border-radius: 19px; }.preset-card { flex-direction: column; gap: 8px; }.header-actions { display: flex; }.flag-row { display: grid; grid-template-columns: repeat(2, 1fr); }.stats-grid { grid-template-columns: 1fr 1fr; }.replacement-grid { grid-template-columns: 1fr; }.match-list article { grid-template-columns: 34px minmax(0, 1fr); }.match-list article > .el-button { grid-column: 2; justify-self: flex-start; }.group-list { grid-column: 2; } }
+@media (max-width: 640px) { .pattern-card, .matches-card, .replacement-card, .editor-card, .preview-card { padding: 17px; border-radius: 19px; }.preset-card { flex-direction: column; gap: 8px; }.header-actions { display: flex; }.flag-row { display: grid; grid-template-columns: repeat(2, 1fr); }.stats-grid { grid-template-columns: 1fr 1fr; }.replacement-grid { grid-template-columns: 1fr; }.match-list article { grid-template-columns: 34px minmax(0, 1fr); }.match-list article > .el-button { grid-column: 2; justify-self: flex-start; }.group-list { grid-column: 2; } }
 </style>

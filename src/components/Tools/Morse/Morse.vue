@@ -121,19 +121,7 @@ onUnmounted(stopPlayback)
 
 <template>
   <div class="morse-page flex flex-col mt-3 flex-1">
-    <ToolHero legacy #default="{ toolInfo }">
-
-    <section class="hero-card">
-      <div>
-        <span class="eyebrow">MORSE WORKBENCH</span>
-        <h2>把文字变成节奏，也把节奏还原成文字</h2>
-        <p>{{ toolInfo.desc }}</p>
-      </div>
-      <div class="hero-signal" aria-hidden="true">
-        <span>···</span><span>———</span><span>···</span>
-      </div>
-    </section>
-    </ToolHero>
+    <ToolHero summary="把文字变成节奏，也把节奏还原成文字" />
 
     <section class="workspace-card">
       <div class="toolbar">
@@ -230,12 +218,9 @@ onUnmounted(stopPlayback)
 
 <style scoped>
 .morse-page { --accent: #0f766e; --accent-soft: #ccfbf1; gap: 16px; }
-.hero-card, .workspace-card, .reference-card { border: 1px solid #e2e8f0; border-radius: 24px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }
-.hero-card { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 30px; overflow: hidden; background: linear-gradient(135deg, #f0fdfa 0%, #fff 58%, #ecfeff 100%); }
+.workspace-card, .reference-card { border: 1px solid #e2e8f0; border-radius: 24px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }
 .eyebrow, .panel-kicker { color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .14em; }
-.hero-card h2 { margin: 7px 0 5px; color: #0f172a; font-size: clamp(20px, 3vw, 29px); line-height: 1.25; }
-.hero-card p, .section-heading p { margin: 0; color: #64748b; }
-.hero-signal { display: flex; gap: 12px; color: var(--accent); font-family: ui-monospace, monospace; font-size: 28px; font-weight: 900; white-space: nowrap; }
+.section-heading p { margin: 0; color: #64748b; }
 .workspace-card { padding: 22px; }
 .toolbar, .panel-heading, .control-strip, .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 .mode-switch { display: inline-flex; padding: 4px; border-radius: 13px; background: #f1f5f9; }
@@ -269,9 +254,8 @@ onUnmounted(stopPlayback)
 .reference-grid span { color: #0f766e; font: 10px ui-monospace, monospace; }
 
 :global(html.dark .morse-page) { --accent: #5eead4; --accent-soft: #134e4a; }
-:global(html.dark .morse-page .hero-card), :global(html.dark .morse-page .workspace-card), :global(html.dark .morse-page .reference-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
-:global(html.dark .morse-page .hero-card) { background: linear-gradient(135deg, #132f31, #1e293b 65%); }
-:global(html.dark .morse-page h2), :global(html.dark .morse-page h3), :global(html.dark .morse-page .panel-heading strong), :global(html.dark .morse-page .stats-grid strong) { color: #f8fafc; }
+:global(html.dark .morse-page .workspace-card), :global(html.dark .morse-page .reference-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
+:global(html.dark .morse-page h3), :global(html.dark .morse-page .panel-heading strong), :global(html.dark .morse-page .stats-grid strong) { color: #f8fafc; }
 :global(html.dark .morse-page p), :global(html.dark .morse-page .panel-heading > span), :global(html.dark .morse-page .control-group), :global(html.dark .morse-page .result-box) { color: #94a3b8; }
 :global(html.dark .morse-page .mode-switch), :global(html.dark .morse-page .editor-panel), :global(html.dark .morse-page .control-strip), :global(html.dark .morse-page .reference-grid button) { border-color: #334155; background: #0f172a; }
 :global(html.dark .morse-page .output-panel) { background: linear-gradient(145deg, #123b3a, #0f172a); }
@@ -286,8 +270,6 @@ onUnmounted(stopPlayback)
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 640px) {
-  .hero-card { padding: 22px; }
-  .hero-signal { display: none; }
   .workspace-card, .reference-card { padding: 16px; border-radius: 20px; }
   .toolbar { align-items: stretch; flex-direction: column; }
   .toolbar-actions { display: flex; justify-content: flex-end; }
