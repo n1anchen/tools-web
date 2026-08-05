@@ -7,7 +7,7 @@ export interface GeoCoordinate {
   lat: number
 }
 
-export interface MercatorCoordinate {
+interface MercatorCoordinate {
   x: number
   y: number
 }
@@ -22,7 +22,7 @@ export interface CoordinateSet {
   mercator: MercatorCoordinate
 }
 
-export interface BatchCoordinateRow {
+interface BatchCoordinateRow {
   line: number
   label: string
   primary: number
@@ -44,7 +44,7 @@ const MERCATOR_MAX_LAT = 85.05112878
 const MERCATOR_MAX_X = 20037508.34
 const MERCATOR_MAX_Y = 20048966.1
 
-export function isMercatorSystem(system: CoordSystem): system is 'mercator' {
+function isMercatorSystem(system: CoordSystem): system is 'mercator' {
   return system === 'mercator'
 }
 

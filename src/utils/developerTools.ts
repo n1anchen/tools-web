@@ -1,4 +1,4 @@
-export interface RegexMatchResult {
+interface RegexMatchResult {
   index: number
   end: number
   value: string
@@ -8,14 +8,14 @@ export interface RegexMatchResult {
   column: number
 }
 
-export interface RegexAnalysis {
+interface RegexAnalysis {
   matches: RegexMatchResult[]
   error: string
   durationMs: number
   coverage: number
 }
 
-export interface HighlightSegment {
+interface HighlightSegment {
   value: string
   matched: boolean
   matchIndex?: number
@@ -23,7 +23,7 @@ export interface HighlightSegment {
 
 const allowedRegexFlags = new Set(['g', 'i', 'm', 's', 'u', 'y'])
 
-export function normalizeRegexFlags(flags: string) {
+function normalizeRegexFlags(flags: string) {
   const unique: string[] = []
   for (const flag of flags) {
     if (!allowedRegexFlags.has(flag)) throw new Error(`不支持正则标志“${flag}”`)
@@ -114,7 +114,7 @@ export function replaceRegex(text: string, source: string, replacement: string, 
   }
 }
 
-export interface SearchableHttpStatus {
+interface SearchableHttpStatus {
   code: number
   name: string
   description: string

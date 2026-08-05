@@ -1,6 +1,6 @@
 export type LogoShape = 'auto' | 'square' | 'circle'
 
-export interface SplitLogoLayoutInput {
+interface SplitLogoLayoutInput {
   leftWidth: number
   rightWidth: number
   fontSize: number
@@ -11,7 +11,7 @@ export interface SplitLogoLayoutInput {
   shape: LogoShape
 }
 
-export interface SplitLogoLayout {
+interface SplitLogoLayout {
   canvasWidth: number
   canvasHeight: number
   contentWidth: number

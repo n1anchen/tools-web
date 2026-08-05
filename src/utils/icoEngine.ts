@@ -1,6 +1,6 @@
 export type IconPresetKey = 'favicon' | 'windows' | 'app' | 'custom'
 
-export interface IconPreset {
+interface IconPreset {
   key: Exclude<IconPresetKey, 'custom'>
   label: string
   description: string
@@ -9,7 +9,7 @@ export interface IconPreset {
   faviconNaming: boolean
 }
 
-export interface IcoPngEntry {
+interface IcoPngEntry {
   size: number
   bytes: Uint8Array
 }

@@ -3,18 +3,18 @@ import { numberValue, parseTableRows as tableRows } from './chartParser.ts'
 export type SpecialChartKind = 'treemap' | 'sankey' | 'boxplot' | 'calendar'
 export type SpecialDataMode = 'table' | 'json'
 
-export interface TreeNode { name: string; value?: number; children?: TreeNode[] }
-export interface TreemapChartData { kind: 'treemap'; nodes: TreeNode[] }
-export interface SankeyLink { source: string; target: string; value: number }
-export interface SankeyChartData { kind: 'sankey'; nodes: string[]; links: SankeyLink[] }
-export interface BoxGroup { name: string; values: [number, number, number, number, number]; outliers: number[]; samples?: number[] }
-export interface BoxplotChartData { kind: 'boxplot'; groups: BoxGroup[] }
-export interface CalendarItem { date: string; value: number }
-export interface CalendarChartData { kind: 'calendar'; items: CalendarItem[]; years: number[] }
-export type SpecialChartData = TreemapChartData | SankeyChartData | BoxplotChartData | CalendarChartData
+interface TreeNode { name: string; value?: number; children?: TreeNode[] }
+interface TreemapChartData { kind: 'treemap'; nodes: TreeNode[] }
+interface SankeyLink { source: string; target: string; value: number }
+interface SankeyChartData { kind: 'sankey'; nodes: string[]; links: SankeyLink[] }
+interface BoxGroup { name: string; values: [number, number, number, number, number]; outliers: number[]; samples?: number[] }
+interface BoxplotChartData { kind: 'boxplot'; groups: BoxGroup[] }
+interface CalendarItem { date: string; value: number }
+interface CalendarChartData { kind: 'calendar'; items: CalendarItem[]; years: number[] }
+type SpecialChartData = TreemapChartData | SankeyChartData | BoxplotChartData | CalendarChartData
 
-export interface SpecialParseResult { data: SpecialChartData; errors: string[] }
-export interface SpecialSample { id: string; title: string; hint: string; data: SpecialChartData }
+interface SpecialParseResult { data: SpecialChartData; errors: string[] }
+interface SpecialSample { id: string; title: string; hint: string; data: SpecialChartData }
 
 export interface SpecialChartSettings {
   title: string

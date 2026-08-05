@@ -2,21 +2,21 @@ import { isFiniteNumber, splitDelimitedLine } from './chartParser.ts'
 
 export type ChartKind = 'bar' | 'line' | 'pie' | 'scatter' | 'funnel'
 export type ChartDataMode = 'table' | 'json'
-export type ChartTitlePosition = 'left' | 'center' | 'right'
+type ChartTitlePosition = 'left' | 'center' | 'right'
 
-export interface ChartDataRow {
+interface ChartDataRow {
   name: string
   value: number
   x?: number
   y?: number
 }
 
-export interface ChartParseResult {
+interface ChartParseResult {
   rows: ChartDataRow[]
   errors: string[]
 }
 
-export interface ChartSample {
+interface ChartSample {
   id: string
   title: string
   hint: string

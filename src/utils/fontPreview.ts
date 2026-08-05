@@ -1,4 +1,4 @@
-export interface FontSampleMetrics {
+interface FontSampleMetrics {
   characters: number
   lines: number
   hanCharacters: number
@@ -6,7 +6,7 @@ export interface FontSampleMetrics {
   digits: number
 }
 
-export interface FontCssSettings {
+interface FontCssSettings {
   family: string
   size: number
   weight: number

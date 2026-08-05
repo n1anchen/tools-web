@@ -1,6 +1,6 @@
 import { decodeHtmlEntities } from '@/utils/textTools'
 
-export type DocumentExtension = 'md' | 'html' | 'txt'
+type DocumentExtension = 'md' | 'html' | 'txt'
 
 export function sanitizeDocumentName(value: string, fallback = 'untitled') {
   const normalized = value

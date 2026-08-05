@@ -3,16 +3,16 @@ import { numberValue, parseTableRows as tableRows } from './chartParser.ts'
 export type AdvancedChartKind = 'radar' | 'gauge' | 'heatmap' | 'candlestick' | 'stack'
 export type AdvancedDataMode = 'table' | 'json'
 
-export interface NamedSeries { name: string; values: number[] }
-export interface RadarChartData { kind: 'radar'; dimensions: string[]; maxima: number[]; series: NamedSeries[] }
-export interface GaugeChartData { kind: 'gauge'; items: { name: string; value: number }[] }
-export interface HeatmapChartData { kind: 'heatmap'; xCategories: string[]; yCategories: string[]; points: { x: string; y: string; value: number }[] }
-export interface CandlestickChartData { kind: 'candlestick'; items: { date: string; open: number; close: number; low: number; high: number }[] }
-export interface StackChartData { kind: 'stack'; categories: string[]; series: NamedSeries[] }
-export type AdvancedChartData = RadarChartData | GaugeChartData | HeatmapChartData | CandlestickChartData | StackChartData
+interface NamedSeries { name: string; values: number[] }
+interface RadarChartData { kind: 'radar'; dimensions: string[]; maxima: number[]; series: NamedSeries[] }
+interface GaugeChartData { kind: 'gauge'; items: { name: string; value: number }[] }
+interface HeatmapChartData { kind: 'heatmap'; xCategories: string[]; yCategories: string[]; points: { x: string; y: string; value: number }[] }
+interface CandlestickChartData { kind: 'candlestick'; items: { date: string; open: number; close: number; low: number; high: number }[] }
+interface StackChartData { kind: 'stack'; categories: string[]; series: NamedSeries[] }
+type AdvancedChartData = RadarChartData | GaugeChartData | HeatmapChartData | CandlestickChartData | StackChartData
 
-export interface AdvancedParseResult { data: AdvancedChartData; errors: string[] }
-export interface AdvancedSample { id: string; title: string; hint: string; data: AdvancedChartData }
+interface AdvancedParseResult { data: AdvancedChartData; errors: string[] }
+interface AdvancedSample { id: string; title: string; hint: string; data: AdvancedChartData }
 
 export interface AdvancedChartSettings {
   title: string

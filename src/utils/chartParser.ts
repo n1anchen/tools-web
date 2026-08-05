@@ -1,7 +1,7 @@
 // 图表工作室共用的表格 / CSV 解析辅助
 // 供 chartStudio / advancedChartStudio / specialChartStudio 复用，避免三份重复实现
 
-export interface TableRow {
+interface TableRow {
   line: number
   cells: string[]
 }

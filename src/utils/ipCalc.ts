@@ -1,4 +1,4 @@
-export interface IpClassification {
+interface IpClassification {
   label: string
   description: string
   scope: 'private' | 'public' | 'special'
@@ -25,7 +25,7 @@ export interface CidrResult {
   broadcastNumber: number
 }
 
-export interface SubnetPreview {
+interface SubnetPreview {
   index: number
   cidr: string
   network: string

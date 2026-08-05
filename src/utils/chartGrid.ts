@@ -1,6 +1,6 @@
 import { parseDelimited, serializeDelimited } from './spreadsheetConverter.ts'
 
-export interface GridLimits { maxRows?: number; maxColumns?: number }
+interface GridLimits { maxRows?: number; maxColumns?: number }
 
 export function parseChartGrid(text: string) {
   if (!text.trim()) return [] as string[][]

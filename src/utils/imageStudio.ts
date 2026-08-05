@@ -1,7 +1,7 @@
 export type WatermarkPosition = 'topLeft' | 'topRight' | 'center' | 'bottomLeft' | 'bottomRight' | 'tile'
 export type StitchMode = 'vertical' | 'horizontal' | 'caption'
 
-export interface ImageSize {
+interface ImageSize {
   width: number
   height: number
 }
@@ -15,7 +15,7 @@ export interface SliceRect {
   height: number
 }
 
-export interface StitchDraw {
+interface StitchDraw {
   imageIndex: number
   sx: number
   sy: number
@@ -27,13 +27,13 @@ export interface StitchDraw {
   dh: number
 }
 
-export interface StitchPlan {
+interface StitchPlan {
   width: number
   height: number
   draws: StitchDraw[]
 }
 
-export interface WatermarkPoint {
+interface WatermarkPoint {
   x: number
   y: number
 }

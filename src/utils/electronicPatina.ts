@@ -1,4 +1,4 @@
-export interface PatinaProfile {
+interface PatinaProfile {
   score: number
   label: '轻微做旧' | '经典包浆' | '重度失真' | '极限包浆'
   description: string

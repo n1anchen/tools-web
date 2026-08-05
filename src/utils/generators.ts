@@ -1,8 +1,8 @@
 import { secureRandomInt } from './random.ts'
 
-export type RandomInteger = (min: number, max: number) => number
+type RandomInteger = (min: number, max: number) => number
 
-export interface DecisionOption {
+interface DecisionOption {
   label: string
   weight: number
 }
@@ -118,7 +118,7 @@ export function pickDecision(
   return available[available.length - 1]
 }
 
-export interface UuidFormatOptions {
+interface UuidFormatOptions {
   uppercase: boolean
   hyphens: boolean
   braces: boolean

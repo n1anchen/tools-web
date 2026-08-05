@@ -45,7 +45,7 @@ export function pickReadableText(background: string) {
   return contrastRatio('#FFFFFF', background) >= contrastRatio('#111827', background) ? '#FFFFFF' : '#111827'
 }
 
-export function mixHexColors(first: string, second: string, amount: number) {
+function mixHexColors(first: string, second: string, amount: number) {
   const from = hexToRgb(first)
   const to = hexToRgb(second)
   if (!from || !to) return first

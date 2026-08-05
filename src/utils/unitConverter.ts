@@ -10,14 +10,14 @@ export interface UnitDefinition {
   fromBase?: (value: number) => number
 }
 
-export interface UnitPreset {
+interface UnitPreset {
   label: string
   value: number
   from: string
   to: string
 }
 
-export interface UnitCategory {
+interface UnitCategory {
   id: UnitCategoryId
   title: string
   shortTitle: string

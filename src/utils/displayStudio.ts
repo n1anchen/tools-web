@@ -1,13 +1,13 @@
 import { contrastRatio, hexToRgb } from './colorStudio.ts'
 
-export interface AsciiMetrics {
+interface AsciiMetrics {
   rows: number
   columns: number
   characters: number
   bytes: number
 }
 
-export interface ContrastSummary {
+interface ContrastSummary {
   ratio: number
   level: 'excellent' | 'good' | 'low'
   label: string

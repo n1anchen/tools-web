@@ -1,18 +1,18 @@
-export interface TextComparisonOptions {
+interface TextComparisonOptions {
   ignoreWhitespace?: boolean
   ignoreCase?: boolean
   ignoreBlankLines?: boolean
 }
 
-export interface TextDiffChange {
+interface TextDiffChange {
   value: string
   added?: boolean
   removed?: boolean
 }
 
-export type DiffRowType = 'same' | 'added' | 'removed' | 'changed'
+type DiffRowType = 'same' | 'added' | 'removed' | 'changed'
 
-export interface DiffRow {
+interface DiffRow {
   type: DiffRowType
   left?: string
   right?: string
@@ -20,7 +20,7 @@ export interface DiffRow {
   rightLine?: number
 }
 
-export interface DiffSummary {
+interface DiffSummary {
   additions: number
   removals: number
   unchanged: number

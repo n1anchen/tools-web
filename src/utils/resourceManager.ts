@@ -1,6 +1,6 @@
 export type ManagedResourceId = 'kuromoji-dict' | 'ace-workers' | 'figlet-fonts' | 'remote-fonts'
 
-export interface ManagedResourceGroup {
+interface ManagedResourceGroup {
   id: ManagedResourceId
   title: string
   description: string
@@ -146,7 +146,7 @@ export async function ensureDefaultManagedResourceCaches() {
   )
 }
 
-export async function getManagedResourceStatus(group: ManagedResourceGroup): Promise<ManagedResourceStatus> {
+async function getManagedResourceStatus(group: ManagedResourceGroup): Promise<ManagedResourceStatus> {
   if (!('caches' in window)) {
     return createEmptyStatus(false, group)
   }

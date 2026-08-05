@@ -1,11 +1,11 @@
-export interface CodeMetrics {
+interface CodeMetrics {
   characters: number
   bytes: number
   lines: number
   nonEmptyLines: number
 }
 
-export interface JsonAnalysis {
+interface JsonAnalysis {
   valid: boolean
   error: string
   line: number
@@ -103,7 +103,7 @@ export function unescapeJsonString(source: string) {
   return JSON.parse(`"${source}"`) as string
 }
 
-export interface MarkupAnalysis {
+interface MarkupAnalysis {
   tags: number
   comments: number
   scripts: number

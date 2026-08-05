@@ -4,7 +4,7 @@ function escapeWifiValue(value: string) {
   return value.replace(/([\\;,:"])/g, '\\$1')
 }
 
-export interface QrPayloadInput {
+interface QrPayloadInput {
   type: QrContentType
   text?: string
   url?: string

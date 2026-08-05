@@ -1,6 +1,6 @@
 export type CaptionPlacement = 'top' | 'bottom'
 
-export interface CaptionLayout {
+interface CaptionLayout {
   lineHeight: number
   barHeight: number
   barY: number

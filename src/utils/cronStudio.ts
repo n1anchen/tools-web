@@ -1,6 +1,6 @@
 export type CronCycle = 'everyMinute' | 'everyHour' | 'everyDay' | 'weekdays' | 'everyWeek' | 'everyMonth' | 'everyNSeconds' | 'everyNMinutes' | 'everyNHours' | 'everyNDays'
 
-export interface CronBuilderSettings {
+interface CronBuilderSettings {
   cycle: CronCycle
   minute?: number
   hour?: number
@@ -9,7 +9,7 @@ export interface CronBuilderSettings {
   interval?: number
 }
 
-export interface CronFieldInfo {
+interface CronFieldInfo {
   key: string
   label: string
   value: string

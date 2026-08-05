@@ -1,4 +1,4 @@
-export interface Md5Variants {
+interface Md5Variants {
   lower32: string
   upper32: string
   lower16: string
@@ -29,7 +29,7 @@ export function formatFileSize(bytes: number) {
   return `${value >= 100 || index === 0 ? Math.round(value) : value.toFixed(1)} ${units[index]}`
 }
 
-export interface ReactionSummary {
+interface ReactionSummary {
   count: number
   best: number
   worst: number

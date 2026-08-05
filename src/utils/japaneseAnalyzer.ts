@@ -34,7 +34,7 @@ const DICT_FILES = [
 let tokenizerPromise: Promise<Tokenizer> | null = null
 let zlibScriptPromise: Promise<void> | null = null
 
-export function getKuromojiTokenizer() {
+function getKuromojiTokenizer() {
   if (!tokenizerPromise) {
     tokenizerPromise = buildBrowserTokenizer()
   }

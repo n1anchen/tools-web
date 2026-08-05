@@ -1,9 +1,9 @@
-export interface ParsedBase64Input {
+interface ParsedBase64Input {
   base64: string
   mime: string
 }
 
-export const BASE64_MIME_BY_EXTENSION: Record<string, string> = {
+const BASE64_MIME_BY_EXTENSION: Record<string, string> = {
   png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp', svg: 'image/svg+xml', bmp: 'image/bmp', ico: 'image/x-icon', avif: 'image/avif',
   pdf: 'application/pdf', txt: 'text/plain', csv: 'text/csv', json: 'application/json', xml: 'text/xml', html: 'text/html', css: 'text/css', js: 'text/javascript', md: 'text/markdown',
   zip: 'application/zip', gz: 'application/gzip', mp3: 'audio/mpeg', mp4: 'video/mp4', wav: 'audio/wav', webm: 'video/webm', avi: 'video/avi',

@@ -1,5 +1,5 @@
 // 每个图表工具独立的草稿持久化（localStorage），跨工具切换 / 刷新后保留输入数据与配置
-export interface ChartDraft<T> {
+interface ChartDraft<T> {
   dataText: string
   dataMode: string
   activeSample: string

@@ -1,4 +1,4 @@
-export interface TextStatistics {
+interface TextStatistics {
   characters: number
   charactersWithoutWhitespace: number
   chineseCharacters: number
@@ -56,7 +56,7 @@ export function analyzeText(text: string): TextStatistics {
 
 export type DedupeMode = 'global' | 'adjacent'
 
-export interface DedupeOptions {
+interface DedupeOptions {
   trimLines: boolean
   ignoreEmpty: boolean
   caseSensitive: boolean
@@ -64,7 +64,7 @@ export interface DedupeOptions {
   sort: boolean
 }
 
-export interface DedupeResult {
+interface DedupeResult {
   text: string
   originalLines: number
   resultLines: number
@@ -104,7 +104,7 @@ export function dedupeLines(text: string, options: DedupeOptions): DedupeResult 
 
 export type UnicodeFormat = 'javascript' | 'codePoint'
 
-export interface UnicodeEncodeOptions {
+interface UnicodeEncodeOptions {
   format: UnicodeFormat
   escapeAll: boolean
   uppercase: boolean
@@ -200,13 +200,13 @@ export function countHtmlEntityChanges(input: string, output: string) {
 
 export type ReplaceScope = 'all' | 'first'
 
-export interface TextReplaceOptions {
+interface TextReplaceOptions {
   useRegex: boolean
   caseSensitive: boolean
   scope: ReplaceScope
 }
 
-export interface TextReplaceResult {
+interface TextReplaceResult {
   text: string
   matchCount: number
   replacementCount: number
@@ -251,7 +251,7 @@ export function replaceText(
   }
 }
 
-export interface WordFrequencyOptions {
+interface WordFrequencyOptions {
   minLength: number
   caseSensitive: boolean
   excludeStopWords: boolean
@@ -259,13 +259,13 @@ export interface WordFrequencyOptions {
   locale?: string
 }
 
-export interface WordFrequencyItem {
+interface WordFrequencyItem {
   word: string
   count: number
   percentage: number
 }
 
-export interface WordFrequencyResult {
+interface WordFrequencyResult {
   items: WordFrequencyItem[]
   totalWords: number
   uniqueWords: number

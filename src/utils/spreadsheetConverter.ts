@@ -7,7 +7,7 @@ export interface DataSheet {
   rows: string[][]
 }
 
-export interface SheetAnalysis {
+interface SheetAnalysis {
   rows: number
   columns: number
   filledCells: number

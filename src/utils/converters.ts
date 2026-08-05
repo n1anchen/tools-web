@@ -72,7 +72,7 @@ export function groupRadixDigits(value: string, groupSize = 4): string {
 
 export type TimestampUnit = 'seconds' | 'milliseconds' | 'microseconds'
 
-export interface NormalizedTimestamp {
+interface NormalizedTimestamp {
   milliseconds: number
   unit: TimestampUnit
   source: string
@@ -140,9 +140,9 @@ export function parseDateTime(value: string, zone: 'local' | 'utc' = 'local') {
   return milliseconds
 }
 
-export type JwtTemporalState = 'valid' | 'expired' | 'not-yet-valid' | 'no-expiry'
+type JwtTemporalState = 'valid' | 'expired' | 'not-yet-valid' | 'no-expiry'
 
-export interface JwtTemporalAnalysis {
+interface JwtTemporalAnalysis {
   state: JwtTemporalState
   title: string
   detail: string
