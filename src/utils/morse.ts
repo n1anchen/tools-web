@@ -108,22 +108,3 @@ export function toText(morse: string) {
     })
     .join('')
 }
-
-//中文转摩斯电码
-export function chineseToMorse(chinese: string): string {
-  //先转换成ascii码
-  let asciiCode = chinese.charCodeAt(0).toString()
-  //转换
-  return asciiCode.split('').map(char => morseCodeMap[char] || '').join('')
-}
-
-//摩斯电码转中文
-export function morseToChinese() {
-
-}
-
-const MorseUtils = {
-  toMorse,
-  toText
-}
-export default MorseUtils

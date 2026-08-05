@@ -10,7 +10,6 @@ import 'element-plus/theme-chalk/display.css'
 import { ToolsInfo } from '@/components/Tools/tools.type.ts';
 
 import router from '@/router';
-// const isNavDrawer = ref(false)
 const loading = ref(false)
 const options = ref<ToolsInfo[]>([])
 const searchValue = ref<string | number>('') // 用于 el-select 的 v-model
@@ -24,23 +23,6 @@ const searchParam = reactive({
   title: '',
   route: '',
 })
-
-//search
-// const search = async () => {
-//   try {
-//     await toolsStore.getTools(searchParam)
-//     //关闭抽屉
-//     isNavDrawer.value = false
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
-
-//选择分类
-// const chooseCate = (cateId: number) => {
-//   searchParam.cateId = cateId
-//   search()
-// }
 
 //搜索工具
 const searchTools = async (query: string) => {
@@ -67,22 +49,6 @@ const handleMobileInput = (e: Event) => {
      }, 0)
   }
 }
-
-//保存到桌面
-// const createUrlShortcut = async () => {
-//   try {
-//     const blob = new Blob(
-//       [`[InternetShortcut]\nURL=${encodeURI(window.location.href)}`],
-//       { type: 'text/plain' }
-//     );
-//     const a = document.createElement('a');
-//     a.href = URL.createObjectURL(blob);
-//     a.download = 'Tools-Web.url';
-//     a.click();
-//   } catch (error) {
-//     console.error('创建URL快捷方式失败:', error);
-//   }
-// }
 
 const optionClick = (url: string) => {
   if (/^(http|https):\/\//.test(url)) {

@@ -2,7 +2,6 @@
 import Header from '@/components/Layout/Header/Header.vue'
 import Left from '@/components/Layout/Left/Left.vue'
 import Floor from '@/components/Layout/Floor/Floor.vue'
-// import Right from '@/components/Layout/Right/Right.vue'
 import ToastNotification from '@/components/Common/ToastNotification.vue'
 import PrivacyNotice from '@/components/Common/PrivacyNotice.vue'
 import { useComponentStore } from '@/store/modules/component'

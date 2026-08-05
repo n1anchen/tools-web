@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// import { Tools } from '@element-plus/icons-vue'
 import { Management, InfoFilled } from '@element-plus/icons-vue'
 import { onMounted, onBeforeUnmount, ref, reactive, nextTick } from 'vue';
 import { useToolsStore } from '@/store/modules/tools'

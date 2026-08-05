@@ -931,19 +931,6 @@ export function toolsList() {
   return list
 }
 
-/**
- * url为键名的工具list map
- * @returns 
- */
-export function urlKeyMap() {
-  // let toolsMapByUrlKey = new Map()
-  // let list = toolsList()
-  // for (let item in list) {
-  //   toolsMapByUrlKey.set(list[item].url, list[item])
-  // }
-  // return toolsMapByUrlKey
-}
-
 //获取工具
 export function getTools(data: ToolsReqData) {
   //接收参数

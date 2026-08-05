@@ -81,14 +81,6 @@ onBeforeUnmount(() => {
   clearConfirmTimer()
 })
 
-// const getToolsCate = async () => {
-//   try {
-//     await toolsStore.getToolCate()
-//   } catch (error: any) {
-//     ElMessage.error(error.message)
-//   }
-// }
-
 
 const HEADER_HEIGHT = 80
 const scrollToAnchor = (id: string, offset = HEADER_HEIGHT) => {
@@ -107,7 +99,6 @@ onBeforeRouteLeave(() => {
 onMounted(() => {
   document.addEventListener('click', handleOutsideClick)
   ensureDefaultManagedResourceCaches().catch(() => {})
-  // getToolsCate()
   if (route.query && route.query.value) {
     // 底部导航跳转过来的则定位到响应位置
     sessionStorage.removeItem(SCROLL_KEY)

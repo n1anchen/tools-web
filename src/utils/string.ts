@@ -1,22 +1,5 @@
 import { ElMessage } from 'element-plus';
 import clipboard3 from 'vue-clipboard3'
-import { secureRandomInt } from '@/utils/random'
-
-/**
- * 转义特殊字符
- * str: string: 需处理的字符串
- * reg: string: 需转义的特殊字符
- * 
- * @param reg 
- */
-export function transferred(str: string, reg: string = "`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）;—|【】‘；：”“'。，、？") {
-    let pattern = new RegExp("[" + reg + "]");
-    let res = '';
-    Array.from(str).forEach((char: any) => {
-      res += char.replace(pattern, `\\${char}`);
-    });
-    return res;
-}
 
 /**
  * 复制文本
@@ -51,23 +34,6 @@ export async function copy(resStr: string) {
     })
     return false
   }
-}
-
-/**
- * 按指定字符生成随机字符串(场景：生成随机密码)
- * 
- * @param char 
- * @param length 
- * @returns 
- */
-export function genRandomStrByChars(chars: string, length: number): string {
-  if (!chars.length || !Number.isInteger(length) || length < 1) return ''
-  let password = '';  
-  for (let i = 0; i < length; i++) {  
-    const randomIndex = secureRandomInt(0, chars.length - 1)
-    password += chars[randomIndex];  
-  }  
-  return password;  
 }
 
 /**
@@ -134,13 +100,3 @@ export function numberToChinese(num: number): string {
 export function rtrim(str, char = ' ') {
     return str.replace(new RegExp('\\'+char+'+$', 'g'), '');
 }
-
-const StringUtils = {
-  transferred,
-  copy,
-  genRandomStrByChars,
-  numberToChinese,
-  rtrim,
-}
-
-export default StringUtils
