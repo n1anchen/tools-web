@@ -212,9 +212,7 @@ export default defineConfig(({command, mode}) => {
               'ace-builds/src-noconflict/ext-searchbox',
               'ace-builds/src-noconflict/ext-error_marker',
               'ace-builds/src-noconflict/ext-whitespace',
-              'ace-builds/src-noconflict/ext-beautify',
-              'ace-builds/src-noconflict/ext-code_lens',
-              'ace-builds/src-noconflict/ext-elastic_tabstops_lite'
+              'ace-builds/src-noconflict/ext-beautify'
             ],
 
             // 其他大型库

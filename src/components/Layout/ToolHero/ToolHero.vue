@@ -16,12 +16,10 @@ const props = withDefaults(defineProps<{
   eyebrow?: string
   summary?: string
   description?: string
-  legacy?: boolean
 }>(), {
   eyebrow: 'ONLINE TOOL STUDIO',
   summary: '',
   description: '',
-  legacy: false,
 })
 
 const route = useRoute()
@@ -97,11 +95,8 @@ onBeforeUnmount(() => {
           {{ favorited ? '已收藏' : '收藏工具' }}
         </button>
       </div>
-      <div v-if="props.legacy" class="legacy-content"><slot :tool-info="toolInfo" /></div>
-      <template v-else>
-        <strong v-if="props.summary" class="summary">{{ props.summary }}</strong>
-        <p>{{ resolvedDescription }}</p>
-      </template>
+      <strong v-if="props.summary" class="summary">{{ props.summary }}</strong>
+      <p>{{ resolvedDescription }}</p>
     </div>
 
     <div v-if="$slots.metrics" class="hero-slot">
@@ -124,9 +119,8 @@ onBeforeUnmount(() => {
 .hero-copy,.hero-slot{position:relative;z-index:1}.hero-copy{min-width:0;flex:1}.hero-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.hero-context{display:flex;align-items:center;gap:11px}.tool-icon{display:grid;place-items:center;width:44px;height:44px;overflow:hidden;border:1px solid rgba(151,179,214,.45);border-radius:13px;background:rgba(255,255,255,.8);color:#3978f6;box-shadow:0 5px 15px rgba(65,105,160,.1)}.tool-icon>svg{width:20px}
 .eyebrow,.category{font-size:12px;font-weight:800}.eyebrow{display:block;letter-spacing:.14em;color:#5076a7}.category{display:inline-block;margin-top:4px;padding:3px 8px;border:1px solid #cfe0f3;border-radius:999px;background:rgba(255,255,255,.65);color:#537294}
 .hero-title-row{display:flex;align-items:center;gap:12px;margin-top:11px}.hero-title-row h1{margin:0;font-size:25px;font-weight:850;letter-spacing:-.02em;color:#263247}.hero-title-row .favorite-button{flex:none}.summary{display:block;margin-top:3px;font-size:15px;line-height:1.55;color:#3c4b61}.hero-copy p{max-width:680px;margin:5px 0 0;font-size:13.5px;line-height:1.7;color:#64748b}
-.legacy-content{margin-top:4px}.legacy-content :deep(>section){min-height:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#263247!important}.legacy-content :deep(>section::before),.legacy-content :deep(>section::after){display:none!important}.legacy-content :deep(.eyebrow),.legacy-content :deep(.exif-eyebrow){display:none!important}.legacy-content :deep(>section h2){margin-top:5px!important;color:#263247!important;font-size:clamp(21px,2.2vw,28px)!important;line-height:1.32!important}.legacy-content :deep(>section p){max-width:680px;color:#64748b!important}.legacy-content :deep(.hero-stats div),.legacy-content :deep(.hero-metrics div){border-color:#d7e2ef!important}.legacy-content :deep(.hero-stats strong),.legacy-content :deep(.hero-metrics strong){color:#334155!important}.legacy-content :deep(.hero-stats span),.legacy-content :deep(.hero-metrics span){color:#64748b!important}.legacy-content :deep(.hero-badges span){border-color:#d7e2ef!important;background:rgba(255,255,255,.68)!important;color:#52637a!important}
 .hero-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.favorite-button{display:flex;align-items:center;gap:6px;padding:7px 11px;border:1px solid #cfdceb;border-radius:9px;background:rgba(255,255,255,.75);font-size:12.5px;font-weight:700;color:#52637a;transition:.2s;white-space:nowrap}.favorite-button:hover{border-color:#91b5e8;color:#356eae}.favorite-button.active{border-color:#ecd28f;background:#fff8dc;color:#a26708}.favorite-button.active svg{color:#e5a400}
-.hero-slot{display:flex;align-items:center;min-width:390px}.hero-slot>*{flex:1;width:100%}.dark .tool-hero{border-color:#334155;background:linear-gradient(135deg,#172c40,#241d3b 60%,#302619)}.dark .tool-hero::after{background:rgba(44,56,77,.28)}.dark h1,.dark .summary,.dark .legacy-content :deep(>section),.dark .legacy-content :deep(>section h2),.dark .legacy-content :deep(.hero-stats strong),.dark .legacy-content :deep(.hero-metrics strong){color:#e7edf6!important}.dark .hero-copy p,.dark .legacy-content :deep(>section p),.dark .legacy-content :deep(.hero-stats span),.dark .legacy-content :deep(.hero-metrics span){color:#a8b4c5!important}.dark .legacy-content :deep(.hero-stats div),.dark .legacy-content :deep(.hero-metrics div){border-color:#40516a!important}.dark .tool-icon,.dark .category,.dark .favorite-button,.dark .legacy-content :deep(.hero-badges span){border-color:#40516a!important;background:rgba(15,23,42,.55)!important;color:#c5d2e2!important}.dark .favorite-button.active{border-color:#78652c;background:#352e19;color:#f0c75e}
+.hero-slot{display:flex;align-items:center;min-width:390px}.hero-slot>*{flex:1;width:100%}.dark .tool-hero{border-color:#334155;background:linear-gradient(135deg,#172c40,#241d3b 60%,#302619)}.dark .tool-hero::after{background:rgba(44,56,77,.28)}.dark h1,.dark .summary{color:#e7edf6!important}.dark .hero-copy p{color:#a8b4c5!important}.dark .tool-icon,.dark .category,.dark .favorite-button{border-color:#40516a!important;background:rgba(15,23,42,.55)!important;color:#c5d2e2!important}.dark .favorite-button.active{border-color:#78652c;background:#352e19;color:#f0c75e}
 @media(max-width:1100px){.tool-hero{flex-direction:column}.hero-slot{min-width:0}}
 @media(max-width:640px){.tool-hero{padding:18px 16px}.tool-icon{width:38px;height:38px}.hero-head{align-items:flex-start;flex-direction:column}.hero-actions{justify-content:flex-start;width:100%}.hero-title-row{flex-wrap:wrap;margin-top:10px}.hero-title-row h1{font-size:22px}.hero-title-row .favorite-button{width:100%;justify-content:center}.summary{font-size:14px}.hero-copy p{font-size:13px}.hero-slot{display:block}.hero-slot>*{width:auto}}
 </style>
