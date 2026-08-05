@@ -36,10 +36,7 @@ const persistFavorites = (favorites: ToolsInfo[]) => {
 export const useToolsStore = defineStore('tools', {
   //用来存放变量
   state: () => ({
-    list: [] as ToolsInfo[],
-    toolInfo: {} as ToolsInfo,
     cates: [] as any[],
-    recommends: [] as ToolsInfo[],
     collect: loadFavorites() as ToolsInfo[],
   }),
   //getter
@@ -54,14 +51,6 @@ export const useToolsStore = defineStore('tools', {
     async getTools(data: ToolsReqData) {
       //发送请求
       const result: any = await getTools(data)
-      this.list = result
-      return result
-    },
-    //获取tool info
-    async getToolInfo(data: ToolsReqData) {
-      //发送请求
-      const result: any = await getTools(data)
-      this.toolInfo = result
       return result
     },
     //获取tools cate

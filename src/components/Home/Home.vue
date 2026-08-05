@@ -8,7 +8,6 @@ import BackToTop from '@/components/Common/BackToTop.vue'
 import ResourceManagerDialog from '@/components/Home/ResourceManagerDialog.vue'
 import { useToolsStore } from '@/store/modules/tools'
 import { ensureDefaultManagedResourceCaches } from '@/utils/resourceManager'
-// import { ElMessage } from 'element-plus'
 import { useRoute, onBeforeRouteLeave } from "vue-router"
 //store
 const toolsStore = useToolsStore()

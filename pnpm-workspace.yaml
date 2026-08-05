@@ -4,10 +4,7 @@ allowBuilds:
   core-js: true
   es5-ext: true
   esbuild: true
-  less: true
-  v-code-diff: true
   vue-demi: true
-  x-data-spreadsheet: true
 confirmModulesPurge: false
 ignoredOptionalDependencies:
   - canvas
@@ -20,5 +17,3 @@ overrides:
   node-fetch: ^2.7.0
   picomatch: ^4.0.4
   tmp: ^0.2.4
-patchedDependencies:
-  x-data-spreadsheet@1.1.9: patches/x-data-spreadsheet@1.1.9.patch

@@ -61,7 +61,6 @@
     "vue-router": "^4.6.4",
     "wanakana": "^5.3.1",
     "workbox-window": "^7.4.0",
-    "x-data-spreadsheet": "^1.1.9",
     "xlsx": "npm:@e965/xlsx@^0.20.3",
     "zlibjs": "0.3.1"
   },

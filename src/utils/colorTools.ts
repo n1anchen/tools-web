@@ -1,8 +1,5 @@
-export interface RgbColor {
-  r: number
-  g: number
-  b: number
-}
+import type { RgbColor } from './colorStudio.ts'
+export type { RgbColor }
 
 const clampChannel = (value: number) => Math.max(0, Math.min(255, Math.round(value)))
 

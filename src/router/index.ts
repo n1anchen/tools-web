@@ -11,8 +11,6 @@ NProgress.configure({ showSpinner: false, minimum: 0.2, speed: 300 })
 
 //创建路由器
 const router = createRouter({
-  //路由模式hash
-  // history: createWebHashHistory(),
   history: createWebHistory(),
   routes: constantRoute,
   //滚动行为

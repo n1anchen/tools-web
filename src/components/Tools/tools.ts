@@ -966,11 +966,3 @@ export function getTools(data: ToolsReqData) {
   }
   return list
 }
-
-const ToolsExport = {
-  getTools,
-  getToolsCate,
-  toolsList,
-};
-
-export default ToolsExport;
