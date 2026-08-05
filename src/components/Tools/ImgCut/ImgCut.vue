@@ -5,7 +5,7 @@ import { Delete, Download, Grid, Picture, UploadFilled } from '@element-plus/ico
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
-import { autoDown } from '@/utils/file'
+import { autoDown, formatBytes } from '@/utils/file'
 import { buildSliceRects, type SliceRect } from '@/utils/imageStudio'
 
 const MAX_IMAGE_BYTES = 30 * 1024 * 1024
@@ -61,13 +61,6 @@ const sizeRange = computed(() => {
 const totalOutputBytes = computed(() => slices.value.reduce((sum, item) => sum + item.blob.size, 0))
 const formattedOutputSize = computed(() => formatBytes(totalOutputBytes.value))
 const formattedInputSize = computed(() => formatBytes(fileMeta.size))
-
-function formatBytes(bytes: number) {
-  if (!bytes) return '—'
-  return bytes >= 1024 * 1024
-    ? `${(bytes / 1024 / 1024).toFixed(1)} MB`
-    : `${Math.max(1, Math.round(bytes / 1024))} KB`
-}
 
 function releaseSource() {
   if (objectUrl.value) URL.revokeObjectURL(objectUrl.value)

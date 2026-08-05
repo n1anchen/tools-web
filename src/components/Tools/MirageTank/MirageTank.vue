@@ -3,7 +3,7 @@ import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
-import { autoDown } from '@/utils/file'
+import { autoDown, formatBytes } from '@/utils/file'
 import { adjustContrast, drawToCanvas, getImageData, loadImageFromFile, resizeCover, toGray } from './imageUtils'
 import { prismDecode, prismEncode, type DecodeMethod } from './mirage'
 
@@ -236,7 +236,7 @@ function downloadCanvas(canvas: HTMLCanvasElement | null, suffix: string, source
 
 function formatFileSize(file: File | null) {
   if (!file) return ''
-  return file.size < 1024 * 1024 ? `${(file.size / 1024).toFixed(0)} KB` : `${(file.size / 1024 / 1024).toFixed(1)} MB`
+  return formatBytes(file.size)
 }
 
 onBeforeUnmount(() => {

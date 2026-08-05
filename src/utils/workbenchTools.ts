@@ -1,3 +1,5 @@
+export { formatBytes as formatFileSize } from './file.ts'
+
 interface Md5Variants {
   lower32: string
   upper32: string
@@ -19,14 +21,6 @@ export function buildMd5Variants(hash: string): Md5Variants {
 export function normalizeMd5(value: string) {
   const normalized = value.trim().toLowerCase()
   return /^[a-f0-9]{32}$/.test(normalized) ? normalized : ''
-}
-
-export function formatFileSize(bytes: number) {
-  if (!Number.isFinite(bytes) || bytes <= 0) return '0 B'
-  const units = ['B', 'KB', 'MB', 'GB']
-  const index = Math.min(units.length - 1, Math.floor(Math.log(bytes) / Math.log(1024)))
-  const value = bytes / 1024 ** index
-  return `${value >= 100 || index === 0 ? Math.round(value) : value.toFixed(1)} ${units[index]}`
 }
 
 interface ReactionSummary {

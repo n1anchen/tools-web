@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
+import { formatBytes } from '@/utils/file'
 import {
   extractDominantColors,
   recommendedTextColor,
@@ -52,10 +53,7 @@ const formats = computed(() => selected.value ? [
   { label: 'CMYK', value: selected.value.cmyk },
 ] : [])
 
-const formattedFileSize = computed(() => {
-  const size = fileMeta.value.size
-  return size >= 1024 * 1024 ? `${(size / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(size / 1024))} KB`
-})
+const formattedFileSize = computed(() => formatBytes(fileMeta.value.size))
 
 function makeColor(r: number, g: number, b: number, x?: number, y?: number): ColorDetail {
   return {

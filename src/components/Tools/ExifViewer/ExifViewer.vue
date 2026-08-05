@@ -3,7 +3,7 @@ import { ref, reactive, computed, onUnmounted, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
-import { autoDown } from '@/utils/file'
+import { autoDown, formatBytes } from '@/utils/file'
 import exifr from 'exifr'
 import type { Map as LMap } from 'leaflet'
 import { copy } from '@/utils/string'
@@ -240,12 +240,6 @@ function formatDate(val: Date | string | undefined): string {
   return String(val)
 }
 
-function formatFileSize(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
-}
-
 function formatMimeType(mime: string): string {
   const map: Record<string, string> = {
     'image/jpeg': 'JPEG', 'image/jpg': 'JPEG', 'image/png': 'PNG',
@@ -403,7 +397,7 @@ async function parseExif(file: File) {
     // ── 基本信息组 ──
     const basicRows: { label: string; value: string }[] = [
       { label: '文件名', value: fileName.value },
-      { label: '文件大小', value: formatFileSize(fileSize.value) },
+      { label: '文件大小', value: formatBytes(fileSize.value) },
       { label: dimSource.value === 'file' ? '图片尺寸（文件）' : '图片尺寸', value: dispW > 0 && dispH > 0 ? `${dispW} × ${dispH} px` : '-' },
       { label: '色彩空间', value: exifData.ColorSpace != null ? (exifData.ColorSpace === 1 ? 'sRGB' : exifData.ColorSpace === 65535 ? '未标记(非sRGB)' : String(exifData.ColorSpace)) : (ifd0.ColorSpace ?? '-') },
       { label: '图片方向', value: orientationLabel.value },

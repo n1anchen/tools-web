@@ -4,7 +4,7 @@ import { ArrowDown, ArrowUp, Delete, Download, Picture, Plus, Rank, UploadFilled
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
-import { autoDown } from '@/utils/file'
+import { autoDown, formatBytes } from '@/utils/file'
 import { buildStitchPlan, exceedsPixelBudget, type StitchMode } from '@/utils/imageStudio'
 
 const MAX_IMAGE_BYTES = 25 * 1024 * 1024
@@ -59,11 +59,6 @@ const totalSourceBytes = computed(() => images.value.reduce((sum, item) => sum +
 const formattedSourceSize = computed(() => formatBytes(totalSourceBytes.value))
 const extension = computed(() => state.format === 'jpeg' ? 'jpg' : state.format)
 const formatLabel = computed(() => state.format === 'jpeg' ? 'JPG' : state.format.toUpperCase())
-
-function formatBytes(bytes: number) {
-  if (!bytes) return '—'
-  return bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`
-}
 
 function makeId() {
   return globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${images.value.length}`

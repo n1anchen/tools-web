@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 import { Close, Download, Picture, Refresh, VideoPlay } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
-import { autoDown } from '@/utils/file'
+import { autoDown, formatBytes } from '@/utils/file'
 import { applyPatinaPixels, buildPatinaFilename, getPatinaProfile } from '@/utils/electronicPatina'
 
 const patinaPresets = [
@@ -37,12 +37,6 @@ let processId = 0
 const profile = computed(() => getPatinaProfile(compressionCount.value, quality.value))
 const originalSizeLabel = computed(() => originalFile.value ? formatBytes(originalFile.value.size) : '—')
 const resultSizeLabel = computed(() => resultBlob.value ? formatBytes(resultBlob.value.size) : '—')
-
-function formatBytes(bytes: number) {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${(bytes / 1024 / 1024).toFixed(2)} MB`
-}
 
 function nextFrame(): Promise<void> {
   return new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
