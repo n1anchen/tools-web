@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import debounce from 'lodash/debounce'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { buildChoyenFilename, Drawer } from './choyen'
 import { loadFontStylesheet, ensureFontsLoaded } from '@/utils/font'
 
@@ -134,11 +135,7 @@ async function downloadImage() {
   try {
     const blob = await createPngBlob()
     const url = URL.createObjectURL(blob)
-    const anchor = document.createElement('a')
-    anchor.href = url
-    anchor.download = buildChoyenFilename(state.topText, state.textType === 'image' ? '欲しい' : state.bottomText)
-    anchor.click()
-    URL.revokeObjectURL(url)
+    autoDown(url, buildChoyenFilename(state.topText, state.textType === 'image' ? '欲しい' : state.bottomText))
     ElMessage.success(`已导出 ${exportDimensions.value.width} × ${exportDimensions.value.height} PNG`)
   } catch {
     ElMessage.error('图片下载失败，请稍后重试')

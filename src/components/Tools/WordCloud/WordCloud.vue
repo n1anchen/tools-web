@@ -5,6 +5,7 @@ import 'echarts-wordcloud'
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { analyzeWordFrequency } from '@/utils/textTools'
 
 const sampleText = `在线工具让复杂的工作变得简单。数据分析帮助我们理解趋势，数据可视化帮助我们表达趋势。好的工具应该清晰、快速、可靠，也应该让每一次操作都有明确反馈。设计服务于内容，内容服务于用户。`
@@ -126,10 +127,7 @@ function scheduleRender() {
 
 function downloadImage() {
   if (!chart || !cloudData.value.length) return ElMessage.warning('当前没有可导出的词云')
-  const anchor = document.createElement('a')
-  anchor.href = chart.getDataURL({ type: 'png', pixelRatio: pixelRatio.value, backgroundColor: background.value === 'transparent' ? 'rgba(0,0,0,0)' : background.value })
-  anchor.download = `wordcloud-${cloudData.value.length}-words.png`
-  anchor.click()
+  autoDown(chart.getDataURL({ type: 'png', pixelRatio: pixelRatio.value, backgroundColor: background.value === 'transparent' ? 'rgba(0,0,0,0)' : background.value }), `wordcloud-${cloudData.value.length}-words.png`)
   ElMessage.success(`已生成 ${pixelRatio.value}× 高清 PNG`)
 }
 
@@ -137,11 +135,7 @@ function downloadFrequency() {
   if (!analysis.value.items.length) return ElMessage.warning('当前没有词频数据')
   const rows = ['词语,次数,占比', ...analysis.value.items.map(item => `"${item.word.replace(/"/g, '""')}",${item.count},${item.percentage.toFixed(2)}%`)]
   const url = URL.createObjectURL(new Blob([`\uFEFF${rows.join('\r\n')}`], { type: 'text/csv;charset=utf-8' }))
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = 'word-frequency.csv'
-  anchor.click()
-  URL.revokeObjectURL(url)
+  autoDown(url, 'word-frequency.csv')
 }
 
 function loadSample() {

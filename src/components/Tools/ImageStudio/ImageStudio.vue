@@ -40,6 +40,7 @@ import {
 } from 'fabric'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 
 /* ================= 常量 ================= */
 
@@ -815,10 +816,7 @@ function download() {
   canvas.discardActiveObject()
   canvas.requestRenderAll()
   const url = exportDataUrl()
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = buildImageFilename(exportFormat.value === 'jpeg' ? 'jpg' : exportFormat.value)
-  anchor.click()
+  autoDown(url, buildImageFilename(exportFormat.value === 'jpeg' ? 'jpg' : exportFormat.value))
 }
 
 async function resetWorkspace() {

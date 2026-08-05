@@ -5,6 +5,7 @@ import { CopyDocument, Download, Refresh, UploadFilled } from '@element-plus/ico
 import * as echarts from 'echarts'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import ChartToolNav from '@/components/Tools/Chart/ChartToolNav.vue'
 import { useSettingStore } from '@/store/modules/setting'
@@ -242,10 +243,7 @@ function downloadPng() {
     ElMessage.warning('请先输入有效数据')
     return
   }
-  const link = document.createElement('a')
-  link.href = chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: settingStore.isDark ? '#0F172A' : '#FFFFFF' })
-  link.download = `${(settings.title || workbenchTitle.value).replace(/[\\/:*?"<>|]/g, '-')}.png`
-  link.click()
+  autoDown(chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: settingStore.isDark ? '#0F172A' : '#FFFFFF' }), `${(settings.title || workbenchTitle.value).replace(/[\\\/:*?"<>|]/g, '-')}.png`)
 }
 
 function downloadData() {
@@ -256,11 +254,7 @@ function downloadData() {
   const content = serializeChartData(rows.value, props.type, parserMode.value)
   const blob = new Blob([content], { type: parserMode.value === 'json' ? 'application/json;charset=utf-8' : 'text/csv;charset=utf-8' })
   const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = `chart-data.${parserMode.value === 'json' ? 'json' : 'csv'}`
-  link.click()
-  URL.revokeObjectURL(url)
+  autoDown(url, `chart-data.${parserMode.value === 'json' ? 'json' : 'csv'}`)
 }
 
 watch(option, () => nextTick(renderChart), { deep: true })

@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import debounce from 'lodash/debounce'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import {
   buildLogoFilename,
   calculateSplitLogoLayout,
@@ -191,11 +192,7 @@ async function downloadImage() {
   try {
     const blob = await getExportBlob()
     const url = URL.createObjectURL(blob)
-    const anchor = document.createElement('a')
-    anchor.href = url
-    anchor.download = buildLogoFilename([state.leftText, state.rightText], 'split-badge')
-    anchor.click()
-    URL.revokeObjectURL(url)
+    autoDown(url, buildLogoFilename([state.leftText, state.rightText], 'split-badge'))
     ElMessage.success(`已导出 ${exportDimensions.value.width} × ${exportDimensions.value.height} PNG`)
   } catch {
     ElMessage.error('图片下载失败，请稍后重试')

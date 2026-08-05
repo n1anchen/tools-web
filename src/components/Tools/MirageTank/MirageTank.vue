@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { adjustContrast, drawToCanvas, getImageData, loadImageFromFile, resizeCover, toGray } from './imageUtils'
 import { prismDecode, prismEncode, type DecodeMethod } from './mirage'
 
@@ -229,11 +230,8 @@ function clearDecode() {
 
 function downloadCanvas(canvas: HTMLCanvasElement | null, suffix: string, sourceFile?: File | null) {
   if (!canvas) return
-  const anchor = document.createElement('a')
-  const base = (sourceFile?.name || 'mirage').replace(/\.[^.]+$/, '').replace(/[\\/:*?"<>|]/g, '_')
-  anchor.download = `${base}_${suffix}.png`
-  anchor.href = canvas.toDataURL('image/png')
-  anchor.click()
+  const base = (sourceFile?.name || 'mirage').replace(/\.[^.]+$/, '').replace(/[\\\/:*?"<>|]/g, '_')
+  autoDown(canvas.toDataURL('image/png'), `${base}_${suffix}.png`)
 }
 
 function formatFileSize(file: File | null) {

@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import * as wanakana from 'wanakana'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { copy } from '@/utils/string'
 import {
   analyzeJapaneseText,
@@ -924,11 +925,7 @@ function downloadStudyNotes() {
     line.romaji ? `Romaji: ${line.romaji}` : '',
     line.translation ? `翻译: ${line.translation}` : '',
   ].filter(Boolean).join('\n')).join('\n\n')
-  const anchor = document.createElement('a')
-  anchor.download = 'japanese-lyrics-study.txt'
-  anchor.href = URL.createObjectURL(new Blob([result], { type: 'text/plain;charset=utf-8' }))
-  anchor.click()
-  URL.revokeObjectURL(anchor.href)
+  autoDown(URL.createObjectURL(new Blob([result], { type: 'text/plain;charset=utf-8' })), 'japanese-lyrics-study.txt')
 }
 </script>
 

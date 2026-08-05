@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import QRCodeVue3 from 'qrcode-vue3'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { buildQrPayload, type QrContentType } from '@/utils/qrTools'
 import { copy } from '@/utils/string'
 
@@ -104,10 +105,7 @@ function downloadQrCode() {
     ElMessage.warning('二维码仍在生成，请稍后重试')
     return
   }
-  const link = document.createElement('a')
-  link.href = image.src
-  link.download = `qrcode-${Date.now()}.png`
-  link.click()
+  autoDown(image.src, `qrcode-${Date.now()}.png`)
 }
 </script>
 

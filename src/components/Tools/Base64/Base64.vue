@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { copy } from '@/utils/string'
 import { buildDocumentFilename, formatDocumentBytes } from '@/utils/documentStudio'
 import {
@@ -208,11 +209,7 @@ function downloadDecodedFile() {
 
 function downloadBlob(blob: Blob, name: string) {
   const url = URL.createObjectURL(blob)
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = sanitizeBase64Filename(name)
-  anchor.click()
-  URL.revokeObjectURL(url)
+  autoDown(url, sanitizeBase64Filename(name))
 }
 
 function clearDecode() {

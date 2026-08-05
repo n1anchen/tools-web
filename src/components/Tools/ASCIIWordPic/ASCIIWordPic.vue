@@ -4,6 +4,7 @@ import { Download, MagicStick, Refresh, VideoPlay } from '@element-plus/icons-vu
 import figlet, { type FontName } from 'figlet'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { getAsciiMetrics } from '@/utils/displayStudio'
 import { secureRandomInt } from '@/utils/random'
 import { copy } from '@/utils/string'
@@ -126,11 +127,7 @@ function clear() {
 function downloadText() {
   if (!output.value) return
   const url = URL.createObjectURL(new Blob([output.value], { type: 'text/plain;charset=utf-8' }))
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = `ascii-${String(font.value).toLowerCase().replace(/\s+/g, '-')}.txt`
-  anchor.click()
-  URL.revokeObjectURL(url)
+  autoDown(url, `ascii-${String(font.value).toLowerCase().replace(/\s+/g, '-')}.txt`)
 }
 
 watch([content, font, outputWidth, horizontalLayout], scheduleGenerate)

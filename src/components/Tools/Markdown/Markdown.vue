@@ -6,6 +6,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { useSettingStore } from '@/store/modules/setting'
 import { copy } from '@/utils/string'
 import { analyzeText } from '@/utils/textTools'
@@ -139,11 +140,7 @@ async function importMarkdown(event: Event) {
 
 function download(contentValue: string, filename: string, type: string) {
   const url = URL.createObjectURL(new Blob([contentValue], { type }))
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = filename
-  anchor.click()
-  URL.revokeObjectURL(url)
+  autoDown(url, filename)
 }
 
 function exportMarkdown() {

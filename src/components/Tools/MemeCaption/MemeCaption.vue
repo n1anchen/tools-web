@@ -5,6 +5,7 @@ import { ElMessage, genFileId } from 'element-plus'
 import { CopyDocument, Download, Picture, Refresh, Upload } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import {
   buildMemeFilename,
   calculateCaptionLayout,
@@ -200,11 +201,7 @@ async function downloadImage() {
   try {
     const blob = await canvasToBlob(state.format === 'jpeg' ? 'image/jpeg' : 'image/png', state.format === 'jpeg' ? state.quality / 100 : undefined)
     const url = URL.createObjectURL(blob)
-    const anchor = document.createElement('a')
-    anchor.href = url
-    anchor.download = buildMemeFilename(state.sourceName, state.format)
-    anchor.click()
-    URL.revokeObjectURL(url)
+    autoDown(url, buildMemeFilename(state.sourceName, state.format))
     ElMessage.success(`已导出 ${outputDimensions.value.width} × ${outputDimensions.value.height} ${state.format.toUpperCase()}`)
   } catch {
     ElMessage.error('图片导出失败，请稍后重试')

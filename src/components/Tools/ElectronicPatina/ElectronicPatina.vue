@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import { Close, Download, Picture, Refresh, VideoPlay } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { applyPatinaPixels, buildPatinaFilename, getPatinaProfile } from '@/utils/electronicPatina'
 
 const patinaPresets = [
@@ -184,11 +185,7 @@ function cancelProcessing() {
 function downloadResult() {
   if (!resultBlob.value || !originalFile.value) return
   const url = URL.createObjectURL(resultBlob.value)
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = buildPatinaFilename(originalFile.value.name, compressionCount.value, quality.value)
-  anchor.click()
-  URL.revokeObjectURL(url)
+  autoDown(url, buildPatinaFilename(originalFile.value.name, compressionCount.value, quality.value))
 }
 
 function reset() {

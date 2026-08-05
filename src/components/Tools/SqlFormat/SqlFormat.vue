@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import { format, type IndentStyle, type KeywordCase, type LogicalOperatorNewline, type SqlLanguage } from 'sql-formatter'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import AceEditor from '@/components/Common/AceEditor.vue'
 import { copy } from '@/utils/string'
 import { countSqlStatements, minifySqlSafely } from '@/utils/workbenchTools'
@@ -146,11 +147,7 @@ function downloadSql() {
   const code = getCode()
   if (!code) return
   const url = URL.createObjectURL(new Blob([code], { type: 'text/sql;charset=utf-8' }))
-  const link = document.createElement('a')
-  link.href = url
-  link.download = `formatted-${options.dialect}.sql`
-  link.click()
-  URL.revokeObjectURL(url)
+  autoDown(url, `formatted-${options.dialect}.sql`)
 }
 </script>
 

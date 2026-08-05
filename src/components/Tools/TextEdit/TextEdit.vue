@@ -7,6 +7,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { copy } from '@/utils/string'
 import { analyzeText } from '@/utils/textTools'
 import {
@@ -170,11 +171,7 @@ async function importDocument(event: Event) {
 
 function download(value: string, filename: string, type: string) {
   const url = URL.createObjectURL(new Blob([value], { type }))
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = filename
-  anchor.click()
-  URL.revokeObjectURL(url)
+  autoDown(url, filename)
 }
 
 function exportHtml() {

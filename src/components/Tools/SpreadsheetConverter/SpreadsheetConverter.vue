@@ -5,6 +5,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { CopyDocument, Delete, DocumentAdd, Download, EditPen, FolderOpened, Plus, Refresh, UploadFilled } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import { copy } from '@/utils/string'
 import {
@@ -313,11 +314,7 @@ function autoColumns(rows: string[][]) {
 
 function downloadBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob)
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = filename
-  anchor.click()
-  URL.revokeObjectURL(url)
+  autoDown(url, filename)
 }
 
 function exportData() {

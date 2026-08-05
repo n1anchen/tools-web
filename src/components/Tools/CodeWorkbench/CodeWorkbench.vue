@@ -4,6 +4,7 @@ import { CopyDocument, Delete, Download, RefreshLeft, Search } from '@element-pl
 import AceEditor from '@/components/Common/AceEditor.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { copy } from '@/utils/string'
 import { getCodeMetrics } from '@/utils/codeWorkbench'
 
@@ -91,11 +92,7 @@ async function copyCode() {
 function downloadCode() {
   if (!code.value) return
   const url = URL.createObjectURL(new Blob([code.value], { type: 'text/plain;charset=utf-8' }))
-  const link = document.createElement('a')
-  link.href = url
-  link.download = props.filename
-  link.click()
-  URL.revokeObjectURL(url)
+  autoDown(url, props.filename)
 }
 
 function formatEditor() {

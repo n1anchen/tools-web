@@ -5,6 +5,7 @@ import { CopyDocument, Download, Refresh, UploadFilled } from '@element-plus/ico
 import * as echarts from 'echarts'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import ChartToolNav from '@/components/Tools/Chart/ChartToolNav.vue'
 import { useSettingStore } from '@/store/modules/setting'
@@ -150,8 +151,8 @@ async function importData(event: Event) {
   if (file.size > 1024 * 1024) { ElMessage.warning('单个数据文件请控制在 1 MB 以内'); return }
   const content = await file.text(); dataMode.value = file.name.toLowerCase().endsWith('.json') || content.trimStart().startsWith('{') || content.trimStart().startsWith('[') ? 'json' : 'grid'; dataText.value = content; activeSample.value = ''; ElMessage.success(`已载入 ${file.name}`)
 }
-function downloadData() { if (!stats.value.count) return ElMessage.warning('没有可导出的有效数据'); const content = serializeAdvancedChartData(data.value, parserMode.value); const blob = new Blob([content], { type: parserMode.value === 'json' ? 'application/json;charset=utf-8' : 'text/csv;charset=utf-8' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `chart-data.${parserMode.value === 'json' ? 'json' : 'csv'}`; link.click(); URL.revokeObjectURL(url) }
-function downloadPng() { if (!chart || !stats.value.count) return ElMessage.warning('请先输入有效数据'); const link = document.createElement('a'); link.href = chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: settingStore.isDark ? '#0F172A' : '#FFFFFF' }); link.download = `${(settings.title || workbenchTitle.value).replace(/[\\/:*?"<>|]/g, '-')}.png`; link.click() }
+function downloadData() { if (!stats.value.count) return ElMessage.warning('没有可导出的有效数据'); const content = serializeAdvancedChartData(data.value, parserMode.value); const blob = new Blob([content], { type: parserMode.value === 'json' ? 'application/json;charset=utf-8' : 'text/csv;charset=utf-8' }); const url = URL.createObjectURL(blob); autoDown(url, `chart-data.${parserMode.value === 'json' ? 'json' : 'csv'}`) }
+function downloadPng() { if (!chart || !stats.value.count) return ElMessage.warning('请先输入有效数据'); autoDown(chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: settingStore.isDark ? '#0F172A' : '#FFFFFF' }), `${(settings.title || workbenchTitle.value).replace(/[\\/:*?"<>|]/g, '-')}.png`) }
 
 watch(option, () => nextTick(renderChart), { deep: true })
 watch(() => settingStore.isDark, recreateChart)

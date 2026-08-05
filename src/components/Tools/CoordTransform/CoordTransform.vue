@@ -4,6 +4,7 @@ import type { Map as LMap, Marker as LMarker } from 'leaflet'
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { copy } from '@/utils/string'
 import {
   buildBatchCoordinateSets,
@@ -247,11 +248,7 @@ function copyAllCoordinates() {
 }
 
 function downloadText(content: string, filename: string, type: string) {
-  const anchor = document.createElement('a')
-  anchor.download = filename
-  anchor.href = URL.createObjectURL(new Blob([content], { type }))
-  anchor.click()
-  URL.revokeObjectURL(anchor.href)
+  autoDown(URL.createObjectURL(new Blob([content], { type })), filename)
 }
 
 function downloadCurrentJson() {

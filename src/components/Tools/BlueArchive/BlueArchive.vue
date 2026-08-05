@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import debounce from 'lodash/debounce'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { buildLogoFilename } from '@/utils/logoStudio'
 import { loadFontStylesheet, ensureFontsLoaded } from '@/utils/font'
 import { LogoCanvas } from './canvas'
@@ -111,11 +112,7 @@ async function downloadImage() {
   try {
     const blob = await exportBlob()
     const url = URL.createObjectURL(blob)
-    const anchor = document.createElement('a')
-    anchor.href = url
-    anchor.download = buildLogoFilename([state.textL, state.textR], 'blue-style')
-    anchor.click()
-    URL.revokeObjectURL(url)
+    autoDown(url, buildLogoFilename([state.textL, state.textR], 'blue-style'))
     ElMessage.success(`已导出 ${dimensions.width} × ${dimensions.height} PNG`)
   } catch {
     ElMessage.error('图片保存失败，请稍后重试')

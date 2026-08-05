@@ -11,6 +11,7 @@ import {
 } from 'fabric'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 
 
 interface HeadGroup {
@@ -327,11 +328,8 @@ function download() {
   const safeMultiplier = Math.min(desiredMultiplier, 8192 / canvas.getWidth(), 8192 / canvas.getHeight())
   const format = exportFormat.value
   const url = canvas.toDataURL({ format, quality: format === 'jpeg' ? 0.92 : 1, multiplier: safeMultiplier })
-  const anchor = document.createElement('a')
-  const baseName = backgroundName.value.replace(/\.[^.]+$/, '').replace(/[\\/:*?"<>|]/g, '_') || '接头霸王'
-  anchor.href = url
-  anchor.download = `${baseName}_接头霸王.${format === 'jpeg' ? 'jpg' : 'png'}`
-  anchor.click()
+  const baseName = backgroundName.value.replace(/\.[^.]+$/, '').replace(/[\\\/:*?"<>|]/g, '_') || '接头霸王'
+  autoDown(url, `${baseName}_接头霸王.${format === 'jpeg' ? 'jpg' : 'png'}`)
 }
 
 function handleKeydown(event: KeyboardEvent) {

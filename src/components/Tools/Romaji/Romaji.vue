@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import * as wanakana from 'wanakana'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import { autoDown } from '@/utils/file'
 import { copy } from '@/utils/string'
 import {
   analyzeJapaneseText,
@@ -150,11 +151,7 @@ function copyResult() {
 function downloadResult() {
   const blob = new Blob([displayedResult.value], { type: 'text/plain;charset=utf-8' })
   const url = URL.createObjectURL(blob)
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = `japanese-${outputView.value}.txt`
-  anchor.click()
-  URL.revokeObjectURL(url)
+  autoDown(url, `japanese-${outputView.value}.txt`)
 }
 
 function formatRomaji(value: string, style: typeof letterCase.value) {
