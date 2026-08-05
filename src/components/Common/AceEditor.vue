@@ -1,7 +1,7 @@
 <template>
   <div 
     ref="editorRef" 
-    class="ace-editor" 
+    class="font-['Monaco','Menlo','Ubuntu_Mono',monospace] rounded-[4px] border border-[#dcdfe6] dark:border-[#4c4d4f]" 
     :style="{ height: height, width: '100%' }"
   ></div>
 </template>
@@ -275,15 +275,3 @@ onUnmounted(() => {
   }
 })
 </script>
-
-<style scoped>
-.ace-editor {
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
-}
-
-.dark .ace-editor {
-  border-color: #4c4d4f;
-}
-</style>

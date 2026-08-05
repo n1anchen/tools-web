@@ -1,15 +1,15 @@
 <template>
   <button
     type="button"
-    class="theme-toggle-button"
+    class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-none bg-transparent transition-colors duration-200 hover:bg-[rgba(128,128,128,0.1)]"
     :aria-label="isDark ? '切换到亮色主题' : '切换到暗色主题'"
     @click="toggleTheme"
   >
     <transition name="fade" mode="out-in">
-      <Icon v-if="!isDark" size="20" class="theme-icon">
+      <Icon v-if="!isDark" size="20" class="text-[#334155] dark:text-[#cbd5e1]">
         <SunIcon />
       </Icon>
-      <Icon v-else size="18" class="theme-icon">
+      <Icon v-else size="18" class="text-[#334155] dark:text-[#cbd5e1]">
         <MoonIcon />
       </Icon>
     </transition>
@@ -30,31 +30,7 @@ const toggleTheme = inject('toggleTheme') as (event: MouseEvent) => void
 </script>
 
 <style scoped>
-.theme-toggle-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem; /* 40px */
-  height: 2.5rem; /* 40px */
-  border-radius: 50%;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.theme-toggle-button:hover {
-  background-color: rgba(128, 128, 128, 0.1);
-}
-
-.theme-icon {
-  color: #334155;
-}
-
-.dark .theme-icon {
-  color: #cbd5e1;
-}
-
+/* Vue Transition 钩子类（fade 动画） */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;

@@ -30,7 +30,7 @@ const scrollToTop = () => {
   <Transition name="back-to-top">
     <button
       v-show="visible"
-      class="back-to-top-btn"
+      class="fixed z-[999] flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border-none bg-[linear-gradient(135deg,#3b82f6,#2563eb)] shadow-[0_4px_14px_rgba(59,130,246,0.45)] outline-none transition-[transform,box-shadow] duration-200 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:-translate-y-[3px] hover:shadow-[0_8px_20px_rgba(59,130,246,0.55)] active:translate-y-0 active:scale-[0.93] active:shadow-[0_2px_8px_rgba(59,130,246,0.35)]"
       :style="{ right: `${right}px`, bottom: `${bottom}px` }"
       aria-label="回到顶部"
       @click="scrollToTop"
@@ -41,34 +41,7 @@ const scrollToTop = () => {
 </template>
 
 <style scoped>
-.back-to-top-btn {
-  position: fixed;
-  z-index: 999;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.45);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  outline: none;
-}
-
-.back-to-top-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.55);
-}
-
-.back-to-top-btn:active {
-  transform: translateY(0) scale(0.93);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
-}
-
-/* 进入 / 离开动画 */
+/* 进入 / 离开动画（Vue Transition 钩子类） */
 .back-to-top-enter-active,
 .back-to-top-leave-active {
   transition: opacity 0.25s ease, transform 0.25s ease;

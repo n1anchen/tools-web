@@ -11,22 +11,14 @@ const props = withDefaults(defineProps<{
 </script>
 
 <template>
-  <section class="tool-guide">
-    <header>
+  <section class="mt-3.5 overflow-hidden rounded-[22px] border border-[#dce6f1] bg-white shadow-[0_10px_28px_rgba(51,65,85,0.05)] dark:border-[#334155] dark:bg-[#111b2b]">
+    <header class="flex items-end justify-between gap-6 border-b border-[#e4ebf2] bg-[linear-gradient(135deg,#f6f9fd,#fbf8ff)] px-[22px] py-5 dark:border-[#334155] dark:bg-[linear-gradient(135deg,#172033,#211b31)] [@media(max-width:640px)]:flex-col [@media(max-width:640px)]:items-start [@media(max-width:640px)]:gap-[7px] [@media(max-width:640px)]:px-4 [@media(max-width:640px)]:py-[17px]">
       <div>
-        <span>{{ props.eyebrow }}</span>
-        <h3>{{ props.title }}</h3>
+        <span class="text-xs font-extrabold tracking-[0.14em] text-[#5076a7]">{{ props.eyebrow }}</span>
+        <h3 class="mt-1 text-xl text-[#263247] dark:text-[#e7edf6]">{{ props.title }}</h3>
       </div>
-      <p>{{ props.description }}</p>
+      <p class="m-0 max-w-[480px] text-right text-[13px] leading-[1.7] text-[#718096] dark:text-[#9facbd] [@media(max-width:640px)]:text-left">{{ props.description }}</p>
     </header>
-    <div class="guide-content"><slot /></div>
+    <div class="px-[22px] py-5 [@media(max-width:640px)]:p-4"><slot /></div>
   </section>
 </template>
-
-<style scoped>
-.tool-guide{overflow:hidden;margin-top:14px;border:1px solid #dce6f1;border-radius:22px;background:#fff;box-shadow:0 10px 28px rgba(51,65,85,.05)}
-.tool-guide>header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:20px 22px;border-bottom:1px solid #e4ebf2;background:linear-gradient(135deg,#f6f9fd,#fbf8ff)}
-.tool-guide header span{font-size:12px;font-weight:800;letter-spacing:.14em;color:#5076a7}.tool-guide h3{margin:4px 0 0;font-size:20px;color:#263247}.tool-guide header p{max-width:480px;margin:0;font-size:13px;line-height:1.7;color:#718096;text-align:right}.guide-content{padding:20px 22px}
-.dark .tool-guide{border-color:#334155;background:#111b2b}.dark .tool-guide>header{border-color:#334155;background:linear-gradient(135deg,#172033,#211b31)}.dark .tool-guide h3{color:#e7edf6}.dark .tool-guide header p{color:#9facbd}
-@media(max-width:640px){.tool-guide>header{align-items:flex-start;flex-direction:column;gap:7px;padding:17px 16px}.tool-guide header p{text-align:left}.guide-content{padding:16px}}
-</style>
