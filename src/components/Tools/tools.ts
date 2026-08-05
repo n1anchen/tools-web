@@ -506,7 +506,7 @@ export function getToolsCate() {
           id: 1,
           title: '在线图片处理',
           logo: '/images/logo/img.png',
-          desc: '在线图片裁剪，图片标注，图片滤镜，图片画笔、图片旋转、图片文字等操作',
+          desc: '裁剪、旋转、翻转、画笔、形状、文字、Emoji 标注与滤镜调整，图片只在浏览器本地处理。',
           url: '/signimage/',
           cateId: 5,
           cate: '图片处理',

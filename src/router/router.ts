@@ -77,11 +77,11 @@ export const constantRoute = [
   },
   {
     path: '/signimage',
-    component: () => import('@/components/Tools/SignImage/SignImage.vue'),
+    component: () => import('@/components/Tools/ImageStudio/ImageStudio.vue'),
     name: 'signimage',
     meta: {
-      keywords: '在线图片裁剪，图片标注，图片滤镜，图片画笔、图片旋转、图片文字，图片美,图片尺寸调整化',
-      description: '在线图片裁剪，图片标注，图片滤镜，图片画笔、图片旋转、图片文字,图片尺寸调整等操作',
+      keywords: '在线图片处理,在线图片裁剪,图片标注,图片滤镜,图片画笔,图片旋转,图片文字,图片尺寸调整',
+      description: '在线图片裁剪、标注、滤镜、画笔、旋转、文字与尺寸调整等操作，全部在浏览器本地完成',
     }
   },
   {
