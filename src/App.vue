@@ -179,6 +179,12 @@ onMounted(() => {
   } else {
     document.documentElement.classList.remove('dark')
   }
+
+  // 直接通过 URL 进入工具页时默认收起侧边栏（由 VITE_COLLAPSE_SIDEBAR_ON_TOOL_ENTRY 控制）
+  // 用 window.location.pathname 而非 route.path：App 挂载时初始路由导航可能尚未完成，route.path 仍为 '/'
+  if (import.meta.env.VITE_COLLAPSE_SIDEBAR_ON_TOOL_ENTRY === 'true' && window.location.pathname !== '/') {
+    componentStore.setLeftComStatus(true)
+  }
 })
 
 onUnmounted(() => {
