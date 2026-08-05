@@ -1,3 +1,5 @@
+import { numberValue, parseTableRows as tableRows } from './chartParser.ts'
+
 export type SpecialChartKind = 'treemap' | 'sankey' | 'boxplot' | 'calendar'
 export type SpecialDataMode = 'table' | 'json'
 
@@ -99,27 +101,6 @@ export const SPECIAL_SAMPLES: Record<SpecialChartKind, SpecialSample[]> = {
     { id: 'campaign', title: '季度活动热度', hint: '部分日期与缺失提醒', data: calendar(calendarSample(2026, 91, 90)) },
     { id: 'reading', title: '年度阅读记录', hint: '每日分钟数', data: calendar(calendarSample(2025).filter((_item, index) => index % 3 !== 0).map((item, index) => ({ ...item, value: 10 + (index * 13) % 76 }))) },
   ],
-}
-
-function splitLine(line: string, delimiter: string) {
-  const cells: string[] = []; let current = ''; let quoted = false
-  for (let index = 0; index < line.length; index += 1) {
-    const char = line[index]
-    if (char === '"') {
-      if (quoted && line[index + 1] === '"') { current += '"'; index += 1 } else quoted = !quoted
-    } else if (char === delimiter && !quoted) { cells.push(current.trim()); current = '' } else current += char
-  }
-  cells.push(current.trim()); return cells
-}
-
-function tableRows(text: string) {
-  const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter(line => line.trim())
-  const delimiter = (lines[0] ?? '').includes('\t') ? '\t' : ','
-  return lines.map((line, index) => ({ line: index + 1, cells: splitLine(line, delimiter) }))
-}
-
-function numberValue(value: unknown) {
-  return (typeof value === 'number' || typeof value === 'string' && value.trim() !== '') && Number.isFinite(Number(value)) ? Number(value) : null
 }
 
 function emptyData(kind: SpecialChartKind): SpecialChartData {

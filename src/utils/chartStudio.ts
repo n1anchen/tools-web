@@ -1,3 +1,5 @@
+import { isFiniteNumber, splitDelimitedLine } from './chartParser.ts'
+
 export type ChartKind = 'bar' | 'line' | 'pie' | 'scatter' | 'funnel'
 export type ChartDataMode = 'table' | 'json'
 export type ChartTitlePosition = 'left' | 'center' | 'right'
@@ -69,35 +71,6 @@ export const CHART_SAMPLES: Record<ChartKind, ChartSample[]> = {
     { id: 'recruiting', title: '招聘流程', hint: '展示流程转化', rows: [['收到简历', 480], ['初步筛选', 216], ['技术面试', 94], ['终轮面试', 38], ['发出 Offer', 21]].map(([name, value]) => ({ name: String(name), value: Number(value) })) },
     { id: 'sales', title: '销售线索', hint: '适合倒序漏斗', rows: [['潜在线索', 860], ['有效沟通', 410], ['方案演示', 185], ['商务谈判', 72], ['签约客户', 36]].map(([name, value]) => ({ name: String(name), value: Number(value) })) },
   ],
-}
-
-function splitDelimitedLine(line: string, delimiter: string) {
-  const cells: string[] = []
-  let value = ''
-  let quoted = false
-  for (let index = 0; index < line.length; index += 1) {
-    const char = line[index]
-    if (char === '"') {
-      if (quoted && line[index + 1] === '"') {
-        value += '"'
-        index += 1
-      } else {
-        quoted = !quoted
-      }
-    } else if (char === delimiter && !quoted) {
-      cells.push(value.trim())
-      value = ''
-    } else {
-      value += char
-    }
-  }
-  cells.push(value.trim())
-  return cells
-}
-
-function isFiniteNumber(value: unknown) {
-  if (typeof value === 'number') return Number.isFinite(value)
-  return typeof value === 'string' && value.trim() !== '' && Number.isFinite(Number(value))
 }
 
 function parseTable(text: string, kind: ChartKind): ChartParseResult {

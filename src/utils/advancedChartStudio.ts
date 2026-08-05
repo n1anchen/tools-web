@@ -1,3 +1,5 @@
+import { numberValue, parseTableRows as tableRows } from './chartParser.ts'
+
 export type AdvancedChartKind = 'radar' | 'gauge' | 'heatmap' | 'candlestick' | 'stack'
 export type AdvancedDataMode = 'table' | 'json'
 
@@ -71,27 +73,6 @@ export const ADVANCED_SAMPLES: Record<AdvancedChartKind, AdvancedSample[]> = {
     { id: 'cost', title: '部门成本趋势', hint: '适合堆叠面积线', data: stack(['1 月', '2 月', '3 月', '4 月', '5 月', '6 月'], [{ name: '研发', values: [42, 46, 51, 54, 58, 63] }, { name: '市场', values: [28, 34, 31, 39, 45, 48] }, { name: '运营', values: [22, 24, 26, 29, 31, 33] }]) },
     { id: 'orders', title: '订单状态分布', hint: '开启总量标签', data: stack(['华东', '华南', '华北', '西南'], [{ name: '已完成', values: [860, 720, 640, 510] }, { name: '处理中', values: [160, 142, 128, 105] }, { name: '退款', values: [42, 38, 35, 29] }]) },
   ],
-}
-
-function splitLine(line: string, delimiter: string) {
-  const cells: string[] = []; let current = ''; let quoted = false
-  for (let index = 0; index < line.length; index += 1) {
-    const char = line[index]
-    if (char === '"') {
-      if (quoted && line[index + 1] === '"') { current += '"'; index += 1 } else quoted = !quoted
-    } else if (char === delimiter && !quoted) { cells.push(current.trim()); current = '' } else current += char
-  }
-  cells.push(current.trim()); return cells
-}
-
-function tableRows(text: string) {
-  const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter(line => line.trim())
-  const delimiter = (lines[0] ?? '').includes('\t') ? '\t' : ','
-  return lines.map((line, index) => ({ line: index + 1, cells: splitLine(line, delimiter) }))
-}
-
-function numberValue(value: unknown) {
-  return (typeof value === 'number' || typeof value === 'string' && value.trim() !== '') && Number.isFinite(Number(value)) ? Number(value) : null
 }
 
 function emptyData(kind: AdvancedChartKind): AdvancedChartData {
