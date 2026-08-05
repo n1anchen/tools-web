@@ -1,6 +1,5 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { VitePWA } from 'vite-plugin-pwa'
 import sitemap from 'vite-plugin-sitemap'
 import path from 'path'
@@ -61,12 +60,6 @@ export default defineConfig(({command, mode}) => {
           ]
         },
       },
-      createSvgIconsPlugin({
-        // Specify the icon folder to be cached
-        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
-        // Specify symbolId format
-        symbolId: 'icon-[dir]-[name]',
-      }),
       copyAssetsPlugin(),
       sitemap({
         hostname: 'https://tools.nianchen.top',
@@ -193,7 +186,6 @@ export default defineConfig(({command, mode}) => {
     resolve: {
       alias: {
         "@": path.resolve("./src"),  //相对路径别名配置， 使用@替代src
-        "v-code-diff": path.resolve("./node_modules/v-code-diff/dist/v3/index.es.js")
       }
     },
     build: {

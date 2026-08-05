@@ -67,11 +67,7 @@ const updateSlider = () => {
 }
 //获取分类
 const getToolCates = async () => {
-  try {
-    await toolsStore.getToolCate()
-  } catch (error) {
-    console.log(error)
-  }
+  await toolsStore.getToolCate()
 }
 
 const handleOpen = () => {
