@@ -98,6 +98,8 @@ onBeforeRouteLeave(() => {
 onMounted(() => {
   document.addEventListener('click', handleOutsideClick)
   ensureDefaultManagedResourceCaches().catch(() => {})
+  // 自加载分类数据（getToolCate 已记忆化，与 Left 并发调用只加载一次）
+  toolsStore.getToolCate()
   if (route.query && route.query.value) {
     // 底部导航跳转过来的则定位到响应位置
     sessionStorage.removeItem(SCROLL_KEY)
