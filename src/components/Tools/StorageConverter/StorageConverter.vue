@@ -124,10 +124,11 @@ function copyAll() {
     </section>
 
     <section class="results-card">
-      <div class="result-header">
-        <SectionHeading :icon="DataLine" title="换算结果" :description="(standardLabel) + ' · 自动保留有效小数'" tone="green" />
-        <el-button :icon="CopyDocument" :disabled="!results.length" @click="copyAll">复制全部</el-button>
-      </div>
+      <SectionHeading :icon="DataLine" title="换算结果" :description="(standardLabel) + ' · 自动保留有效小数'" tone="green">
+        <template #actions>
+          <el-button :icon="CopyDocument" :disabled="!results.length" @click="copyAll">复制全部</el-button>
+        </template>
+      </SectionHeading>
 
       <div v-if="results.length && bestResult" class="result-summary">
         <span>{{ inputValue || 0 }} {{ sourceLabel }} 约等于</span>
@@ -195,7 +196,7 @@ function copyAll() {
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
 
-.result-header, .preset-row, .reference-card {display: flex;
+.preset-row, .reference-card {display: flex;
   align-items: center;}
 
 
@@ -245,11 +246,6 @@ function copyAll() {
 .preset-row button:hover {
   border-color: #60a5fa;
   background: #dbeafe;
-}
-
-.result-header {
-  justify-content: space-between;
-  gap: 16px;
 }
 
 .result-summary {
@@ -452,14 +448,9 @@ function copyAll() {
     grid-column: auto;
   }
 
-  .result-header,
   .result-summary {
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  .result-header :deep(.el-button) {
-    width: 100%;
   }
 
   .result-grid {

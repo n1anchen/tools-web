@@ -50,16 +50,17 @@ function useSample(sample: typeof samples[number]) {
     <ToolHero />
 
     <section class="workspace-card">
-      <div class="settings-header">
-        <SectionHeading :icon="Connection" title="Unicode 编码转换" description="支持 JavaScript 转义、Unicode 码点和 Emoji" tone="blue" />
-        <el-segmented
-          v-model="mode"
-          :options="[
-            { label: '文本 → Unicode', value: 'encode' },
-            { label: 'Unicode → 文本', value: 'decode' },
-          ]"
-        />
-      </div>
+      <SectionHeading :icon="Connection" title="Unicode 编码转换" description="支持 JavaScript 转义、Unicode 码点和 Emoji" tone="blue">
+        <template #actions>
+          <el-segmented
+            v-model="mode"
+            :options="[
+              { label: '文本 → Unicode', value: 'encode' },
+              { label: 'Unicode → 文本', value: 'decode' },
+            ]"
+          />
+        </template>
+      </SectionHeading>
 
       <div v-if="mode === 'encode'" class="option-row">
         <label>
@@ -138,8 +139,7 @@ function useSample(sample: typeof samples[number]) {
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
-.settings-header, .option-row, .editor-title, .sample-row {display: flex; align-items: center;}
-.settings-header { justify-content: space-between; gap: 18px; }
+.option-row, .editor-title, .sample-row {display: flex; align-items: center;}
 
 .option-row {
   flex-wrap: wrap;
@@ -257,12 +257,10 @@ function useSample(sample: typeof samples[number]) {
 }
 :global(html.dark .unicode-page .character-grid strong) { color: #e2e8f0; }@media (max-width: 1000px) {
   .character-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 900px) {
-  .settings-header { align-items: flex-start; flex-direction: column; }
   .editor-grid { grid-template-columns: 1fr; }
   .direction-column { flex-direction: row; }}@media (max-width: 640px) {
   .workspace-card,
   .inspector-card { padding: 18px; border-radius: 16px; }
-  .settings-header :deep(.el-segmented) { width: 100%; }
   .option-row { align-items: flex-start; flex-direction: column; }
   .option-row label { align-items: flex-start; flex-direction: column; width: 100%; }
   .option-row :deep(.el-radio-group) { width: 100%; }

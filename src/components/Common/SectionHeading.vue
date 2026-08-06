@@ -43,6 +43,11 @@ withDefaults(defineProps<{
   flex: 1;
   min-width: 0;
 }
+/* 窄屏：标题占满一行，右侧操作区换行到下一行（复刻原 header 容器的移动端 column 行为） */
+@media (max-width: 640px) {
+  .section-heading { flex-wrap: wrap; }
+  .sh-grow { flex: 1 0 100%; }
+}
 .heading-blue { color: #2563eb; background: #eff6ff; }
 .heading-violet { color: #7c3aed; background: #f5f3ff; }
 .heading-pink { color: #db2777; background: #fdf2f8; }

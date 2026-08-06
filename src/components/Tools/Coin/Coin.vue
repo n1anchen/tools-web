@@ -115,10 +115,11 @@ onBeforeUnmount(() => {
     </div>
 
     <section class="statistics-card">
-      <div class="statistics-header">
-        <SectionHeading :icon="TrendCharts" title="本次统计" description="最多保留最近 40 次抛掷结果" tone="green" />
-        <el-button text :icon="Delete" :disabled="!records.length" @click="clearRecords">清空记录</el-button>
-      </div>
+      <SectionHeading :icon="TrendCharts" title="本次统计" description="最多保留最近 40 次抛掷结果" tone="green">
+        <template #actions>
+          <el-button text :icon="Delete" :disabled="!records.length" @click="clearRecords">清空记录</el-button>
+        </template>
+      </SectionHeading>
 
       <div class="stats-grid">
         <div><span>累计抛掷</span><strong>{{ records.length }}</strong><small>次</small></div>
@@ -154,7 +155,7 @@ onBeforeUnmount(() => {
 .coin-page { gap: 18px; }
 .workspace-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(330px, .8fr); gap: 18px; }
 .settings-card, .toss-card, .statistics-card {padding: 24px}
-.statistics-header, .fairness-note {display: flex; align-items: center;}
+.fairness-note {display: flex; align-items: center;}
 .label-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 22px; }
 .label-grid label > span, .count-field > span { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; color: #475569; font-size: 12px; font-weight: 650; }
 .dot { width: 7px; height: 7px; border-radius: 50%; } .dot.heads { background: #f59e0b; } .dot.tails { background: #8b5cf6; }
@@ -182,7 +183,6 @@ onBeforeUnmount(() => {
 .result-copy strong { color: #0f172a; font-size: 28px; }
 .result-copy span { margin-top: 4px; color: #94a3b8; font-size: 11px; }
 .toss-card > .el-button { width: 190px; margin-top: 10px; }
-.statistics-header { justify-content: space-between; }
 .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
 .stats-grid > div { padding: 14px 16px; border-radius: 13px; background: #f8fafc; }
 .stats-grid span, .stats-grid strong, .stats-grid small { display: block; }
@@ -205,5 +205,5 @@ onBeforeUnmount(() => {
 :global(html.dark .coin-page .stats-grid > div), :global(html.dark .coin-page .guide-grid div) { background: #0f172a; }
 :global(html.dark .coin-page .fairness-note) { background: rgba(6, 78, 59, .25); }
 @media (max-width: 860px) { .workspace-grid { grid-template-columns: 1fr; } .toss-card { min-height: 410px; } }
-@media (max-width: 640px) { .settings-card, .toss-card, .statistics-card { padding: 18px; } .label-grid, .stats-grid, .guide-grid { grid-template-columns: 1fr; } .statistics-header { align-items: flex-start; } }
+@media (max-width: 640px) { .settings-card, .toss-card, .statistics-card { padding: 18px; } .label-grid, .stats-grid, .guide-grid { grid-template-columns: 1fr; }  }
 </style>

@@ -85,10 +85,11 @@ onMounted(generateAll)
     </section>
 
     <section class="result-card">
-      <div class="result-header">
-        <SectionHeading :icon="DocumentCopy" title="UUID 列表" :description="formattedUuids.length + ' 条 · ' + formatLabel" tone="green" />
-        <el-button :icon="CopyDocument" :disabled="!formattedUuids.length" @click="copyAll">复制全部</el-button>
-      </div>
+      <SectionHeading :icon="DocumentCopy" title="UUID 列表" :description="formattedUuids.length + ' 条 · ' + formatLabel" tone="green">
+        <template #actions>
+          <el-button :icon="CopyDocument" :disabled="!formattedUuids.length" @click="copyAll">复制全部</el-button>
+        </template>
+      </SectionHeading>
 
       <div class="uuid-list">
         <button
@@ -128,7 +129,7 @@ onMounted(generateAll)
 <style scoped>
 .uuid-page { gap: 18px; }
 .workspace-card {padding: 24px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05);}
-.result-header, .control-grid {display: flex; align-items: center;}
+.control-grid {display: flex; align-items: center;}
 
 .version-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 22px; }
 .version-grid > button { display: flex; align-items: center; gap: 14px; padding: 17px; border: 1px solid #e2e8f0; border-radius: 15px; color: #334155; background: #f8fafc; text-align: left; transition: .2s ease; }
@@ -145,7 +146,6 @@ onMounted(generateAll)
 .format-field { min-width: 0; flex: 1; }
 .format-options { display: flex; min-height: 32px; align-items: center; gap: 20px; }
 .control-grid > .el-button { align-self: flex-end; }
-.result-header { justify-content: space-between; gap: 18px; }
 .uuid-list { display: grid; gap: 9px; margin-top: 20px; }
 .uuid-list > button { display: grid; grid-template-columns: 30px minmax(0, 1fr) 42px 20px; align-items: center; gap: 12px; width: 100%; padding: 13px 15px; border: 1px solid #e2e8f0; border-radius: 13px; color: #64748b; background: #f8fafc; text-align: left; transition: .2s ease; }
 .uuid-list > button:hover { border-color: #93c5fd; color: #2563eb; background: #eff6ff; }
@@ -161,4 +161,4 @@ onMounted(generateAll)
 :global(html.dark .uuid-page .workspace-card), :global(html.dark .uuid-page .result-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
 :global(html.dark .uuid-page .version-grid strong), :global(html.dark .uuid-page .uuid-list code), :global(html.dark .uuid-page .reference-grid strong) { color: #e2e8f0; }
 :global(html.dark .uuid-page .version-grid > button), :global(html.dark .uuid-page .control-grid), :global(html.dark .uuid-page .uuid-list > button), :global(html.dark .uuid-page .reference-grid article) { border-color: #334155; background: #0f172a; }
-:global(html.dark .uuid-page .version-grid > button.active) { border-color: #3b82f6; background: rgba(30, 64, 175, .18); }@media (max-width: 760px) { .control-grid { align-items: stretch; flex-direction: column; gap: 14px; } .format-options { flex-wrap: wrap; gap: 4px 16px; } .control-grid > .el-button { align-self: stretch; } .reference-grid { grid-template-columns: 1fr; }}@media (max-width: 640px) { .workspace-card, .result-card { padding: 18px; } .version-grid { grid-template-columns: 1fr; } .uuid-list > button { grid-template-columns: 24px minmax(0, 1fr) 18px; } .row-version { display: none; } .result-header { align-items: flex-start; }}</style>
+:global(html.dark .uuid-page .version-grid > button.active) { border-color: #3b82f6; background: rgba(30, 64, 175, .18); }@media (max-width: 760px) { .control-grid { align-items: stretch; flex-direction: column; gap: 14px; } .format-options { flex-wrap: wrap; gap: 4px 16px; } .control-grid > .el-button { align-self: stretch; } .reference-grid { grid-template-columns: 1fr; }}@media (max-width: 640px) { .workspace-card, .result-card { padding: 18px; } .version-grid { grid-template-columns: 1fr; } .uuid-list > button { grid-template-columns: 24px minmax(0, 1fr) 18px; } .row-version { display: none; }}</style>

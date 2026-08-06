@@ -60,13 +60,14 @@ function useSample(value: string) {
     <ToolHero />
 
     <section class="workspace-card">
-      <div class="editor-header">
-        <SectionHeading :icon="Document" title="输入或粘贴文本" description="内容变化时实时更新，不会上传文本" tone="blue" />
-        <div class="editor-actions">
-          <CopyButton :text="content" :disabled="!content" label="复制文本" />
-          <el-button :icon="Delete" :disabled="!content" @click="content = ''">清空</el-button>
-        </div>
-      </div>
+      <SectionHeading :icon="Document" title="输入或粘贴文本" description="内容变化时实时更新，不会上传文本" tone="blue">
+        <template #actions>
+          <div class="editor-actions">
+            <CopyButton :text="content" :disabled="!content" label="复制文本" />
+            <el-button :icon="Delete" :disabled="!content" @click="content = ''">清空</el-button>
+          </div>
+        </template>
+      </SectionHeading>
 
       <el-input
         v-model="content"
@@ -159,10 +160,9 @@ function useSample(value: string) {
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
 
-.editor-header, .editor-footer, .sample-row, .panel-title {display: flex;
+.editor-footer, .sample-row, .panel-title {display: flex;
   align-items: center;}
 
-.editor-header,
 .editor-footer {
   justify-content: space-between;
   gap: 16px;

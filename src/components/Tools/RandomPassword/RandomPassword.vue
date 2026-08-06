@@ -152,10 +152,11 @@ onMounted(generateAll)
     </div>
 
     <section class="result-card">
-      <div class="result-header">
-        <SectionHeading :icon="Lock" title="生成结果" :description="(passwords.length) + ' 条密码 · 点击任意一条即可复制'" tone="green" />
-        <el-button :icon="CopyDocument" :disabled="!passwords.length" @click="copyAll">复制全部</el-button>
-      </div>
+      <SectionHeading :icon="Lock" title="生成结果" :description="(passwords.length) + ' 条密码 · 点击任意一条即可复制'" tone="green">
+        <template #actions>
+          <el-button :icon="CopyDocument" :disabled="!passwords.length" @click="copyAll">复制全部</el-button>
+        </template>
+      </SectionHeading>
 
       <div v-if="passwords.length" class="password-list">
         <button
@@ -192,7 +193,7 @@ onMounted(generateAll)
 .workspace-grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(260px, .75fr); gap: 18px; }
 
 .settings-card, .result-card { padding: 24px; }
-.result-header, .switch-row {display: flex; align-items: center;}
+.switch-row {display: flex; align-items: center;}
 
 .field-label { margin: 24px 0 10px; color: #334155; font-size: 13px; font-weight: 650; }
 .group-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
@@ -226,7 +227,6 @@ onMounted(generateAll)
 .metric-list b { color: #0f172a; }
 .privacy-note { display: flex; align-items: flex-start; gap: 7px; margin-top: auto; padding-top: 18px; color: #059669; font-size: 12px; text-align: left; }
 .privacy-note .el-icon { flex: 0 0 auto; margin-top: 2px; }
-.result-header { justify-content: space-between; gap: 18px; }
 .password-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 20px; }
 .password-item { display: grid; grid-template-columns: 28px minmax(0, 1fr) 20px; align-items: center; gap: 10px; padding: 13px 14px; border: 1px solid #e2e8f0; border-radius: 13px; color: #64748b; background: #f8fafc; text-align: left; transition: .2s ease; }
 .password-item:hover { border-color: #a78bfa; color: #7c3aed; background: #faf5ff; }
@@ -244,4 +244,4 @@ onMounted(generateAll)
 :global(html.dark .password-page .group-option), :global(html.dark .password-page .switch-row), :global(html.dark .password-page .password-item), :global(html.dark .password-page .advice-grid div) { border-color: #334155; background: #0f172a; }
 :global(html.dark .password-page .group-option) { color: #e2e8f0; }
 :global(html.dark .password-page .group-option.active) { border-color: #8b5cf6; background: rgba(91, 33, 182, .18); }
-:global(html.dark .password-page .metric-list), :global(html.dark .password-page .metric-list div) { border-color: #334155; }@media (max-width: 900px) { .workspace-grid { grid-template-columns: 1fr; } .strength-card { min-height: auto; } .privacy-note { margin-top: 12px; }}@media (max-width: 640px) { .settings-card, .result-card { padding: 18px; } .group-grid, .password-list, .range-grid, .advice-grid { grid-template-columns: 1fr; } .group-grid { grid-template-columns: repeat(2, 1fr); } .result-header { align-items: flex-start; }}</style>
+:global(html.dark .password-page .metric-list), :global(html.dark .password-page .metric-list div) { border-color: #334155; }@media (max-width: 900px) { .workspace-grid { grid-template-columns: 1fr; } .strength-card { min-height: auto; } .privacy-note { margin-top: 12px; }}@media (max-width: 640px) { .settings-card, .result-card { padding: 18px; } .group-grid, .password-list, .range-grid, .advice-grid { grid-template-columns: 1fr; } .group-grid { grid-template-columns: repeat(2, 1fr); }}</style>

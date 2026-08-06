@@ -52,16 +52,17 @@ function useResultAsInput() {
     <ToolHero />
 
     <section class="workspace-card">
-      <div class="settings-header">
-        <SectionHeading :icon="Filter" title="设置去重规则" description="结果会随输入和规则实时更新，并保持原始顺序" tone="violet" />
-        <el-segmented
-          v-model="options.mode"
-          :options="[
-            { label: '全局重复行', value: 'global' },
-            { label: '仅连续重复', value: 'adjacent' },
-          ]"
-        />
-      </div>
+      <SectionHeading :icon="Filter" title="设置去重规则" description="结果会随输入和规则实时更新，并保持原始顺序" tone="violet">
+        <template #actions>
+          <el-segmented
+            v-model="options.mode"
+            :options="[
+              { label: '全局重复行', value: 'global' },
+              { label: '仅连续重复', value: 'adjacent' },
+            ]"
+          />
+        </template>
+      </SectionHeading>
 
       <div class="option-row">
         <el-checkbox v-model="options.trimLines">忽略行首尾空白</el-checkbox>
@@ -146,8 +147,7 @@ function useResultAsInput() {
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
-.settings-header, .option-row, .editor-title, .workspace-footer, .duplicate-preview {display: flex; align-items: center;}
-.settings-header { justify-content: space-between; gap: 18px; }
+.option-row, .editor-title, .workspace-footer, .duplicate-preview {display: flex; align-items: center;}
 
 .option-row {
   flex-wrap: wrap;
@@ -274,13 +274,11 @@ function useResultAsInput() {
 :global(html.dark .dedupe-page .summary-grid .removed) { background: #3b1f0d; }
 :global(html.dark .dedupe-page .duplicate-preview) { border-color: #334155; }
 :global(html.dark .dedupe-page .duplicate-list button) { border-color: #334155; color: #cbd5e1; background: #111c2f; }@media (max-width: 900px) {
-  .settings-header { align-items: flex-start; flex-direction: column; }
   .editor-grid { grid-template-columns: 1fr; }
   .direction-column { flex-direction: row; }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }}@media (max-width: 640px) {
   .workspace-card,
   .summary-card { padding: 18px; border-radius: 16px; }
-  .settings-header :deep(.el-segmented) { width: 100%; }
   .option-row { align-items: flex-start; flex-direction: column; }
   .editor-panel :deep(.el-textarea__inner) { min-height: 220px !important; }
   .workspace-footer { align-items: stretch; flex-direction: column; }

@@ -185,10 +185,11 @@ onBeforeUnmount(() => {
     </div>
 
     <section v-if="history.length" class="history-card">
-      <div class="history-header">
-        <SectionHeading :icon="Clock" title="选择历史" description="按最近顺序保留 8 次结果" tone="green" />
-        <button type="button" @click="history = []">清空历史</button>
-      </div>
+      <SectionHeading :icon="Clock" title="选择历史" description="按最近顺序保留 8 次结果" tone="green">
+        <template #actions>
+          <button type="button" class="clear-history" @click="history = []">清空历史</button>
+        </template>
+      </SectionHeading>
       <div class="history-list">
         <div v-for="(item, index) in history" :key="item.id">
           <span>{{ index + 1 }}</span>
@@ -212,7 +213,7 @@ onBeforeUnmount(() => {
 .decision-page { gap: 18px; }
 .workspace-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr); gap: 18px; }
 .settings-card, .decision-card, .history-card {padding: 24px}
-.history-header, .setting-row {display: flex; align-items: center;}
+.setting-row {display: flex; align-items: center;}
 
 .preset-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 21px; padding: 4px; border-radius: 12px; background: #f1f5f9; }
 .preset-tabs button { padding: 9px 7px; border-radius: 9px; color: #64748b; font-size: 12px; }
@@ -247,8 +248,7 @@ onBeforeUnmount(() => {
 .decision-card > .el-button { min-width: 190px; }
 .secondary-actions { display: flex; margin-top: 10px; }
 .local-note { margin-top: 24px; color: #94a3b8; font-size: 10px; }
-.history-header { justify-content: space-between; }
-.history-header > button { color: #64748b; font-size: 12px; }
+.clear-history { color: #64748b; font-size: 12px; }
 .history-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-top: 18px; }
 .history-list > div { display: grid; grid-template-columns: 22px minmax(0, 1fr); align-items: center; gap: 2px 8px; padding: 12px; border-radius: 12px; background: #f8fafc; }
 .history-list span { grid-row: span 2; color: #f9a8d4; font-size: 11px; }

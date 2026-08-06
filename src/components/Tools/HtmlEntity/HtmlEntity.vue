@@ -54,16 +54,17 @@ function useSample(sample: typeof samples[number]) {
     <ToolHero />
 
     <section class="workspace-card">
-      <div class="settings-header">
-        <SectionHeading :icon="Document" title="HTML 实体转换" description="安全处理标签、引号、与号以及数字实体" tone="pink" />
-        <el-segmented
-          v-model="mode"
-          :options="[
-            { label: 'HTML → 实体', value: 'encode' },
-            { label: '实体 → 文本', value: 'decode' },
-          ]"
-        />
-      </div>
+      <SectionHeading :icon="Document" title="HTML 实体转换" description="安全处理标签、引号、与号以及数字实体" tone="pink">
+        <template #actions>
+          <el-segmented
+            v-model="mode"
+            :options="[
+              { label: 'HTML → 实体', value: 'encode' },
+              { label: '实体 → 文本', value: 'decode' },
+            ]"
+          />
+        </template>
+      </SectionHeading>
 
       <div class="status-row">
         <el-checkbox v-if="mode === 'encode'" v-model="encodeNonAscii">中文和 Emoji 也转换为十六进制实体</el-checkbox>
@@ -106,10 +107,11 @@ function useSample(sample: typeof samples[number]) {
     </section>
 
     <section class="reference-card">
-      <div class="reference-header">
-        <SectionHeading :icon="Grid" title="常用实体对照" description="点击任意实体即可复制" tone="green" />
-        <div class="safety-badge"><el-icon><Lock /></el-icon> 结果仅以纯文本显示</div>
-      </div>
+      <SectionHeading :icon="Grid" title="常用实体对照" description="点击任意实体即可复制" tone="green">
+        <template #actions>
+          <div class="safety-badge"><el-icon><Lock /></el-icon> 结果仅以纯文本显示</div>
+        </template>
+      </SectionHeading>
 
       <div class="entity-grid">
         <button v-for="item in referenceEntities" :key="item.entity" type="button" @click="copy(item.entity)">
@@ -137,10 +139,7 @@ function useSample(sample: typeof samples[number]) {
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
-.settings-header, .status-row, .editor-title, .sample-row, .reference-header, .safety-badge {display: flex; align-items: center;}
-.settings-header,
-.reference-header { justify-content: space-between; gap: 18px; }
-
+.status-row, .editor-title, .sample-row, .safety-badge {display: flex; align-items: center;}
 .status-row {
   min-height: 43px;
   justify-content: space-between;
@@ -254,14 +253,11 @@ function useSample(sample: typeof samples[number]) {
 }
 :global(html.dark .entity-page .entity-grid code) { color: #e2e8f0; }@media (max-width: 1000px) {
   .entity-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 900px) {
-  .settings-header { align-items: flex-start; flex-direction: column; }
   .editor-grid { grid-template-columns: 1fr; }
   .direction-column { flex-direction: row; }}@media (max-width: 640px) {
   .workspace-card,
   .reference-card { padding: 18px; border-radius: 16px; }
-  .settings-header :deep(.el-segmented) { width: 100%; }
   .status-row,
-  .reference-header { align-items: flex-start; flex-direction: column; }
   .status-row > span { margin-left: 0; }
   .editor-panel :deep(.el-textarea__inner) { min-height: 215px !important; }
   .entity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

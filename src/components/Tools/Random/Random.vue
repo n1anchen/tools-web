@@ -119,13 +119,14 @@ onMounted(generate)
     </section>
 
     <section class="result-card">
-      <div class="result-header">
-        <SectionHeading :icon="DataAnalysis" title="生成结果" :description="(results.length) + ' 个整数 · 密码学安全随机源'" tone="green" />
-        <div class="result-actions">
-          <el-button :icon="RefreshRight" @click="generate">再生成一次</el-button>
-          <el-button :icon="CopyDocument" :disabled="!results.length" @click="copyResults()">复制结果</el-button>
-        </div>
-      </div>
+      <SectionHeading :icon="DataAnalysis" title="生成结果" :description="(results.length) + ' 个整数 · 密码学安全随机源'" tone="green">
+        <template #actions>
+          <div class="result-actions">
+            <el-button :icon="RefreshRight" @click="generate">再生成一次</el-button>
+            <el-button :icon="CopyDocument" :disabled="!results.length" @click="copyResults()">复制结果</el-button>
+          </div>
+        </template>
+      </SectionHeading>
 
       <div v-if="results.length === 1" :key="generationId" class="single-result result-enter">
         <span>本次随机数</span>
@@ -173,7 +174,7 @@ onMounted(generate)
 <style scoped>
 .random-page { gap: 18px; }
 .workspace-card {padding: 24px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05);}
-.result-header, .preset-row, .control-grid, .unique-control, .history-header {display: flex; align-items: center;}
+.preset-row, .control-grid, .unique-control, .history-header {display: flex; align-items: center;}
 
 .preset-row { gap: 8px; margin-top: 20px; }
 .preset-row > span { margin-right: 3px; color: #64748b; font-size: 12px; }
@@ -189,7 +190,6 @@ onMounted(generate)
 .unique-control strong { color: #334155; font-size: 12px; }
 .unique-control small { margin-top: 2px; color: #94a3b8; font-size: 10px; }
 .control-grid > .el-button { align-self: flex-end; }
-.result-header { justify-content: space-between; gap: 18px; }
 .result-actions { display: flex; }
 .single-result { display: flex; min-height: 245px; flex-direction: column; align-items: center; justify-content: center; margin-top: 20px; border-radius: 18px; color: #475569; background: radial-gradient(circle at 50% 10%, #ffedd5, #fff 62%); }
 .single-result > span { font-size: 13px; letter-spacing: .12em; }
@@ -225,4 +225,4 @@ onMounted(generate)
 :global(html.dark .random-page .unique-control strong), :global(html.dark .random-page .summary-row strong), :global(html.dark .random-page .history-header strong), :global(html.dark .random-page .history-list code), :global(html.dark .random-page .guide-grid strong) { color: #e2e8f0; }
 :global(html.dark .random-page .control-grid), :global(html.dark .random-page .preset-row button), :global(html.dark .random-page .history-list button), :global(html.dark .random-page .guide-grid div) { border-color: #334155; background: #0f172a; }
 :global(html.dark .random-page .single-result) { background: radial-gradient(circle at 50% 10%, rgba(154, 52, 18, .25), #0f172a 65%); }
-:global(html.dark .random-page .summary-row), :global(html.dark .random-page .summary-row div) { border-color: #334155; }@media (max-width: 900px) { .control-grid { display: grid; grid-template-columns: 1fr 24px 1fr; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: span 1; } .control-grid > .el-button { align-self: end; }}@media (max-width: 680px) { .workspace-card, .result-card, .history-card { padding: 18px; } .preset-row { flex-wrap: wrap; } .control-grid { display: grid; grid-template-columns: 1fr; } .range-arrow { display: none; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: auto; } .result-header { align-items: flex-start; flex-direction: column; } .result-actions { width: 100%; } .result-actions .el-button { flex: 1; } .summary-row, .guide-grid { grid-template-columns: 1fr; } .summary-row div { border-right: 0; border-bottom: 1px solid #e2e8f0; } .history-list button { grid-template-columns: 90px minmax(0, 1fr) 18px; }}</style>
+:global(html.dark .random-page .summary-row), :global(html.dark .random-page .summary-row div) { border-color: #334155; }@media (max-width: 900px) { .control-grid { display: grid; grid-template-columns: 1fr 24px 1fr; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: span 1; } .control-grid > .el-button { align-self: end; }}@media (max-width: 680px) { .workspace-card, .result-card, .history-card { padding: 18px; } .preset-row { flex-wrap: wrap; } .control-grid { display: grid; grid-template-columns: 1fr; } .range-arrow { display: none; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: auto; } .result-actions { width: 100%; } .result-actions .el-button { flex: 1; } .summary-row, .guide-grid { grid-template-columns: 1fr; } .summary-row div { border-right: 0; border-bottom: 1px solid #e2e8f0; } .history-list button { grid-template-columns: 90px minmax(0, 1fr) 18px; }}</style>

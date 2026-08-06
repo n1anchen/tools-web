@@ -195,10 +195,11 @@ function copyResult() {
     </section>
 
     <section class="result-card">
-      <div class="result-header">
-        <SectionHeading :icon="DocumentChecked" :title="(algorithm) + ' 结果'" :description="outputFormat === 'hex' ? '十六进制摘要' : 'Base64 摘要'" tone="green" />
-        <el-button type="primary" :icon="CopyDocument" :disabled="!displayResult" @click="copyResult">复制结果</el-button>
-      </div>
+      <SectionHeading :icon="DocumentChecked" :title="(algorithm) + ' 结果'" :description="outputFormat === 'hex' ? '十六进制摘要' : 'Base64 摘要'" tone="green">
+        <template #actions>
+          <el-button type="primary" :icon="CopyDocument" :disabled="!displayResult" @click="copyResult">复制结果</el-button>
+        </template>
+      </SectionHeading>
 
       <div v-if="displayResult" class="hash-output">{{ displayResult }}</div>
       <div v-else class="result-empty" :class="{ error: calculationError }">
@@ -255,7 +256,7 @@ function copyResult() {
   gap: 22px;
 }
 
-.settings-title, .result-header, .example-row, .security-note {display: flex;
+.settings-title, .example-row, .security-note {display: flex;
   align-items: center;}
 
 
@@ -387,11 +388,6 @@ function copyResult() {
   font-size: 13px;
 }
 
-.result-header {
-  justify-content: space-between;
-  gap: 16px;
-}
-
 .hash-output {
   margin-top: 20px;
   padding: 24px;
@@ -514,15 +510,6 @@ function copyResult() {
   .result-card {
     padding: 18px;
     border-radius: 16px;
-  }
-
-  .result-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .result-header :deep(.el-button) {
-    width: 100%;
   }
 
   .detail-grid {

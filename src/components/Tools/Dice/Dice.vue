@@ -77,15 +77,16 @@ function copyCurrent() {
     <ToolHero />
 
     <section class="workspace-card">
-      <div class="workspace-header">
-        <SectionHeading :icon="SetUp" title="设置骰子组合" description="支持 1～6 颗六面骰，并可添加结果修正值" tone="blue" />
-        <div class="preset-row">
-          <span>快捷数量</span>
-          <button v-for="count in [1, 2, 3, 5, 6]" :key="count" type="button" :class="{ active: diceCount === count }" @click="usePreset(count)">
-            {{ count }} 颗
-          </button>
-        </div>
-      </div>
+      <SectionHeading :icon="SetUp" title="设置骰子组合" description="支持 1～6 颗六面骰，并可添加结果修正值" tone="blue">
+        <template #actions>
+          <div class="preset-row">
+            <span>快捷数量</span>
+            <button v-for="count in [1, 2, 3, 5, 6]" :key="count" type="button" :class="{ active: diceCount === count }" @click="usePreset(count)">
+              {{ count }} 颗
+            </button>
+          </div>
+        </template>
+      </SectionHeading>
 
       <div class="control-row">
         <label>
@@ -138,10 +139,11 @@ function copyCurrent() {
       </div>
 
       <div class="history-section">
-        <div class="history-header">
-          <SectionHeading :icon="Clock" title="投掷历史" description="保留最近 8 组结果" tone="green" />
-          <el-button text :icon="Delete" :disabled="!history.length" @click="history = []">清空历史</el-button>
-        </div>
+        <SectionHeading :icon="Clock" title="投掷历史" description="保留最近 8 组结果" tone="green">
+          <template #actions>
+            <el-button text :icon="Delete" :disabled="!history.length" @click="history = []">清空历史</el-button>
+          </template>
+        </SectionHeading>
         <div v-if="history.length" class="history-list">
           <button v-for="item in history" :key="item.id" type="button" @click="copy(item.values.join(', '))">
             <span class="history-total">{{ item.total }}</span>
@@ -166,8 +168,7 @@ function copyCurrent() {
 <style scoped>
 .dice-page { gap: 18px; }
 .workspace-card {padding: 24px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05);}
-.workspace-header, .control-row, .result-summary, .history-header {display: flex; align-items: center;}
-.workspace-header, .history-header { justify-content: space-between; gap: 18px; }
+.control-row, .result-summary {display: flex; align-items: center;}
 
 .preset-row { display: flex; align-items: center; gap: 6px; }
 .preset-row > span { margin-right: 4px; color: #64748b; font-size: 11px; }
@@ -213,4 +214,4 @@ function copyCurrent() {
 :global(html.dark .dice-page .control-row label > span), :global(html.dark .dice-page .die-shell > strong), :global(html.dark .dice-page .result-metrics b), :global(html.dark .dice-page .history-list strong), :global(html.dark .dice-page .guide-grid strong) { color: #e2e8f0; }
 :global(html.dark .dice-page .control-row), :global(html.dark .dice-page .result-metrics div), :global(html.dark .dice-page .history-list button), :global(html.dark .dice-page .guide-grid div) { background: #0f172a; }
 :global(html.dark .dice-page .die-shell) { border-color: #334155; background: rgba(15, 23, 42, .8); }
-:global(html.dark .dice-page .total-block), :global(html.dark .dice-page .history-section) { border-color: #334155; }@media (max-width: 900px) { .workspace-header { align-items: flex-start; flex-direction: column; } .dice-grid { grid-template-columns: repeat(3, 135px); } .result-summary { align-items: stretch; flex-direction: column; } .total-block { border-right: 0; border-bottom: 1px solid #e2e8f0; padding: 0 0 18px; } .history-list { grid-template-columns: repeat(2, 1fr); }}@media (max-width: 640px) { .workspace-card, .dice-board { padding: 18px; } .preset-row { flex-wrap: wrap; } .control-row { align-items: stretch; flex-direction: column; } .control-row label { width: 100%; } .dice-grid, .dice-grid.count-2 { grid-template-columns: repeat(2, 130px); } .dice-grid.count-1 { grid-template-columns: 150px; } .board-actions { width: 100%; flex-direction: column; gap: 8px; } .board-actions .el-button { width: 100%; margin: 0; } .result-metrics { grid-template-columns: repeat(2, 1fr); } .history-list, .guide-grid { grid-template-columns: 1fr; }}</style>
+:global(html.dark .dice-page .total-block), :global(html.dark .dice-page .history-section) { border-color: #334155; }@media (max-width: 900px) { .dice-grid { grid-template-columns: repeat(3, 135px); } .result-summary { align-items: stretch; flex-direction: column; } .total-block { border-right: 0; border-bottom: 1px solid #e2e8f0; padding: 0 0 18px; } .history-list { grid-template-columns: repeat(2, 1fr); }}@media (max-width: 640px) { .workspace-card, .dice-board { padding: 18px; } .preset-row { flex-wrap: wrap; } .control-row { align-items: stretch; flex-direction: column; } .control-row label { width: 100%; } .dice-grid, .dice-grid.count-2 { grid-template-columns: repeat(2, 130px); } .dice-grid.count-1 { grid-template-columns: 150px; } .board-actions { width: 100%; flex-direction: column; gap: 8px; } .board-actions .el-button { width: 100%; margin: 0; } .result-metrics { grid-template-columns: repeat(2, 1fr); } .history-list, .guide-grid { grid-template-columns: 1fr; }}</style>

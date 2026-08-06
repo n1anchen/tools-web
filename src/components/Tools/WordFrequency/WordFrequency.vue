@@ -68,13 +68,14 @@ function copyAll() {
     <ToolHero />
 
     <section class="workspace-card">
-      <div class="workspace-header">
-        <SectionHeading :icon="DataAnalysis" title="输入分析文本" description="使用浏览器智能分词，同时识别中文词语和英文单词" tone="blue" />
-        <div>
-          <el-button text @click="loadSample">载入示例</el-button>
-          <el-button text :icon="Delete" :disabled="!inputText" @click="clearAll">清空</el-button>
-        </div>
-      </div>
+      <SectionHeading :icon="DataAnalysis" title="输入分析文本" description="使用浏览器智能分词，同时识别中文词语和英文单词" tone="blue">
+        <template #actions>
+          <div>
+            <el-button text @click="loadSample">载入示例</el-button>
+            <el-button text :icon="Delete" :disabled="!inputText" @click="clearAll">清空</el-button>
+          </div>
+        </template>
+      </SectionHeading>
 
       <el-input
         v-model="inputText"
@@ -133,10 +134,11 @@ function copyAll() {
         </section>
 
         <section class="ranking-card">
-          <div class="ranking-header">
-            <SectionHeading :icon="Filter" title="完整排行" :description="'当前显示 ' + (filteredItems.length) + ' 个词语'" tone="green" />
-            <el-button :icon="CopyDocument" :disabled="!filteredItems.length" @click="copyAll">复制表格</el-button>
-          </div>
+          <SectionHeading :icon="Filter" title="完整排行" :description="'当前显示 ' + (filteredItems.length) + ' 个词语'" tone="green">
+            <template #actions>
+              <el-button :icon="CopyDocument" :disabled="!filteredItems.length" @click="copyAll">复制表格</el-button>
+            </template>
+          </SectionHeading>
 
           <el-input v-model="searchQuery" class="ranking-search" clearable placeholder="在统计结果中搜索词语">
             <template #prefix><el-icon><Search /></el-icon></template>
@@ -177,8 +179,7 @@ function copyAll() {
 .frequency-page { gap: 18px; }
 .workspace-card, .metric-grid > div, .chart-card, .ranking-card, .empty-card { border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05); }
 .workspace-card, .chart-card, .ranking-card, .empty-card { padding: 24px; }
-.workspace-header, .analysis-settings, .ranking-header {display: flex; align-items: center;}
-.workspace-header, .ranking-header { justify-content: space-between; gap: 18px; }
+.analysis-settings {display: flex; align-items: center;}
 
 .workspace-card > :deep(.el-textarea) { margin-top: 20px; }
 .workspace-card :deep(.el-textarea__inner) { font: 13px/1.75 ui-monospace, SFMono-Regular, Menlo, monospace; }
@@ -223,4 +224,4 @@ function copyAll() {
 :global(html.dark .frequency-page .analysis-settings label > span), :global(html.dark .frequency-page .stop-word-field > span), :global(html.dark .frequency-page .metric-grid strong), :global(html.dark .frequency-page .bar-row > strong), :global(html.dark .frequency-page .ranking-table strong), :global(html.dark .frequency-page .guide-grid strong) { color: #e2e8f0; }
 :global(html.dark .frequency-page .analysis-settings), :global(html.dark .frequency-page .guide-grid div), :global(html.dark .frequency-page .table-head) { background: #0f172a; }
 :global(html.dark .frequency-page .ranking-table) { border-color: #334155; }
-:global(html.dark .frequency-page .ranking-table > button) { border-color: #334155; background: #111c2f; }@media (max-width: 960px) { .analysis-settings { display: grid; grid-template-columns: repeat(2, 1fr); } .analysis-settings label { width: auto; } .check-options { align-items: flex-start; flex-direction: column; gap: 0; } .result-grid { grid-template-columns: 1fr; }}@media (max-width: 640px) { .workspace-card, .chart-card, .ranking-card { padding: 18px; } .workspace-header, .ranking-header { align-items: flex-start; flex-direction: column; } .analysis-settings, .metric-grid { grid-template-columns: 1fr 1fr; } .analysis-settings > .el-button, .check-options { grid-column: span 2; } .metric-grid > div { padding: 15px; } .bar-row { grid-template-columns: 18px 70px minmax(60px, 1fr) 28px; } .table-head, .ranking-table > button { grid-template-columns: 28px minmax(80px, 1fr) 45px 18px; } .table-head span:nth-child(4), .ranking-table > button > span:nth-child(4) { display: none; } .guide-grid { grid-template-columns: 1fr; }}</style>
+:global(html.dark .frequency-page .ranking-table > button) { border-color: #334155; background: #111c2f; }@media (max-width: 960px) { .analysis-settings { display: grid; grid-template-columns: repeat(2, 1fr); } .analysis-settings label { width: auto; } .check-options { align-items: flex-start; flex-direction: column; gap: 0; } .result-grid { grid-template-columns: 1fr; }}@media (max-width: 640px) { .workspace-card, .chart-card, .ranking-card { padding: 18px; } .analysis-settings, .metric-grid { grid-template-columns: 1fr 1fr; } .analysis-settings > .el-button, .check-options { grid-column: span 2; } .metric-grid > div { padding: 15px; } .bar-row { grid-template-columns: 18px 70px minmax(60px, 1fr) 28px; } .table-head, .ranking-table > button { grid-template-columns: 28px minmax(80px, 1fr) 45px 18px; } .table-head span:nth-child(4), .ranking-table > button > span:nth-child(4) { display: none; } .guide-grid { grid-template-columns: 1fr; }}</style>
