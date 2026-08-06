@@ -553,11 +553,10 @@ calculate()
 </template>
 
 <style scoped>
-.mortgage-page { color: var(--c-text-strong); }
-.calculator-card,
-.results-section,
-.schedule-card,
-.scenario-section {
+.mortgage-page {
+  color: var(--c-text-strong);
+}
+.calculator-card, .results-section, .schedule-card, .scenario-section {
   padding: 24px;
   margin-bottom: 16px;
   border: 1px solid var(--c-border);
@@ -565,140 +564,487 @@ calculate()
   background: var(--c-surface);
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.045);
 }
-.section-heading-spaced { margin-bottom: 18px; }
+.section-heading-spaced {
+  margin-bottom: 18px;
+}
 .input-grid {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 16px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px 16px;
   margin-top: 22px;
 }
-.field-block { position: relative; display: flex; min-width: 0; flex-direction: column; gap: 7px; }
-.field-block > span { color: var(--c-text-body); font-size: 13px; font-weight: 650; }
-.field-block small { min-height: 16px; color: var(--c-text-muted); font-size: 11px; line-height: 16px; }
-.field-block :deep(.el-input-number), .field-block :deep(.el-select) { width: 100%; }
+.field-block {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+}
+.field-block > span {
+  color: var(--c-text-body);
+  font-size: 13px;
+  font-weight: 650;
+}
+.field-block small {
+  min-height: 16px;
+  color: var(--c-text-muted);
+  font-size: 11px;
+  line-height: 16px;
+}
+.field-block :deep(.el-input-number), .field-block :deep(.el-select) {
+  width: 100%;
+}
 .field-block :deep(.el-input__wrapper), .field-block :deep(.el-select__wrapper) {
-  min-height: 40px; border-radius: var(--radius-sm); box-shadow: 0 0 0 1px #e2e8f0 inset;
+  min-height: 40px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 1px #e2e8f0 inset;
 }
 .loan-preview {
-  display: grid; grid-template-columns: repeat(3, 1fr) auto; align-items: center; gap: 12px;
-  margin-top: 20px; padding: 14px 16px; border: 1px solid #dbeafe; border-radius: var(--radius-md);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  border: 1px solid #dbeafe;
+  border-radius: var(--radius-md);
   background: linear-gradient(110deg, #f8fbff, #eff6ff);
 }
-.loan-preview > div { display: flex; flex-direction: column; gap: 3px; }
-.loan-preview span { color: var(--c-text-secondary); font-size: 11px; }
-.loan-preview strong { color: #1e3a8a; font-size: 15px; }
-.loan-preview :deep(.el-button) { min-width: 132px; border-radius: var(--radius-sm); }
-.plan-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.plan-card { position: relative; overflow: hidden; border: 1px solid var(--c-border); border-radius: var(--radius-lg); }
+.loan-preview > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.loan-preview span {
+  color: var(--c-text-secondary);
+  font-size: 11px;
+}
+.loan-preview strong {
+  color: #1e3a8a;
+  font-size: 15px;
+}
+.loan-preview :deep(.el-button) {
+  min-width: 132px;
+  border-radius: var(--radius-sm);
+}
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.plan-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+}
 .plan-card::after {
-  content: ''; position: absolute; top: -60px; right: -50px; width: 150px; height: 150px;
-  border-radius: 50%; opacity: .65;
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  opacity: .65;
 }
-.plan-annuity::after { background: radial-gradient(circle, #dbeafe, transparent 68%); }
-.plan-equalPrincipal::after { background: radial-gradient(circle, #dcfce7, transparent 68%); }
-.plan-card-head { display: flex; justify-content: space-between; padding: 20px 20px 14px; }
-.plan-card-head h3 { margin: 3px 0 1px; color: #172033; font-size: 21px; }
-.plan-card-head p { margin: 0; color: var(--c-text-muted); font-size: 12px; }
-.plan-card-head > .el-icon { z-index: 1; color: #93c5fd; font-size: 30px; }
-.plan-equalPrincipal .plan-card-head > .el-icon { color: #86efac; }
-.plan-kicker { color: #2563eb; font-size: 11px; font-weight: 700; letter-spacing: .08em; }
-.plan-equalPrincipal .plan-kicker { color: #059669; }
-.payment-hero { display: flex; flex-direction: column; padding: 16px 20px; background: var(--c-surface-subtle); }
-.payment-hero span { color: var(--c-text-secondary); font-size: 12px; }
-.payment-hero strong { margin: 3px 0; color: var(--c-text-primary); font-size: clamp(24px, 3vw, 32px); line-height: 1.2; }
-.payment-hero em { color: var(--c-text-muted); font-size: 11px; font-style: normal; }
-.metric-grid { display: grid; grid-template-columns: repeat(2, 1fr); padding: 6px 20px 16px; }
-.metric-grid div { display: flex; flex-direction: column; gap: 4px; padding: 12px 0; border-bottom: 1px dashed var(--c-border); }
-.metric-grid div:nth-child(odd) { padding-right: 12px; }
-.metric-grid div:nth-child(even) { padding-left: 12px; border-left: 1px dashed var(--c-border); }
-.metric-grid span { color: var(--c-text-muted); font-size: 11px; }
-.metric-grid strong { color: var(--c-text-strong); font-size: 14px; }
+.plan-annuity::after {
+  background: radial-gradient(circle, #dbeafe, transparent 68%);
+}
+.plan-equalPrincipal::after {
+  background: radial-gradient(circle, #dcfce7, transparent 68%);
+}
+.plan-card-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 20px 14px;
+}
+.plan-card-head h3 {
+  margin: 3px 0 1px;
+  color: #172033;
+  font-size: 21px;
+}
+.plan-card-head p {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: 12px;
+}
+.plan-card-head > .el-icon {
+  z-index: 1;
+  color: #93c5fd;
+  font-size: 30px;
+}
+.plan-equalPrincipal .plan-card-head > .el-icon {
+  color: #86efac;
+}
+.plan-kicker {
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.plan-equalPrincipal .plan-kicker {
+  color: #059669;
+}
+.payment-hero {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+  background: var(--c-surface-subtle);
+}
+.payment-hero span {
+  color: var(--c-text-secondary);
+  font-size: 12px;
+}
+.payment-hero strong {
+  margin: 3px 0;
+  color: var(--c-text-primary);
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.2;
+}
+.payment-hero em {
+  color: var(--c-text-muted);
+  font-size: 11px;
+  font-style: normal;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 6px 20px 16px;
+}
+.metric-grid div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--c-border);
+}
+.metric-grid div:nth-child(odd) {
+  padding-right: 12px;
+}
+.metric-grid div:nth-child(even) {
+  padding-left: 12px;
+  border-left: 1px dashed var(--c-border);
+}
+.metric-grid span {
+  color: var(--c-text-muted);
+  font-size: 11px;
+}
+.metric-grid strong {
+  color: var(--c-text-strong);
+  font-size: 14px;
+}
 .comparison-note {
-  display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; padding: 13px 15px;
-  border: 1px solid #d1fae5; border-radius: var(--radius-md); color: #047857; background: #ecfdf5;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 13px 15px;
+  border: 1px solid #d1fae5;
+  border-radius: var(--radius-md);
+  color: #047857;
+  background: #ecfdf5;
 }
-.comparison-note > .el-icon { margin-top: 2px; font-size: 18px; }
-.comparison-note div { display: flex; flex-direction: column; gap: 2px; }
-.comparison-note strong { font-size: 13px; }
-.comparison-note span { color: #5f8e7d; font-size: 11px; }
-.schedule-heading { align-items: center; }
-.schedule-filters { display: flex; align-items: center; gap: 10px; }
-.year-select { width: 116px; }
-.schedule-card :deep(.el-table) { --el-table-border-color: #eef2f7; border-radius: var(--radius-md); }
-.schedule-card :deep(.el-table th.el-table__cell) { color: var(--c-text-secondary); background: var(--c-surface-subtle); font-size: 12px; }
-.schedule-card :deep(.el-table td.el-table__cell) { color: var(--c-text-body); font-size: 12px; }
-.scenario-tabs :deep(.el-tabs__header) { margin-bottom: 18px; }
-.scenario-tabs :deep(.el-tabs__item) { height: 38px; color: var(--c-text-secondary); font-size: 13px; }
-.scenario-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr); gap: 20px; }
-.scenario-controls { padding: 18px; border: 1px solid var(--c-border); border-radius: var(--radius-md); background: #fbfdff; }
-.scenario-controls h3 { margin: 0; color: #1e293b; font-size: 15px; }
-.scenario-controls > p { margin: 6px 0 16px; color: var(--c-text-muted); font-size: 11px; line-height: 1.6; }
-.control-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; margin-bottom: 14px; }
-.control-grid-dense { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.scenario-controls :deep(.el-button) { border-radius: var(--radius-sm); }
-.mode-selector { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 2px 0 14px; }
+.comparison-note > .el-icon {
+  margin-top: 2px;
+  font-size: 18px;
+}
+.comparison-note div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.comparison-note strong {
+  font-size: 13px;
+}
+.comparison-note span {
+  color: #5f8e7d;
+  font-size: 11px;
+}
+.schedule-heading {
+  align-items: center;
+}
+.schedule-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.year-select {
+  width: 116px;
+}
+.schedule-card :deep(.el-table) {
+  --el-table-border-color: #eef2f7;
+  border-radius: var(--radius-md);
+}
+.schedule-card :deep(.el-table th.el-table__cell) {
+  color: var(--c-text-secondary);
+  background: var(--c-surface-subtle);
+  font-size: 12px;
+}
+.schedule-card :deep(.el-table td.el-table__cell) {
+  color: var(--c-text-body);
+  font-size: 12px;
+}
+.scenario-tabs :deep(.el-tabs__header) {
+  margin-bottom: 18px;
+}
+.scenario-tabs :deep(.el-tabs__item) {
+  height: 38px;
+  color: var(--c-text-secondary);
+  font-size: 13px;
+}
+.scenario-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+  gap: 20px;
+}
+.scenario-controls {
+  padding: 18px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: #fbfdff;
+}
+.scenario-controls h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 15px;
+}
+.scenario-controls > p {
+  margin: 6px 0 16px;
+  color: var(--c-text-muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.control-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+  margin-bottom: 14px;
+}
+.control-grid-dense {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.scenario-controls :deep(.el-button) {
+  border-radius: var(--radius-sm);
+}
+.mode-selector {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 2px 0 14px;
+}
 .mode-selector button {
-  display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px solid var(--c-border);
-  border-radius: var(--radius-sm); color: var(--c-text-secondary); text-align: left; background: var(--c-surface); cursor: pointer; transition: .2s;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  color: var(--c-text-secondary);
+  text-align: left;
+  background: var(--c-surface);
+  cursor: pointer;
+  transition: .2s;
 }
-.mode-selector button:hover { border-color: #93c5fd; }
-.mode-selector button.active { border-color: #3b82f6; color: #1d4ed8; background: #eff6ff; box-shadow: 0 0 0 2px rgba(59, 130, 246, .08); }
-.mode-selector strong { font-size: 12px; }
-.mode-selector span { color: var(--c-text-muted); font-size: 10px; }
-.scenario-results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.scenario-result-card { padding: 16px; border: 1px solid var(--c-border); border-radius: var(--radius-md); background: var(--c-surface); }
-.scenario-result-card h4 { margin: 0 0 10px; color: var(--c-text-strong); font-size: 14px; }
-.scenario-result-card > div { display: flex; flex-direction: column; gap: 2px; padding: 9px 0; border-top: 1px dashed var(--c-border); }
-.scenario-result-card span { color: var(--c-text-muted); font-size: 10px; }
-.scenario-result-card strong { color: var(--c-text-strong); font-size: 13px; }
-.positive { color: #059669 !important; }
-.negative { color: #dc2626 !important; }
-.explanation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-.explanation-grid > div { display: flex; align-items: flex-start; gap: 10px; }
-.explanation-grid .el-icon { flex: 0 0 auto; margin-top: 2px; color: #3b82f6; font-size: 18px; }
-.explanation-grid p { display: flex; flex-direction: column; gap: 4px; margin: 0; }
-.explanation-grid strong { color: var(--c-text-strong); font-size: 13px; }
-.explanation-grid span { color: var(--c-text-muted); font-size: 11px; line-height: 1.6; }
-
-:global(html.dark .mortgage-page) { color: var(--c-text-secondary); }
-:global(html.dark .mortgage-page .calculator-card),
-:global(html.dark .mortgage-page .results-section),
-:global(html.dark .mortgage-page .schedule-card),
-:global(html.dark .mortgage-page .scenario-section) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
-:global(html.dark .mortgage-page .plan-card-head h3),
-:global(html.dark .mortgage-page .payment-hero strong),
-:global(html.dark .mortgage-page .scenario-controls h3),
-:global(html.dark .mortgage-page .scenario-result-card h4),
-:global(html.dark .mortgage-page .scenario-result-card strong),
-:global(html.dark .mortgage-page .explanation-grid strong) { color: var(--c-text-primary); }
-:global(html.dark .mortgage-page .field-block > span),
-:global(html.dark .mortgage-page .metric-grid strong) { color: var(--c-text-secondary); }
-:global(html.dark .mortgage-page .loan-preview) { border-color: #1e3a5f; background: linear-gradient(110deg, #172033, #172554); }
-:global(html.dark .mortgage-page .loan-preview strong) { color: #bfdbfe; }
-:global(html.dark .mortgage-page .plan-card),
-:global(html.dark .mortgage-page .scenario-controls),
-:global(html.dark .mortgage-page .scenario-result-card) { border-color: var(--c-border); background: #172033; }
-:global(html.dark .mortgage-page .payment-hero) { background: var(--c-surface-subtle); }
-:global(html.dark .mortgage-page .metric-grid div),
-:global(html.dark .mortgage-page .scenario-result-card > div) { border-color: var(--c-border); }
-:global(html.dark .mortgage-page .metric-grid div:nth-child(even)) { border-left-color: var(--c-border); }
-:global(html.dark .mortgage-page .comparison-note) { border-color: #14532d; color: #6ee7b7; background: rgba(6, 78, 59, .25); }
-:global(html.dark .mortgage-page .comparison-note span) { color: #6b9e8b; }
-:global(html.dark .mortgage-page .mode-selector button) { border-color: var(--c-border); color: var(--c-text-secondary); background: var(--c-surface-subtle); }
-:global(html.dark .mortgage-page .mode-selector button.active) { border-color: #3b82f6; color: #93c5fd; background: rgba(30, 64, 175, .25); }@media (max-width: 1100px) {
-  .input-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .scenario-layout { grid-template-columns: 1fr; }}@media (max-width: 760px) {
-  .calculator-card, .results-section, .schedule-card, .scenario-section { padding: 16px; border-radius: var(--radius-md); }
-  .input-grid, .plan-grid { grid-template-columns: 1fr; }
-  .loan-preview { grid-template-columns: repeat(3, 1fr); }
-  .loan-preview :deep(.el-button) { grid-column: 1 / -1; width: 100%; }
-  .schedule-heading { align-items: flex-start; flex-wrap: wrap; }
-  .schedule-filters { width: 100%; justify-content: space-between; }
-  .scenario-results { grid-template-columns: 1fr; }
-  .explanation-grid { grid-template-columns: 1fr; }}@media (max-width: 480px) {
-  .input-grid, .control-grid, .control-grid-dense { grid-template-columns: 1fr; }
-  .loan-preview { grid-template-columns: 1fr 1fr; }
-  .loan-preview > div:last-of-type { grid-column: 1 / -1; }
-  .mode-selector { grid-template-columns: 1fr; }
-  .schedule-filters { align-items: stretch; flex-direction: column; }
-  .schedule-filters :deep(.el-radio-group), .year-select { width: 100%; }
-  .schedule-filters :deep(.el-radio-button) { flex: 1; }
-  .schedule-filters :deep(.el-radio-button__inner) { width: 100%; }}</style>
+.mode-selector button:hover {
+  border-color: #93c5fd;
+}
+.mode-selector button.active {
+  border-color: #3b82f6;
+  color: #1d4ed8;
+  background: #eff6ff;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, .08);
+}
+.mode-selector strong {
+  font-size: 12px;
+}
+.mode-selector span {
+  color: var(--c-text-muted);
+  font-size: 10px;
+}
+.scenario-results {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.scenario-result-card {
+  padding: 16px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+}
+.scenario-result-card h4 {
+  margin: 0 0 10px;
+  color: var(--c-text-strong);
+  font-size: 14px;
+}
+.scenario-result-card > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 0;
+  border-top: 1px dashed var(--c-border);
+}
+.scenario-result-card span {
+  color: var(--c-text-muted);
+  font-size: 10px;
+}
+.scenario-result-card strong {
+  color: var(--c-text-strong);
+  font-size: 13px;
+}
+.positive {
+  color: #059669 !important;
+}
+.negative {
+  color: #dc2626 !important;
+}
+.explanation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.explanation-grid > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.explanation-grid .el-icon {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: #3b82f6;
+  font-size: 18px;
+}
+.explanation-grid p {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+}
+.explanation-grid strong {
+  color: var(--c-text-strong);
+  font-size: 13px;
+}
+.explanation-grid span {
+  color: var(--c-text-muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+:global(html.dark .mortgage-page) {
+  color: var(--c-text-secondary);
+}
+:global(html.dark .mortgage-page .calculator-card), :global(html.dark .mortgage-page .results-section), :global(html.dark .mortgage-page .schedule-card), :global(html.dark .mortgage-page .scenario-section) {
+  border-color: var(--c-border);
+  background: var(--c-surface);
+  box-shadow: none;
+}
+:global(html.dark .mortgage-page .plan-card-head h3), :global(html.dark .mortgage-page .payment-hero strong), :global(html.dark .mortgage-page .scenario-controls h3), :global(html.dark .mortgage-page .scenario-result-card h4), :global(html.dark .mortgage-page .scenario-result-card strong), :global(html.dark .mortgage-page .explanation-grid strong) {
+  color: var(--c-text-primary);
+}
+:global(html.dark .mortgage-page .field-block > span), :global(html.dark .mortgage-page .metric-grid strong) {
+  color: var(--c-text-secondary);
+}
+:global(html.dark .mortgage-page .loan-preview) {
+  border-color: #1e3a5f;
+  background: linear-gradient(110deg, #172033, #172554);
+}
+:global(html.dark .mortgage-page .loan-preview strong) {
+  color: #bfdbfe;
+}
+:global(html.dark .mortgage-page .plan-card), :global(html.dark .mortgage-page .scenario-controls), :global(html.dark .mortgage-page .scenario-result-card) {
+  border-color: var(--c-border);
+  background: #172033;
+}
+:global(html.dark .mortgage-page .payment-hero) {
+  background: var(--c-surface-subtle);
+}
+:global(html.dark .mortgage-page .metric-grid div), :global(html.dark .mortgage-page .scenario-result-card > div) {
+  border-color: var(--c-border);
+}
+:global(html.dark .mortgage-page .metric-grid div:nth-child(even)) {
+  border-left-color: var(--c-border);
+}
+:global(html.dark .mortgage-page .comparison-note) {
+  border-color: #14532d;
+  color: #6ee7b7;
+  background: rgba(6, 78, 59, .25);
+}
+:global(html.dark .mortgage-page .comparison-note span) {
+  color: #6b9e8b;
+}
+:global(html.dark .mortgage-page .mode-selector button) {
+  border-color: var(--c-border);
+  color: var(--c-text-secondary);
+  background: var(--c-surface-subtle);
+}
+:global(html.dark .mortgage-page .mode-selector button.active) {
+  border-color: #3b82f6;
+  color: #93c5fd;
+  background: rgba(30, 64, 175, .25);
+}
+@media (max-width: 1100px) {
+  .input-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .scenario-layout {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 760px) {
+  .calculator-card, .results-section, .schedule-card, .scenario-section {
+    padding: 16px;
+    border-radius: var(--radius-md);
+  }
+  .input-grid, .plan-grid {
+    grid-template-columns: 1fr;
+  }
+  .loan-preview {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .loan-preview :deep(.el-button) {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+  .schedule-heading {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .schedule-filters {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .scenario-results {
+    grid-template-columns: 1fr;
+  }
+  .explanation-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .input-grid, .control-grid, .control-grid-dense {
+    grid-template-columns: 1fr;
+  }
+  .loan-preview {
+    grid-template-columns: 1fr 1fr;
+  }
+  .loan-preview > div:last-of-type {
+    grid-column: 1 / -1;
+  }
+  .mode-selector {
+    grid-template-columns: 1fr;
+  }
+  .schedule-filters {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .schedule-filters :deep(.el-radio-group), .year-select {
+    width: 100%;
+  }
+  .schedule-filters :deep(.el-radio-button) {
+    flex: 1;
+  }
+  .schedule-filters :deep(.el-radio-button__inner) {
+    width: 100%;
+  }
+}
+</style>
