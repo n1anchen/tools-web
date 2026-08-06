@@ -2,6 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== 共享组件类（STYLE-AUDIT.md 第一层抽取）===== */
+@layer components {
+  /* 指标条：37 个工具复用的 hero-metrics（base + 子元素 + 暗色；各工具自己的 @media 断点保留在 scoped） */
+  .hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(96px, 1fr));
+    min-width: 320px;
+    overflow: hidden;
+    border: 1px solid #e0e9f4;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.78);
+  }
+  .hero-metrics div {
+    padding: 12px 14px;
+    text-align: center;
+    border-left: 1px solid #e5edf6;
+  }
+  .hero-metrics div:first-child { border-left: 0; }
+  .hero-metrics span,
+  .hero-metrics strong { display: block; }
+  .hero-metrics span {
+    margin-top: 4px;
+    color: #7a899c;
+    font-size: 12px;
+  }
+  .hero-metrics strong {
+    overflow: hidden;
+    color: #334155;
+    font-size: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dark .hero-metrics { border-color: #40516a; background: rgba(15, 23, 42, 0.5); }
+  .dark .hero-metrics div { border-color: #40516a; }
+  .dark .hero-metrics strong { color: #e7edf6; }
+  .dark .hero-metrics span { color: #a8b4c5; }
+
+  /* 说明文字：17 个工具复用的 detail-copy */
+  .detail-copy {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.9;
+  }
+}
+
 :root {
   /* 页面背景色（index.html body 引用） */
   --base-gray: #f8fafc;

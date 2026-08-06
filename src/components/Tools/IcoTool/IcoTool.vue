@@ -862,7 +862,7 @@ onBeforeUnmount(() => {
 .hero-metrics{display:grid;grid-template-columns:repeat(2,minmax(130px,1fr));min-width:410px;overflow:hidden;border:1px solid #d7e2ee;border-radius:18px;background:rgba(255,255,255,.75)}
 .hero-metrics div{padding:14px 16px;border-right:1px solid #dde6ef;border-bottom:1px solid #dde6ef}
 .hero-metrics div:nth-child(2n){border-right:0}.hero-metrics div:nth-last-child(-n+2){border-bottom:0}
-.hero-metrics span,.hero-metrics strong{display:block}.hero-metrics span{font-size:12px;color:#7a899c}.hero-metrics strong{margin-top:5px;font-size:14px;color:var(--ink)}
+.hero-metrics span{font-size:12px;color:#7a899c}.hero-metrics strong{margin-top:5px;font-size:14px;color:var(--ink)}
 .hero-metrics .quality-warning{color:#b66a14}.hero-metrics .quality-excellent,.hero-metrics .quality-good{color:#17815b}
 .ico-workbench{border-radius:24px!important;box-shadow:0 12px 32px rgba(51,65,85,.06)!important}
 .workflow-strip{display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden;margin-bottom:14px;border:1px solid var(--line);border-radius:15px;background:#f8fafc}
