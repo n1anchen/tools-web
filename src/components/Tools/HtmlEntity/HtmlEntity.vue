@@ -5,6 +5,7 @@ import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import PanelHeading from '@/components/Common/PanelHeading.vue'
 import { copy } from '@/utils/string'
 import { countHtmlEntityChanges, decodeHtmlEntities, encodeHtmlEntities } from '@/utils/textTools'
 
@@ -73,10 +74,9 @@ function useSample(sample: typeof samples[number]) {
 
       <div class="editor-grid">
         <article class="editor-panel">
-          <div class="editor-title">
-            <div><strong>{{ mode === 'encode' ? 'HTML / 普通文本' : '实体内容' }}</strong><span>{{ input.length }} 字符</span></div>
-            <el-button text @click="input = ''">清空</el-button>
-          </div>
+          <PanelHeading :title="mode === 'encode' ? 'HTML / 普通文本' : '实体内容'" :stats="`${input.length} 字符`">
+            <template #actions><el-button text @click="input = ''">清空</el-button></template>
+          </PanelHeading>
           <el-input
             v-model="input"
             type="textarea"
@@ -92,10 +92,9 @@ function useSample(sample: typeof samples[number]) {
         </div>
 
         <article class="editor-panel result-panel">
-          <div class="editor-title">
-            <div><strong>转换结果</strong><span>{{ output.length }} 字符</span></div>
-            <CopyButton text-btn :text="output" :disabled="!output" />
-          </div>
+          <PanelHeading title="转换结果" :stats="`${output.length} 字符`">
+            <template #actions><CopyButton text-btn :text="output" :disabled="!output" /></template>
+          </PanelHeading>
           <el-input :model-value="output" type="textarea" :rows="10" resize="none" readonly placeholder="转换结果会实时显示" />
         </article>
       </div>
@@ -139,7 +138,7 @@ function useSample(sample: typeof samples[number]) {
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
-.status-row, .editor-title, .sample-row, .safety-badge {display: flex; align-items: center;}
+.status-row, .sample-row, .safety-badge {display: flex; align-items: center;}
 .status-row {
   min-height: 43px;
   justify-content: space-between;
@@ -167,11 +166,7 @@ function useSample(sample: typeof samples[number]) {
   background: var(--c-surface-subtle);
 }
 .result-panel { border-color: #fbcfe8; background: #fffafd; }
-.editor-title { min-height: 34px; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
-.editor-title strong,
-.editor-title span { display: block; }
-.editor-title strong { color: #1e293b; font-size: 14px; }
-.editor-title span { margin-top: 2px; color: var(--c-text-muted); font-size: 11px; }
+.editor-panel .el-textarea__inner { min-height: 220px !important; }
 .editor-panel :deep(.el-textarea__inner) {
   min-height: 250px !important;
   border-radius: 11px;
@@ -240,7 +235,6 @@ function useSample(sample: typeof samples[number]) {
 
 :global(html.dark .entity-page .workspace-card),
 :global(html.dark .entity-page .reference-card) { border-color: var(--c-border); background: var(--c-surface-subtle); box-shadow: none; }
-:global(html.dark .entity-page .editor-title strong),
 :global(html.dark .entity-page .detail-grid h4) { color: #f1f5f9; }
 :global(html.dark .entity-page .status-row),
 :global(html.dark .entity-page .editor-panel),

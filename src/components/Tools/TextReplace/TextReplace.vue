@@ -5,6 +5,7 @@ import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import PanelHeading from '@/components/Common/PanelHeading.vue'
 import { replaceText, type ReplaceScope } from '@/utils/textTools'
 
 const inputText = ref('')
@@ -87,10 +88,9 @@ function useResultAsInput() {
 
       <div class="editor-grid">
         <article class="editor-panel">
-          <div class="editor-title">
-            <div><strong>原始文本</strong><span>{{ Array.from(inputText).length }} 个字符</span></div>
-            <el-button text :icon="Delete" :disabled="!inputText" @click="inputText = ''">清空</el-button>
-          </div>
+          <PanelHeading title="原始文本" :stats="`${Array.from(inputText).length} 个字符`" size="bar">
+            <template #actions><el-button text :icon="Delete" :disabled="!inputText" @click="inputText = ''">清空</el-button></template>
+          </PanelHeading>
           <el-input v-model="inputText" type="textarea" :rows="12" resize="none" placeholder="粘贴需要批量查找和替换的文本" />
         </article>
 
@@ -103,10 +103,9 @@ function useResultAsInput() {
         </div>
 
         <article class="editor-panel result-panel" :class="{ invalid: result.error }">
-          <div class="editor-title">
-            <div><strong>替换结果</strong><span>{{ Array.from(result.text).length }} 个字符</span></div>
-            <CopyButton text-btn :text="result.text" :disabled="!result.text || !!result.error" />
-          </div>
+          <PanelHeading title="替换结果" :stats="`${Array.from(result.text).length} 个字符`" size="bar">
+            <template #actions><CopyButton text-btn :text="result.text" :disabled="!result.text || !!result.error" /></template>
+          </PanelHeading>
           <el-input
             :model-value="result.text"
             type="textarea"
@@ -148,7 +147,7 @@ function useResultAsInput() {
 <style scoped>
 .replace-page { gap: 18px; }
 .workspace-card {padding: 24px; border: 1px solid var(--c-border); border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05);}
-.option-row, .editor-title, .workspace-footer {display: flex; align-items: center;}
+.option-row, .workspace-footer {display: flex; align-items: center;}
 .workspace-footer { justify-content: space-between; gap: 18px; }
 
 .rule-grid { display: grid; grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr); align-items: end; gap: 10px; margin-top: 22px; }
@@ -162,10 +161,6 @@ function useResultAsInput() {
 .editor-panel { overflow: hidden; border: 1px solid var(--c-border); border-radius: 15px; background: var(--c-surface-subtle); }
 .editor-panel.result-panel { border-color: #bfdbfe; background: #eff6ff; }
 .editor-panel.invalid { border-color: #fecaca; background: #fef2f2; }
-.editor-title { justify-content: space-between; min-height: 52px; padding: 0 14px; }
-.editor-title > div, .editor-title strong, .editor-title span { display: block; }
-.editor-title strong { color: var(--c-text-strong); font-size: 13px; }
-.editor-title span { margin-top: 2px; color: var(--c-text-muted); font-size: 10px; }
 .editor-panel :deep(.el-textarea__inner) { border: 0; border-top: 1px solid var(--c-border); border-radius: 0; box-shadow: none; font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .result-panel :deep(.el-textarea__inner) { background: #f8fbff; }
 .direction-column { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--c-text-muted); }
@@ -187,7 +182,7 @@ function useResultAsInput() {
 .guide-grid strong { color: var(--c-text-strong); font-size: 13px; }
 .guide-grid span { margin-top: 5px; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }
 :global(html.dark .replace-page .workspace-card), :global(html.dark .replace-page .summary-card) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
-:global(html.dark .replace-page .rule-grid label > span), :global(html.dark .replace-page .editor-title strong), :global(html.dark .replace-page .summary-card strong), :global(html.dark .replace-page .guide-grid strong) { color: var(--c-text-primary); }
+:global(html.dark .replace-page .rule-grid label > span), :global(html.dark .replace-page .summary-card strong), :global(html.dark .replace-page .guide-grid strong) { color: var(--c-text-primary); }
 :global(html.dark .replace-page .option-row), :global(html.dark .replace-page .editor-panel), :global(html.dark .replace-page .guide-grid div) { border-color: var(--c-border); background: var(--c-surface-subtle); }
 :global(html.dark .replace-page .result-panel) { border-color: #1e3a5f; background: #0d1d33; }
 :global(html.dark .replace-page .editor-panel .el-textarea__inner) { border-color: var(--c-border); background: #111c2f; }

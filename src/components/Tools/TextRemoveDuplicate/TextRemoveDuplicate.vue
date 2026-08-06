@@ -5,6 +5,7 @@ import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import PanelHeading from '@/components/Common/PanelHeading.vue'
 import { copy } from '@/utils/string'
 import { dedupeLines, type DedupeMode } from '@/utils/textTools'
 
@@ -73,13 +74,9 @@ function useResultAsInput() {
 
       <div class="editor-grid">
         <article class="editor-panel">
-          <div class="editor-title">
-            <div>
-              <strong>原始文本</strong>
-              <span>{{ result.originalLines }} 行</span>
-            </div>
-            <el-button text :icon="Delete" :disabled="!content" @click="clearAll">清空</el-button>
-          </div>
+          <PanelHeading title="原始文本" :stats="`${result.originalLines} 行`">
+            <template #actions><el-button text :icon="Delete" :disabled="!content" @click="clearAll">清空</el-button></template>
+          </PanelHeading>
           <el-input v-model="content" type="textarea" :rows="11" resize="none" placeholder="每行输入一项，支持直接粘贴名单、URL 或数据列表" />
         </article>
 
@@ -92,13 +89,9 @@ function useResultAsInput() {
         </div>
 
         <article class="editor-panel result-panel">
-          <div class="editor-title">
-            <div>
-              <strong>去重结果</strong>
-              <span>{{ result.resultLines }} 行 · 减少 {{ reductionRate }}%</span>
-            </div>
-            <CopyButton text-btn :text="result.text" :disabled="!result.text" />
-          </div>
+          <PanelHeading title="去重结果" :stats="`${result.resultLines} 行 · 减少 ${reductionRate}%`">
+            <template #actions><CopyButton text-btn :text="result.text" :disabled="!result.text" /></template>
+          </PanelHeading>
           <el-input :model-value="result.text" type="textarea" :rows="11" resize="none" readonly placeholder="处理结果会显示在这里" />
         </article>
       </div>
@@ -147,7 +140,7 @@ function useResultAsInput() {
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
-.option-row, .editor-title, .workspace-footer, .duplicate-preview {display: flex; align-items: center;}
+.option-row, .workspace-footer, .duplicate-preview {display: flex; align-items: center;}
 
 .option-row {
   flex-wrap: wrap;
@@ -171,11 +164,6 @@ function useResultAsInput() {
   background: var(--c-surface-subtle);
 }
 .result-panel { border-color: #bbf7d0; background: #f7fef9; }
-.editor-title { min-height: 34px; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
-.editor-title strong,
-.editor-title span { display: block; }
-.editor-title strong { color: #1e293b; font-size: 14px; }
-.editor-title span { margin-top: 2px; color: var(--c-text-muted); font-size: 11px; }
 .editor-panel :deep(.el-textarea__inner) {
   min-height: 265px !important;
   border-radius: 11px;
@@ -259,7 +247,6 @@ function useResultAsInput() {
 
 :global(html.dark .dedupe-page .workspace-card),
 :global(html.dark .dedupe-page .summary-card) { border-color: var(--c-border); background: var(--c-surface-subtle); box-shadow: none; }
-:global(html.dark .dedupe-page .editor-title strong),
 :global(html.dark .dedupe-page .detail-grid h4) { color: #f1f5f9; }
 :global(html.dark .dedupe-page .option-row),
 :global(html.dark .dedupe-page .editor-panel),

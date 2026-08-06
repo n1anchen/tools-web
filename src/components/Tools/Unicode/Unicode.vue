@@ -5,6 +5,7 @@ import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import PanelHeading from '@/components/Common/PanelHeading.vue'
 import { decodeUnicode, encodeUnicode, type UnicodeFormat } from '@/utils/textTools'
 
 type Mode = 'encode' | 'decode'
@@ -76,10 +77,9 @@ function useSample(sample: typeof samples[number]) {
 
       <div class="editor-grid">
         <article class="editor-panel">
-          <div class="editor-title">
-            <div><strong>{{ mode === 'encode' ? '原始文本' : 'Unicode 内容' }}</strong><span>{{ input.length }} 字符 · {{ inputBytes }} Bytes</span></div>
-            <el-button text @click="input = ''">清空</el-button>
-          </div>
+          <PanelHeading :title="mode === 'encode' ? '原始文本' : 'Unicode 内容'" :stats="`${input.length} 字符 · ${inputBytes} Bytes`">
+            <template #actions><el-button text @click="input = ''">清空</el-button></template>
+          </PanelHeading>
           <el-input
             v-model="input"
             type="textarea"
@@ -95,10 +95,9 @@ function useSample(sample: typeof samples[number]) {
         </div>
 
         <article class="editor-panel result-panel">
-          <div class="editor-title">
-            <div><strong>转换结果</strong><span>{{ output.length }} 字符 · {{ outputBytes }} Bytes</span></div>
-            <CopyButton text-btn :text="output" :disabled="!output" />
-          </div>
+          <PanelHeading title="转换结果" :stats="`${output.length} 字符 · ${outputBytes} Bytes`">
+            <template #actions><CopyButton text-btn :text="output" :disabled="!output" /></template>
+          </PanelHeading>
           <el-input :model-value="output" type="textarea" :rows="10" resize="none" readonly placeholder="转换结果会实时显示" />
         </article>
       </div>
@@ -139,7 +138,7 @@ function useSample(sample: typeof samples[number]) {
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
-.option-row, .editor-title, .sample-row {display: flex; align-items: center;}
+.option-row, .sample-row {display: flex; align-items: center;}
 
 .option-row {
   flex-wrap: wrap;
@@ -165,11 +164,6 @@ function useSample(sample: typeof samples[number]) {
   background: var(--c-surface-subtle);
 }
 .result-panel { border-color: #bfdbfe; background: #f8fbff; }
-.editor-title { min-height: 34px; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
-.editor-title strong,
-.editor-title span { display: block; }
-.editor-title strong { color: #1e293b; font-size: 14px; }
-.editor-title span { margin-top: 2px; color: var(--c-text-muted); font-size: 11px; }
 .editor-panel :deep(.el-textarea__inner) {
   min-height: 250px !important;
   border-radius: 11px;
@@ -243,7 +237,6 @@ function useSample(sample: typeof samples[number]) {
 
 :global(html.dark .unicode-page .workspace-card),
 :global(html.dark .unicode-page .inspector-card) { border-color: var(--c-border); background: var(--c-surface-subtle); box-shadow: none; }
-:global(html.dark .unicode-page .editor-title strong),
 :global(html.dark .unicode-page .detail-grid h4) { color: #f1f5f9; }
 :global(html.dark .unicode-page .option-row),
 :global(html.dark .unicode-page .editor-panel),
