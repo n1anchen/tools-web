@@ -857,7 +857,7 @@ onBeforeUnmount(() => {
 .ico-hero p{max-width:660px;margin:0;font-size:14px;line-height:1.75;color:var(--muted)}
 
 .ico-workbench{border-radius:24px!important;box-shadow:0 12px 32px rgba(51,65,85,.06)!important}
-.workflow-strip{display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden;margin-bottom:14px;border:1px solid var(--line);border-radius:15px;background:#f8fafc}
+.workflow-strip{display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden;margin-bottom:14px;border:1px solid var(--line);border-radius:15px;background: var(--c-surface-subtle)}
 .workflow-strip span{position:relative;padding:12px 16px;border-right:1px solid var(--line);font-size:13px;font-weight:700;color:#8794a6;text-align:center}
 .workflow-strip span:last-child{border-right:0}.workflow-strip span.active{background:#f0f7ff;color:#356eae}.workflow-strip b{margin-right:7px;font-size:12px;color:#9badc2}.workflow-strip .active b{color:#3478f6}
 .preset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}

@@ -143,7 +143,7 @@ function useResultAsInput() {
 <style scoped>
 .dedupe-page { gap: 18px; }
 .workspace-card {padding: 24px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
@@ -155,7 +155,7 @@ function useResultAsInput() {
   margin-top: 18px;
   padding: 12px 15px;
   border-radius: 12px;
-  background: #f8fafc;
+  background: var(--c-surface-subtle);
 }
 .editor-grid {
   display: grid;
@@ -166,16 +166,16 @@ function useResultAsInput() {
 .editor-panel {
   min-width: 0;
   padding: 15px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 16px;
-  background: #f8fafc;
+  background: var(--c-surface-subtle);
 }
 .result-panel { border-color: #bbf7d0; background: #f7fef9; }
 .editor-title { min-height: 34px; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
 .editor-title strong,
 .editor-title span { display: block; }
 .editor-title strong { color: #1e293b; font-size: 14px; }
-.editor-title span { margin-top: 2px; color: #94a3b8; font-size: 11px; }
+.editor-title span { margin-top: 2px; color: var(--c-text-muted); font-size: 11px; }
 .editor-panel :deep(.el-textarea__inner) {
   min-height: 265px !important;
   border-radius: 11px;
@@ -191,7 +191,7 @@ function useResultAsInput() {
   justify-content: center;
   flex-direction: column;
   gap: 10px;
-  color: #94a3b8;
+  color: var(--c-text-muted);
 }
 .direction-column > .el-icon { font-size: 22px; }
 .removed-badge {
@@ -223,10 +223,10 @@ function useResultAsInput() {
   gap: 12px;
   margin-top: 20px;
 }
-.summary-grid > div { padding: 15px; border-radius: 13px; background: #f8fafc; }
+.summary-grid > div { padding: 15px; border-radius: 13px; background: var(--c-surface-subtle); }
 .summary-grid span,
 .summary-grid strong { display: block; }
-.summary-grid span { color: #64748b; font-size: 12px; }
+.summary-grid span { color: var(--c-text-secondary); font-size: 12px; }
 .summary-grid strong { margin-top: 5px; color: #1e293b; font-size: 23px; }
 .summary-grid .removed { background: #fff7ed; }
 .summary-grid .removed strong { color: #ea580c; }
@@ -237,25 +237,25 @@ function useResultAsInput() {
   padding-top: 14px;
   border-top: 1px solid #e2e8f0;
 }
-.preview-label { flex: 0 0 auto; padding-top: 7px; color: #64748b; font-size: 12px; }
+.preview-label { flex: 0 0 auto; padding-top: 7px; color: var(--c-text-secondary); font-size: 12px; }
 .duplicate-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .duplicate-list button {
   display: flex;
   max-width: 210px;
   gap: 8px;
   padding: 6px 10px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 9px;
-  color: #475569;
+  color: var(--c-text-body);
   background: #fff;
   cursor: pointer;
 }
 .duplicate-list button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .duplicate-list button strong { color: #7c3aed; white-space: nowrap; }
-.duplicate-preview p { margin: 5px 0 0; color: #94a3b8; font-size: 12px; }
+.duplicate-preview p { margin: 5px 0 0; color: var(--c-text-muted); font-size: 12px; }
 .detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
 .detail-grid h4 { margin: 0 0 6px; color: #1e293b; }
-.detail-grid p { margin: 0; color: #64748b; line-height: 1.7; }
+.detail-grid p { margin: 0; color: var(--c-text-secondary); line-height: 1.7; }
 
 :global(html.dark .dedupe-page .workspace-card),
 :global(html.dark .dedupe-page .summary-card) { border-color: #334155; background: #0f172a; box-shadow: none; }

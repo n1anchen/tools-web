@@ -135,7 +135,7 @@ function useSample(sample: typeof samples[number]) {
 <style scoped>
 .unicode-page { gap: 18px; }
 .workspace-card {padding: 24px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
@@ -147,10 +147,10 @@ function useSample(sample: typeof samples[number]) {
   margin-top: 18px;
   padding: 13px 15px;
   border-radius: 12px;
-  background: #f8fafc;
+  background: var(--c-surface-subtle);
 }
 .option-row label { display: flex; align-items: center; gap: 10px; }
-.option-row label > span { color: #475569; font-size: 12px; font-weight: 650; }
+.option-row label > span { color: var(--c-text-body); font-size: 12px; font-weight: 650; }
 .editor-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
@@ -160,16 +160,16 @@ function useSample(sample: typeof samples[number]) {
 .editor-panel {
   min-width: 0;
   padding: 15px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 16px;
-  background: #f8fafc;
+  background: var(--c-surface-subtle);
 }
 .result-panel { border-color: #bfdbfe; background: #f8fbff; }
 .editor-title { min-height: 34px; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
 .editor-title strong,
 .editor-title span { display: block; }
 .editor-title strong { color: #1e293b; font-size: 14px; }
-.editor-title span { margin-top: 2px; color: #94a3b8; font-size: 11px; }
+.editor-title span { margin-top: 2px; color: var(--c-text-muted); font-size: 11px; }
 .editor-panel :deep(.el-textarea__inner) {
   min-height: 250px !important;
   border-radius: 11px;
@@ -189,7 +189,7 @@ function useSample(sample: typeof samples[number]) {
 }
 .direction-column > .el-icon { font-size: 24px; }
 .sample-row { flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-.sample-row > span { color: #64748b; font-size: 12px; }
+.sample-row > span { color: var(--c-text-secondary); font-size: 12px; }
 .sample-row button {
   padding: 6px 11px;
   border: 1px solid #dbeafe;
@@ -209,9 +209,9 @@ function useSample(sample: typeof samples[number]) {
 .character-grid article {
   min-width: 0;
   padding: 13px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 13px;
-  background: #f8fafc;
+  background: var(--c-surface-subtle);
 }
 .character {
   display: grid;
@@ -227,19 +227,19 @@ function useSample(sample: typeof samples[number]) {
 .character-grid strong,
 .character-grid code { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .character-grid strong { margin-top: 10px; color: #1e293b; font-size: 13px; }
-.character-grid code { margin-top: 3px; color: #64748b; font-size: 11px; }
+.character-grid code { margin-top: 3px; color: var(--c-text-secondary); font-size: 11px; }
 .empty-inspector {
   margin-top: 18px;
   padding: 34px 20px;
   border: 1px dashed #cbd5e1;
   border-radius: 14px;
-  color: #94a3b8;
-  background: #f8fafc;
+  color: var(--c-text-muted);
+  background: var(--c-surface-subtle);
   text-align: center;
 }
 .detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
 .detail-grid h4 { margin: 0 0 6px; color: #1e293b; }
-.detail-grid p { margin: 0; color: #64748b; line-height: 1.7; }
+.detail-grid p { margin: 0; color: var(--c-text-secondary); line-height: 1.7; }
 
 :global(html.dark .unicode-page .workspace-card),
 :global(html.dark .unicode-page .inspector-card) { border-color: #334155; background: #0f172a; box-shadow: none; }

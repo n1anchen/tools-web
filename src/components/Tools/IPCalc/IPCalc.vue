@@ -377,7 +377,7 @@ maskFromPrefix()
 .preset-list { display:flex; flex-wrap:wrap; gap:6px; max-width:330px; }
 .preset-list button,.split-shortcuts button,.example-row button { border:1px solid #d8e1ed; border-radius:9px; padding:7px 10px; background:#fff; color:#52627b; font-size:13px; font-weight:650; cursor:pointer; }
 .preset-list button:hover,.split-shortcuts button:hover,.example-row button:hover { border-color:#8db1ea; color:#245fb9; background:#f3f7ff; }
-.tool-tabs { display:grid; grid-template-columns:repeat(4,1fr); gap:0; padding:0 22px; border-top:1px solid #e5ebf2; border-bottom:1px solid #e5ebf2; background:#f8fafc; }
+.tool-tabs { display:grid; grid-template-columns:repeat(4,1fr); gap:0; padding:0 22px; border-top:1px solid #e5ebf2; border-bottom:1px solid #e5ebf2; background: var(--c-surface-subtle); }
 .tool-tabs button { position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:3px; padding:15px 14px; border:0; background:transparent; cursor:pointer; }
 .tool-tabs button::after { content:""; position:absolute; left:14px; right:14px; bottom:-1px; height:3px; border-radius:3px 3px 0 0; background:transparent; }
 .tool-tabs button.active::after { background:var(--accent); }

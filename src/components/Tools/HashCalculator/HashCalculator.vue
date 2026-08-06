@@ -245,7 +245,7 @@ function copyResult() {
 }
 
 .workspace-card {padding: 24px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
@@ -280,7 +280,7 @@ function copyResult() {
 
 .field-block > small {
   margin-top: 7px;
-  color: #94a3b8;
+  color: var(--c-text-muted);
   font-size: 11px;
 }
 
@@ -298,7 +298,7 @@ function copyResult() {
 }
 
 .example-row > span {
-  color: #64748b;
+  color: var(--c-text-secondary);
   font-size: 12px;
 }
 
@@ -319,9 +319,9 @@ function copyResult() {
 
 .settings-panel {
   padding: 18px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 16px;
-  background: #f8fafc;
+  background: var(--c-surface-subtle);
 }
 
 .settings-title {
@@ -378,7 +378,7 @@ function copyResult() {
 }
 
 .algorithm-facts span {
-  color: #94a3b8;
+  color: var(--c-text-muted);
   font-size: 11px;
 }
 
@@ -412,8 +412,8 @@ function copyResult() {
   margin-top: 20px;
   border: 1px dashed #cbd5e1;
   border-radius: 16px;
-  color: #94a3b8;
-  background: #f8fafc;
+  color: var(--c-text-muted);
+  background: var(--c-surface-subtle);
 }
 
 .result-empty.error {
@@ -427,7 +427,7 @@ function copyResult() {
   margin-top: 14px;
   padding: 10px 13px;
   border-radius: 11px;
-  color: #475569;
+  color: var(--c-text-body);
   background: #f1f5f9;
   font-size: 12px;
   line-height: 1.55;
@@ -451,7 +451,7 @@ function copyResult() {
 
 .detail-grid p {
   margin: 0;
-  color: #64748b;
+  color: var(--c-text-secondary);
   line-height: 1.7;
 }
 
@@ -495,7 +495,7 @@ function copyResult() {
 :global(html.dark .hash-page .result-empty),
 :global(html.dark .hash-page .security-note) {
   border-color: #334155;
-  color: #94a3b8;
+  color: var(--c-text-muted);
   background: #111c2f;
 }
 

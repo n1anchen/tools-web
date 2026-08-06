@@ -168,7 +168,7 @@ function useExample(value: string) {
 
 .workspace-card {
   padding: 24px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
@@ -202,9 +202,9 @@ function useExample(value: string) {
 .editor-panel {
   min-width: 0;
   padding: 16px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 16px;
-  background: #f8fafc;
+  background: var(--c-surface-subtle);
 }
 
 .editor-panel.result-panel {
@@ -236,7 +236,7 @@ function useExample(value: string) {
 
 .editor-header span {
   margin-top: 2px;
-  color: #94a3b8;
+  color: var(--c-text-muted);
   font-size: 11px;
 }
 
@@ -271,7 +271,7 @@ function useExample(value: string) {
   gap: 9px;
   border: 1px dashed #bfdbfe;
   border-radius: 11px;
-  color: #94a3b8;
+  color: var(--c-text-muted);
   text-align: center;
 }
 
@@ -293,7 +293,7 @@ function useExample(value: string) {
 
 .example-row > span {
   margin-right: 2px;
-  color: #64748b;
+  color: var(--c-text-secondary);
   font-size: 13px;
 }
 
@@ -325,7 +325,7 @@ function useExample(value: string) {
 
 .detail-grid p {
   margin: 0;
-  color: #64748b;
+  color: var(--c-text-secondary);
   line-height: 1.7;
 }
 
@@ -367,7 +367,7 @@ function useExample(value: string) {
 
 :global(html.dark .url-page .editor-message) {
   border-color: #334155;
-  color: #64748b;
+  color: var(--c-text-secondary);
 }
 
 :global(html.dark .url-page .error-message) {

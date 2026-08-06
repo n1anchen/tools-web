@@ -191,7 +191,7 @@ function copyAll() {
 }
 
 .workspace-card {padding: 24px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
@@ -229,7 +229,7 @@ function copyAll() {
 }
 
 .preset-row > span {
-  color: #64748b;
+  color: var(--c-text-secondary);
   font-size: 13px;
 }
 
@@ -257,7 +257,7 @@ function copyAll() {
   padding: 20px 22px;
   border: 1px solid #bfdbfe;
   border-radius: 16px;
-  color: #475569;
+  color: var(--c-text-body);
   background: linear-gradient(135deg, #eff6ff, #f8fbff);
 }
 
@@ -281,10 +281,10 @@ function copyAll() {
 .result-item {
   min-width: 0;
   padding: 16px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 14px;
   color: inherit;
-  background: #f8fafc;
+  background: var(--c-surface-subtle);
   text-align: left;
   cursor: pointer;
   transition: 0.2s ease;
@@ -322,7 +322,7 @@ function copyAll() {
 
 .result-value {
   margin-top: 13px;
-  color: #0f172a;
+  color: var(--c-text-primary);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 17px;
   font-weight: 700;
@@ -332,7 +332,7 @@ function copyAll() {
 
 .result-name {
   margin-top: 5px;
-  color: #94a3b8;
+  color: var(--c-text-muted);
   font-size: 11px;
 }
 
@@ -344,8 +344,8 @@ function copyAll() {
   align-content: center;
   border: 1px dashed #cbd5e1;
   border-radius: 16px;
-  color: #94a3b8;
-  background: #f8fafc;
+  color: var(--c-text-muted);
+  background: var(--c-surface-subtle);
 }
 
 .empty-state .el-icon {
@@ -381,7 +381,7 @@ function copyAll() {
 
 .reference-card p {
   margin: 0;
-  color: #64748b;
+  color: var(--c-text-secondary);
   line-height: 1.7;
 }
 
@@ -399,7 +399,7 @@ function copyAll() {
 
 :global(html.dark .storage-page .result-summary) {
   border-color: #1e3a5f;
-  color: #94a3b8;
+  color: var(--c-text-muted);
   background: linear-gradient(135deg, #0d1d33, #111c2f);
 }
 

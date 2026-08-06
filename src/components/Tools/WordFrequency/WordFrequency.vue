@@ -177,25 +177,25 @@ function copyAll() {
 
 <style scoped>
 .frequency-page { gap: 18px; }
-.workspace-card, .metric-grid > div, .chart-card, .ranking-card, .empty-card { border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05); }
+.workspace-card, .metric-grid > div, .chart-card, .ranking-card, .empty-card { border: 1px solid var(--c-border); border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05); }
 .workspace-card, .chart-card, .ranking-card, .empty-card { padding: 24px; }
 .analysis-settings {display: flex; align-items: center;}
 
 .workspace-card > :deep(.el-textarea) { margin-top: 20px; }
 .workspace-card :deep(.el-textarea__inner) { font: 13px/1.75 ui-monospace, SFMono-Regular, Menlo, monospace; }
-.analysis-settings { gap: 14px; margin-top: 16px; padding: 15px; border-radius: 14px; background: #f8fafc; }
+.analysis-settings { gap: 14px; margin-top: 16px; padding: 15px; border-radius: 14px; background: var(--c-surface-subtle); }
 .analysis-settings label { width: 140px; }
-.analysis-settings label > span, .stop-word-field > span { display: block; margin-bottom: 7px; color: #475569; font-size: 12px; font-weight: 650; }
+.analysis-settings label > span, .stop-word-field > span { display: block; margin-bottom: 7px; color: var(--c-text-body); font-size: 12px; font-weight: 650; }
 .analysis-settings :deep(.el-input-number), .analysis-settings :deep(.el-select) { width: 100%; }
 .check-options { display: flex; min-width: 0; flex: 1; gap: 12px; }
 .stop-word-field { display: block; margin-top: 14px; }
-.stop-word-field small { color: #94a3b8; font-weight: 400; }
+.stop-word-field small { color: var(--c-text-muted); font-weight: 400; }
 .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .metric-grid > div { padding: 18px 20px; }
 .metric-grid span, .metric-grid strong, .metric-grid small { display: block; }
-.metric-grid span { color: #64748b; font-size: 11px; }
-.metric-grid strong { overflow: hidden; margin-top: 5px; color: #0f172a; font-size: 22px; text-overflow: ellipsis; white-space: nowrap; }
-.metric-grid small { margin-top: 3px; color: #94a3b8; font-size: 10px; }
+.metric-grid span { color: var(--c-text-secondary); font-size: 11px; }
+.metric-grid strong { overflow: hidden; margin-top: 5px; color: var(--c-text-primary); font-size: 22px; text-overflow: ellipsis; white-space: nowrap; }
+.metric-grid small { margin-top: 3px; color: var(--c-text-muted); font-size: 10px; }
 .result-grid { display: grid; grid-template-columns: minmax(300px, .8fr) minmax(0, 1.2fr); gap: 18px; }
 .bar-chart { display: grid; gap: 12px; margin-top: 22px; }
 .bar-row { display: grid; grid-template-columns: 20px 90px minmax(70px, 1fr) 32px; align-items: center; gap: 8px; }
@@ -205,21 +205,21 @@ function copyAll() {
 .bar-row i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #8b5cf6, #c084fc); }
 .bar-row b { color: #7c3aed; font-size: 12px; text-align: right; }
 .ranking-search { margin-top: 18px; }
-.ranking-table { max-height: 510px; margin-top: 12px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 13px; }
+.ranking-table { max-height: 510px; margin-top: 12px; overflow-y: auto; border: 1px solid var(--c-border); border-radius: 13px; }
 .table-head, .ranking-table > button { display: grid; grid-template-columns: 35px minmax(100px, 1fr) 65px 70px 20px; align-items: center; gap: 9px; padding: 10px 12px; text-align: left; }
-.table-head { position: sticky; z-index: 1; top: 0; color: #94a3b8; background: #f8fafc; font-size: 10px; }
-.ranking-table > button { width: 100%; border-top: 1px solid #eef2f7; color: #64748b; background: #fff; font-size: 11px; }
+.table-head { position: sticky; z-index: 1; top: 0; color: var(--c-text-muted); background: var(--c-surface-subtle); font-size: 10px; }
+.ranking-table > button { width: 100%; border-top: 1px solid #eef2f7; color: var(--c-text-secondary); background: #fff; font-size: 11px; }
 .ranking-table > button:hover { color: #059669; background: #f0fdf4; }
 .ranking-table strong { overflow: hidden; color: #334155; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
 .ranking-table b { color: #059669; font-size: 13px; }
-.empty-filter { padding: 30px; color: #94a3b8; font-size: 12px; text-align: center; }
-.empty-card { display: flex; min-height: 180px; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; text-align: center; }
-.empty-card .el-icon { font-size: 30px; } .empty-card strong { margin-top: 10px; color: #475569; } .empty-card span { margin-top: 5px; font-size: 12px; }
+.empty-filter { padding: 30px; color: var(--c-text-muted); font-size: 12px; text-align: center; }
+.empty-card { display: flex; min-height: 180px; flex-direction: column; align-items: center; justify-content: center; color: var(--c-text-muted); text-align: center; }
+.empty-card .el-icon { font-size: 30px; } .empty-card strong { margin-top: 10px; color: var(--c-text-body); } .empty-card span { margin-top: 5px; font-size: 12px; }
 .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.guide-grid div { padding: 14px; border-radius: 13px; background: #f8fafc; }
+.guide-grid div { padding: 14px; border-radius: 13px; background: var(--c-surface-subtle); }
 .guide-grid strong, .guide-grid span { display: block; }
 .guide-grid strong { color: #334155; font-size: 13px; }
-.guide-grid span { margin-top: 5px; color: #64748b; font-size: 12px; line-height: 1.65; }
+.guide-grid span { margin-top: 5px; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }
 :global(html.dark .frequency-page .workspace-card), :global(html.dark .frequency-page .metric-grid > div), :global(html.dark .frequency-page .chart-card), :global(html.dark .frequency-page .ranking-card), :global(html.dark .frequency-page .empty-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
 :global(html.dark .frequency-page .analysis-settings label > span), :global(html.dark .frequency-page .stop-word-field > span), :global(html.dark .frequency-page .metric-grid strong), :global(html.dark .frequency-page .bar-row > strong), :global(html.dark .frequency-page .ranking-table strong), :global(html.dark .frequency-page .guide-grid strong) { color: #e2e8f0; }
 :global(html.dark .frequency-page .analysis-settings), :global(html.dark .frequency-page .guide-grid div), :global(html.dark .frequency-page .table-head) { background: #0f172a; }

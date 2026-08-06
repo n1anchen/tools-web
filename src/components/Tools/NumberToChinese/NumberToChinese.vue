@@ -140,7 +140,7 @@ function clear() {
 }
 
 .workspace-card {padding: 24px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
@@ -152,7 +152,7 @@ function clear() {
 
 .section-heading h2 {
   margin: 0;
-  color: #0f172a;
+  color: var(--c-text-primary);
   font-size: 18px;
   font-weight: 700;
 }
@@ -196,7 +196,7 @@ function clear() {
   display: flex;
   justify-content: space-between;
   margin-top: 9px;
-  color: #64748b;
+  color: var(--c-text-secondary);
   font-size: 12px;
 }
 
@@ -212,14 +212,14 @@ function clear() {
   display: flex;
   align-items: center;
   flex: 0 0 auto;
-  color: #64748b;
+  color: var(--c-text-secondary);
   font-size: 13px;
 }
 
 .example-row button {
   min-width: 112px;
   padding: 9px 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--c-border);
   border-radius: 12px;
   color: #334155;
   background: #fff;
@@ -245,7 +245,7 @@ function clear() {
 
 .example-row small {
   margin-top: 3px;
-  color: #94a3b8;
+  color: var(--c-text-muted);
 }
 
 .result-topline {
@@ -290,7 +290,7 @@ function clear() {
 .result-summary div {
   padding: 12px 14px;
   border-radius: 12px;
-  background: #f8fafc;
+  background: var(--c-surface-subtle);
 }
 
 .result-summary span,
@@ -299,7 +299,7 @@ function clear() {
 }
 
 .result-summary span {
-  color: #64748b;
+  color: var(--c-text-secondary);
   font-size: 12px;
 }
 
@@ -317,8 +317,8 @@ function clear() {
   align-content: center;
   border: 1px dashed #cbd5e1;
   border-radius: 16px;
-  color: #94a3b8;
-  background: #f8fafc;
+  color: var(--c-text-muted);
+  background: var(--c-surface-subtle);
 }
 
 .empty-state .el-icon {
@@ -349,7 +349,7 @@ function clear() {
 
 .detail-grid p {
   margin: 0;
-  color: #64748b;
+  color: var(--c-text-secondary);
   line-height: 1.75;
 }
 

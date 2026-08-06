@@ -2,6 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== 设计 Token（C 级核心层；亮/暗双态，工具页收敛的词汇表）===== */
+:root {
+  /* 表面 */
+  --c-surface: #ffffff;        /* 卡片/面板背景 */
+  --c-surface-subtle: #f8fafc; /* 浅底/输入框背景 */
+  --c-surface-hover: #f1f5f9;  /* hover 底 */
+  /* 边框 */
+  --c-border: #e2e8f0;         /* 卡片边框 */
+  --c-border-strong: #dbe3ef;  /* 控件边框 */
+  /* 文字 */
+  --c-text-primary: #0f172a;   /* 标题/强调 */
+  --c-text-body: #475569;      /* 正文 */
+  --c-text-secondary: #64748b; /* 次级 */
+  --c-text-muted: #94a3b8;     /* 弱化/占位 */
+  /* 品牌 */
+  --c-primary: #2563eb;
+  /* 圆角 */
+  --radius-card: 22px;
+  --radius-lg: 18px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  /* 阴影 */
+  --shadow-card: 0 14px 38px rgba(15, 23, 42, 0.06);
+}
+.dark {
+  --c-surface: #1e293b;
+  --c-surface-subtle: #0f172a;
+  --c-surface-hover: #172033;
+  --c-border: #334155;
+  --c-border-strong: #475569;
+  --c-text-primary: #e2e8f0;
+  --c-text-body: #cbd5e1;
+  --c-text-secondary: #cbd5e1;
+  --c-text-muted: #94a3b8;
+}
+
 /* ===== 共享组件类（STYLE-AUDIT.md 第一层抽取）===== */
 @layer components {
   /* 指标条：37 个工具复用的 hero-metrics（base + 子元素 + 暗色；各工具自己的 @media 断点保留在 scoped） */
@@ -48,7 +84,7 @@
 
   /* 说明文字：17 个工具复用的 detail-copy */
   .detail-copy {
-    color: #64748b;
+    color: var(--c-text-secondary);
     font-size: 14px;
     line-height: 1.9;
   }
@@ -77,10 +113,10 @@
   .results-card,
   .inspector-card,
   .reference-card {
-    border: 1px solid #e2e8f0;
-    border-radius: 22px;
-    background: #fff;
-    box-shadow: 0 14px 38px rgba(15, 23, 42, 0.06);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-card);
+    background: var(--c-surface);
+    box-shadow: var(--shadow-card);
   }
   .dark .preview-card,
   .dark .result-card,
@@ -105,8 +141,8 @@
   .dark .results-card,
   .dark .inspector-card,
   .dark .reference-card {
-    border-color: #334155;
-    background: #1e293b;
+    border-color: var(--c-border);
+    background: var(--c-surface);
   }
 
   /* 区块标题（16 个工具复用 section-heading 的拆分式形态：display/align + gap:12px） */

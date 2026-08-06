@@ -205,12 +205,12 @@ onUnmounted(stopClock)
 
 <style scoped>
 .time-page { --blue: #2563eb; --orange: #ea580c; gap: 16px; }
-.clock-card, .converter-card, .note-card { border: 1px solid #e2e8f0; border-radius: 22px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }
+.clock-card, .converter-card, .note-card { border: 1px solid var(--c-border); border-radius: 22px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }
 .clock-card { display: flex; align-items: center; gap: 16px; padding: 20px 22px; background: linear-gradient(120deg, #eff6ff, #fff 52%, #f8fafc); }
 .clock-icon { display: grid; width: 46px; height: 46px; flex: none; place-items: center; border-radius: 14px; color: #fff; background: var(--blue); font-size: 22px; box-shadow: 0 8px 18px rgb(37 99 235 / 25%); }
 .clock-main { display: flex; flex: 1; flex-direction: column; min-width: 0; }
-.clock-main span { color: #64748b; font-size: 12px; }
-.clock-main strong { margin-top: 3px; color: #0f172a; font: 700 clamp(20px, 3vw, 27px)/1.25 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.clock-main span { color: var(--c-text-secondary); font-size: 12px; }
+.clock-main strong { margin-top: 3px; color: var(--c-text-primary); font: 700 clamp(20px, 3vw, 27px)/1.25 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .clock-stamps { display: flex; gap: 8px; }
 .clock-stamps button { display: flex; flex-direction: column; align-items: flex-start; padding: 8px 12px; border: 1px solid #dbeafe; border-radius: 12px; color: #1e3a8a; background: #fff; cursor: pointer; }
 .clock-stamps span { font-size: 10px; text-transform: uppercase; }
@@ -220,27 +220,27 @@ onUnmounted(stopClock)
 .card-heading > div { display: flex; align-items: center; gap: 13px; }
 .step { display: grid; width: 38px; height: 38px; flex: none; place-items: center; border-radius: 12px; color: #fff; background: var(--blue); font-weight: 800; }
 .step.warm { background: var(--orange); }
-.card-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
-.card-heading p { margin: 3px 0 0; color: #94a3b8; font-size: 12px; }
-.field-label { display: block; margin: 24px 0 8px; color: #475569; font-size: 12px; font-weight: 700; }
+.card-heading h2 { margin: 0; color: var(--c-text-primary); font-size: 18px; }
+.card-heading p { margin: 3px 0 0; color: var(--c-text-muted); font-size: 12px; }
+.field-label { display: block; margin: 24px 0 8px; color: var(--c-text-body); font-size: 12px; font-weight: 700; }
 .timestamp-input { display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 8px; }
-.preset-row { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 10px; color: #94a3b8; font-size: 11px; }
-.preset-row button { padding: 4px 9px; border: 0; border-radius: 999px; color: #475569; background: #f1f5f9; cursor: pointer; }
+.preset-row { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 10px; color: var(--c-text-muted); font-size: 11px; }
+.preset-row button { padding: 4px 9px; border: 0; border-radius: 999px; color: var(--c-text-body); background: #f1f5f9; cursor: pointer; }
 .preset-row.compact { justify-content: flex-end; margin: 0; }
 .date-options { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
 .error-box { margin-top: 18px; padding: 13px 14px; border: 1px solid #fecaca; border-radius: 13px; color: #b91c1c; background: #fef2f2; font-size: 13px; }
 .detected-unit { display: inline-flex; margin-top: 18px; padding: 5px 9px; border-radius: 99px; color: #1d4ed8; background: #eff6ff; font-size: 11px; font-weight: 700; }
 .result-stack, .timestamp-results { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-.result-stack button, .timestamp-results button { position: relative; display: flex; min-width: 0; padding: 13px 14px; border: 1px solid #e2e8f0; border-radius: 14px; text-align: left; background: #f8fafc; cursor: pointer; }
+.result-stack button, .timestamp-results button { position: relative; display: flex; min-width: 0; padding: 13px 14px; border: 1px solid var(--c-border); border-radius: 14px; text-align: left; background: var(--c-surface-subtle); cursor: pointer; }
 .result-stack button { align-items: flex-start; flex-direction: column; }
-.result-stack span, .timestamp-results span { color: #64748b; font-size: 11px; }
-.result-stack strong, .timestamp-results strong { max-width: 100%; color: #0f172a; overflow-wrap: anywhere; font: 700 14px/1.5 ui-monospace, monospace; }
-.result-stack small, .timestamp-results small { color: #94a3b8; font-size: 10px; }
-.result-stack .el-icon { position: absolute; right: 12px; top: 12px; color: #94a3b8; }
+.result-stack span, .timestamp-results span { color: var(--c-text-secondary); font-size: 11px; }
+.result-stack strong, .timestamp-results strong { max-width: 100%; color: var(--c-text-primary); overflow-wrap: anywhere; font: 700 14px/1.5 ui-monospace, monospace; }
+.result-stack small, .timestamp-results small { color: var(--c-text-muted); font-size: 10px; }
+.result-stack .el-icon { position: absolute; right: 12px; top: 12px; color: var(--c-text-muted); }
 .timestamp-results button { align-items: center; gap: 12px; }
 .timestamp-results button > div { display: flex; width: 105px; flex: none; flex-direction: column; }
 .timestamp-results strong { flex: 1; min-width: 0; }
-.timestamp-results .el-icon { color: #94a3b8; }
+.timestamp-results .el-icon { color: var(--c-text-muted); }
 .note-card { padding: 18px 22px; border-color: #fed7aa; background: #fff7ed; }
 .note-card strong { color: #9a3412; }
 .note-card p { margin: 5px 0 0; color: #7c2d12; font-size: 13px; line-height: 1.7; }
@@ -249,7 +249,7 @@ onUnmounted(stopClock)
 :global(html.dark .time-page .clock-card) { background: linear-gradient(120deg, #172554, #1e293b 58%); }
 :global(html.dark .time-page .clock-main strong), :global(html.dark .time-page .card-heading h2), :global(html.dark .time-page .result-stack strong), :global(html.dark .time-page .timestamp-results strong) { color: #f8fafc; }
 :global(html.dark .time-page .field-label) { color: #cbd5e1; }
-:global(html.dark .time-page .card-heading p), :global(html.dark .time-page .result-stack span), :global(html.dark .time-page .timestamp-results span) { color: #94a3b8; }
+:global(html.dark .time-page .card-heading p), :global(html.dark .time-page .result-stack span), :global(html.dark .time-page .timestamp-results span) { color: var(--c-text-muted); }
 :global(html.dark .time-page .clock-stamps button), :global(html.dark .time-page .result-stack button), :global(html.dark .time-page .timestamp-results button) { border-color: #334155; color: #bfdbfe; background: #0f172a; }
 :global(html.dark .time-page .preset-row button) { color: #cbd5e1; background: #334155; }
 :global(html.dark .time-page .error-box) { border-color: #7f1d1d; color: #fca5a5; background: #450a0a; }

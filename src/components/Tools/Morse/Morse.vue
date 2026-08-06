@@ -219,45 +219,45 @@ onUnmounted(stopPlayback)
 
 <style scoped>
 .morse-page { --accent: #0f766e; --accent-soft: #ccfbf1; gap: 16px; }
-.workspace-card, .reference-card { border: 1px solid #e2e8f0; border-radius: 24px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }
+.workspace-card, .reference-card { border: 1px solid var(--c-border); border-radius: 24px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }
 .eyebrow, .panel-kicker { color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .14em; }
-.section-heading p { margin: 0; color: #64748b; }
+.section-heading p { margin: 0; color: var(--c-text-secondary); }
 .workspace-card { padding: 22px; }
 .toolbar, .panel-heading, .control-strip, .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 .mode-switch { display: inline-flex; padding: 4px; border-radius: 13px; background: #f1f5f9; }
-.mode-switch button { padding: 8px 15px; border: 0; border-radius: 10px; color: #64748b; background: transparent; cursor: pointer; font-weight: 700; transition: .2s ease; }
+.mode-switch button { padding: 8px 15px; border: 0; border-radius: 10px; color: var(--c-text-secondary); background: transparent; cursor: pointer; font-weight: 700; transition: .2s ease; }
 .mode-switch button.active { color: #fff; background: var(--accent); box-shadow: 0 5px 14px rgb(15 118 110 / 25%); }
 .editor-grid { display: grid; grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr); align-items: center; margin-top: 20px; }
-.editor-panel { min-width: 0; padding: 16px; border: 1px solid #e2e8f0; border-radius: 18px; background: #f8fafc; }
+.editor-panel { min-width: 0; padding: 16px; border: 1px solid var(--c-border); border-radius: 18px; background: var(--c-surface-subtle); }
 .panel-heading { margin-bottom: 12px; }
 .panel-heading > div { display: flex; flex-direction: column; gap: 3px; }
 .panel-heading strong { color: #1e293b; }
-.panel-heading > span { color: #94a3b8; font-size: 12px; }
+.panel-heading > span { color: var(--c-text-muted); font-size: 12px; }
 .editor-panel :deep(.el-textarea__inner) { padding: 0; border: 0; box-shadow: none; color: #1e293b; background: transparent; font: 14px/1.75 ui-monospace, SFMono-Regular, Menlo, monospace; }
-.result-box { min-height: 220px; color: #64748b; white-space: pre-wrap; overflow-wrap: anywhere; font: 14px/1.75 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.result-box { min-height: 220px; color: var(--c-text-secondary); white-space: pre-wrap; overflow-wrap: anywhere; font: 14px/1.75 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .result-box.morse-output { color: #0f766e; font-size: 16px; font-weight: 700; letter-spacing: .055em; }
 .output-panel { background: linear-gradient(145deg, #f0fdfa, #f8fafc); }
 .swap-button { position: relative; z-index: 2; display: grid; width: 40px; height: 40px; margin: 0 auto; place-items: center; border: 1px solid #cbd5e1; border-radius: 50%; color: var(--accent); background: #fff; cursor: pointer; box-shadow: 0 5px 15px rgb(15 23 42 / 10%); }
-.control-strip { flex-wrap: wrap; margin-top: 18px; padding: 14px 16px; border-radius: 16px; background: #f8fafc; }
-.control-group { display: flex; align-items: center; gap: 12px; color: #64748b; font-size: 13px; }
+.control-strip { flex-wrap: wrap; margin-top: 18px; padding: 14px 16px; border-radius: 16px; background: var(--c-surface-subtle); }
+.control-group { display: flex; align-items: center; gap: 12px; color: var(--c-text-secondary); font-size: 13px; }
 .speed-control { flex: 1; min-width: 260px; max-width: 430px; }
 .speed-control :deep(.el-slider) { flex: 1; }
 .speed-control strong { min-width: 58px; color: #334155; }
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
-.stats-grid > div { display: flex; align-items: baseline; justify-content: space-between; padding: 13px 15px; border: 1px solid #e2e8f0; border-radius: 14px; }
-.stats-grid span { color: #64748b; font-size: 12px; }
-.stats-grid strong { color: #0f172a; font-size: 17px; }
+.stats-grid > div { display: flex; align-items: baseline; justify-content: space-between; padding: 13px 15px; border: 1px solid var(--c-border); border-radius: 14px; }
+.stats-grid span { color: var(--c-text-secondary); font-size: 12px; }
+.stats-grid strong { color: var(--c-text-primary); font-size: 17px; }
 .reference-card { padding: 24px; }
-.section-heading h3 { margin: 5px 0 0; color: #0f172a; font-size: 19px; }
+.section-heading h3 { margin: 5px 0 0; color: var(--c-text-primary); font-size: 19px; }
 .reference-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 7px; margin-top: 18px; }
-.reference-grid button { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; padding: 9px 3px; border: 1px solid #e2e8f0; border-radius: 11px; color: #334155; background: #f8fafc; cursor: pointer; }
+.reference-grid button { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; padding: 9px 3px; border: 1px solid var(--c-border); border-radius: 11px; color: #334155; background: var(--c-surface-subtle); cursor: pointer; }
 .reference-grid button:hover { border-color: #5eead4; background: #f0fdfa; }
 .reference-grid span { color: #0f766e; font: 10px ui-monospace, monospace; }
 
 :global(html.dark .morse-page) { --accent: #5eead4; --accent-soft: #134e4a; }
 :global(html.dark .morse-page .workspace-card), :global(html.dark .morse-page .reference-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
 :global(html.dark .morse-page h3), :global(html.dark .morse-page .panel-heading strong), :global(html.dark .morse-page .stats-grid strong) { color: #f8fafc; }
-:global(html.dark .morse-page p), :global(html.dark .morse-page .panel-heading > span), :global(html.dark .morse-page .control-group), :global(html.dark .morse-page .result-box) { color: #94a3b8; }
+:global(html.dark .morse-page p), :global(html.dark .morse-page .panel-heading > span), :global(html.dark .morse-page .control-group), :global(html.dark .morse-page .result-box) { color: var(--c-text-muted); }
 :global(html.dark .morse-page .mode-switch), :global(html.dark .morse-page .editor-panel), :global(html.dark .morse-page .control-strip), :global(html.dark .morse-page .reference-grid button) { border-color: #334155; background: #0f172a; }
 :global(html.dark .morse-page .output-panel) { background: linear-gradient(145deg, #123b3a, #0f172a); }
 :global(html.dark .morse-page .editor-panel .el-textarea__inner) { color: #e2e8f0; }
