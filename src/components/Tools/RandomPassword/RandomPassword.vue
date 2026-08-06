@@ -195,9 +195,9 @@ onMounted(generateAll)
 .settings-card, .result-card { padding: 24px; }
 .switch-row {display: flex; align-items: center;}
 
-.field-label { margin: 24px 0 10px; color: #334155; font-size: 13px; font-weight: 650; }
+.field-label { margin: 24px 0 10px; color: var(--c-text-strong); font-size: 13px; font-weight: 650; }
 .group-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.group-option { position: relative; display: flex; min-height: 82px; flex-direction: column; justify-content: center; padding: 14px; border: 1px solid var(--c-border); border-radius: 14px; color: #334155; background: var(--c-surface-subtle); text-align: left; transition: .2s ease; }
+.group-option { position: relative; display: flex; min-height: 82px; flex-direction: column; justify-content: center; padding: 14px; border: 1px solid var(--c-border); border-radius: 14px; color: var(--c-text-strong); background: var(--c-surface-subtle); text-align: left; transition: .2s ease; }
 .group-option:hover { border-color: #c4b5fd; transform: translateY(-1px); }
 .group-option.active { border-color: #8b5cf6; background: #f5f3ff; box-shadow: inset 0 0 0 1px #8b5cf6; }
 .group-option strong { font-size: 14px; }
@@ -205,13 +205,13 @@ onMounted(generateAll)
 .check-dot { position: absolute; top: 9px; right: 10px; color: #cbd5e1; }
 .active .check-dot { color: #7c3aed; }
 .custom-field { display: block; margin-top: 18px; }
-.custom-field > span, .range-grid label > span { display: block; margin-bottom: 8px; color: #334155; font-size: 13px; font-weight: 650; }
+.custom-field > span, .range-grid label > span { display: block; margin-bottom: 8px; color: var(--c-text-strong); font-size: 13px; font-weight: 650; }
 .custom-field small { color: var(--c-text-muted); font-weight: 400; }
 .range-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 16px; }
 .range-grid :deep(.el-input-number) { width: 100%; }
 .switch-row { justify-content: space-between; gap: 20px; margin-top: 18px; padding: 14px 16px; border-radius: 14px; background: var(--c-surface-subtle); }
 .switch-row strong, .switch-row span { display: block; }
-.switch-row strong { color: #334155; font-size: 14px; }
+.switch-row strong { color: var(--c-text-strong); font-size: 14px; }
 .switch-row span { margin-top: 3px; color: var(--c-text-muted); font-size: 12px; }
 .generate-button { width: 100%; margin-top: 18px; }
 .strength-card { display: flex; min-height: 100%; flex-direction: column; align-items: center; padding: 30px 24px; text-align: center; background: linear-gradient(155deg, #faf5ff, #fff 58%); }
@@ -222,7 +222,7 @@ onMounted(generateAll)
 .strength-track { width: 100%; height: 7px; margin-top: 18px; overflow: hidden; border-radius: 999px; background: #e2e8f0; }
 .strength-track i { display: block; height: 100%; border-radius: inherit; background: currentColor; transition: width .25s ease; }
 .strength-card > p { min-height: 38px; margin: 12px 0 0; color: var(--c-text-secondary); font-size: 13px; }
-.metric-list { width: 100%; margin-top: 14px; border-top: 1px solid #e2e8f0; }
+.metric-list { width: 100%; margin-top: 14px; border-top: 1px solid var(--c-border); }
 .metric-list div { display: flex; justify-content: space-between; padding: 12px 2px; border-bottom: 1px solid #eef2f7; color: var(--c-text-secondary); font-size: 13px; }
 .metric-list b { color: var(--c-text-primary); }
 .privacy-note { display: flex; align-items: flex-start; gap: 7px; margin-top: auto; padding-top: 18px; color: #059669; font-size: 12px; text-align: left; }
@@ -236,12 +236,12 @@ onMounted(generateAll)
 .advice-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .advice-grid div { padding: 14px; border-radius: 13px; background: var(--c-surface-subtle); }
 .advice-grid strong, .advice-grid span { display: block; }
-.advice-grid strong { color: #334155; font-size: 13px; }
+.advice-grid strong { color: var(--c-text-strong); font-size: 13px; }
 .advice-grid span { margin-top: 5px; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }
-:global(html.dark .password-page .settings-card), :global(html.dark .password-page .strength-card), :global(html.dark .password-page .result-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
+:global(html.dark .password-page .settings-card), :global(html.dark .password-page .strength-card), :global(html.dark .password-page .result-card) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
 :global(html.dark .password-page .strength-card) { background: linear-gradient(155deg, rgba(88, 28, 135, .18), #1e293b 58%); }
-:global(html.dark .password-page .custom-field > span), :global(html.dark .password-page .range-grid label > span), :global(html.dark .password-page .field-label), :global(html.dark .password-page .switch-row strong), :global(html.dark .password-page .metric-list b), :global(html.dark .password-page .password-item code), :global(html.dark .password-page .advice-grid strong) { color: #e2e8f0; }
-:global(html.dark .password-page .group-option), :global(html.dark .password-page .switch-row), :global(html.dark .password-page .password-item), :global(html.dark .password-page .advice-grid div) { border-color: #334155; background: #0f172a; }
-:global(html.dark .password-page .group-option) { color: #e2e8f0; }
+:global(html.dark .password-page .custom-field > span), :global(html.dark .password-page .range-grid label > span), :global(html.dark .password-page .field-label), :global(html.dark .password-page .switch-row strong), :global(html.dark .password-page .metric-list b), :global(html.dark .password-page .password-item code), :global(html.dark .password-page .advice-grid strong) { color: var(--c-text-primary); }
+:global(html.dark .password-page .group-option), :global(html.dark .password-page .switch-row), :global(html.dark .password-page .password-item), :global(html.dark .password-page .advice-grid div) { border-color: var(--c-border); background: var(--c-surface-subtle); }
+:global(html.dark .password-page .group-option) { color: var(--c-text-primary); }
 :global(html.dark .password-page .group-option.active) { border-color: #8b5cf6; background: rgba(91, 33, 182, .18); }
-:global(html.dark .password-page .metric-list), :global(html.dark .password-page .metric-list div) { border-color: #334155; }@media (max-width: 900px) { .workspace-grid { grid-template-columns: 1fr; } .strength-card { min-height: auto; } .privacy-note { margin-top: 12px; }}@media (max-width: 640px) { .settings-card, .result-card { padding: 18px; } .group-grid, .password-list, .range-grid, .advice-grid { grid-template-columns: 1fr; } .group-grid { grid-template-columns: repeat(2, 1fr); }}</style>
+:global(html.dark .password-page .metric-list), :global(html.dark .password-page .metric-list div) { border-color: var(--c-border); }@media (max-width: 900px) { .workspace-grid { grid-template-columns: 1fr; } .strength-card { min-height: auto; } .privacy-note { margin-top: 12px; }}@media (max-width: 640px) { .settings-card, .result-card { padding: 18px; } .group-grid, .password-list, .range-grid, .advice-grid { grid-template-columns: 1fr; } .group-grid { grid-template-columns: repeat(2, 1fr); }}</style>

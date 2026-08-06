@@ -245,13 +245,13 @@ onUnmounted(stopClock)
 .note-card strong { color: #9a3412; }
 .note-card p { margin: 5px 0 0; color: #7c2d12; font-size: 13px; line-height: 1.7; }
 
-:global(html.dark .time-page .clock-card), :global(html.dark .time-page .converter-card), :global(html.dark .time-page .note-card) { border-color: #334155; color: #e2e8f0; background: #1e293b; box-shadow: none; }
+:global(html.dark .time-page .clock-card), :global(html.dark .time-page .converter-card), :global(html.dark .time-page .note-card) { border-color: var(--c-border); color: var(--c-text-primary); background: var(--c-surface); box-shadow: none; }
 :global(html.dark .time-page .clock-card) { background: linear-gradient(120deg, #172554, #1e293b 58%); }
 :global(html.dark .time-page .clock-main strong), :global(html.dark .time-page .card-heading h2), :global(html.dark .time-page .result-stack strong), :global(html.dark .time-page .timestamp-results strong) { color: #f8fafc; }
-:global(html.dark .time-page .field-label) { color: #cbd5e1; }
+:global(html.dark .time-page .field-label) { color: var(--c-text-secondary); }
 :global(html.dark .time-page .card-heading p), :global(html.dark .time-page .result-stack span), :global(html.dark .time-page .timestamp-results span) { color: var(--c-text-muted); }
-:global(html.dark .time-page .clock-stamps button), :global(html.dark .time-page .result-stack button), :global(html.dark .time-page .timestamp-results button) { border-color: #334155; color: #bfdbfe; background: #0f172a; }
-:global(html.dark .time-page .preset-row button) { color: #cbd5e1; background: #334155; }
+:global(html.dark .time-page .clock-stamps button), :global(html.dark .time-page .result-stack button), :global(html.dark .time-page .timestamp-results button) { border-color: var(--c-border); color: #bfdbfe; background: var(--c-surface-subtle); }
+:global(html.dark .time-page .preset-row button) { color: var(--c-text-secondary); background: #334155; }
 :global(html.dark .time-page .error-box) { border-color: #7f1d1d; color: #fca5a5; background: #450a0a; }
 :global(html.dark .time-page .detected-unit) { color: #93c5fd; background: #172554; }
 :global(html.dark .time-page .note-card) { border-color: #7c2d12; background: #431407; }

@@ -219,7 +219,7 @@ onBeforeUnmount(() => {
 .preset-tabs button { padding: 9px 7px; border-radius: 9px; color: var(--c-text-secondary); font-size: 12px; }
 .preset-tabs button.active { color: #be185d; background: #fff; box-shadow: 0 2px 8px rgba(15, 23, 42, .08); font-weight: 650; }
 .option-editor { display: block; margin-top: 17px; }
-.option-editor > span { display: flex; justify-content: space-between; margin-bottom: 8px; color: #334155; font-size: 13px; font-weight: 650; }
+.option-editor > span { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--c-text-strong); font-size: 13px; font-weight: 650; }
 .option-editor small { color: var(--c-text-muted); font-weight: 400; }
 .option-editor :deep(textarea) { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; line-height: 1.75; }
 .option-preview { margin-top: 13px; padding: 13px; border-radius: 13px; background: var(--c-surface-subtle); }
@@ -232,7 +232,7 @@ onBeforeUnmount(() => {
 .setting-row { justify-content: space-between; gap: 15px; margin-top: 11px; padding: 11px 2px 0; }
 .setting-row + .setting-row { margin-top: 9px; border-top: 1px solid #f1f5f9; }
 .setting-row strong, .setting-row small { display: block; }
-.setting-row strong { color: #334155; font-size: 13px; }
+.setting-row strong { color: var(--c-text-strong); font-size: 13px; }
 .setting-row small { margin-top: 2px; color: var(--c-text-muted); font-size: 11px; }
 .decision-card { display: flex; min-height: 100%; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; text-align: center; background: radial-gradient(circle at 50% 28%, #fdf2f8, #fff 55%); }
 .eyebrow { color: #db2777; font-size: 10px; font-weight: 800; letter-spacing: .24em; }
@@ -252,16 +252,16 @@ onBeforeUnmount(() => {
 .history-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-top: 18px; }
 .history-list > div { display: grid; grid-template-columns: 22px minmax(0, 1fr); align-items: center; gap: 2px 8px; padding: 12px; border-radius: 12px; background: var(--c-surface-subtle); }
 .history-list span { grid-row: span 2; color: #f9a8d4; font-size: 11px; }
-.history-list strong { overflow: hidden; color: #334155; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.history-list strong { overflow: hidden; color: var(--c-text-strong); font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
 .history-list small { color: var(--c-text-muted); font-size: 10px; }
 .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .guide-grid div { padding: 14px; border-radius: 13px; background: var(--c-surface-subtle); }
 .guide-grid strong, .guide-grid span { display: block; }
-.guide-grid strong { color: #334155; font-size: 13px; }
+.guide-grid strong { color: var(--c-text-strong); font-size: 13px; }
 .guide-grid span { margin-top: 5px; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }
-:global(html.dark .decision-page .settings-card), :global(html.dark .decision-page .decision-card), :global(html.dark .decision-page .history-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
+:global(html.dark .decision-page .settings-card), :global(html.dark .decision-page .decision-card), :global(html.dark .decision-page .history-card) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
 :global(html.dark .decision-page .decision-card) { background: radial-gradient(circle at 50% 28%, rgba(131, 24, 67, .25), #1e293b 58%); }
-:global(html.dark .decision-page .option-editor > span), :global(html.dark .decision-page .setting-row strong), :global(html.dark .decision-page .decision-result), :global(html.dark .decision-page .history-list strong), :global(html.dark .decision-page .guide-grid strong) { color: #e2e8f0; }
-:global(html.dark .decision-page .preset-tabs), :global(html.dark .decision-page .option-preview), :global(html.dark .decision-page .history-list > div), :global(html.dark .decision-page .guide-grid div) { background: #0f172a; }
+:global(html.dark .decision-page .option-editor > span), :global(html.dark .decision-page .setting-row strong), :global(html.dark .decision-page .decision-result), :global(html.dark .decision-page .history-list strong), :global(html.dark .decision-page .guide-grid strong) { color: var(--c-text-primary); }
+:global(html.dark .decision-page .preset-tabs), :global(html.dark .decision-page .option-preview), :global(html.dark .decision-page .history-list > div), :global(html.dark .decision-page .guide-grid div) { background: var(--c-surface-subtle); }
 :global(html.dark .decision-page .preset-tabs button.active) { color: #f9a8d4; background: #334155; }
-:global(html.dark .decision-page .setting-row + .setting-row) { border-color: #334155; }@media (max-width: 900px) { .workspace-grid { grid-template-columns: 1fr; } .decision-card { min-height: 470px; } .history-list { grid-template-columns: repeat(2, 1fr); }}@media (max-width: 640px) { .settings-card, .decision-card, .history-card { padding: 18px; } .preset-tabs { grid-template-columns: 1fr; } .option-editor > span { align-items: flex-start; flex-direction: column; gap: 3px; } .history-list, .guide-grid { grid-template-columns: 1fr; }}</style>
+:global(html.dark .decision-page .setting-row + .setting-row) { border-color: var(--c-border); }@media (max-width: 900px) { .workspace-grid { grid-template-columns: 1fr; } .decision-card { min-height: 470px; } .history-list { grid-template-columns: repeat(2, 1fr); }}@media (max-width: 640px) { .settings-card, .decision-card, .history-card { padding: 18px; } .preset-tabs { grid-template-columns: 1fr; } .option-editor > span { align-items: flex-start; flex-direction: column; gap: 3px; } .history-list, .guide-grid { grid-template-columns: 1fr; }}</style>

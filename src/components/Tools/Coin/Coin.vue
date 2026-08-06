@@ -186,7 +186,7 @@ onBeforeUnmount(() => {
 .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
 .stats-grid > div { padding: 14px 16px; border-radius: 13px; background: var(--c-surface-subtle); }
 .stats-grid span, .stats-grid strong, .stats-grid small { display: block; }
-.stats-grid span { color: var(--c-text-secondary); font-size: 11px; } .stats-grid strong { margin-top: 4px; color: #334155; font-size: 22px; } .stats-grid small { margin-top: 2px; color: var(--c-text-muted); font-size: 10px; }
+.stats-grid span { color: var(--c-text-secondary); font-size: 11px; } .stats-grid strong { margin-top: 4px; color: var(--c-text-strong); font-size: 22px; } .stats-grid small { margin-top: 2px; color: var(--c-text-muted); font-size: 10px; }
 .stats-grid .heads-stat strong { color: #d97706; } .stats-grid .tails-stat strong { color: #7c3aed; }
 .distribution-track { display: flex; height: 8px; margin-top: 14px; overflow: hidden; border-radius: 999px; }
 .distribution-track i { height: 100%; transition: width .3s ease; } .heads-bar { background: #f59e0b; } .tails-bar { background: #8b5cf6; }
@@ -198,11 +198,11 @@ onBeforeUnmount(() => {
 .empty-history { display: flex; min-height: 65px; align-items: center; justify-content: center; gap: 7px; color: var(--c-text-muted); font-size: 11px; }
 .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .guide-grid div { padding: 14px; border-radius: 13px; background: var(--c-surface-subtle); }
-.guide-grid strong, .guide-grid span { display: block; } .guide-grid strong { color: #334155; font-size: 13px; } .guide-grid span { margin-top: 5px; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }
-:global(html.dark .coin-page .settings-card), :global(html.dark .coin-page .toss-card), :global(html.dark .coin-page .statistics-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
+.guide-grid strong, .guide-grid span { display: block; } .guide-grid strong { color: var(--c-text-strong); font-size: 13px; } .guide-grid span { margin-top: 5px; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }
+:global(html.dark .coin-page .settings-card), :global(html.dark .coin-page .toss-card), :global(html.dark .coin-page .statistics-card) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
 :global(html.dark .coin-page .toss-card) { background: radial-gradient(circle at 50% 40%, rgba(120, 53, 15, .25), #1e293b 65%); }
-:global(html.dark .coin-page .label-grid label > span), :global(html.dark .coin-page .count-field > span), :global(html.dark .coin-page .result-copy strong), :global(html.dark .coin-page .stats-grid strong), :global(html.dark .coin-page .guide-grid strong) { color: #e2e8f0; }
-:global(html.dark .coin-page .stats-grid > div), :global(html.dark .coin-page .guide-grid div) { background: #0f172a; }
+:global(html.dark .coin-page .label-grid label > span), :global(html.dark .coin-page .count-field > span), :global(html.dark .coin-page .result-copy strong), :global(html.dark .coin-page .stats-grid strong), :global(html.dark .coin-page .guide-grid strong) { color: var(--c-text-primary); }
+:global(html.dark .coin-page .stats-grid > div), :global(html.dark .coin-page .guide-grid div) { background: var(--c-surface-subtle); }
 :global(html.dark .coin-page .fairness-note) { background: rgba(6, 78, 59, .25); }
 @media (max-width: 860px) { .workspace-grid { grid-template-columns: 1fr; } .toss-card { min-height: 410px; } }
 @media (max-width: 640px) { .settings-card, .toss-card, .statistics-card { padding: 18px; } .label-grid, .stats-grid, .guide-grid { grid-template-columns: 1fr; }  }

@@ -262,7 +262,7 @@ function useSample(value: string) {
 .secondary-grid span,
 .secondary-grid strong { display: block; }
 .secondary-grid span { color: var(--c-text-muted); font-size: 11px; }
-.secondary-grid strong { margin-top: 2px; color: #334155; font-size: 15px; }
+.secondary-grid strong { margin-top: 2px; color: var(--c-text-strong); font-size: 15px; }
 
 .composition-list { margin-top: 16px; }
 .composition-row + .composition-row { margin-top: 13px; }
@@ -295,25 +295,25 @@ function useSample(value: string) {
 
 :global(html.dark .word-count-page .workspace-card),
 :global(html.dark .word-count-page .statistics-card) {
-  border-color: #334155;
-  background: #0f172a;
+  border-color: var(--c-border);
+  background: var(--c-surface-subtle);
   box-shadow: none;
 }
 :global(html.dark .word-count-page .panel-title),
 :global(html.dark .word-count-page .detail-copy strong) { color: #f1f5f9; }
 :global(html.dark .word-count-page .main-editor .el-textarea__inner) {
-  color: #e2e8f0;
+  color: var(--c-text-primary);
   background: #0b1324;
   box-shadow: 0 0 0 1px #334155 inset;
 }
 :global(html.dark .word-count-page .stat-card),
 :global(html.dark .word-count-page .detail-panel),
 :global(html.dark .word-count-page .reading-panel) {
-  border-color: #334155;
+  border-color: var(--c-border);
   background: #111c2f;
 }
 :global(html.dark .word-count-page .secondary-grid div) { background: #0b1324; }
-:global(html.dark .word-count-page .secondary-grid strong) { color: #e2e8f0; }
+:global(html.dark .word-count-page .secondary-grid strong) { color: var(--c-text-primary); }
 :global(html.dark .word-count-page .progress-track) { background: #334155; }@media (max-width: 1000px) {
   .primary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .analysis-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

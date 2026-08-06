@@ -353,7 +353,7 @@ calculate()
 </template>
 
 <style scoped>
-.retirement-page { color: #334155; }
+.retirement-page { color: var(--c-text-strong); }
 .calculator-card,
 .result-section,
 .flexible-section,
@@ -401,7 +401,7 @@ calculate()
 .eyebrow { color: #2563eb; font-size: 11px; font-weight: 750; letter-spacing: .08em; }
 .hero-copy h2 { margin: 5px 0 3px; color: var(--c-text-primary); font-size: clamp(32px, 5vw, 48px); line-height: 1.1; }
 .hero-copy p { margin: 0; color: var(--c-text-secondary); font-size: 13px; }
-.hero-copy p strong { color: #334155; }
+.hero-copy p strong { color: var(--c-text-strong); }
 .countdown { display: inline-flex; align-items: center; gap: 5px; margin-top: 12px; padding: 5px 10px; border-radius: 99px; color: #047857; font-size: 11px; background: #d1fae5; }
 .countdown.reached { color: #9a3412; background: #ffedd5; }
 .delay-badge { display: flex; min-width: 190px; flex-direction: column; gap: 3px; padding: 18px; border: 1px solid rgba(255,255,255,.8); border-radius: 16px; background: rgba(255,255,255,.72); box-shadow: 0 10px 30px rgba(59,130,246,.08); }
@@ -413,7 +413,7 @@ calculate()
 .timeline-card.featured { border-color: #bfdbfe; background: #f8fbff; }
 .timeline-card > div { display: flex; flex-direction: column; gap: 2px; }
 .timeline-card small { color: var(--c-text-muted); font-size: 10px; }
-.timeline-card strong { color: #334155; font-size: 16px; }
+.timeline-card strong { color: var(--c-text-strong); font-size: 16px; }
 .timeline-card em { color: var(--c-text-secondary); font-size: 10px; font-style: normal; }
 .timeline-dot { width: 10px; height: 10px; flex: 0 0 10px; margin-top: 4px; border-radius: 50%; }
 .timeline-dot.original { background: #94a3b8; }
@@ -437,7 +437,7 @@ calculate()
 .contribution-card > div { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 17px; }
 .contribution-card > div + div { border-left: 1px solid rgba(148, 163, 184, .22); }
 .contribution-card span { color: var(--c-text-secondary); font-size: 10px; }
-.contribution-card > div > strong { color: #334155; font-size: 17px; }
+.contribution-card > div > strong { color: var(--c-text-strong); font-size: 17px; }
 .contribution-status { flex-direction: row !important; align-items: center; justify-content: flex-start !important; gap: 9px !important; }
 .contribution-status > .el-icon { color: #059669; font-size: 20px; }
 .shortfall .contribution-status > .el-icon { color: #ea580c; }
@@ -455,8 +455,8 @@ calculate()
 .reference-table :deep(td.el-table__cell) { color: var(--c-text-body); font-size: 11px; }
 .reference-table :deep(.current-cohort td.el-table__cell) { color: #1d4ed8 !important; background: #dbeafe !important; }
 .table-footnote { margin: 9px 0 0; color: var(--c-text-muted); font-size: 10px; text-align: right; }
-.minimum-years-reference { margin-top: 20px; padding-top: 18px; border-top: 1px solid #e2e8f0; }
-.minimum-years-reference h3 { margin: 0 0 11px; color: #334155; font-size: 13px; }
+.minimum-years-reference { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--c-border); }
+.minimum-years-reference h3 { margin: 0 0 11px; color: var(--c-text-strong); font-size: 13px; }
 .year-chips { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; }
 .year-chips div { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border: 1px solid var(--c-border); border-radius: 9px; background: var(--c-surface-subtle); }
 .year-chips span { color: var(--c-text-muted); font-size: 9px; }
@@ -465,43 +465,43 @@ calculate()
 .policy-notes > div { display: flex; align-items: flex-start; gap: 10px; }
 .policy-notes > div > .el-icon { flex: 0 0 auto; margin-top: 2px; color: #3b82f6; font-size: 18px; }
 .policy-notes p { display: flex; flex-direction: column; gap: 4px; margin: 0; }
-.policy-notes strong { color: #334155; font-size: 12px; }
+.policy-notes strong { color: var(--c-text-strong); font-size: 12px; }
 .policy-notes span { color: var(--c-text-muted); font-size: 10px; line-height: 1.55; }
 .policy-notes a { color: #2563eb; font-size: 10px; text-decoration: none; }
 .policy-notes a:hover { text-decoration: underline; }
 
-:global(html.dark .retirement-page) { color: #cbd5e1; }
+:global(html.dark .retirement-page) { color: var(--c-text-secondary); }
 :global(html.dark .retirement-page .calculator-card),
 :global(html.dark .retirement-page .result-section),
 :global(html.dark .retirement-page .flexible-section),
 :global(html.dark .retirement-page .contribution-section),
-:global(html.dark .retirement-page .reference-section) { border-color: #334155; background: #1e293b; box-shadow: none; }
+:global(html.dark .retirement-page .reference-section) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
 :global(html.dark .retirement-page .hero-copy h2),
 :global(html.dark .retirement-page .timeline-card strong),
 :global(html.dark .retirement-page .flexible-grid article > strong),
 :global(html.dark .retirement-page .minimum-years-reference h3),
-:global(html.dark .retirement-page .policy-notes strong) { color: #e2e8f0; }
+:global(html.dark .retirement-page .policy-notes strong) { color: var(--c-text-primary); }
 :global(html.dark .retirement-page .field-block > span),
-:global(html.dark .retirement-page .category-label) { color: #cbd5e1; }
+:global(html.dark .retirement-page .category-label) { color: var(--c-text-secondary); }
 :global(html.dark .retirement-page .category-grid button),
 :global(html.dark .retirement-page .timeline-card),
-:global(html.dark .retirement-page .flexible-grid article) { border-color: #334155; color: #cbd5e1; background: #172033; }
+:global(html.dark .retirement-page .flexible-grid article) { border-color: var(--c-border); color: var(--c-text-secondary); background: #172033; }
 :global(html.dark .retirement-page .category-grid button.active),
 :global(html.dark .retirement-page .timeline-card.featured),
 :global(html.dark .retirement-page .flexible-grid article.recommended) { border-color: #3b82f6; color: #93c5fd; background: rgba(30,64,175,.22); }
 :global(html.dark .retirement-page .calculate-bar) { border-color: #1e3a5f; background: linear-gradient(110deg,#172033,#172554); }
 :global(html.dark .retirement-page .calculate-bar strong) { color: #bfdbfe; }
 :global(html.dark .retirement-page .result-hero) { background: linear-gradient(120deg,#172554,#2e1065 55%,#083344); }
-:global(html.dark .retirement-page .hero-copy p strong) { color: #cbd5e1; }
-:global(html.dark .retirement-page .delay-badge) { border-color: #475569; background: rgba(15,23,42,.72); }
+:global(html.dark .retirement-page .hero-copy p strong) { color: var(--c-text-secondary); }
+:global(html.dark .retirement-page .delay-badge) { border-color: var(--c-border-strong); background: rgba(15,23,42,.72); }
 :global(html.dark .retirement-page .delay-badge strong) { color: #a5b4fc; }
 :global(html.dark .retirement-page .contribution-card.enough) { border-color: #14532d; background: rgba(6,78,59,.24); }
 :global(html.dark .retirement-page .contribution-card.shortfall) { border-color: #7c2d12; background: rgba(124,45,18,.2); }
-:global(html.dark .retirement-page .contribution-card > div > strong) { color: #e2e8f0; }
+:global(html.dark .retirement-page .contribution-card > div > strong) { color: var(--c-text-primary); }
 :global(html.dark .retirement-page .table-summary) { color: #93c5fd; background: rgba(30,64,175,.22); }
-:global(html.dark .retirement-page .minimum-years-reference) { border-color: #334155; }
-:global(html.dark .retirement-page .year-chips div) { border-color: #334155; background: #172033; }
-:global(html.dark .retirement-page .year-chips strong) { color: #cbd5e1; }@media (max-width: 900px) {
+:global(html.dark .retirement-page .minimum-years-reference) { border-color: var(--c-border); }
+:global(html.dark .retirement-page .year-chips div) { border-color: var(--c-border); background: #172033; }
+:global(html.dark .retirement-page .year-chips strong) { color: var(--c-text-secondary); }@media (max-width: 900px) {
   .retirement-timeline { grid-template-columns: 1fr; gap: 9px; }
   .timeline-connector { width: 1px; height: 14px; margin-left: 18px; }
   .year-chips { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 760px) {

@@ -1123,7 +1123,7 @@ onBeforeUnmount(() => {
 .context-bar .field > span { white-space: nowrap; }
 .context-bar .field input[type='color'] { width: 34px; height: 28px; padding: 0; border: 1px solid #d9dce3; border-radius: 6px; background: #fff; cursor: pointer; }
 .context-bar .field input[type='number'] { width: 58px; height: 30px; border: 1px solid #d9dce3; border-radius: 7px; padding: 0 6px; background: #fff; color: #515662; }
-.context-bar .text-input { height: 32px; width: 180px; border: 1px solid #d9dce3; border-radius: 8px; padding: 0 10px; background: #fff; color: #334155; font-size: 13px; }
+.context-bar .text-input { height: 32px; width: 180px; border: 1px solid #d9dce3; border-radius: 8px; padding: 0 10px; background: #fff; color: var(--c-text-strong); font-size: 13px; }
 .context-bar .angle-field { display: flex; align-items: center; gap: 4px; color: #737784; font-size: 13px; }
 .context-bar .angle-field input { width: 52px; height: 30px; border: 1px solid #d9dce3; border-radius: 7px; padding: 0 6px; background: #fff; color: #515662; }
 .context-bar .ctx-tip { margin-left: auto; color: #8b8f9b; font-size: 12px; }

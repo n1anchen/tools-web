@@ -13,6 +13,7 @@
   --c-border-strong: #dbe3ef;  /* 控件边框 */
   /* 文字 */
   --c-text-primary: #0f172a;   /* 标题/强调 */
+  --c-text-strong: #334155;    /* 强文字（按钮/strong/统计数字） */
   --c-text-body: #475569;      /* 正文 */
   --c-text-secondary: #64748b; /* 次级 */
   --c-text-muted: #94a3b8;     /* 弱化/占位 */
@@ -33,6 +34,7 @@
   --c-border: #334155;
   --c-border-strong: #475569;
   --c-text-primary: #e2e8f0;
+  --c-text-strong: #cbd5e1;
   --c-text-body: #cbd5e1;
   --c-text-secondary: #cbd5e1;
   --c-text-muted: #94a3b8;

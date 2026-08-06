@@ -273,7 +273,7 @@ function copyResult() {
 
 .field-block > span {
   margin-bottom: 8px;
-  color: #334155;
+  color: var(--c-text-strong);
   font-size: 13px;
   font-weight: 650;
 }
@@ -384,7 +384,7 @@ function copyResult() {
 
 .algorithm-facts strong {
   margin-top: 3px;
-  color: #334155;
+  color: var(--c-text-strong);
   font-size: 13px;
 }
 
@@ -457,8 +457,8 @@ function copyResult() {
 
 :global(html.dark .hash-page .workspace-card),
 :global(html.dark .hash-page .result-card) {
-  border-color: #334155;
-  background: #0f172a;
+  border-color: var(--c-border);
+  background: var(--c-surface-subtle);
   box-shadow: none;
 }
 
@@ -469,7 +469,7 @@ function copyResult() {
 }
 
 :global(html.dark .hash-page .settings-panel) {
-  border-color: #334155;
+  border-color: var(--c-border);
   background: #111c2f;
 }
 
@@ -483,7 +483,7 @@ function copyResult() {
 }
 
 :global(html.dark .hash-page .algorithm-facts strong) {
-  color: #e2e8f0;
+  color: var(--c-text-primary);
 }
 
 :global(html.dark .hash-page .hash-output) {
@@ -494,7 +494,7 @@ function copyResult() {
 
 :global(html.dark .hash-page .result-empty),
 :global(html.dark .hash-page .security-note) {
-  border-color: #334155;
+  border-color: var(--c-border);
   color: var(--c-text-muted);
   background: #111c2f;
 }

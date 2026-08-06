@@ -181,7 +181,7 @@ function useExample(value: string) {
   justify-content: space-between;
   gap: 18px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--c-border);
 }
 
 
@@ -330,13 +330,13 @@ function useExample(value: string) {
 }
 
 :global(html.dark .url-page .workspace-card) {
-  border-color: #334155;
-  background: #0f172a;
+  border-color: var(--c-border);
+  background: var(--c-surface-subtle);
   box-shadow: none;
 }
 
 :global(html.dark .url-page .mode-panel) {
-  border-color: #334155;
+  border-color: var(--c-border);
 }
 
 :global(html.dark .url-page .editor-header strong),
@@ -345,7 +345,7 @@ function useExample(value: string) {
 }
 
 :global(html.dark .url-page .editor-panel) {
-  border-color: #334155;
+  border-color: var(--c-border);
   background: #111c2f;
 }
 
@@ -360,13 +360,13 @@ function useExample(value: string) {
 }
 
 :global(html.dark .url-page .editor-panel .el-textarea__inner) {
-  color: #e2e8f0;
+  color: var(--c-text-primary);
   background: #0b1324;
   box-shadow: 0 0 0 1px #334155 inset;
 }
 
 :global(html.dark .url-page .editor-message) {
-  border-color: #334155;
+  border-color: var(--c-border);
   color: var(--c-text-secondary);
 }
 

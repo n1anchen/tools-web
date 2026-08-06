@@ -553,7 +553,7 @@ calculate()
 </template>
 
 <style scoped>
-.mortgage-page { color: #334155; }
+.mortgage-page { color: var(--c-text-strong); }
 .calculator-card,
 .results-section,
 .schedule-card,
@@ -606,11 +606,11 @@ calculate()
 .payment-hero strong { margin: 3px 0; color: var(--c-text-primary); font-size: clamp(24px, 3vw, 32px); line-height: 1.2; }
 .payment-hero em { color: var(--c-text-muted); font-size: 11px; font-style: normal; }
 .metric-grid { display: grid; grid-template-columns: repeat(2, 1fr); padding: 6px 20px 16px; }
-.metric-grid div { display: flex; flex-direction: column; gap: 4px; padding: 12px 0; border-bottom: 1px dashed #e2e8f0; }
+.metric-grid div { display: flex; flex-direction: column; gap: 4px; padding: 12px 0; border-bottom: 1px dashed var(--c-border); }
 .metric-grid div:nth-child(odd) { padding-right: 12px; }
-.metric-grid div:nth-child(even) { padding-left: 12px; border-left: 1px dashed #e2e8f0; }
+.metric-grid div:nth-child(even) { padding-left: 12px; border-left: 1px dashed var(--c-border); }
 .metric-grid span { color: var(--c-text-muted); font-size: 11px; }
-.metric-grid strong { color: #334155; font-size: 14px; }
+.metric-grid strong { color: var(--c-text-strong); font-size: 14px; }
 .comparison-note {
   display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; padding: 13px 15px;
   border: 1px solid #d1fae5; border-radius: 12px; color: #047857; background: #ecfdf5;
@@ -645,44 +645,44 @@ calculate()
 .mode-selector span { color: var(--c-text-muted); font-size: 10px; }
 .scenario-results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .scenario-result-card { padding: 16px; border: 1px solid var(--c-border); border-radius: 14px; background: #fff; }
-.scenario-result-card h4 { margin: 0 0 10px; color: #334155; font-size: 14px; }
-.scenario-result-card > div { display: flex; flex-direction: column; gap: 2px; padding: 9px 0; border-top: 1px dashed #e2e8f0; }
+.scenario-result-card h4 { margin: 0 0 10px; color: var(--c-text-strong); font-size: 14px; }
+.scenario-result-card > div { display: flex; flex-direction: column; gap: 2px; padding: 9px 0; border-top: 1px dashed var(--c-border); }
 .scenario-result-card span { color: var(--c-text-muted); font-size: 10px; }
-.scenario-result-card strong { color: #334155; font-size: 13px; }
+.scenario-result-card strong { color: var(--c-text-strong); font-size: 13px; }
 .positive { color: #059669 !important; }
 .negative { color: #dc2626 !important; }
 .explanation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 .explanation-grid > div { display: flex; align-items: flex-start; gap: 10px; }
 .explanation-grid .el-icon { flex: 0 0 auto; margin-top: 2px; color: #3b82f6; font-size: 18px; }
 .explanation-grid p { display: flex; flex-direction: column; gap: 4px; margin: 0; }
-.explanation-grid strong { color: #334155; font-size: 13px; }
+.explanation-grid strong { color: var(--c-text-strong); font-size: 13px; }
 .explanation-grid span { color: var(--c-text-muted); font-size: 11px; line-height: 1.6; }
 
-:global(html.dark .mortgage-page) { color: #cbd5e1; }
+:global(html.dark .mortgage-page) { color: var(--c-text-secondary); }
 :global(html.dark .mortgage-page .calculator-card),
 :global(html.dark .mortgage-page .results-section),
 :global(html.dark .mortgage-page .schedule-card),
-:global(html.dark .mortgage-page .scenario-section) { border-color: #334155; background: #1e293b; box-shadow: none; }
+:global(html.dark .mortgage-page .scenario-section) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
 :global(html.dark .mortgage-page .plan-card-head h3),
 :global(html.dark .mortgage-page .payment-hero strong),
 :global(html.dark .mortgage-page .scenario-controls h3),
 :global(html.dark .mortgage-page .scenario-result-card h4),
 :global(html.dark .mortgage-page .scenario-result-card strong),
-:global(html.dark .mortgage-page .explanation-grid strong) { color: #e2e8f0; }
+:global(html.dark .mortgage-page .explanation-grid strong) { color: var(--c-text-primary); }
 :global(html.dark .mortgage-page .field-block > span),
-:global(html.dark .mortgage-page .metric-grid strong) { color: #cbd5e1; }
+:global(html.dark .mortgage-page .metric-grid strong) { color: var(--c-text-secondary); }
 :global(html.dark .mortgage-page .loan-preview) { border-color: #1e3a5f; background: linear-gradient(110deg, #172033, #172554); }
 :global(html.dark .mortgage-page .loan-preview strong) { color: #bfdbfe; }
 :global(html.dark .mortgage-page .plan-card),
 :global(html.dark .mortgage-page .scenario-controls),
-:global(html.dark .mortgage-page .scenario-result-card) { border-color: #334155; background: #172033; }
-:global(html.dark .mortgage-page .payment-hero) { background: #0f172a; }
+:global(html.dark .mortgage-page .scenario-result-card) { border-color: var(--c-border); background: #172033; }
+:global(html.dark .mortgage-page .payment-hero) { background: var(--c-surface-subtle); }
 :global(html.dark .mortgage-page .metric-grid div),
-:global(html.dark .mortgage-page .scenario-result-card > div) { border-color: #334155; }
-:global(html.dark .mortgage-page .metric-grid div:nth-child(even)) { border-left-color: #334155; }
+:global(html.dark .mortgage-page .scenario-result-card > div) { border-color: var(--c-border); }
+:global(html.dark .mortgage-page .metric-grid div:nth-child(even)) { border-left-color: var(--c-border); }
 :global(html.dark .mortgage-page .comparison-note) { border-color: #14532d; color: #6ee7b7; background: rgba(6, 78, 59, .25); }
 :global(html.dark .mortgage-page .comparison-note span) { color: #6b9e8b; }
-:global(html.dark .mortgage-page .mode-selector button) { border-color: #334155; color: #cbd5e1; background: #0f172a; }
+:global(html.dark .mortgage-page .mode-selector button) { border-color: var(--c-border); color: var(--c-text-secondary); background: var(--c-surface-subtle); }
 :global(html.dark .mortgage-page .mode-selector button.active) { border-color: #3b82f6; color: #93c5fd; background: rgba(30, 64, 175, .25); }@media (max-width: 1100px) {
   .input-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .scenario-layout { grid-template-columns: 1fr; }}@media (max-width: 760px) {

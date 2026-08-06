@@ -187,7 +187,7 @@ onMounted(generate)
 .range-arrow { align-self: flex-end; padding-bottom: 8px; color: var(--c-text-muted); }
 .unique-control { align-self: flex-end; gap: 12px; min-height: 32px; padding: 0 4px; }
 .unique-control strong, .unique-control small { display: block; white-space: nowrap; }
-.unique-control strong { color: #334155; font-size: 12px; }
+.unique-control strong { color: var(--c-text-strong); font-size: 12px; }
 .unique-control small { margin-top: 2px; color: var(--c-text-muted); font-size: 10px; }
 .control-grid > .el-button { align-self: flex-end; }
 .result-actions { display: flex; }
@@ -201,28 +201,28 @@ onMounted(generate)
 .batch-results span { color: #fdba74; font-size: 10px; }
 .batch-results strong { overflow: hidden; font-size: 20px; text-overflow: ellipsis; }
 .summary-row { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 16px; overflow: hidden; border: 1px solid var(--c-border); border-radius: 14px; }
-.summary-row div { padding: 13px 18px; border-right: 1px solid #e2e8f0; }
+.summary-row div { padding: 13px 18px; border-right: 1px solid var(--c-border); }
 .summary-row div:last-child { border: 0; }
 .summary-row span, .summary-row strong { display: block; }
 .summary-row span { color: var(--c-text-muted); font-size: 11px; }
-.summary-row strong { margin-top: 3px; color: #334155; font-size: 16px; }
+.summary-row strong { margin-top: 3px; color: var(--c-text-strong); font-size: 16px; }
 .result-enter { animation: result-pop .3s ease both; }
 @keyframes result-pop { from { opacity: .3; transform: scale(.985); } to { opacity: 1; transform: scale(1); } }
 .history-header { justify-content: space-between; }
 .history-header strong, .history-header span { display: block; }
-.history-header strong { color: #334155; font-size: 15px; }
+.history-header strong { color: var(--c-text-strong); font-size: 15px; }
 .history-header span { margin-top: 3px; color: var(--c-text-muted); font-size: 11px; }
 .history-header button { color: var(--c-text-secondary); font-size: 12px; }
 .history-list { display: grid; gap: 8px; margin-top: 15px; }
 .history-list button { display: grid; grid-template-columns: 130px minmax(0, 1fr) 20px; align-items: center; gap: 12px; padding: 11px 13px; border-radius: 11px; color: var(--c-text-secondary); background: var(--c-surface-subtle); text-align: left; }
-.history-list code { overflow: hidden; color: #334155; text-overflow: ellipsis; white-space: nowrap; }
+.history-list code { overflow: hidden; color: var(--c-text-strong); text-overflow: ellipsis; white-space: nowrap; }
 .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .guide-grid div { padding: 14px; border-radius: 13px; background: var(--c-surface-subtle); }
 .guide-grid strong, .guide-grid span { display: block; }
-.guide-grid strong { color: #334155; font-size: 13px; }
+.guide-grid strong { color: var(--c-text-strong); font-size: 13px; }
 .guide-grid span { margin-top: 5px; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }
-:global(html.dark .random-page .workspace-card), :global(html.dark .random-page .result-card), :global(html.dark .random-page .history-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
-:global(html.dark .random-page .unique-control strong), :global(html.dark .random-page .summary-row strong), :global(html.dark .random-page .history-header strong), :global(html.dark .random-page .history-list code), :global(html.dark .random-page .guide-grid strong) { color: #e2e8f0; }
-:global(html.dark .random-page .control-grid), :global(html.dark .random-page .preset-row button), :global(html.dark .random-page .history-list button), :global(html.dark .random-page .guide-grid div) { border-color: #334155; background: #0f172a; }
+:global(html.dark .random-page .workspace-card), :global(html.dark .random-page .result-card), :global(html.dark .random-page .history-card) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
+:global(html.dark .random-page .unique-control strong), :global(html.dark .random-page .summary-row strong), :global(html.dark .random-page .history-header strong), :global(html.dark .random-page .history-list code), :global(html.dark .random-page .guide-grid strong) { color: var(--c-text-primary); }
+:global(html.dark .random-page .control-grid), :global(html.dark .random-page .preset-row button), :global(html.dark .random-page .history-list button), :global(html.dark .random-page .guide-grid div) { border-color: var(--c-border); background: var(--c-surface-subtle); }
 :global(html.dark .random-page .single-result) { background: radial-gradient(circle at 50% 10%, rgba(154, 52, 18, .25), #0f172a 65%); }
-:global(html.dark .random-page .summary-row), :global(html.dark .random-page .summary-row div) { border-color: #334155; }@media (max-width: 900px) { .control-grid { display: grid; grid-template-columns: 1fr 24px 1fr; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: span 1; } .control-grid > .el-button { align-self: end; }}@media (max-width: 680px) { .workspace-card, .result-card, .history-card { padding: 18px; } .preset-row { flex-wrap: wrap; } .control-grid { display: grid; grid-template-columns: 1fr; } .range-arrow { display: none; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: auto; } .result-actions { width: 100%; } .result-actions .el-button { flex: 1; } .summary-row, .guide-grid { grid-template-columns: 1fr; } .summary-row div { border-right: 0; border-bottom: 1px solid #e2e8f0; } .history-list button { grid-template-columns: 90px minmax(0, 1fr) 18px; }}</style>
+:global(html.dark .random-page .summary-row), :global(html.dark .random-page .summary-row div) { border-color: var(--c-border); }@media (max-width: 900px) { .control-grid { display: grid; grid-template-columns: 1fr 24px 1fr; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: span 1; } .control-grid > .el-button { align-self: end; }}@media (max-width: 680px) { .workspace-card, .result-card, .history-card { padding: 18px; } .preset-row { flex-wrap: wrap; } .control-grid { display: grid; grid-template-columns: 1fr; } .range-arrow { display: none; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: auto; } .result-actions { width: 100%; } .result-actions .el-button { flex: 1; } .summary-row, .guide-grid { grid-template-columns: 1fr; } .summary-row div { border-right: 0; border-bottom: 1px solid var(--c-border); } .history-list button { grid-template-columns: 90px minmax(0, 1fr) 18px; }}</style>

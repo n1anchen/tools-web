@@ -180,7 +180,7 @@ function clear() {
 .input-shell label {
   display: block;
   margin-bottom: 9px;
-  color: #334155;
+  color: var(--c-text-strong);
   font-size: 13px;
   font-weight: 650;
 }
@@ -221,7 +221,7 @@ function clear() {
   padding: 9px 12px;
   border: 1px solid var(--c-border);
   border-radius: 12px;
-  color: #334155;
+  color: var(--c-text-strong);
   background: #fff;
   text-align: left;
   cursor: pointer;
@@ -355,8 +355,8 @@ function clear() {
 
 :global(html.dark .number-page .workspace-card),
 :global(html.dark .number-page .result-card) {
-  border-color: #334155;
-  background: #0f172a;
+  border-color: var(--c-border);
+  background: var(--c-surface-subtle);
   box-shadow: none;
 }
 
@@ -370,14 +370,14 @@ function clear() {
 }
 
 :global(html.dark .number-page .input-shell label) {
-  color: #cbd5e1;
+  color: var(--c-text-secondary);
 }
 
 :global(html.dark .number-page .example-row button),
 :global(html.dark .number-page .result-summary div),
 :global(html.dark .number-page .empty-state) {
-  border-color: #334155;
-  color: #cbd5e1;
+  border-color: var(--c-border);
+  color: var(--c-text-secondary);
   background: #111c2f;
 }
 
@@ -388,7 +388,7 @@ function clear() {
 }
 
 :global(html.dark .number-page .result-summary strong) {
-  color: #e2e8f0;
+  color: var(--c-text-primary);
 }
 
 :global(html.dark .number-page .empty-state.error) {

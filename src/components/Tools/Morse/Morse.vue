@@ -242,7 +242,7 @@ onUnmounted(stopPlayback)
 .control-group { display: flex; align-items: center; gap: 12px; color: var(--c-text-secondary); font-size: 13px; }
 .speed-control { flex: 1; min-width: 260px; max-width: 430px; }
 .speed-control :deep(.el-slider) { flex: 1; }
-.speed-control strong { min-width: 58px; color: #334155; }
+.speed-control strong { min-width: 58px; color: var(--c-text-strong); }
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
 .stats-grid > div { display: flex; align-items: baseline; justify-content: space-between; padding: 13px 15px; border: 1px solid var(--c-border); border-radius: 14px; }
 .stats-grid span { color: var(--c-text-secondary); font-size: 12px; }
@@ -250,21 +250,21 @@ onUnmounted(stopPlayback)
 .reference-card { padding: 24px; }
 .section-heading h3 { margin: 5px 0 0; color: var(--c-text-primary); font-size: 19px; }
 .reference-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 7px; margin-top: 18px; }
-.reference-grid button { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; padding: 9px 3px; border: 1px solid var(--c-border); border-radius: 11px; color: #334155; background: var(--c-surface-subtle); cursor: pointer; }
+.reference-grid button { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; padding: 9px 3px; border: 1px solid var(--c-border); border-radius: 11px; color: var(--c-text-strong); background: var(--c-surface-subtle); cursor: pointer; }
 .reference-grid button:hover { border-color: #5eead4; background: #f0fdfa; }
 .reference-grid span { color: #0f766e; font: 10px ui-monospace, monospace; }
 
 :global(html.dark .morse-page) { --accent: #5eead4; --accent-soft: #134e4a; }
-:global(html.dark .morse-page .workspace-card), :global(html.dark .morse-page .reference-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
+:global(html.dark .morse-page .workspace-card), :global(html.dark .morse-page .reference-card) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
 :global(html.dark .morse-page h3), :global(html.dark .morse-page .panel-heading strong), :global(html.dark .morse-page .stats-grid strong) { color: #f8fafc; }
 :global(html.dark .morse-page p), :global(html.dark .morse-page .panel-heading > span), :global(html.dark .morse-page .control-group), :global(html.dark .morse-page .result-box) { color: var(--c-text-muted); }
-:global(html.dark .morse-page .mode-switch), :global(html.dark .morse-page .editor-panel), :global(html.dark .morse-page .control-strip), :global(html.dark .morse-page .reference-grid button) { border-color: #334155; background: #0f172a; }
+:global(html.dark .morse-page .mode-switch), :global(html.dark .morse-page .editor-panel), :global(html.dark .morse-page .control-strip), :global(html.dark .morse-page .reference-grid button) { border-color: var(--c-border); background: var(--c-surface-subtle); }
 :global(html.dark .morse-page .output-panel) { background: linear-gradient(145deg, #123b3a, #0f172a); }
-:global(html.dark .morse-page .editor-panel .el-textarea__inner) { color: #e2e8f0; }
+:global(html.dark .morse-page .editor-panel .el-textarea__inner) { color: var(--c-text-primary); }
 :global(html.dark .morse-page .result-box.morse-output), :global(html.dark .morse-page .speed-control strong) { color: #5eead4; }
-:global(html.dark .morse-page .swap-button) { border-color: #475569; color: #5eead4; background: #1e293b; }
-:global(html.dark .morse-page .stats-grid > div) { border-color: #334155; }
-:global(html.dark .morse-page .reference-grid button) { color: #e2e8f0; }
+:global(html.dark .morse-page .swap-button) { border-color: var(--c-border-strong); color: #5eead4; background: var(--c-surface); }
+:global(html.dark .morse-page .stats-grid > div) { border-color: var(--c-border); }
+:global(html.dark .morse-page .reference-grid button) { color: var(--c-text-primary); }
 
 @media (max-width: 900px) {
   .reference-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }

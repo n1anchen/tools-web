@@ -132,7 +132,7 @@ onMounted(generateAll)
 .control-grid {display: flex; align-items: center;}
 
 .version-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 22px; }
-.version-grid > button { display: flex; align-items: center; gap: 14px; padding: 17px; border: 1px solid var(--c-border); border-radius: 15px; color: #334155; background: var(--c-surface-subtle); text-align: left; transition: .2s ease; }
+.version-grid > button { display: flex; align-items: center; gap: 14px; padding: 17px; border: 1px solid var(--c-border); border-radius: 15px; color: var(--c-text-strong); background: var(--c-surface-subtle); text-align: left; transition: .2s ease; }
 .version-grid > button:hover { border-color: #93c5fd; transform: translateY(-1px); }
 .version-grid > button.active { border-color: #3b82f6; background: #eff6ff; box-shadow: inset 0 0 0 1px #3b82f6; }
 .version-grid > button > span:last-child, .version-grid strong, .version-grid small { display: block; }
@@ -156,9 +156,9 @@ onMounted(generateAll)
 .reference-grid article { display: flex; gap: 12px; padding: 15px; border-radius: 14px; background: var(--c-surface-subtle); }
 .reference-icon { display: grid; width: 38px; height: 38px; flex: 0 0 38px; place-items: center; border-radius: 11px; }
 .reference-icon.blue { color: #2563eb; background: #dbeafe; } .reference-icon.violet { color: #7c3aed; background: #ede9fe; } .reference-icon.green { color: #059669; background: #d1fae5; }
-.reference-grid strong { color: #334155; font-size: 13px; }
+.reference-grid strong { color: var(--c-text-strong); font-size: 13px; }
 .reference-grid p { margin: 5px 0 0; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }
-:global(html.dark .uuid-page .workspace-card), :global(html.dark .uuid-page .result-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
-:global(html.dark .uuid-page .version-grid strong), :global(html.dark .uuid-page .uuid-list code), :global(html.dark .uuid-page .reference-grid strong) { color: #e2e8f0; }
-:global(html.dark .uuid-page .version-grid > button), :global(html.dark .uuid-page .control-grid), :global(html.dark .uuid-page .uuid-list > button), :global(html.dark .uuid-page .reference-grid article) { border-color: #334155; background: #0f172a; }
+:global(html.dark .uuid-page .workspace-card), :global(html.dark .uuid-page .result-card) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
+:global(html.dark .uuid-page .version-grid strong), :global(html.dark .uuid-page .uuid-list code), :global(html.dark .uuid-page .reference-grid strong) { color: var(--c-text-primary); }
+:global(html.dark .uuid-page .version-grid > button), :global(html.dark .uuid-page .control-grid), :global(html.dark .uuid-page .uuid-list > button), :global(html.dark .uuid-page .reference-grid article) { border-color: var(--c-border); background: var(--c-surface-subtle); }
 :global(html.dark .uuid-page .version-grid > button.active) { border-color: #3b82f6; background: rgba(30, 64, 175, .18); }@media (max-width: 760px) { .control-grid { align-items: stretch; flex-direction: column; gap: 14px; } .format-options { flex-wrap: wrap; gap: 4px 16px; } .control-grid > .el-button { align-self: stretch; } .reference-grid { grid-template-columns: 1fr; }}@media (max-width: 640px) { .workspace-card, .result-card { padding: 18px; } .version-grid { grid-template-columns: 1fr; } .uuid-list > button { grid-template-columns: 24px minmax(0, 1fr) 18px; } .row-version { display: none; }}</style>

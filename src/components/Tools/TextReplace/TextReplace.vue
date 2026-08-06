@@ -152,7 +152,7 @@ function useResultAsInput() {
 .workspace-footer { justify-content: space-between; gap: 18px; }
 
 .rule-grid { display: grid; grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr); align-items: end; gap: 10px; margin-top: 22px; }
-.rule-grid label > span { display: flex; justify-content: space-between; margin-bottom: 8px; color: #334155; font-size: 13px; font-weight: 650; }
+.rule-grid label > span { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--c-text-strong); font-size: 13px; font-weight: 650; }
 .rule-grid small { color: var(--c-text-muted); font-weight: 400; }
 .rule-arrow { padding-bottom: 9px; color: var(--c-text-muted); text-align: center; }
 .option-row { gap: 22px; margin-top: 15px; padding: 13px 15px; border-radius: 13px; background: var(--c-surface-subtle); }
@@ -164,9 +164,9 @@ function useResultAsInput() {
 .editor-panel.invalid { border-color: #fecaca; background: #fef2f2; }
 .editor-title { justify-content: space-between; min-height: 52px; padding: 0 14px; }
 .editor-title > div, .editor-title strong, .editor-title span { display: block; }
-.editor-title strong { color: #334155; font-size: 13px; }
+.editor-title strong { color: var(--c-text-strong); font-size: 13px; }
 .editor-title span { margin-top: 2px; color: var(--c-text-muted); font-size: 10px; }
-.editor-panel :deep(.el-textarea__inner) { border: 0; border-top: 1px solid #e2e8f0; border-radius: 0; box-shadow: none; font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.editor-panel :deep(.el-textarea__inner) { border: 0; border-top: 1px solid var(--c-border); border-radius: 0; box-shadow: none; font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .result-panel :deep(.el-textarea__inner) { background: #f8fbff; }
 .direction-column { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--c-text-muted); }
 .match-badge { display: grid; width: 58px; height: 58px; place-items: center; align-content: center; border-radius: 18px; color: #2563eb; background: #dbeafe; }
@@ -175,7 +175,7 @@ function useResultAsInput() {
 .workspace-footer { margin-top: 16px; }
 .sample-button { color: #2563eb; font-size: 12px; }
 .summary-card { display: grid; grid-template-columns: repeat(4, 1fr); padding: 0; overflow: hidden; }
-.summary-card > div { padding: 18px 20px; border-right: 1px solid #e2e8f0; }
+.summary-card > div { padding: 18px 20px; border-right: 1px solid var(--c-border); }
 .summary-card > div:last-child { border: 0; }
 .summary-card span, .summary-card strong, .summary-card small { display: block; }
 .summary-card span { color: var(--c-text-secondary); font-size: 11px; }
@@ -184,11 +184,11 @@ function useResultAsInput() {
 .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .guide-grid div { padding: 14px; border-radius: 13px; background: var(--c-surface-subtle); }
 .guide-grid strong, .guide-grid span { display: block; }
-.guide-grid strong { color: #334155; font-size: 13px; }
+.guide-grid strong { color: var(--c-text-strong); font-size: 13px; }
 .guide-grid span { margin-top: 5px; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }
-:global(html.dark .replace-page .workspace-card), :global(html.dark .replace-page .summary-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
-:global(html.dark .replace-page .rule-grid label > span), :global(html.dark .replace-page .editor-title strong), :global(html.dark .replace-page .summary-card strong), :global(html.dark .replace-page .guide-grid strong) { color: #e2e8f0; }
-:global(html.dark .replace-page .option-row), :global(html.dark .replace-page .editor-panel), :global(html.dark .replace-page .guide-grid div) { border-color: #334155; background: #0f172a; }
+:global(html.dark .replace-page .workspace-card), :global(html.dark .replace-page .summary-card) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
+:global(html.dark .replace-page .rule-grid label > span), :global(html.dark .replace-page .editor-title strong), :global(html.dark .replace-page .summary-card strong), :global(html.dark .replace-page .guide-grid strong) { color: var(--c-text-primary); }
+:global(html.dark .replace-page .option-row), :global(html.dark .replace-page .editor-panel), :global(html.dark .replace-page .guide-grid div) { border-color: var(--c-border); background: var(--c-surface-subtle); }
 :global(html.dark .replace-page .result-panel) { border-color: #1e3a5f; background: #0d1d33; }
-:global(html.dark .replace-page .editor-panel .el-textarea__inner) { border-color: #334155; background: #111c2f; }
-:global(html.dark .replace-page .summary-card > div) { border-color: #334155; }@media (max-width: 820px) { .editor-grid { grid-template-columns: 1fr; } .direction-column { flex-direction: row; } .direction-column > .el-icon { transform: rotate(90deg); } .summary-card { grid-template-columns: repeat(2, 1fr); } .summary-card > div:nth-child(2) { border-right: 0; } .summary-card > div:nth-child(-n+2) { border-bottom: 1px solid #e2e8f0; }}@media (max-width: 640px) { .workspace-card { padding: 18px; } .workspace-footer { align-items: stretch; flex-direction: column; } .rule-grid { grid-template-columns: 1fr; } .rule-arrow { padding: 0; transform: rotate(90deg); } .option-row { align-items: flex-start; flex-direction: column; gap: 5px; } .regex-tip { margin: 5px 0 0; } .workspace-footer > div { display: grid; gap: 8px; } .workspace-footer .el-button { width: 100%; margin: 0; } .guide-grid { grid-template-columns: 1fr; }}</style>
+:global(html.dark .replace-page .editor-panel .el-textarea__inner) { border-color: var(--c-border); background: #111c2f; }
+:global(html.dark .replace-page .summary-card > div) { border-color: var(--c-border); }@media (max-width: 820px) { .editor-grid { grid-template-columns: 1fr; } .direction-column { flex-direction: row; } .direction-column > .el-icon { transform: rotate(90deg); } .summary-card { grid-template-columns: repeat(2, 1fr); } .summary-card > div:nth-child(2) { border-right: 0; } .summary-card > div:nth-child(-n+2) { border-bottom: 1px solid var(--c-border); }}@media (max-width: 640px) { .workspace-card { padding: 18px; } .workspace-footer { align-items: stretch; flex-direction: column; } .rule-grid { grid-template-columns: 1fr; } .rule-arrow { padding: 0; transform: rotate(90deg); } .option-row { align-items: flex-start; flex-direction: column; gap: 5px; } .regex-tip { margin: 5px 0 0; } .workspace-footer > div { display: grid; gap: 8px; } .workspace-footer .el-button { width: 100%; margin: 0; } .guide-grid { grid-template-columns: 1fr; }}</style>

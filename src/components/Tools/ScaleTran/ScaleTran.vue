@@ -179,7 +179,7 @@ function continueFromResult(base: SupportedRadix, value: string) {
 .option-row > div:first-child > span { color: var(--c-text-secondary); font-size: 12px; font-weight: 700; }
 .decimal-summary { display: flex; align-items: center; gap: 9px; min-width: 0; }
 .decimal-summary span { color: var(--c-text-muted); font-size: 11px; }
-.decimal-summary strong { max-width: 300px; color: #334155; overflow: hidden; text-overflow: ellipsis; font: 12px ui-monospace, monospace; white-space: nowrap; }
+.decimal-summary strong { max-width: 300px; color: var(--c-text-strong); overflow: hidden; text-overflow: ellipsis; font: 12px ui-monospace, monospace; white-space: nowrap; }
 .error-box { margin-top: 14px; padding: 12px 14px; border: 1px solid #fecaca; border-radius: 13px; color: #b91c1c; background: #fef2f2; font-size: 13px; }
 .section-heading > span { color: var(--c-text-muted); font-size: 11px; }
 .results-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; margin-top: 18px; }
@@ -197,15 +197,15 @@ function continueFromResult(base: SupportedRadix, value: string) {
 .alphabet-list code { color: #6d28d9; overflow-wrap: anywhere; font: 11px ui-monospace, monospace; }
 .alphabet-list span { color: var(--c-text-muted); font-size: 10px; text-align: right; }
 
-:global(html.dark .radix-page .input-card), :global(html.dark .radix-page .results-card), :global(html.dark .radix-page .alphabet-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
+:global(html.dark .radix-page .input-card), :global(html.dark .radix-page .results-card), :global(html.dark .radix-page .alphabet-card) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
 :global(html.dark .radix-page .input-card) { background: radial-gradient(circle at 92% 8%, #3b1f5e 0, transparent 28%), #1e293b; }
 :global(html.dark .radix-page h2), :global(html.dark .radix-page h3), :global(html.dark .radix-page .result-item code) { color: #f8fafc; }
-:global(html.dark .radix-page .base-picker label), :global(html.dark .radix-page .number-input label), :global(html.dark .radix-page .option-row > div:first-child > span) { color: #cbd5e1; }
+:global(html.dark .radix-page .base-picker label), :global(html.dark .radix-page .number-input label), :global(html.dark .radix-page .option-row > div:first-child > span) { color: var(--c-text-secondary); }
 :global(html.dark .radix-page .input-heading p), :global(html.dark .radix-page .result-meta span), :global(html.dark .radix-page .result-footer small) { color: var(--c-text-muted); }
 :global(html.dark .radix-page .precision-badge), :global(html.dark .radix-page .preset-row button) { border-color: #5b21b6; color: #c4b5fd; background: #2e1065; }
-:global(html.dark .radix-page .base-picker), :global(html.dark .radix-page .number-input), :global(html.dark .radix-page .option-row), :global(html.dark .radix-page .result-item), :global(html.dark .radix-page .alphabet-list > div) { border-color: #334155; background: #0f172a; }
-:global(html.dark .radix-page .number-input .el-textarea__inner) { color: #e2e8f0; }
-:global(html.dark .radix-page .decimal-summary strong) { color: #cbd5e1; }
+:global(html.dark .radix-page .base-picker), :global(html.dark .radix-page .number-input), :global(html.dark .radix-page .option-row), :global(html.dark .radix-page .result-item), :global(html.dark .radix-page .alphabet-list > div) { border-color: var(--c-border); background: var(--c-surface-subtle); }
+:global(html.dark .radix-page .number-input .el-textarea__inner) { color: var(--c-text-primary); }
+:global(html.dark .radix-page .decimal-summary strong) { color: var(--c-text-secondary); }
 :global(html.dark .radix-page .error-box) { border-color: #7f1d1d; color: #fca5a5; background: #450a0a; }
 :global(html.dark .radix-page .result-item.source) { border-color: #8b5cf6; background: #25143d; }
 :global(html.dark .radix-page .alphabet-list code) { color: #c4b5fd; }

@@ -200,7 +200,7 @@ function copyAll() {
 .bar-chart { display: grid; gap: 12px; margin-top: 22px; }
 .bar-row { display: grid; grid-template-columns: 20px 90px minmax(70px, 1fr) 32px; align-items: center; gap: 8px; }
 .bar-row > span { color: #c4b5fd; font-size: 10px; }
-.bar-row > strong { overflow: hidden; color: #334155; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.bar-row > strong { overflow: hidden; color: var(--c-text-strong); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .bar-row > div { height: 8px; overflow: hidden; border-radius: 999px; background: #ede9fe; }
 .bar-row i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #8b5cf6, #c084fc); }
 .bar-row b { color: #7c3aed; font-size: 12px; text-align: right; }
@@ -210,7 +210,7 @@ function copyAll() {
 .table-head { position: sticky; z-index: 1; top: 0; color: var(--c-text-muted); background: var(--c-surface-subtle); font-size: 10px; }
 .ranking-table > button { width: 100%; border-top: 1px solid #eef2f7; color: var(--c-text-secondary); background: #fff; font-size: 11px; }
 .ranking-table > button:hover { color: #059669; background: #f0fdf4; }
-.ranking-table strong { overflow: hidden; color: #334155; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.ranking-table strong { overflow: hidden; color: var(--c-text-strong); font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
 .ranking-table b { color: #059669; font-size: 13px; }
 .empty-filter { padding: 30px; color: var(--c-text-muted); font-size: 12px; text-align: center; }
 .empty-card { display: flex; min-height: 180px; flex-direction: column; align-items: center; justify-content: center; color: var(--c-text-muted); text-align: center; }
@@ -218,10 +218,10 @@ function copyAll() {
 .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .guide-grid div { padding: 14px; border-radius: 13px; background: var(--c-surface-subtle); }
 .guide-grid strong, .guide-grid span { display: block; }
-.guide-grid strong { color: #334155; font-size: 13px; }
+.guide-grid strong { color: var(--c-text-strong); font-size: 13px; }
 .guide-grid span { margin-top: 5px; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }
-:global(html.dark .frequency-page .workspace-card), :global(html.dark .frequency-page .metric-grid > div), :global(html.dark .frequency-page .chart-card), :global(html.dark .frequency-page .ranking-card), :global(html.dark .frequency-page .empty-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
-:global(html.dark .frequency-page .analysis-settings label > span), :global(html.dark .frequency-page .stop-word-field > span), :global(html.dark .frequency-page .metric-grid strong), :global(html.dark .frequency-page .bar-row > strong), :global(html.dark .frequency-page .ranking-table strong), :global(html.dark .frequency-page .guide-grid strong) { color: #e2e8f0; }
-:global(html.dark .frequency-page .analysis-settings), :global(html.dark .frequency-page .guide-grid div), :global(html.dark .frequency-page .table-head) { background: #0f172a; }
-:global(html.dark .frequency-page .ranking-table) { border-color: #334155; }
-:global(html.dark .frequency-page .ranking-table > button) { border-color: #334155; background: #111c2f; }@media (max-width: 960px) { .analysis-settings { display: grid; grid-template-columns: repeat(2, 1fr); } .analysis-settings label { width: auto; } .check-options { align-items: flex-start; flex-direction: column; gap: 0; } .result-grid { grid-template-columns: 1fr; }}@media (max-width: 640px) { .workspace-card, .chart-card, .ranking-card { padding: 18px; } .analysis-settings, .metric-grid { grid-template-columns: 1fr 1fr; } .analysis-settings > .el-button, .check-options { grid-column: span 2; } .metric-grid > div { padding: 15px; } .bar-row { grid-template-columns: 18px 70px minmax(60px, 1fr) 28px; } .table-head, .ranking-table > button { grid-template-columns: 28px minmax(80px, 1fr) 45px 18px; } .table-head span:nth-child(4), .ranking-table > button > span:nth-child(4) { display: none; } .guide-grid { grid-template-columns: 1fr; }}</style>
+:global(html.dark .frequency-page .workspace-card), :global(html.dark .frequency-page .metric-grid > div), :global(html.dark .frequency-page .chart-card), :global(html.dark .frequency-page .ranking-card), :global(html.dark .frequency-page .empty-card) { border-color: var(--c-border); background: var(--c-surface); box-shadow: none; }
+:global(html.dark .frequency-page .analysis-settings label > span), :global(html.dark .frequency-page .stop-word-field > span), :global(html.dark .frequency-page .metric-grid strong), :global(html.dark .frequency-page .bar-row > strong), :global(html.dark .frequency-page .ranking-table strong), :global(html.dark .frequency-page .guide-grid strong) { color: var(--c-text-primary); }
+:global(html.dark .frequency-page .analysis-settings), :global(html.dark .frequency-page .guide-grid div), :global(html.dark .frequency-page .table-head) { background: var(--c-surface-subtle); }
+:global(html.dark .frequency-page .ranking-table) { border-color: var(--c-border); }
+:global(html.dark .frequency-page .ranking-table > button) { border-color: var(--c-border); background: #111c2f; }@media (max-width: 960px) { .analysis-settings { display: grid; grid-template-columns: repeat(2, 1fr); } .analysis-settings label { width: auto; } .check-options { align-items: flex-start; flex-direction: column; gap: 0; } .result-grid { grid-template-columns: 1fr; }}@media (max-width: 640px) { .workspace-card, .chart-card, .ranking-card { padding: 18px; } .analysis-settings, .metric-grid { grid-template-columns: 1fr 1fr; } .analysis-settings > .el-button, .check-options { grid-column: span 2; } .metric-grid > div { padding: 15px; } .bar-row { grid-template-columns: 18px 70px minmax(60px, 1fr) 28px; } .table-head, .ranking-table > button { grid-template-columns: 28px minmax(80px, 1fr) 45px 18px; } .table-head span:nth-child(4), .ranking-table > button > span:nth-child(4) { display: none; } .guide-grid { grid-template-columns: 1fr; }}</style>

@@ -235,7 +235,7 @@ function useResultAsInput() {
   gap: 12px;
   margin-top: 14px;
   padding-top: 14px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--c-border);
 }
 .preview-label { flex: 0 0 auto; padding-top: 7px; color: var(--c-text-secondary); font-size: 12px; }
 .duplicate-list { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -258,22 +258,22 @@ function useResultAsInput() {
 .detail-grid p { margin: 0; color: var(--c-text-secondary); line-height: 1.7; }
 
 :global(html.dark .dedupe-page .workspace-card),
-:global(html.dark .dedupe-page .summary-card) { border-color: #334155; background: #0f172a; box-shadow: none; }
+:global(html.dark .dedupe-page .summary-card) { border-color: var(--c-border); background: var(--c-surface-subtle); box-shadow: none; }
 :global(html.dark .dedupe-page .editor-title strong),
 :global(html.dark .dedupe-page .detail-grid h4) { color: #f1f5f9; }
 :global(html.dark .dedupe-page .option-row),
 :global(html.dark .dedupe-page .editor-panel),
-:global(html.dark .dedupe-page .summary-grid > div) { border-color: #334155; background: #111c2f; }
+:global(html.dark .dedupe-page .summary-grid > div) { border-color: var(--c-border); background: #111c2f; }
 :global(html.dark .dedupe-page .result-panel) { border-color: #14532d; background: #082f2a; }
 :global(html.dark .dedupe-page .editor-panel .el-textarea__inner) {
-  color: #e2e8f0;
+  color: var(--c-text-primary);
   background: #0b1324;
   box-shadow: 0 0 0 1px #334155 inset;
 }
-:global(html.dark .dedupe-page .summary-grid strong) { color: #e2e8f0; }
+:global(html.dark .dedupe-page .summary-grid strong) { color: var(--c-text-primary); }
 :global(html.dark .dedupe-page .summary-grid .removed) { background: #3b1f0d; }
-:global(html.dark .dedupe-page .duplicate-preview) { border-color: #334155; }
-:global(html.dark .dedupe-page .duplicate-list button) { border-color: #334155; color: #cbd5e1; background: #111c2f; }@media (max-width: 900px) {
+:global(html.dark .dedupe-page .duplicate-preview) { border-color: var(--c-border); }
+:global(html.dark .dedupe-page .duplicate-list button) { border-color: var(--c-border); color: var(--c-text-secondary); background: #111c2f; }@media (max-width: 900px) {
   .editor-grid { grid-template-columns: 1fr; }
   .direction-column { flex-direction: row; }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }}@media (max-width: 640px) {

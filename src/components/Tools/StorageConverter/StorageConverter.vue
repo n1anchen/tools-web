@@ -211,7 +211,7 @@ function copyAll() {
 .field-block > span {
   display: block;
   margin-bottom: 8px;
-  color: #334155;
+  color: var(--c-text-strong);
   font-size: 13px;
   font-weight: 650;
 }
@@ -387,8 +387,8 @@ function copyAll() {
 
 :global(html.dark .storage-page .workspace-card),
 :global(html.dark .storage-page .results-card) {
-  border-color: #334155;
-  background: #0f172a;
+  border-color: var(--c-border);
+  background: var(--c-surface-subtle);
   box-shadow: none;
 }
 
@@ -409,8 +409,8 @@ function copyAll() {
 
 :global(html.dark .storage-page .result-item),
 :global(html.dark .storage-page .empty-state) {
-  border-color: #334155;
-  color: #cbd5e1;
+  border-color: var(--c-border);
+  color: var(--c-text-secondary);
   background: #111c2f;
 }
 
@@ -420,7 +420,7 @@ function copyAll() {
 }
 
 :global(html.dark .storage-page .result-value) {
-  color: #e2e8f0;
+  color: var(--c-text-primary);
 }@media (max-width: 900px) {
   .control-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -232,26 +232,26 @@ function useSample(sample: typeof samples[number]) {
 .entity-grid code,
 .entity-grid small { display: block; }
 .entity-char { color: #be185d; font-size: 20px; font-weight: 700; }
-.entity-grid code { margin-top: 8px; color: #334155; font-size: 12px; }
+.entity-grid code { margin-top: 8px; color: var(--c-text-strong); font-size: 12px; }
 .entity-grid small { margin-top: 4px; color: var(--c-text-muted); font-size: 10px; }
 .detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
 .detail-grid h4 { margin: 0 0 6px; color: #1e293b; }
 .detail-grid p { margin: 0; color: var(--c-text-secondary); line-height: 1.7; }
 
 :global(html.dark .entity-page .workspace-card),
-:global(html.dark .entity-page .reference-card) { border-color: #334155; background: #0f172a; box-shadow: none; }
+:global(html.dark .entity-page .reference-card) { border-color: var(--c-border); background: var(--c-surface-subtle); box-shadow: none; }
 :global(html.dark .entity-page .editor-title strong),
 :global(html.dark .entity-page .detail-grid h4) { color: #f1f5f9; }
 :global(html.dark .entity-page .status-row),
 :global(html.dark .entity-page .editor-panel),
-:global(html.dark .entity-page .entity-grid button) { border-color: #334155; background: #111c2f; }
+:global(html.dark .entity-page .entity-grid button) { border-color: var(--c-border); background: #111c2f; }
 :global(html.dark .entity-page .result-panel) { border-color: #831843; background: #2b1020; }
 :global(html.dark .entity-page .editor-panel .el-textarea__inner) {
-  color: #e2e8f0;
+  color: var(--c-text-primary);
   background: #0b1324;
   box-shadow: 0 0 0 1px #334155 inset;
 }
-:global(html.dark .entity-page .entity-grid code) { color: #e2e8f0; }@media (max-width: 1000px) {
+:global(html.dark .entity-page .entity-grid code) { color: var(--c-text-primary); }@media (max-width: 1000px) {
   .entity-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 900px) {
   .editor-grid { grid-template-columns: 1fr; }
   .direction-column { flex-direction: row; }}@media (max-width: 640px) {
