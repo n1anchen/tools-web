@@ -205,33 +205,33 @@ onUnmounted(stopClock)
 
 <style scoped>
 .time-page { --blue: #2563eb; --orange: #ea580c; gap: 16px; }
-.clock-card, .converter-card, .note-card { border: 1px solid var(--c-border); border-radius: 22px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }
+.clock-card, .converter-card, .note-card { border: 1px solid var(--c-border); border-radius: var(--radius-card); background: var(--c-surface); box-shadow: var(--shadow-card); }
 .clock-card { display: flex; align-items: center; gap: 16px; padding: 20px 22px; background: linear-gradient(120deg, #eff6ff, #fff 52%, #f8fafc); }
-.clock-icon { display: grid; width: 46px; height: 46px; flex: none; place-items: center; border-radius: 14px; color: #fff; background: var(--blue); font-size: 22px; box-shadow: 0 8px 18px rgb(37 99 235 / 25%); }
+.clock-icon { display: grid; width: 46px; height: 46px; flex: none; place-items: center; border-radius: var(--radius-md); color: var(--c-on-accent); background: var(--blue); font-size: 22px; box-shadow: 0 8px 18px rgb(37 99 235 / 25%); }
 .clock-main { display: flex; flex: 1; flex-direction: column; min-width: 0; }
 .clock-main span { color: var(--c-text-secondary); font-size: 12px; }
 .clock-main strong { margin-top: 3px; color: var(--c-text-primary); font: 700 clamp(20px, 3vw, 27px)/1.25 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .clock-stamps { display: flex; gap: 8px; }
-.clock-stamps button { display: flex; flex-direction: column; align-items: flex-start; padding: 8px 12px; border: 1px solid #dbeafe; border-radius: 12px; color: #1e3a8a; background: #fff; cursor: pointer; }
+.clock-stamps button { display: flex; flex-direction: column; align-items: flex-start; padding: 8px 12px; border: 1px solid #dbeafe; border-radius: var(--radius-md); color: #1e3a8a; background: var(--c-surface); cursor: pointer; }
 .clock-stamps span { font-size: 10px; text-transform: uppercase; }
 .clock-stamps strong { font: 12px ui-monospace, monospace; }
 .converter-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .converter-card { min-width: 0; padding: 24px; }
 .card-heading > div { display: flex; align-items: center; gap: 13px; }
-.step { display: grid; width: 38px; height: 38px; flex: none; place-items: center; border-radius: 12px; color: #fff; background: var(--blue); font-weight: 800; }
+.step { display: grid; width: 38px; height: 38px; flex: none; place-items: center; border-radius: var(--radius-md); color: var(--c-on-accent); background: var(--blue); font-weight: 800; }
 .step.warm { background: var(--orange); }
 .card-heading h2 { margin: 0; color: var(--c-text-primary); font-size: 18px; }
 .card-heading p { margin: 3px 0 0; color: var(--c-text-muted); font-size: 12px; }
 .field-label { display: block; margin: 24px 0 8px; color: var(--c-text-body); font-size: 12px; font-weight: 700; }
 .timestamp-input { display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 8px; }
 .preset-row { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 10px; color: var(--c-text-muted); font-size: 11px; }
-.preset-row button { padding: 4px 9px; border: 0; border-radius: 999px; color: var(--c-text-body); background: #f1f5f9; cursor: pointer; }
+.preset-row button { padding: 4px 9px; border: 0; border-radius: var(--radius-full); color: var(--c-text-body); background: #f1f5f9; cursor: pointer; }
 .preset-row.compact { justify-content: flex-end; margin: 0; }
 .date-options { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
-.error-box { margin-top: 18px; padding: 13px 14px; border: 1px solid #fecaca; border-radius: 13px; color: #b91c1c; background: #fef2f2; font-size: 13px; }
+.error-box { margin-top: 18px; padding: 13px 14px; border: 1px solid #fecaca; border-radius: var(--radius-md); color: #b91c1c; background: #fef2f2; font-size: 13px; }
 .detected-unit { display: inline-flex; margin-top: 18px; padding: 5px 9px; border-radius: 99px; color: #1d4ed8; background: #eff6ff; font-size: 11px; font-weight: 700; }
 .result-stack, .timestamp-results { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-.result-stack button, .timestamp-results button { position: relative; display: flex; min-width: 0; padding: 13px 14px; border: 1px solid var(--c-border); border-radius: 14px; text-align: left; background: var(--c-surface-subtle); cursor: pointer; }
+.result-stack button, .timestamp-results button { position: relative; display: flex; min-width: 0; padding: 13px 14px; border: 1px solid var(--c-border); border-radius: var(--radius-md); text-align: left; background: var(--c-surface-subtle); cursor: pointer; }
 .result-stack button { align-items: flex-start; flex-direction: column; }
 .result-stack span, .timestamp-results span { color: var(--c-text-secondary); font-size: 11px; }
 .result-stack strong, .timestamp-results strong { max-width: 100%; color: var(--c-text-primary); overflow-wrap: anywhere; font: 700 14px/1.5 ui-monospace, monospace; }

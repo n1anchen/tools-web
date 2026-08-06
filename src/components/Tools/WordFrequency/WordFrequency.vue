@@ -177,13 +177,13 @@ function copyAll() {
 
 <style scoped>
 .frequency-page { gap: 18px; }
-.workspace-card, .metric-grid > div, .chart-card, .ranking-card, .empty-card { border: 1px solid var(--c-border); border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05); }
+.workspace-card, .metric-grid > div, .chart-card, .ranking-card, .empty-card { border: 1px solid var(--c-border); border-radius: var(--radius-card); background: var(--c-surface); box-shadow: var(--shadow-card); }
 .workspace-card, .chart-card, .ranking-card, .empty-card { padding: 24px; }
 .analysis-settings {display: flex; align-items: center;}
 
 .workspace-card > :deep(.el-textarea) { margin-top: 20px; }
 .workspace-card :deep(.el-textarea__inner) { font: 13px/1.75 ui-monospace, SFMono-Regular, Menlo, monospace; }
-.analysis-settings { gap: 14px; margin-top: 16px; padding: 15px; border-radius: 14px; background: var(--c-surface-subtle); }
+.analysis-settings { gap: 14px; margin-top: 16px; padding: 15px; border-radius: var(--radius-md); background: var(--c-surface-subtle); }
 .analysis-settings label { width: 140px; }
 .analysis-settings label > span, .stop-word-field > span { display: block; margin-bottom: 7px; color: var(--c-text-body); font-size: 12px; font-weight: 650; }
 .analysis-settings :deep(.el-input-number), .analysis-settings :deep(.el-select) { width: 100%; }
@@ -201,14 +201,14 @@ function copyAll() {
 .bar-row { display: grid; grid-template-columns: 20px 90px minmax(70px, 1fr) 32px; align-items: center; gap: 8px; }
 .bar-row > span { color: #c4b5fd; font-size: 10px; }
 .bar-row > strong { overflow: hidden; color: var(--c-text-strong); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
-.bar-row > div { height: 8px; overflow: hidden; border-radius: 999px; background: #ede9fe; }
+.bar-row > div { height: 8px; overflow: hidden; border-radius: var(--radius-full); background: #ede9fe; }
 .bar-row i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #8b5cf6, #c084fc); }
 .bar-row b { color: #7c3aed; font-size: 12px; text-align: right; }
 .ranking-search { margin-top: 18px; }
-.ranking-table { max-height: 510px; margin-top: 12px; overflow-y: auto; border: 1px solid var(--c-border); border-radius: 13px; }
+.ranking-table { max-height: 510px; margin-top: 12px; overflow-y: auto; border: 1px solid var(--c-border); border-radius: var(--radius-md); }
 .table-head, .ranking-table > button { display: grid; grid-template-columns: 35px minmax(100px, 1fr) 65px 70px 20px; align-items: center; gap: 9px; padding: 10px 12px; text-align: left; }
 .table-head { position: sticky; z-index: 1; top: 0; color: var(--c-text-muted); background: var(--c-surface-subtle); font-size: 10px; }
-.ranking-table > button { width: 100%; border-top: 1px solid #eef2f7; color: var(--c-text-secondary); background: #fff; font-size: 11px; }
+.ranking-table > button { width: 100%; border-top: 1px solid #eef2f7; color: var(--c-text-secondary); background: var(--c-surface); font-size: 11px; }
 .ranking-table > button:hover { color: #059669; background: #f0fdf4; }
 .ranking-table strong { overflow: hidden; color: var(--c-text-strong); font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
 .ranking-table b { color: #059669; font-size: 13px; }
@@ -216,7 +216,7 @@ function copyAll() {
 .empty-card { display: flex; min-height: 180px; flex-direction: column; align-items: center; justify-content: center; color: var(--c-text-muted); text-align: center; }
 .empty-card .el-icon { font-size: 30px; } .empty-card strong { margin-top: 10px; color: var(--c-text-body); } .empty-card span { margin-top: 5px; font-size: 12px; }
 .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.guide-grid div { padding: 14px; border-radius: 13px; background: var(--c-surface-subtle); }
+.guide-grid div { padding: 14px; border-radius: var(--radius-md); background: var(--c-surface-subtle); }
 .guide-grid strong, .guide-grid span { display: block; }
 .guide-grid strong { color: var(--c-text-strong); font-size: 13px; }
 .guide-grid span { margin-top: 5px; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }

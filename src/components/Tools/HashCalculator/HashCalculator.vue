@@ -246,9 +246,9 @@ function copyResult() {
 
 .workspace-card {padding: 24px;
   border: 1px solid var(--c-border);
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
+  border-radius: var(--radius-card);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);}
 
 .workspace-grid {
   display: grid;
@@ -286,7 +286,7 @@ function copyResult() {
 
 .field-block :deep(.el-textarea__inner) {
   min-height: 205px !important;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   line-height: 1.65;
 }
@@ -305,7 +305,7 @@ function copyResult() {
 .example-row button {
   padding: 6px 10px;
   border: 1px solid #e9d5ff;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   color: #7c3aed;
   background: #faf5ff;
   font-size: 12px;
@@ -320,7 +320,7 @@ function copyResult() {
 .settings-panel {
   padding: 18px;
   border: 1px solid var(--c-border);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   background: var(--c-surface-subtle);
 }
 
@@ -355,7 +355,7 @@ function copyResult() {
 .hmac-field {
   padding: 14px;
   border: 1px solid #ddd6fe;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: #f5f3ff;
 }
 
@@ -368,8 +368,8 @@ function copyResult() {
 
 .algorithm-facts div {
   padding: 10px;
-  border-radius: 10px;
-  background: #fff;
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
 }
 
 .algorithm-facts span,
@@ -392,7 +392,7 @@ function copyResult() {
   margin-top: 20px;
   padding: 24px;
   border: 1px solid #bbf7d0;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   color: #065f46;
   background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -411,7 +411,7 @@ function copyResult() {
   gap: 8px;
   margin-top: 20px;
   border: 1px dashed #cbd5e1;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   color: var(--c-text-muted);
   background: var(--c-surface-subtle);
 }
@@ -426,7 +426,7 @@ function copyResult() {
   gap: 8px;
   margin-top: 14px;
   padding: 10px 13px;
-  border-radius: 11px;
+  border-radius: var(--radius-sm);
   color: var(--c-text-body);
   background: #f1f5f9;
   font-size: 12px;
@@ -509,7 +509,7 @@ function copyResult() {
   .workspace-card,
   .result-card {
     padding: 18px;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
   }
 
   .detail-grid {

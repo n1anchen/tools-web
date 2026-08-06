@@ -561,8 +561,8 @@ calculate()
   padding: 24px;
   margin-bottom: 16px;
   border: 1px solid var(--c-border);
-  border-radius: 18px;
-  background: #fff;
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.045);
 }
 .section-heading-spaced { margin-bottom: 18px; }
@@ -575,19 +575,19 @@ calculate()
 .field-block small { min-height: 16px; color: var(--c-text-muted); font-size: 11px; line-height: 16px; }
 .field-block :deep(.el-input-number), .field-block :deep(.el-select) { width: 100%; }
 .field-block :deep(.el-input__wrapper), .field-block :deep(.el-select__wrapper) {
-  min-height: 40px; border-radius: 10px; box-shadow: 0 0 0 1px #e2e8f0 inset;
+  min-height: 40px; border-radius: var(--radius-sm); box-shadow: 0 0 0 1px #e2e8f0 inset;
 }
 .loan-preview {
   display: grid; grid-template-columns: repeat(3, 1fr) auto; align-items: center; gap: 12px;
-  margin-top: 20px; padding: 14px 16px; border: 1px solid #dbeafe; border-radius: 14px;
+  margin-top: 20px; padding: 14px 16px; border: 1px solid #dbeafe; border-radius: var(--radius-md);
   background: linear-gradient(110deg, #f8fbff, #eff6ff);
 }
 .loan-preview > div { display: flex; flex-direction: column; gap: 3px; }
 .loan-preview span { color: var(--c-text-secondary); font-size: 11px; }
 .loan-preview strong { color: #1e3a8a; font-size: 15px; }
-.loan-preview :deep(.el-button) { min-width: 132px; border-radius: 10px; }
+.loan-preview :deep(.el-button) { min-width: 132px; border-radius: var(--radius-sm); }
 .plan-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.plan-card { position: relative; overflow: hidden; border: 1px solid var(--c-border); border-radius: 16px; }
+.plan-card { position: relative; overflow: hidden; border: 1px solid var(--c-border); border-radius: var(--radius-lg); }
 .plan-card::after {
   content: ''; position: absolute; top: -60px; right: -50px; width: 150px; height: 150px;
   border-radius: 50%; opacity: .65;
@@ -613,7 +613,7 @@ calculate()
 .metric-grid strong { color: var(--c-text-strong); font-size: 14px; }
 .comparison-note {
   display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; padding: 13px 15px;
-  border: 1px solid #d1fae5; border-radius: 12px; color: #047857; background: #ecfdf5;
+  border: 1px solid #d1fae5; border-radius: var(--radius-md); color: #047857; background: #ecfdf5;
 }
 .comparison-note > .el-icon { margin-top: 2px; font-size: 18px; }
 .comparison-note div { display: flex; flex-direction: column; gap: 2px; }
@@ -622,29 +622,29 @@ calculate()
 .schedule-heading { align-items: center; }
 .schedule-filters { display: flex; align-items: center; gap: 10px; }
 .year-select { width: 116px; }
-.schedule-card :deep(.el-table) { --el-table-border-color: #eef2f7; border-radius: 12px; }
+.schedule-card :deep(.el-table) { --el-table-border-color: #eef2f7; border-radius: var(--radius-md); }
 .schedule-card :deep(.el-table th.el-table__cell) { color: var(--c-text-secondary); background: var(--c-surface-subtle); font-size: 12px; }
 .schedule-card :deep(.el-table td.el-table__cell) { color: var(--c-text-body); font-size: 12px; }
 .scenario-tabs :deep(.el-tabs__header) { margin-bottom: 18px; }
 .scenario-tabs :deep(.el-tabs__item) { height: 38px; color: var(--c-text-secondary); font-size: 13px; }
 .scenario-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr); gap: 20px; }
-.scenario-controls { padding: 18px; border: 1px solid var(--c-border); border-radius: 14px; background: #fbfdff; }
+.scenario-controls { padding: 18px; border: 1px solid var(--c-border); border-radius: var(--radius-md); background: #fbfdff; }
 .scenario-controls h3 { margin: 0; color: #1e293b; font-size: 15px; }
 .scenario-controls > p { margin: 6px 0 16px; color: var(--c-text-muted); font-size: 11px; line-height: 1.6; }
 .control-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; margin-bottom: 14px; }
 .control-grid-dense { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.scenario-controls :deep(.el-button) { border-radius: 9px; }
+.scenario-controls :deep(.el-button) { border-radius: var(--radius-sm); }
 .mode-selector { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 2px 0 14px; }
 .mode-selector button {
   display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px solid var(--c-border);
-  border-radius: 10px; color: var(--c-text-secondary); text-align: left; background: #fff; cursor: pointer; transition: .2s;
+  border-radius: var(--radius-sm); color: var(--c-text-secondary); text-align: left; background: var(--c-surface); cursor: pointer; transition: .2s;
 }
 .mode-selector button:hover { border-color: #93c5fd; }
 .mode-selector button.active { border-color: #3b82f6; color: #1d4ed8; background: #eff6ff; box-shadow: 0 0 0 2px rgba(59, 130, 246, .08); }
 .mode-selector strong { font-size: 12px; }
 .mode-selector span { color: var(--c-text-muted); font-size: 10px; }
 .scenario-results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.scenario-result-card { padding: 16px; border: 1px solid var(--c-border); border-radius: 14px; background: #fff; }
+.scenario-result-card { padding: 16px; border: 1px solid var(--c-border); border-radius: var(--radius-md); background: var(--c-surface); }
 .scenario-result-card h4 { margin: 0 0 10px; color: var(--c-text-strong); font-size: 14px; }
 .scenario-result-card > div { display: flex; flex-direction: column; gap: 2px; padding: 9px 0; border-top: 1px dashed var(--c-border); }
 .scenario-result-card span { color: var(--c-text-muted); font-size: 10px; }
@@ -686,7 +686,7 @@ calculate()
 :global(html.dark .mortgage-page .mode-selector button.active) { border-color: #3b82f6; color: #93c5fd; background: rgba(30, 64, 175, .25); }@media (max-width: 1100px) {
   .input-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .scenario-layout { grid-template-columns: 1fr; }}@media (max-width: 760px) {
-  .calculator-card, .results-section, .schedule-card, .scenario-section { padding: 16px; border-radius: 14px; }
+  .calculator-card, .results-section, .schedule-card, .scenario-section { padding: 16px; border-radius: var(--radius-md); }
   .input-grid, .plan-grid { grid-template-columns: 1fr; }
   .loan-preview { grid-template-columns: repeat(3, 1fr); }
   .loan-preview :deep(.el-button) { grid-column: 1 / -1; width: 100%; }

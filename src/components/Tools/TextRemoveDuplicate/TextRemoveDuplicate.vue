@@ -137,9 +137,9 @@ function useResultAsInput() {
 .dedupe-page { gap: 18px; }
 .workspace-card {padding: 24px;
   border: 1px solid var(--c-border);
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
+  border-radius: var(--radius-card);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);}
 .option-row, .workspace-footer, .duplicate-preview {display: flex; align-items: center;}
 
 .option-row {
@@ -147,7 +147,7 @@ function useResultAsInput() {
   gap: 8px 22px;
   margin-top: 18px;
   padding: 12px 15px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--c-surface-subtle);
 }
 .editor-grid {
@@ -160,15 +160,15 @@ function useResultAsInput() {
   min-width: 0;
   padding: 15px;
   border: 1px solid var(--c-border);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   background: var(--c-surface-subtle);
 }
 .result-panel { border-color: #bbf7d0; background: #f7fef9; }
 .editor-panel :deep(.el-textarea__inner) {
   min-height: 265px !important;
-  border-radius: 11px;
+  border-radius: var(--radius-sm);
   color: #1e293b;
-  background: #fff;
+  background: var(--c-surface);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   line-height: 1.65;
   box-shadow: 0 0 0 1px #dbe3ef inset;
@@ -185,7 +185,7 @@ function useResultAsInput() {
 .removed-badge {
   min-width: 64px;
   padding: 9px 6px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   color: #7c3aed;
   background: #f5f3ff;
   text-align: center;
@@ -198,7 +198,7 @@ function useResultAsInput() {
 .sample-button {
   padding: 7px 12px;
   border: 1px solid #e9d5ff;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   color: #7c3aed;
   background: #faf5ff;
   font-size: 12px;
@@ -211,7 +211,7 @@ function useResultAsInput() {
   gap: 12px;
   margin-top: 20px;
 }
-.summary-grid > div { padding: 15px; border-radius: 13px; background: var(--c-surface-subtle); }
+.summary-grid > div { padding: 15px; border-radius: var(--radius-md); background: var(--c-surface-subtle); }
 .summary-grid span,
 .summary-grid strong { display: block; }
 .summary-grid span { color: var(--c-text-secondary); font-size: 12px; }
@@ -233,9 +233,9 @@ function useResultAsInput() {
   gap: 8px;
   padding: 6px 10px;
   border: 1px solid var(--c-border);
-  border-radius: 9px;
+  border-radius: var(--radius-sm);
   color: var(--c-text-body);
-  background: #fff;
+  background: var(--c-surface);
   cursor: pointer;
 }
 .duplicate-list button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -265,7 +265,7 @@ function useResultAsInput() {
   .direction-column { flex-direction: row; }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }}@media (max-width: 640px) {
   .workspace-card,
-  .summary-card { padding: 18px; border-radius: 16px; }
+  .summary-card { padding: 18px; border-radius: var(--radius-lg); }
   .option-row { align-items: flex-start; flex-direction: column; }
   .editor-panel :deep(.el-textarea__inner) { min-height: 220px !important; }
   .workspace-footer { align-items: stretch; flex-direction: column; }

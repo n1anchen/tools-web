@@ -192,9 +192,9 @@ function copyAll() {
 
 .workspace-card {padding: 24px;
   border: 1px solid var(--c-border);
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
+  border-radius: var(--radius-card);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);}
 
 .preset-row, .reference-card {display: flex;
   align-items: center;}
@@ -236,7 +236,7 @@ function copyAll() {
 .preset-row button {
   padding: 6px 12px;
   border: 1px solid #dbeafe;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   color: #2563eb;
   background: #eff6ff;
   font-size: 12px;
@@ -256,7 +256,7 @@ function copyAll() {
   margin-top: 20px;
   padding: 20px 22px;
   border: 1px solid #bfdbfe;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   color: var(--c-text-body);
   background: linear-gradient(135deg, #eff6ff, #f8fbff);
 }
@@ -282,7 +282,7 @@ function copyAll() {
   min-width: 0;
   padding: 16px;
   border: 1px solid var(--c-border);
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   color: inherit;
   background: var(--c-surface-subtle);
   text-align: left;
@@ -308,7 +308,7 @@ function copyAll() {
   align-items: center;
   justify-content: center;
   padding: 0 7px;
-  border-radius: 8px;
+  border-radius: var(--radius-xs);
   color: #2563eb;
   background: #dbeafe;
   font-size: 12px;
@@ -343,7 +343,7 @@ function copyAll() {
   place-items: center;
   align-content: center;
   border: 1px dashed #cbd5e1;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   color: var(--c-text-muted);
   background: var(--c-surface-subtle);
 }
@@ -436,7 +436,7 @@ function copyAll() {
   .workspace-card,
   .results-card {
     padding: 18px;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
   }
 
   .control-grid,

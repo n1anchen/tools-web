@@ -146,7 +146,7 @@ function useResultAsInput() {
 
 <style scoped>
 .replace-page { gap: 18px; }
-.workspace-card {padding: 24px; border: 1px solid var(--c-border); border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05);}
+.workspace-card {padding: 24px; border: 1px solid var(--c-border); border-radius: var(--radius-card); background: var(--c-surface); box-shadow: var(--shadow-card);}
 .option-row, .workspace-footer {display: flex; align-items: center;}
 .workspace-footer { justify-content: space-between; gap: 18px; }
 
@@ -154,17 +154,17 @@ function useResultAsInput() {
 .rule-grid label > span { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--c-text-strong); font-size: 13px; font-weight: 650; }
 .rule-grid small { color: var(--c-text-muted); font-weight: 400; }
 .rule-arrow { padding-bottom: 9px; color: var(--c-text-muted); text-align: center; }
-.option-row { gap: 22px; margin-top: 15px; padding: 13px 15px; border-radius: 13px; background: var(--c-surface-subtle); }
+.option-row { gap: 22px; margin-top: 15px; padding: 13px 15px; border-radius: var(--radius-md); background: var(--c-surface-subtle); }
 .regex-tip { margin-left: auto; color: var(--c-text-muted); font-size: 11px; }
-.error-banner { display: flex; gap: 10px; margin-top: 12px; padding: 11px 14px; border: 1px solid #fecaca; border-radius: 12px; color: #b91c1c; background: #fef2f2; font-size: 12px; }
+.error-banner { display: flex; gap: 10px; margin-top: 12px; padding: 11px 14px; border: 1px solid #fecaca; border-radius: var(--radius-md); color: #b91c1c; background: #fef2f2; font-size: 12px; }
 .editor-grid { display: grid; grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr); gap: 12px; margin-top: 18px; }
-.editor-panel { overflow: hidden; border: 1px solid var(--c-border); border-radius: 15px; background: var(--c-surface-subtle); }
+.editor-panel { overflow: hidden; border: 1px solid var(--c-border); border-radius: var(--radius-md); background: var(--c-surface-subtle); }
 .editor-panel.result-panel { border-color: #bfdbfe; background: #eff6ff; }
 .editor-panel.invalid { border-color: #fecaca; background: #fef2f2; }
 .editor-panel :deep(.el-textarea__inner) { border: 0; border-top: 1px solid var(--c-border); border-radius: 0; box-shadow: none; font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .result-panel :deep(.el-textarea__inner) { background: #f8fbff; }
 .direction-column { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--c-text-muted); }
-.match-badge { display: grid; width: 58px; height: 58px; place-items: center; align-content: center; border-radius: 18px; color: #2563eb; background: #dbeafe; }
+.match-badge { display: grid; width: 58px; height: 58px; place-items: center; align-content: center; border-radius: var(--radius-lg); color: #2563eb; background: #dbeafe; }
 .match-badge strong { font-size: 20px; line-height: 1; }
 .match-badge span { margin-top: 4px; font-size: 9px; }
 .workspace-footer { margin-top: 16px; }
@@ -177,7 +177,7 @@ function useResultAsInput() {
 .summary-card strong { margin-top: 5px; color: var(--c-text-primary); font-size: 22px; }
 .summary-card small { margin-top: 3px; color: var(--c-text-muted); font-size: 10px; }
 .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.guide-grid div { padding: 14px; border-radius: 13px; background: var(--c-surface-subtle); }
+.guide-grid div { padding: 14px; border-radius: var(--radius-md); background: var(--c-surface-subtle); }
 .guide-grid strong, .guide-grid span { display: block; }
 .guide-grid strong { color: var(--c-text-strong); font-size: 13px; }
 .guide-grid span { margin-top: 5px; color: var(--c-text-secondary); font-size: 12px; line-height: 1.65; }

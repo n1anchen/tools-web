@@ -19,13 +19,17 @@
   --c-text-muted: #94a3b8;     /* 弱化/占位 */
   /* 品牌 */
   --c-primary: #2563eb;
+  --c-on-accent: #ffffff;   /* 彩色强调区上的文字（按钮/徽章白字） */
   /* 圆角 */
   --radius-card: 22px;
   --radius-lg: 18px;
   --radius-md: 14px;
   --radius-sm: 10px;
+  --radius-xs: 8px;
+  --radius-full: 999px;
   /* 阴影 */
   --shadow-card: 0 14px 38px rgba(15, 23, 42, 0.06);
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.08);
 }
 .dark {
   --c-surface: #1e293b;

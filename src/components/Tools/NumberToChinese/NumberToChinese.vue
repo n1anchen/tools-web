@@ -141,9 +141,9 @@ function clear() {
 
 .workspace-card {padding: 24px;
   border: 1px solid var(--c-border);
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
+  border-radius: var(--radius-card);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);}
 
 .result-topline {display: flex;
   align-items: center;}
@@ -163,7 +163,7 @@ function clear() {
   height: 42px;
   flex: 0 0 42px;
   place-items: center;
-  border-radius: 13px;
+  border-radius: var(--radius-md);
   color: #2563eb;
   background: #eff6ff;
   font-size: 20px;
@@ -173,7 +173,7 @@ function clear() {
   margin-top: 22px;
   padding: 18px;
   border: 1px solid #dbeafe;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(135deg, #f8fbff 0%, #f1f7ff 100%);
 }
 
@@ -187,7 +187,7 @@ function clear() {
 
 .input-shell :deep(.el-input__wrapper) {
   min-height: 52px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 19px;
   box-shadow: 0 0 0 1px #cbd5e1 inset;
 }
@@ -220,9 +220,9 @@ function clear() {
   min-width: 112px;
   padding: 9px 12px;
   border: 1px solid var(--c-border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   color: var(--c-text-strong);
-  background: #fff;
+  background: var(--c-surface);
   text-align: left;
   cursor: pointer;
   transition: 0.2s ease;
@@ -269,7 +269,7 @@ function clear() {
 .result-main {
   padding: 26px;
   border: 1px solid #bbf7d0;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   color: #065f46;
   background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
   font-family: "Noto Serif SC", "Songti SC", serif;
@@ -289,7 +289,7 @@ function clear() {
 
 .result-summary div {
   padding: 12px 14px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--c-surface-subtle);
 }
 
@@ -316,7 +316,7 @@ function clear() {
   place-items: center;
   align-content: center;
   border: 1px dashed #cbd5e1;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   color: var(--c-text-muted);
   background: var(--c-surface-subtle);
 }
@@ -399,7 +399,7 @@ function clear() {
   .workspace-card,
   .result-card {
     padding: 18px;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
   }
 
   .input-meta,

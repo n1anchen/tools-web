@@ -156,9 +156,9 @@ function useSample(value: string) {
 
 .workspace-card {padding: 24px;
   border: 1px solid var(--c-border);
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
+  border-radius: var(--radius-card);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);}
 
 .editor-footer, .sample-row, .panel-title {display: flex;
   align-items: center;}
@@ -177,7 +177,7 @@ function useSample(value: string) {
 .main-editor :deep(.el-textarea__inner) {
   min-height: 285px !important;
   padding: 16px;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   color: #1e293b;
   background: #fbfdff;
   line-height: 1.75;
@@ -190,7 +190,7 @@ function useSample(value: string) {
 .sample-row button {
   padding: 6px 11px;
   border: 1px solid #dbeafe;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   color: #2563eb;
   background: #eff6ff;
   font-size: 12px;
@@ -218,7 +218,7 @@ function useSample(value: string) {
 .stat-card {
   padding: 17px;
   border: 1px solid #dbeafe;
-  border-radius: 15px;
+  border-radius: var(--radius-md);
   background: #f8fbff;
 }
 .stat-card span,
@@ -245,7 +245,7 @@ function useSample(value: string) {
 .reading-panel {
   padding: 18px;
   border: 1px solid var(--c-border);
-  border-radius: 15px;
+  border-radius: var(--radius-md);
   background: var(--c-surface-subtle);
 }
 
@@ -258,7 +258,7 @@ function useSample(value: string) {
   gap: 8px;
   margin-top: 15px;
 }
-.secondary-grid div { padding: 10px 11px; border-radius: 10px; background: #fff; }
+.secondary-grid div { padding: 10px 11px; border-radius: var(--radius-sm); background: var(--c-surface); }
 .secondary-grid span,
 .secondary-grid strong { display: block; }
 .secondary-grid span { color: var(--c-text-muted); font-size: 11px; }
@@ -269,7 +269,7 @@ function useSample(value: string) {
 .composition-row > div:first-child { display: flex; justify-content: space-between; gap: 10px; }
 .composition-row span,
 .composition-row strong { color: var(--c-text-secondary); font-size: 11px; }
-.progress-track { height: 7px; margin-top: 6px; overflow: hidden; border-radius: 999px; background: #e2e8f0; }
+.progress-track { height: 7px; margin-top: 6px; overflow: hidden; border-radius: var(--radius-full); background: #e2e8f0; }
 .progress-track i { display: block; height: 100%; border-radius: inherit; transition: width 0.25s ease; }
 
 .reading-panel {
@@ -319,7 +319,7 @@ function useSample(value: string) {
   .analysis-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .reading-panel { grid-column: 1 / -1; }}@media (max-width: 640px) {
   .workspace-card,
-  .statistics-card { padding: 18px; border-radius: 16px; }
+  .statistics-card { padding: 18px; border-radius: var(--radius-lg); }
   .editor-header,
   .editor-footer { align-items: flex-start; flex-direction: column; }
   .editor-actions { width: 100%; }

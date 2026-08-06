@@ -135,9 +135,9 @@ function useSample(sample: typeof samples[number]) {
 .unicode-page { gap: 18px; }
 .workspace-card {padding: 24px;
   border: 1px solid var(--c-border);
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
+  border-radius: var(--radius-card);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);}
 .option-row, .sample-row {display: flex; align-items: center;}
 
 .option-row {
@@ -145,7 +145,7 @@ function useSample(sample: typeof samples[number]) {
   gap: 12px 22px;
   margin-top: 18px;
   padding: 13px 15px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--c-surface-subtle);
 }
 .option-row label { display: flex; align-items: center; gap: 10px; }
@@ -160,15 +160,15 @@ function useSample(sample: typeof samples[number]) {
   min-width: 0;
   padding: 15px;
   border: 1px solid var(--c-border);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   background: var(--c-surface-subtle);
 }
 .result-panel { border-color: #bfdbfe; background: #f8fbff; }
 .editor-panel :deep(.el-textarea__inner) {
   min-height: 250px !important;
-  border-radius: 11px;
+  border-radius: var(--radius-sm);
   color: #1e293b;
-  background: #fff;
+  background: var(--c-surface);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   line-height: 1.7;
   box-shadow: 0 0 0 1px #dbe3ef inset;
@@ -187,7 +187,7 @@ function useSample(sample: typeof samples[number]) {
 .sample-row button {
   padding: 6px 11px;
   border: 1px solid #dbeafe;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   color: #2563eb;
   background: #eff6ff;
   font-size: 12px;
@@ -204,7 +204,7 @@ function useSample(sample: typeof samples[number]) {
   min-width: 0;
   padding: 13px;
   border: 1px solid var(--c-border);
-  border-radius: 13px;
+  border-radius: var(--radius-md);
   background: var(--c-surface-subtle);
 }
 .character {
@@ -212,7 +212,7 @@ function useSample(sample: typeof samples[number]) {
   width: 38px;
   height: 38px;
   place-items: center;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   color: #1d4ed8;
   background: #dbeafe;
   font-size: 18px;
@@ -226,7 +226,7 @@ function useSample(sample: typeof samples[number]) {
   margin-top: 18px;
   padding: 34px 20px;
   border: 1px dashed #cbd5e1;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   color: var(--c-text-muted);
   background: var(--c-surface-subtle);
   text-align: center;
@@ -253,7 +253,7 @@ function useSample(sample: typeof samples[number]) {
   .editor-grid { grid-template-columns: 1fr; }
   .direction-column { flex-direction: row; }}@media (max-width: 640px) {
   .workspace-card,
-  .inspector-card { padding: 18px; border-radius: 16px; }
+  .inspector-card { padding: 18px; border-radius: var(--radius-lg); }
   .option-row { align-items: flex-start; flex-direction: column; }
   .option-row label { align-items: flex-start; flex-direction: column; width: 100%; }
   .option-row :deep(.el-radio-group) { width: 100%; }

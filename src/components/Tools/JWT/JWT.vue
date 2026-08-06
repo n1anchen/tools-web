@@ -182,7 +182,7 @@ function loadSample() {
 
 <style scoped>
 .jwt-page { --rose: #e11d48; --violet: #7c3aed; --cyan: #0891b2; gap: 16px; }
-.security-banner, .decoder-card, .segments-card, .json-card, .claims-card, .status-card, .algorithm-card { border: 1px solid var(--c-border); border-radius: 21px; background: #fff; box-shadow: 0 12px 35px rgb(15 23 42 / 6%); }
+.security-banner, .decoder-card, .segments-card, .json-card, .claims-card, .status-card, .algorithm-card { border: 1px solid var(--c-border); border-radius: 21px; background: var(--c-surface); box-shadow: var(--shadow-card); }
 .security-banner { display: flex; align-items: center; gap: 12px; padding: 15px 18px; border-color: #fde68a; color: #92400e; background: #fffbeb; }
 .security-banner > .el-icon { flex: none; font-size: 22px; }
 .security-banner div { display: flex; flex-direction: column; }
@@ -193,11 +193,11 @@ function loadSample() {
 .card-heading h2, .section-heading h3 { margin: 5px 0 0; color: var(--c-text-primary); }
 .card-heading h2 { font-size: 20px; }
 .section-heading h3 { font-size: 18px; }
-.decoder-card :deep(.el-textarea__inner) { margin-top: 17px; padding: 16px; border: 1px solid var(--c-border); border-radius: 15px; box-shadow: none; color: var(--c-text-strong); background: var(--c-surface-subtle); font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.decoder-card :deep(.el-textarea__inner) { margin-top: 17px; padding: 16px; border: 1px solid var(--c-border); border-radius: var(--radius-md); box-shadow: none; color: var(--c-text-strong); background: var(--c-surface-subtle); font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .input-meta { justify-content: flex-start; flex-wrap: wrap; margin-top: 11px; color: var(--c-text-secondary); font-size: 11px; }
 .input-meta span { display: flex; align-items: center; gap: 4px; }
 .input-meta span:first-child { color: #15803d; }
-.error-box { margin-top: 12px; padding: 12px 14px; border: 1px solid #fecaca; border-radius: 13px; color: #b91c1c; background: #fef2f2; font-size: 13px; }
+.error-box { margin-top: 12px; padding: 12px 14px; border: 1px solid #fecaca; border-radius: var(--radius-md); color: #b91c1c; background: #fef2f2; font-size: 13px; }
 .overview-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 16px; }
 .status-card, .algorithm-card { min-width: 0; padding: 21px; }
 .status-card { position: relative; overflow: hidden; border-left: 5px solid #64748b; }
@@ -211,12 +211,12 @@ function loadSample() {
 .status-card > strong { display: block; margin-top: 7px; color: var(--c-text-primary); font-size: 21px; }
 .status-card p { margin: 3px 0 0; color: var(--c-text-secondary); font-size: 12px; }
 .algorithm-card { display: grid; grid-template-columns: repeat(2, 1fr); align-items: center; gap: 10px; }
-.algorithm-card > div { display: flex; flex-direction: column; padding: 11px; border-radius: 13px; background: var(--c-surface-subtle); }
+.algorithm-card > div { display: flex; flex-direction: column; padding: 11px; border-radius: var(--radius-md); background: var(--c-surface-subtle); }
 .algorithm-card span { color: var(--c-text-muted); font-size: 10px; }
 .algorithm-card strong { margin-top: 4px; color: var(--c-text-strong); font: 700 15px ui-monospace, monospace; }
 .section-heading > span { color: var(--c-text-muted); font-size: 11px; }
 .segments-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 17px; }
-.segments-grid article { min-width: 0; padding: 14px; border: 1px solid var(--c-border); border-top-width: 4px; border-radius: 14px; background: var(--c-surface-subtle); }
+.segments-grid article { min-width: 0; padding: 14px; border: 1px solid var(--c-border); border-top-width: 4px; border-radius: var(--radius-md); background: var(--c-surface-subtle); }
 .segments-grid article.rose { border-top-color: var(--rose); }
 .segments-grid article.violet { border-top-color: var(--violet); }
 .segments-grid article.cyan { border-top-color: var(--cyan); }
@@ -227,15 +227,15 @@ function loadSample() {
 .json-grid { display: grid; grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr); gap: 16px; }
 .header-json { border-top: 4px solid var(--rose); }
 .payload-json { border-top: 4px solid var(--violet); }
-.json-card pre { min-height: 185px; max-height: 360px; margin: 17px 0 0; padding: 16px; border-radius: 15px; color: var(--c-text-strong); overflow: auto; background: var(--c-surface-subtle); font: 12px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.json-card pre { min-height: 185px; max-height: 360px; margin: 17px 0 0; padding: 16px; border-radius: var(--radius-md); color: var(--c-text-strong); overflow: auto; background: var(--c-surface-subtle); font: 12px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .claims-list { display: grid; gap: 8px; margin-top: 17px; }
-.claims-list > div { display: grid; grid-template-columns: 52px 140px minmax(0, 1fr); align-items: center; gap: 12px; padding: 11px 13px; border: 1px solid var(--c-border); border-radius: 13px; background: var(--c-surface-subtle); }
+.claims-list > div { display: grid; grid-template-columns: 52px 140px minmax(0, 1fr); align-items: center; gap: 12px; padding: 11px 13px; border: 1px solid var(--c-border); border-radius: var(--radius-md); background: var(--c-surface-subtle); }
 .claims-list code { color: #7c3aed; font-weight: 800; }
 .claims-list > div > div { display: flex; min-width: 0; flex-direction: column; }
 .claims-list strong { color: var(--c-text-strong); overflow-wrap: anywhere; font-size: 12px; }
 .claims-list small { color: var(--c-text-muted); font-size: 10px; }
 .claim-value { text-align: right; }
-.empty-claims { margin-top: 17px; padding: 20px; border-radius: 14px; color: var(--c-text-muted); background: var(--c-surface-subtle); text-align: center; }
+.empty-claims { margin-top: 17px; padding: 20px; border-radius: var(--radius-md); color: var(--c-text-muted); background: var(--c-surface-subtle); text-align: center; }
 
 :global(html.dark .jwt-page .security-banner), :global(html.dark .jwt-page .decoder-card), :global(html.dark .jwt-page .segments-card), :global(html.dark .jwt-page .json-card), :global(html.dark .jwt-page .claims-card), :global(html.dark .jwt-page .status-card), :global(html.dark .jwt-page .algorithm-card) { border-color: var(--c-border); color: var(--c-text-primary); background: var(--c-surface); box-shadow: none; }
 :global(html.dark .jwt-page .security-banner) { border-color: #78350f; color: #fde68a; background: #422006; }

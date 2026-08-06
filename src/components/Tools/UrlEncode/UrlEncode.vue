@@ -169,9 +169,9 @@ function useExample(value: string) {
 .workspace-card {
   padding: 24px;
   border: 1px solid var(--c-border);
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
+  border-radius: var(--radius-card);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);
 }
 
 .mode-panel, .mode-controls, .editor-header, .example-row {display: flex;
@@ -203,7 +203,7 @@ function useExample(value: string) {
   min-width: 0;
   padding: 16px;
   border: 1px solid var(--c-border);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   background: var(--c-surface-subtle);
 }
 
@@ -242,9 +242,9 @@ function useExample(value: string) {
 
 .editor-panel :deep(.el-textarea__inner) {
   min-height: 250px !important;
-  border-radius: 11px;
+  border-radius: var(--radius-sm);
   color: #1e293b;
-  background: #fff;
+  background: var(--c-surface);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   line-height: 1.65;
   box-shadow: 0 0 0 1px #dbe3ef inset;
@@ -270,7 +270,7 @@ function useExample(value: string) {
   flex-direction: column;
   gap: 9px;
   border: 1px dashed #bfdbfe;
-  border-radius: 11px;
+  border-radius: var(--radius-sm);
   color: var(--c-text-muted);
   text-align: center;
 }
@@ -300,7 +300,7 @@ function useExample(value: string) {
 .example-row button {
   padding: 6px 11px;
   border: 1px solid #dbeafe;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   color: #2563eb;
   background: #eff6ff;
   font-size: 12px;
@@ -393,7 +393,7 @@ function useExample(value: string) {
   }}@media (max-width: 640px) {
   .workspace-card {
     padding: 18px;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
   }
 
   .mode-controls {
