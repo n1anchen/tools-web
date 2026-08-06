@@ -243,7 +243,6 @@ function useSample(sample: typeof samples[number]) {
 
 :global(html.dark .unicode-page .workspace-card),
 :global(html.dark .unicode-page .inspector-card) { border-color: #334155; background: #0f172a; box-shadow: none; }
-:global(html.dark .unicode-page .section-heading h2),
 :global(html.dark .unicode-page .editor-title strong),
 :global(html.dark .unicode-page .detail-grid h4) { color: #f1f5f9; }
 :global(html.dark .unicode-page .option-row),

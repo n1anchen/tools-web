@@ -299,7 +299,6 @@ function useSample(value: string) {
   background: #0f172a;
   box-shadow: none;
 }
-:global(html.dark .word-count-page .section-heading h2),
 :global(html.dark .word-count-page .panel-title),
 :global(html.dark .word-count-page .detail-copy strong) { color: #f1f5f9; }
 :global(html.dark .word-count-page .main-editor .el-textarea__inner) {

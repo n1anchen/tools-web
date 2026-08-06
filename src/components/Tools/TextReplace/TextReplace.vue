@@ -186,7 +186,7 @@ function useResultAsInput() {
 .guide-grid strong { color: #334155; font-size: 13px; }
 .guide-grid span { margin-top: 5px; color: #64748b; font-size: 12px; line-height: 1.65; }
 :global(html.dark .replace-page .workspace-card), :global(html.dark .replace-page .summary-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
-:global(html.dark .replace-page .section-heading h2), :global(html.dark .replace-page .rule-grid label > span), :global(html.dark .replace-page .editor-title strong), :global(html.dark .replace-page .summary-card strong), :global(html.dark .replace-page .guide-grid strong) { color: #e2e8f0; }
+:global(html.dark .replace-page .rule-grid label > span), :global(html.dark .replace-page .editor-title strong), :global(html.dark .replace-page .summary-card strong), :global(html.dark .replace-page .guide-grid strong) { color: #e2e8f0; }
 :global(html.dark .replace-page .option-row), :global(html.dark .replace-page .editor-panel), :global(html.dark .replace-page .guide-grid div) { border-color: #334155; background: #0f172a; }
 :global(html.dark .replace-page .result-panel) { border-color: #1e3a5f; background: #0d1d33; }
 :global(html.dark .replace-page .editor-panel .el-textarea__inner) { border-color: #334155; background: #111c2f; }

@@ -201,7 +201,7 @@ onBeforeUnmount(() => {
 .guide-grid strong, .guide-grid span { display: block; } .guide-grid strong { color: #334155; font-size: 13px; } .guide-grid span { margin-top: 5px; color: #64748b; font-size: 12px; line-height: 1.65; }
 :global(html.dark .coin-page .settings-card), :global(html.dark .coin-page .toss-card), :global(html.dark .coin-page .statistics-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
 :global(html.dark .coin-page .toss-card) { background: radial-gradient(circle at 50% 40%, rgba(120, 53, 15, .25), #1e293b 65%); }
-:global(html.dark .coin-page .section-heading h2), :global(html.dark .coin-page .label-grid label > span), :global(html.dark .coin-page .count-field > span), :global(html.dark .coin-page .result-copy strong), :global(html.dark .coin-page .stats-grid strong), :global(html.dark .coin-page .guide-grid strong) { color: #e2e8f0; }
+:global(html.dark .coin-page .label-grid label > span), :global(html.dark .coin-page .count-field > span), :global(html.dark .coin-page .result-copy strong), :global(html.dark .coin-page .stats-grid strong), :global(html.dark .coin-page .guide-grid strong) { color: #e2e8f0; }
 :global(html.dark .coin-page .stats-grid > div), :global(html.dark .coin-page .guide-grid div) { background: #0f172a; }
 :global(html.dark .coin-page .fairness-note) { background: rgba(6, 78, 59, .25); }
 @media (max-width: 860px) { .workspace-grid { grid-template-columns: 1fr; } .toss-card { min-height: 410px; } }

@@ -466,7 +466,6 @@ function copyResult() {
   box-shadow: none;
 }
 
-:global(html.dark .hash-page .section-heading h2),
 :global(html.dark .hash-page .settings-title),
 :global(html.dark .hash-page .field-block > span),
 :global(html.dark .hash-page .detail-grid h4) {

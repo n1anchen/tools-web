@@ -339,7 +339,6 @@ function useExample(value: string) {
   border-color: #334155;
 }
 
-:global(html.dark .url-page .section-heading h2),
 :global(html.dark .url-page .editor-header strong),
 :global(html.dark .url-page .detail-grid h4) {
   color: #f1f5f9;

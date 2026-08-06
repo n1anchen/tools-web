@@ -359,7 +359,6 @@ function clear() {
   box-shadow: none;
 }
 
-:global(html.dark .number-page .section-heading h2),
 :global(html.dark .number-page .detail-grid h4) {
   color: #f1f5f9;
 }

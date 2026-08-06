@@ -258,7 +258,6 @@ function useResultAsInput() {
 
 :global(html.dark .dedupe-page .workspace-card),
 :global(html.dark .dedupe-page .summary-card) { border-color: #334155; background: #0f172a; box-shadow: none; }
-:global(html.dark .dedupe-page .section-heading h2),
 :global(html.dark .dedupe-page .editor-title strong),
 :global(html.dark .dedupe-page .detail-grid h4) { color: #f1f5f9; }
 :global(html.dark .dedupe-page .option-row),

@@ -396,7 +396,6 @@ function copyAll() {
   box-shadow: none;
 }
 
-:global(html.dark .storage-page .section-heading h2),
 :global(html.dark .storage-page .field-block > span),
 :global(html.dark .storage-page .reference-card h4) {
   color: #f1f5f9;

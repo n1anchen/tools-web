@@ -240,7 +240,7 @@ onMounted(generateAll)
 .advice-grid span { margin-top: 5px; color: #64748b; font-size: 12px; line-height: 1.65; }
 :global(html.dark .password-page .settings-card), :global(html.dark .password-page .strength-card), :global(html.dark .password-page .result-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
 :global(html.dark .password-page .strength-card) { background: linear-gradient(155deg, rgba(88, 28, 135, .18), #1e293b 58%); }
-:global(html.dark .password-page .section-heading h2), :global(html.dark .password-page .custom-field > span), :global(html.dark .password-page .range-grid label > span), :global(html.dark .password-page .field-label), :global(html.dark .password-page .switch-row strong), :global(html.dark .password-page .metric-list b), :global(html.dark .password-page .password-item code), :global(html.dark .password-page .advice-grid strong) { color: #e2e8f0; }
+:global(html.dark .password-page .custom-field > span), :global(html.dark .password-page .range-grid label > span), :global(html.dark .password-page .field-label), :global(html.dark .password-page .switch-row strong), :global(html.dark .password-page .metric-list b), :global(html.dark .password-page .password-item code), :global(html.dark .password-page .advice-grid strong) { color: #e2e8f0; }
 :global(html.dark .password-page .group-option), :global(html.dark .password-page .switch-row), :global(html.dark .password-page .password-item), :global(html.dark .password-page .advice-grid div) { border-color: #334155; background: #0f172a; }
 :global(html.dark .password-page .group-option) { color: #e2e8f0; }
 :global(html.dark .password-page .group-option.active) { border-color: #8b5cf6; background: rgba(91, 33, 182, .18); }
