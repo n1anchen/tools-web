@@ -39,6 +39,13 @@
   .dark .hero-metrics strong { color: #e7edf6; }
   .dark .hero-metrics span { color: #a8b4c5; }
 
+  /* 指标条响应式：统一 680px 断点（MetricsBar 组件；各工具原断点 640/650/680 差异统一为 680） */
+  @media (max-width: 680px) {
+    .hero-metrics { grid-template-columns: 1fr; }
+    .hero-metrics div { border-left: 0; border-bottom: 1px solid #e5edf6; }
+    .hero-metrics div:last-child { border-bottom: 0; }
+  }
+
   /* 说明文字：17 个工具复用的 detail-copy */
   .detail-copy {
     color: #64748b;

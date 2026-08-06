@@ -40,6 +40,7 @@ import {
 } from 'fabric'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import MetricsBar from '@/components/Common/MetricsBar.vue'
 import { autoDown } from '@/utils/file'
 
 /* ================= 常量 ================= */
@@ -912,11 +913,7 @@ onBeforeUnmount(() => {
   <div class="image-studio flex flex-col mt-3 flex-1">
     <ToolHero summary="上传一张图片，裁剪、旋转、标注与滤镜全部在浏览器本地完成">
       <template #metrics>
-        <div class="hero-metrics">
-          <div><span>当前尺寸</span><strong>{{ sizeLabel }}</strong></div>
-          <div><span>叠加对象</span><strong>{{ objectCount }}</strong></div>
-          <div><span>导出</span><strong>{{ exportFormat.toUpperCase() }}</strong></div>
-        </div>
+        <MetricsBar :items="[{ label: '当前尺寸', value: sizeLabel }, { label: '叠加对象', value: objectCount }, { label: '导出', value: exportFormat.toUpperCase() }]" />
       </template>
     </ToolHero>
 
@@ -1079,12 +1076,6 @@ onBeforeUnmount(() => {
 <style scoped>
 .image-studio { --accent: #7157d9; --ink: #292b38; --muted: #737789; }
 .panel-heading span { color: #7665a5; font-size: 13px; font-weight: 800; letter-spacing: 0.12em; }
-.hero-metrics { display: grid; grid-template-columns: repeat(3, minmax(96px, 1fr)); min-width: 320px; overflow: hidden; border: 1px solid #e0e9f4; border-radius: 18px; background: rgba(255, 255, 255, 0.78); }
-.hero-metrics div { padding: 12px 14px; text-align: center; border-left: 1px solid #e5edf6; }
-.hero-metrics div:first-child { border-left: 0; }
-.hero-metrics span, .hero-metrics strong { display: block; }
-.hero-metrics span { margin-top: 4px; color: #7a899c; font-size: 12px; }
-.hero-metrics strong { overflow: hidden; color: #334155; font-size: 18px; text-overflow: ellipsis; white-space: nowrap; }
 
 .workspace-card { display: grid; grid-template-columns: 232px minmax(0, 1fr); margin-top: 14px; overflow: hidden; border: 1px solid #e1e3e9; border-radius: 20px; background: #fff; box-shadow: 0 11px 28px rgba(47, 43, 63, 0.05); }
 .tool-panel { padding: 16px; border-right: 1px solid #e4e5ea; background: #fafafb; }
@@ -1170,10 +1161,6 @@ onBeforeUnmount(() => {
 .export-options > button:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .dark .image-studio { --ink: #f1edf5; --muted: #aaa3b1; }
-.dark .hero-metrics { border-color: #40516a; background: rgba(15, 23, 42, 0.5); }
-.dark .hero-metrics div { border-color: #40516a; }
-.dark .hero-metrics strong { color: #e7edf6; }
-.dark .hero-metrics span { color: #a8b4c5; }
 .dark .workspace-card, .dark .export-card { border-color: #3f4756; background: #1b2637; }
 .dark .tool-panel, .dark .canvas-toolbar, .dark .canvas-footer, .dark .context-bar { border-color: #414958; }
 .dark .tool-panel, .dark .context-bar { background: #202b3d; }
@@ -1188,15 +1175,11 @@ onBeforeUnmount(() => {
 .dark .canvas-stage { background-color: #121a27; background-image: linear-gradient(45deg, #1d2737 25%, transparent 25%), linear-gradient(-45deg, #1d2737 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1d2737 75%), linear-gradient(-45deg, transparent 75%, #1d2737 75%); }
 .dark .empty-stage { background: rgba(27, 38, 55, 0.88); }
 .dark .empty-stage strong { color: #dbe2ee; }
-.dark .canvas-stage canvas { box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4); }
-
-@media (max-width: 1000px) {
+.dark .canvas-stage canvas { box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4); }@media (max-width: 1000px) {
   .workspace-card { grid-template-columns: 200px minmax(0, 1fr); }
   .tool-grid { grid-template-columns: 1fr; }
   .canvas-toolbar { align-items: flex-start; flex-direction: column; }
-  .selected-tools { justify-content: flex-start; }
-}
-@media (max-width: 760px) {
+  .selected-tools { justify-content: flex-start; }}@media (max-width: 760px) {
   .workspace-card { grid-template-columns: 1fr; }
   .tool-panel { border-right: 0; border-bottom: 1px solid #e4e5ea; }
   .tool-grid { grid-template-columns: repeat(4, 1fr); }
@@ -1205,13 +1188,6 @@ onBeforeUnmount(() => {
   .export-options { width: 100%; flex-wrap: wrap; }
   .export-options > button { width: 100%; }
   .canvas-footer { flex-wrap: wrap; }
-  .ctx-tip { display: none; }
-}
-@media (max-width: 640px) {
-  .hero-metrics { grid-template-columns: 1fr; }
-  .hero-metrics div { border-left: 0; border-bottom: 1px solid #e5edf6; }
-  .hero-metrics div:last-child { border-bottom: 0; }
+  .ctx-tip { display: none; }}@media (max-width: 640px) {
   .canvas-stage { min-height: 340px; }
-  .export-options > span { min-width: 0; margin-left: auto; }
-}
-</style>
+  .export-options > span { min-width: 0; margin-left: auto; }}</style>

@@ -3,6 +3,7 @@ import { ref, reactive, computed, onUnmounted, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import MetricsBar from '@/components/Common/MetricsBar.vue'
 import { autoDown, formatBytes } from '@/utils/file'
 import exifr from 'exifr'
 import type { Map as LMap } from 'leaflet'
@@ -723,11 +724,7 @@ onUnmounted(() => {
   <div class="exif-tool flex flex-col mt-3 flex-1">
     <ToolHero summary="看清照片携带的信息，再决定如何分享">
       <template #metrics>
-        <div class="hero-metrics">
-          <div><span>文件格式</span><strong>{{ fileFormat }}</strong></div>
-          <div><span>元数据字段</span><strong>{{ metadataCount }}</strong></div>
-          <div><span>隐私检查</span><strong>{{ privacyLabel }}</strong></div>
-        </div>
+        <MetricsBar :items="[{ label: '文件格式', value: fileFormat }, { label: '元数据字段', value: metadataCount }, { label: '隐私检查', value: privacyLabel }]" />
       </template>
     </ToolHero>
 
@@ -1022,12 +1019,6 @@ onUnmounted(() => {
 
 .exif-tool { --exif-ink:#273247; --exif-muted:#69778c; }
 .privacy-workbench header span { font-size:12px; font-weight:800; letter-spacing:.14em; color:#52779e; }
-.hero-metrics { display:grid; grid-template-columns:repeat(3,minmax(96px,1fr)); min-width:320px; overflow:hidden; border:1px solid #e0e9f4; border-radius:18px; background:rgba(255,255,255,.78); }
-.hero-metrics div { padding:12px 14px; text-align:center; border-left:1px solid #e5edf6; }
-.hero-metrics div:first-child { border-left:0; }
-.hero-metrics span,.hero-metrics strong { display:block; }
-.hero-metrics span { margin-top:4px; color:#7a899c; font-size:12px; }
-.hero-metrics strong { overflow:hidden; color:#334155; font-size:18px; text-overflow:ellipsis; white-space:nowrap; }
 .exif-workbench { border-radius:24px!important; box-shadow:0 12px 30px rgba(51,65,85,.06)!important; }
 .exif-upload { min-height:165px; height:auto!important; background:#f8fbff; }
 .privacy-workbench { padding:16px; border:1px solid #d9e8df; border-radius:18px; background:#f7fcf9; }
@@ -1054,10 +1045,6 @@ onUnmounted(() => {
 .exif-collapse :deep(.el-collapse-item__header) { min-height:52px; font-size:14px; }
 .exif-collapse :deep(.el-collapse-item__content) { font-size:13px; }
 .exif-collapse .text-\[10px\],.exif-collapse .text-\[11px\],.exif-collapse .text-xs { font-size:12px!important; }
-.dark .hero-metrics { border-color:#425169; background:rgba(15,23,42,.5); }
-.dark .hero-metrics div { border-color:#425169; }
-.dark .hero-metrics strong { color:#e7edf6; }
-.dark .hero-metrics span { color:#a8b4c5; }
 .dark .privacy-workbench h3,.dark .privacy-grid article strong { color:#e7edf6; }
 .dark .exif-upload { background:#111c2d; }
 .dark .privacy-workbench,.dark .privacy-workbench.danger { border-color:#344155; background:#111a2a; }
@@ -1066,10 +1053,7 @@ onUnmounted(() => {
 .dark .metadata-toolbar { border-color:#344155; background:#111a2a; }
 .dark .metadata-tabs button { border-color:#3b495d; background:#182438; color:#b4c0ce; }
 .dark .metadata-tabs button.active { border-color:#477fbe; background:#172d45; color:#aad1f8; }
-.dark .no-exif-state { border-color:#3a485c; background:#111a2a; }
-@media (max-width:1000px) { .privacy-grid{grid-template-columns:repeat(2,1fr)} }
-@media (max-width:650px) { .hero-metrics{grid-template-columns:1fr}.hero-metrics div{border-left:0;border-bottom:1px solid #e5edf6}.hero-metrics div:last-child{border-bottom:0}.privacy-workbench header{flex-direction:column}.privacy-grid{grid-template-columns:1fr}.metadata-toolbar{grid-template-columns:1fr}.no-exif-actions{justify-content:center} }
+.dark .no-exif-state { border-color:#3a485c; background:#111a2a; }@media (max-width:1000px) { .privacy-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:650px) {.privacy-workbench header{flex-direction:column}.privacy-grid{grid-template-columns:1fr}.metadata-toolbar{grid-template-columns:1fr}.no-exif-actions{justify-content:center}}
 .exif-workbench :deep(.text-\[9px\]),
 .exif-workbench :deep(.text-\[10px\]),
-.exif-workbench :deep(.text-\[11px\]){font-size:12px!important}
-</style>
+.exif-workbench :deep(.text-\[11px\]){font-size:12px!important}</style>
