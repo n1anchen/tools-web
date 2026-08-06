@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { CopyDocument, Delete, Download, Refresh } from '@element-plus/icons-vue'
+import { Delete, Download, Refresh } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { ElMessage } from 'element-plus'
 import QRCodeVue3 from 'qrcode-vue3'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { autoDown } from '@/utils/file'
 import { buildQrPayload, type QrContentType } from '@/utils/qrTools'
-import { copy } from '@/utils/string'
 
 type ErrorCorrectionLevel = 'L' | 'M' | 'Q' | 'H'
 type DotStyle = 'square' | 'dots' | 'rounded' | 'classy' | 'classy-rounded' | 'extra-rounded'
@@ -182,7 +182,7 @@ function downloadQrCode() {
           <div v-else><b>等待内容</b><span>二维码将在这里出现</span></div>
         </div>
         <div class="payload-preview"><span>编码内容</span><code>{{ qrValue || '尚未填写' }}</code></div>
-        <div class="preview-actions"><el-button :icon="CopyDocument" :disabled="!qrValue" @click="copy(qrValue)">复制内容</el-button><el-button type="primary" :icon="Download" :disabled="!qrValue" @click="downloadQrCode">下载 PNG</el-button></div>
+        <div class="preview-actions"><CopyButton :text="qrValue" :disabled="!qrValue" label="复制内容" /><el-button type="primary" :icon="Download" :disabled="!qrValue" @click="downloadQrCode">下载 PNG</el-button></div>
         <p>含 Logo 时建议使用 Q 或 H 纠错级别，并在实际设备上试扫。</p>
       </aside>
     </section>

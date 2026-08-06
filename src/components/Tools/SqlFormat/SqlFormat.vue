@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { CopyDocument, Download, MagicStick, RefreshLeft, Search } from '@element-plus/icons-vue'
+import { Download, MagicStick, RefreshLeft, Search } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { ElMessage } from 'element-plus'
 import { format, type IndentStyle, type KeywordCase, type LogicalOperatorNewline, type SqlLanguage } from 'sql-formatter'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { autoDown } from '@/utils/file'
 import AceEditor from '@/components/Common/AceEditor.vue'
-import { copy } from '@/utils/string'
 import { countSqlStatements, minifySqlSafely } from '@/utils/workbenchTools'
 
 const defaultSql = `SELECT u.id, u.name, COUNT(o.id) AS order_count, SUM(o.total) AS revenue
@@ -161,7 +161,7 @@ function downloadSql() {
       <article class="editor-card">
         <div class="editor-toolbar">
           <div><span class="status-dot" :class="{ error: lastError }"><i />{{ lastAction }}</span><small v-if="lastOriginal">长度变化 {{ changedRatio > 0 ? '+' : '' }}{{ changedRatio }}%</small></div>
-          <div class="toolbar-actions"><el-button :icon="RefreshLeft" :disabled="!lastOriginal" @click="restoreOriginal">撤回</el-button><el-button :icon="CopyDocument" @click="copy(getCode())">复制</el-button><el-button :icon="Download" @click="downloadSql">导出</el-button></div>
+          <div class="toolbar-actions"><el-button :icon="RefreshLeft" :disabled="!lastOriginal" @click="restoreOriginal">撤回</el-button><CopyButton :text="getCode()" /><el-button :icon="Download" @click="downloadSql">导出</el-button></div>
         </div>
         <AceEditor ref="aceEditorRef" v-model="info.code" mode="sql" :show-whitespace="info.showWhitespace" :show-line-numbers="info.showLineNumbers" :word-wrap="info.wordWrap" height="510px" />
         <div v-if="lastError" class="error-panel"><strong>格式化失败</strong><code>{{ lastError }}</code><span>请检查括号、引号、方言专属语法或未完成的语句。</span></div>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { CopyDocument, Delete, MagicStick } from '@element-plus/icons-vue'
+import { Delete, MagicStick } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
-import { copy } from '@/utils/string'
 import { analyzeRegex, buildHighlightSegments, replaceRegex } from '@/utils/developerTools'
 
 const sampleText = `用户记录：
@@ -118,7 +118,7 @@ function clearAll() {
             <span v-for="(group, groupIndex) in match.groups" :key="groupIndex"><b>${{ groupIndex + 1 }}</b>{{ group ?? '未参与' }}</span>
             <span v-for="(group, name) in match.namedGroups" :key="name"><b>{{ name }}</b>{{ group }}</span>
           </div>
-          <el-button link type="primary" :icon="CopyDocument" @click="copy(match.value)">复制</el-button>
+          <CopyButton link type="primary" :text="match.value" />
         </article>
       </div>
       <div v-else class="empty-state">{{ pattern && !analysis.error ? '当前表达式没有匹配内容' : '输入有效表达式后，这里会列出每一次匹配' }}</div>

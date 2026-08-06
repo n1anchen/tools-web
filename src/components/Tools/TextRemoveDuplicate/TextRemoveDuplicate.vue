@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { CopyDocument, DataAnalysis, Delete, Filter, RefreshRight, Switch } from '@element-plus/icons-vue'
+import { DataAnalysis, Delete, Filter, RefreshRight, Switch } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
@@ -95,7 +96,7 @@ function useResultAsInput() {
               <strong>去重结果</strong>
               <span>{{ result.resultLines }} 行 · 减少 {{ reductionRate }}%</span>
             </div>
-            <el-button text :icon="CopyDocument" :disabled="!result.text" @click="copy(result.text)">复制</el-button>
+            <CopyButton text-btn :text="result.text" :disabled="!result.text" />
           </div>
           <el-input :model-value="result.text" type="textarea" :rows="11" resize="none" readonly placeholder="处理结果会显示在这里" />
         </article>

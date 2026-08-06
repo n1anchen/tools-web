@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
-import { CopyDocument, FullScreen, Refresh, VideoPlay } from '@element-plus/icons-vue'
+import { FullScreen, Refresh, VideoPlay } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { ElMessage } from 'element-plus'
 import Hls from 'hls.js'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
-import { copy } from '@/utils/string'
 import { formatMediaTime, validateHlsUrl } from '@/utils/workbenchTools'
 
 type PlayerStatus = 'idle' | 'loading' | 'ready' | 'playing' | 'paused' | 'buffering' | 'error' | 'stopped'
@@ -265,7 +265,7 @@ onBeforeUnmount(() => destroyHls())
 
     <section class="workspace">
       <article class="player-card">
-        <div class="player-heading"><div><span :class="['status-indicator', status]"><i />{{ statusLabel }}</span><strong>{{ statusMessage }}</strong></div><div><span>{{ currentLabel }} / {{ durationLabel }}</span><el-button link :icon="CopyDocument" :disabled="!activeUrl" @click="copy(activeUrl)">复制地址</el-button></div></div>
+        <div class="player-heading"><div><span :class="['status-indicator', status]"><i />{{ statusLabel }}</span><strong>{{ statusMessage }}</strong></div><div><span>{{ currentLabel }} / {{ durationLabel }}</span><CopyButton link :text="activeUrl" :disabled="!activeUrl" label="复制地址" /></div></div>
         <div class="video-stage">
           <video ref="videoEl" controls playsinline @loadedmetadata="syncVideoStats" @durationchange="syncVideoStats" @timeupdate="syncVideoStats" @playing="status = 'playing'; statusMessage = '媒体正在播放'" @pause="status === 'playing' && (status = 'paused')" @waiting="status = 'buffering'; statusMessage = '正在等待更多媒体数据'" @error="handleMediaError" />
           <div v-if="['idle', 'stopped'].includes(status)" class="video-placeholder"><el-icon><VideoPlay /></el-icon><strong>{{ status === 'stopped' ? '播放已停止' : '等待 HLS 地址' }}</strong><span>支持 Master Playlist 与 Media Playlist</span></div>

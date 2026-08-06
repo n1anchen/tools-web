@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { CopyDocument, Delete, Link, Promotion, RefreshRight, Switch } from '@element-plus/icons-vue'
+import { Delete, Link, Promotion, RefreshRight, Switch } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
-import { copy } from '@/utils/string'
 
 type Mode = 'encode' | 'decode'
 type Scope = 'component' | 'url'
@@ -123,7 +123,7 @@ function useExample(value: string) {
               <strong>处理结果</strong>
               <span>{{ output.length }} 字符 · {{ outputBytes }} Bytes</span>
             </div>
-            <el-button text :icon="CopyDocument" :disabled="!output" @click="copy(output)">复制</el-button>
+            <CopyButton text-btn :text="output" :disabled="!output" />
           </div>
           <div v-if="errorMessage" class="editor-message error-message">{{ errorMessage }}</div>
           <div v-else-if="!output" class="editor-message">

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { CopyDocument, DataAnalysis, Delete, Document, Reading, Timer } from '@element-plus/icons-vue'
+import { DataAnalysis, Delete, Document, Reading, Timer } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
-import { copy } from '@/utils/string'
 import { analyzeText } from '@/utils/textTools'
 
 const content = ref('')
@@ -63,7 +63,7 @@ function useSample(value: string) {
       <div class="editor-header">
         <SectionHeading :icon="Document" title="输入或粘贴文本" description="内容变化时实时更新，不会上传文本" tone="blue" />
         <div class="editor-actions">
-          <el-button :icon="CopyDocument" :disabled="!content" @click="copy(content)">复制文本</el-button>
+          <CopyButton :text="content" :disabled="!content" label="复制文本" />
           <el-button :icon="Delete" :disabled="!content" @click="content = ''">清空</el-button>
         </div>
       </div>

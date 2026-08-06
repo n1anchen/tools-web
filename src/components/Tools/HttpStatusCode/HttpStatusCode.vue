@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { CopyDocument, Search } from '@element-plus/icons-vue'
+import { Search } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
-import { copy } from '@/utils/string'
 import { filterHttpStatuses } from '@/utils/developerTools'
 import {
   HTTP_STATUS_CATEGORIES,
@@ -57,7 +57,7 @@ function selectStatus(status: HttpStatusCode) {
     <section class="selected-card" :class="`tone-${selected.category}`">
       <div class="selected-code"><span>{{ selected.code }}</span><small>{{ selectedCategory.label }}</small></div>
       <div class="selected-main">
-        <div class="selected-heading"><div><span class="eyebrow">SELECTED STATUS</span><h3>{{ selected.name }}</h3></div><el-button link type="primary" :icon="CopyDocument" @click="copy(`${selected.code} ${selected.name}`)">复制</el-button></div>
+        <div class="selected-heading"><div><span class="eyebrow">SELECTED STATUS</span><h3>{{ selected.name }}</h3></div><CopyButton link type="primary" :text="`${selected.code} ${selected.name}`" /></div>
         <p>{{ selected.description }}</p>
         <div class="selected-details">
           <div><span>典型场景</span><strong>{{ selected.usage || selectedCategory.summary }}</strong></div>
@@ -78,7 +78,7 @@ function selectStatus(status: HttpStatusCode) {
         <article v-for="status in results" :key="status.code" :class="[`category-${status.category}`, { selected: selected.code === status.code }]" @click="selectStatus(status)">
           <div class="status-heading"><strong>{{ status.code }}</strong><div><h4>{{ status.name }}</h4><span>{{ HTTP_STATUS_CATEGORIES.find(item => item.value === status.category)?.label }}</span></div><small v-if="status.common">常用</small></div>
           <p>{{ status.description }}</p>
-          <div class="status-footer"><span v-if="status.note">{{ status.note }}</span><span v-else>{{ status.tags?.slice(0, 2).join(' · ') || 'HTTP' }}</span><el-button link type="primary" :icon="CopyDocument" @click.stop="copy(String(status.code))">复制</el-button></div>
+          <div class="status-footer"><span v-if="status.note">{{ status.note }}</span><span v-else>{{ status.tags?.slice(0, 2).join(' · ') || 'HTTP' }}</span><CopyButton link type="primary" stop :text="String(status.code)" /></div>
         </article>
       </div>
       <div v-else class="empty-state">没有找到匹配的状态码，请尝试其他关键词或关闭筛选。</div>

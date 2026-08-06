@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { CopyDocument, MagicStick } from '@element-plus/icons-vue'
+import { MagicStick } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
-import { copy } from '@/utils/string'
 import {
   RADIX_DEFINITIONS,
   formatRadixInteger,
@@ -131,7 +131,7 @@ function continueFromResult(base: SupportedRadix, value: string) {
           <code>{{ result.display }}</code>
           <div class="result-footer">
             <small>{{ result.description }}</small>
-            <el-button link type="primary" :icon="CopyDocument" @click.stop="copy(result.raw)">复制</el-button>
+            <CopyButton link type="primary" stop :text="result.raw" />
           </div>
         </article>
       </div>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { CircleCheckFilled, CopyDocument, Delete, WarningFilled } from '@element-plus/icons-vue'
+import { CircleCheckFilled, Delete, WarningFilled } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { jwtDecode } from 'jwt-decode'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { analyzeJwtClaims, formatUnixClaim } from '@/utils/converters'
-import { copy } from '@/utils/string'
 
 const sampleToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b29scy5yYW5ibG9ncy5jb20iLCJzdWIiOiJhcnlhIiwiYXVkIjoidGFvcmFuIiwiaWF0IjoxNzE3MDM2MzMzLCJleHAiOjE3MTcwMzY5MzN9.9v_eDdsPnvcY7qZatNnKvN9VEf7t7o72OgwhLS6gy6w'
 const token = ref(sampleToken)
@@ -146,14 +146,14 @@ function loadSample() {
         <section class="json-card header-json">
           <div class="section-heading">
             <div><span class="eyebrow">HEADER</span><h3>头部</h3></div>
-            <el-button link type="primary" :icon="CopyDocument" @click="copy(headerJson)">复制 JSON</el-button>
+            <CopyButton link type="primary" :text="headerJson" label="复制 JSON" />
           </div>
           <pre>{{ headerJson }}</pre>
         </section>
         <section class="json-card payload-json">
           <div class="section-heading">
             <div><span class="eyebrow">PAYLOAD</span><h3>载荷</h3></div>
-            <el-button link type="primary" :icon="CopyDocument" @click="copy(payloadJson)">复制 JSON</el-button>
+            <CopyButton link type="primary" :text="payloadJson" label="复制 JSON" />
           </div>
           <pre>{{ payloadJson }}</pre>
         </section>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Connection, CopyDocument, Document, Grid, Lock, Switch } from '@element-plus/icons-vue'
+import { Connection, Document, Grid, Lock, Switch } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
@@ -92,7 +93,7 @@ function useSample(sample: typeof samples[number]) {
         <article class="editor-panel result-panel">
           <div class="editor-title">
             <div><strong>转换结果</strong><span>{{ output.length }} 字符</span></div>
-            <el-button text :icon="CopyDocument" :disabled="!output" @click="copy(output)">复制</el-button>
+            <CopyButton text-btn :text="output" :disabled="!output" />
           </div>
           <el-input :model-value="output" type="textarea" :rows="10" resize="none" readonly placeholder="转换结果会实时显示" />
         </article>

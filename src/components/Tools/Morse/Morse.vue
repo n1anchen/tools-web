@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref } from 'vue'
-import { CopyDocument, Delete, Switch, VideoPause, VideoPlay } from '@element-plus/icons-vue'
+import { Delete, Switch, VideoPause, VideoPlay } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
@@ -163,7 +164,7 @@ onUnmounted(stopPlayback)
               <span class="panel-kicker">OUTPUT</span>
               <strong>{{ mode === 'encode' ? '摩斯电码' : '解码文字' }}</strong>
             </div>
-            <el-button link type="primary" :icon="CopyDocument" @click="copy(result)">复制</el-button>
+            <CopyButton link type="primary" :text="result" />
           </div>
           <div class="result-box" :class="{ 'morse-output': mode === 'encode' }">
             {{ result || '转换结果会显示在这里' }}

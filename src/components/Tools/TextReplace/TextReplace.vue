@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { CopyDocument, Delete, EditPen, RefreshRight, Search, Switch } from '@element-plus/icons-vue'
+import { Delete, EditPen, RefreshRight, Search, Switch } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
-import { copy } from '@/utils/string'
 import { replaceText, type ReplaceScope } from '@/utils/textTools'
 
 const inputText = ref('')
@@ -104,7 +104,7 @@ function useResultAsInput() {
         <article class="editor-panel result-panel" :class="{ invalid: result.error }">
           <div class="editor-title">
             <div><strong>替换结果</strong><span>{{ Array.from(result.text).length }} 个字符</span></div>
-            <el-button text :icon="CopyDocument" :disabled="!result.text || !!result.error" @click="copy(result.text)">复制</el-button>
+            <CopyButton text-btn :text="result.text" :disabled="!result.text || !!result.error" />
           </div>
           <el-input
             :model-value="result.text"
@@ -122,7 +122,7 @@ function useResultAsInput() {
         <div>
           <el-button :icon="Delete" :disabled="!inputText && !findText && !replacementText" @click="clearAll">全部清空</el-button>
           <el-button :icon="RefreshRight" :disabled="!result.text || !!result.error" @click="useResultAsInput">用结果继续处理</el-button>
-          <el-button type="primary" :icon="CopyDocument" :disabled="!result.text || !!result.error" @click="copy(result.text)">复制结果</el-button>
+          <CopyButton type="primary" :text="result.text" :disabled="!result.text || !!result.error" label="复制结果" />
         </div>
       </div>
     </section>

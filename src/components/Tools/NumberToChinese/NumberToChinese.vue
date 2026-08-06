@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { CopyDocument, Delete, Money, Reading, Tickets } from '@element-plus/icons-vue'
+import { Delete, Money, Reading, Tickets } from '@element-plus/icons-vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
-import { copy, numberToChinese } from '@/utils/string'
+import { numberToChinese } from '@/utils/string'
 
 const inputValue = ref('100001')
 
@@ -90,7 +91,7 @@ function clear() {
           </div>
         </div>
         <div v-if="result" class="result-actions">
-          <el-button :icon="CopyDocument" @click="copy(result)">复制结果</el-button>
+          <CopyButton :text="result" label="复制结果" />
           <el-button :icon="Delete" @click="clear">清空</el-button>
         </div>
       </div>
