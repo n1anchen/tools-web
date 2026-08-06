@@ -45,6 +45,62 @@
     font-size: 14px;
     line-height: 1.9;
   }
+
+  /* 卡片族（多工具复用的卡片 base；22px/#e2e8f0/#fff/0 14px 38px 为多数派默认值，20px 族已合并统一） */
+  .preview-card,
+  .result-card,
+  .sample-card,
+  .data-card,
+  .config-card,
+  .contrast-card,
+  .preset-card,
+  .insight-card,
+  .document-bar,
+  .editor-card,
+  .template-card,
+  .export-card,
+  .settings-card,
+  .statistics-card,
+  .summary-card,
+  .history-card,
+  .toss-card,
+  .decision-card,
+  .dice-board,
+  .strength-card,
+  .results-card,
+  .inspector-card,
+  .reference-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 14px 38px rgba(15, 23, 42, 0.06);
+  }
+  .dark .preview-card,
+  .dark .result-card,
+  .dark .sample-card,
+  .dark .data-card,
+  .dark .config-card,
+  .dark .contrast-card,
+  .dark .preset-card,
+  .dark .insight-card,
+  .dark .document-bar,
+  .dark .editor-card,
+  .dark .template-card,
+  .dark .export-card,
+  .dark .settings-card,
+  .dark .statistics-card,
+  .dark .summary-card,
+  .dark .history-card,
+  .dark .toss-card,
+  .dark .decision-card,
+  .dark .dice-board,
+  .dark .strength-card,
+  .dark .results-card,
+  .dark .inspector-card,
+  .dark .reference-card {
+    border-color: #334155;
+    background: #1e293b;
+  }
 }
 
 :root {

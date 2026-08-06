@@ -138,7 +138,7 @@ onMounted(generateAll)
 
 <style scoped>
 .uuid-page { gap: 18px; }
-.workspace-card, .result-card { padding: 24px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05); }
+.workspace-card {padding: 24px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05);}
 .section-heading, .result-header, .control-grid { display: flex; align-items: center; }
 .section-heading { gap: 12px; }
 .heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #2563eb; background: #eff6ff; font-size: 20px; }

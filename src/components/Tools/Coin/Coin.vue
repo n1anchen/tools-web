@@ -158,7 +158,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .coin-page { gap: 18px; }
 .workspace-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(330px, .8fr); gap: 18px; }
-.settings-card, .toss-card, .statistics-card { padding: 24px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05); }
+.settings-card, .toss-card, .statistics-card {padding: 24px}
 .section-heading, .statistics-header, .fairness-note { display: flex; align-items: center; }
 .section-heading { gap: 12px; }
 .heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #d97706; background: #fffbeb; font-size: 20px; }

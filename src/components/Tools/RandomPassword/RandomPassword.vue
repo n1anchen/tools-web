@@ -201,7 +201,7 @@ onMounted(generateAll)
 <style scoped>
 .password-page { gap: 18px; }
 .workspace-grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(260px, .75fr); gap: 18px; }
-.settings-card, .strength-card, .result-card { border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05); }
+
 .settings-card, .result-card { padding: 24px; }
 .section-heading, .result-header, .switch-row { display: flex; align-items: center; }
 .section-heading { gap: 12px; }
