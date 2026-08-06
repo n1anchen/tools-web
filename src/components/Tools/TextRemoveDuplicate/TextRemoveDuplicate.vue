@@ -3,6 +3,7 @@ import { computed, reactive, ref } from 'vue'
 import { CopyDocument, DataAnalysis, Delete, Filter, RefreshRight, Switch } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { copy } from '@/utils/string'
 import { dedupeLines, type DedupeMode } from '@/utils/textTools'
 
@@ -51,13 +52,7 @@ function useResultAsInput() {
 
     <section class="workspace-card">
       <div class="settings-header">
-        <div class="section-heading">
-          <div class="heading-icon"><el-icon><Filter /></el-icon></div>
-          <div>
-            <h2>设置去重规则</h2>
-            <p>结果会随输入和规则实时更新，并保持原始顺序</p>
-          </div>
-        </div>
+        <SectionHeading :icon="Filter" title="设置去重规则" description="结果会随输入和规则实时更新，并保持原始顺序" tone="violet" />
         <el-segmented
           v-model="options.mode"
           :options="[
@@ -113,13 +108,7 @@ function useResultAsInput() {
     </section>
 
     <section class="summary-card">
-      <div class="section-heading">
-        <div class="heading-icon green"><el-icon><DataAnalysis /></el-icon></div>
-        <div>
-          <h2>处理摘要</h2>
-          <p>快速确认本次去重范围与重复热点</p>
-        </div>
-      </div>
+      <SectionHeading :icon="DataAnalysis" title="处理摘要" description="快速确认本次去重范围与重复热点" tone="green" />
 
       <div class="summary-grid">
         <div><span>原始行数</span><strong>{{ result.originalLines }}</strong></div>
@@ -159,20 +148,6 @@ function useResultAsInput() {
 .settings-header, .option-row, .editor-title, .workspace-footer, .duplicate-preview {display: flex; align-items: center;}
 .settings-header { justify-content: space-between; gap: 18px; }
 
-.heading-icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  place-items: center;
-  border-radius: 13px;
-  color: #7c3aed;
-  background: #f5f3ff;
-  font-size: 20px;
-}
-.heading-icon.green { color: #059669; background: #ecfdf5; }
-.section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
-.section-heading p { margin: 3px 0 0; color: #64748b; font-size: 13px; }
 .option-row {
   flex-wrap: wrap;
   gap: 8px 22px;
@@ -286,8 +261,6 @@ function useResultAsInput() {
 :global(html.dark .dedupe-page .section-heading h2),
 :global(html.dark .dedupe-page .editor-title strong),
 :global(html.dark .dedupe-page .detail-grid h4) { color: #f1f5f9; }
-:global(html.dark .dedupe-page .section-heading p),
-:global(html.dark .dedupe-page .detail-grid p) { color: #94a3b8; }
 :global(html.dark .dedupe-page .option-row),
 :global(html.dark .dedupe-page .editor-panel),
 :global(html.dark .dedupe-page .summary-grid > div) { border-color: #334155; background: #111c2f; }
@@ -300,15 +273,11 @@ function useResultAsInput() {
 :global(html.dark .dedupe-page .summary-grid strong) { color: #e2e8f0; }
 :global(html.dark .dedupe-page .summary-grid .removed) { background: #3b1f0d; }
 :global(html.dark .dedupe-page .duplicate-preview) { border-color: #334155; }
-:global(html.dark .dedupe-page .duplicate-list button) { border-color: #334155; color: #cbd5e1; background: #111c2f; }
-
-@media (max-width: 900px) {
+:global(html.dark .dedupe-page .duplicate-list button) { border-color: #334155; color: #cbd5e1; background: #111c2f; }@media (max-width: 900px) {
   .settings-header { align-items: flex-start; flex-direction: column; }
   .editor-grid { grid-template-columns: 1fr; }
   .direction-column { flex-direction: row; }
-  .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 640px) {
+  .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }}@media (max-width: 640px) {
   .workspace-card,
   .summary-card { padding: 18px; border-radius: 16px; }
   .settings-header :deep(.el-segmented) { width: 100%; }
@@ -317,6 +286,4 @@ function useResultAsInput() {
   .workspace-footer { align-items: stretch; flex-direction: column; }
   .summary-grid,
   .detail-grid { grid-template-columns: 1fr; }
-  .duplicate-preview { flex-direction: column; }
-}
-</style>
+  .duplicate-preview { flex-direction: column; }}</style>

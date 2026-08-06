@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, ref } from 'vue'
 import { Aim, Clock, Delete, MagicStick, Setting, TrendCharts } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { secureRandomInt } from '@/utils/random'
 
 type CoinFace = 'heads' | 'tails'
@@ -61,10 +62,7 @@ onBeforeUnmount(() => {
 
     <div class="workspace-grid">
       <section class="settings-card">
-        <div class="section-heading">
-          <div class="heading-icon"><el-icon><Setting /></el-icon></div>
-          <div><h2>设置硬币两面</h2><p>可以把正反面改成两个待选方案</p></div>
-        </div>
+        <SectionHeading :icon="Setting" title="设置硬币两面" description="可以把正反面改成两个待选方案" tone="amber" />
 
         <div class="label-grid">
           <label>
@@ -118,10 +116,7 @@ onBeforeUnmount(() => {
 
     <section class="statistics-card">
       <div class="statistics-header">
-        <div class="section-heading">
-          <div class="heading-icon green"><el-icon><TrendCharts /></el-icon></div>
-          <div><h2>本次统计</h2><p>最多保留最近 40 次抛掷结果</p></div>
-        </div>
+        <SectionHeading :icon="TrendCharts" title="本次统计" description="最多保留最近 40 次抛掷结果" tone="green" />
         <el-button text :icon="Delete" :disabled="!records.length" @click="clearRecords">清空记录</el-button>
       </div>
 
@@ -160,11 +155,6 @@ onBeforeUnmount(() => {
 .workspace-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(330px, .8fr); gap: 18px; }
 .settings-card, .toss-card, .statistics-card {padding: 24px}
 .statistics-header, .fairness-note {display: flex; align-items: center;}
-
-.heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #d97706; background: #fffbeb; font-size: 20px; }
-.heading-icon.green { color: #059669; background: #ecfdf5; }
-.section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
-.section-heading p { margin: 3px 0 0; color: #64748b; font-size: 13px; }
 .label-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 22px; }
 .label-grid label > span, .count-field > span { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; color: #475569; font-size: 12px; font-weight: 650; }
 .dot { width: 7px; height: 7px; border-radius: 50%; } .dot.heads { background: #f59e0b; } .dot.tails { background: #8b5cf6; }

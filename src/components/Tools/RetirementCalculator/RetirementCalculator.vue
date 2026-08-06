@@ -16,6 +16,7 @@ import {
 } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import {
   calculateRetirement,
   formatAge,
@@ -150,13 +151,7 @@ calculate()
     <ToolHero />
 
     <section class="calculator-card">
-      <div class="section-heading">
-        <div class="heading-icon heading-icon-blue"><el-icon><User /></el-icon></div>
-        <div>
-          <h2>填写个人信息</h2>
-          <p>出生日期只需精确到月份，计算结果按现行全国统一政策生成</p>
-        </div>
-      </div>
+      <SectionHeading :icon="User" title="填写个人信息" description="出生日期只需精确到月份，计算结果按现行全国统一政策生成" tone="blue" />
 
       <div class="form-grid">
         <label class="field-block">
@@ -252,13 +247,7 @@ calculate()
       </section>
 
       <section v-if="result.policyApplies" class="flexible-section">
-        <div class="section-heading section-heading-spaced">
-          <div class="heading-icon heading-icon-violet"><el-icon><TrendCharts /></el-icon></div>
-          <div>
-            <h2>可选择的弹性退休区间</h2>
-            <p>提前退休需达到对应年份最低缴费年限，延迟退休需与单位协商一致</p>
-          </div>
-        </div>
+        <SectionHeading class="section-heading-spaced" :icon="TrendCharts" title="可选择的弹性退休区间" description="提前退休需达到对应年份最低缴费年限，延迟退休需与单位协商一致" tone="blue" />
         <div class="flexible-grid">
           <article>
             <div class="option-icon early"><el-icon><Timer /></el-icon></div>
@@ -285,13 +274,7 @@ calculate()
       </section>
 
       <section class="contribution-section">
-        <div class="section-heading section-heading-spaced">
-          <div class="heading-icon heading-icon-emerald"><el-icon><CircleCheck /></el-icon></div>
-          <div>
-            <h2>最低缴费年限预估</h2>
-            <p>2030年起由15年逐步提高至20年，每年增加6个月</p>
-          </div>
-        </div>
+        <SectionHeading class="section-heading-spaced" :icon="CircleCheck" title="最低缴费年限预估" description="2030年起由15年逐步提高至20年，每年增加6个月" tone="blue" />
         <div class="contribution-card" :class="contributionGap <= 0 ? 'enough' : 'shortfall'">
           <div>
             <span>{{ formatMonth(result.statutoryRetirementMonth) }} 对应最低年限</span>
@@ -310,16 +293,13 @@ calculate()
       </section>
 
       <section class="reference-section">
-        <div class="section-heading section-heading-spaced table-heading">
-          <div class="heading-icon heading-icon-amber"><el-icon><Document /></el-icon></div>
-          <div class="grow">
-            <h2>延迟退休年龄参考表</h2>
-            <p>同一行出生区间对应相同延迟月数；您的所属区间将以蓝色标记</p>
-          </div>
-          <el-button text type="primary" @click="showFullReference = !showFullReference">
-            {{ showFullReference ? '收起完整表' : '查看完整表' }}
-          </el-button>
-        </div>
+        <SectionHeading class="section-heading-spaced table-heading" :icon="Document" title="延迟退休年龄参考表" description="同一行出生区间对应相同延迟月数；您的所属区间将以蓝色标记" tone="blue">
+          <template #actions>
+            <el-button text type="primary" @click="showFullReference = !showFullReference">
+              {{ showFullReference ? '收起完整表' : '查看完整表' }}
+            </el-button>
+          </template>
+        </SectionHeading>
 
         <el-tabs :model-value="referenceCategory" class="reference-tabs" @tab-change="onReferenceTabChange">
           <el-tab-pane v-for="option in categoryOptions" :key="option.value" :label="option.shortLabel" :name="option.value" />
@@ -382,15 +362,7 @@ calculate()
   margin-bottom: 16px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 18px;
   background: #fff; box-shadow: 0 8px 24px rgba(15, 23, 42, .045);
 }
-.section-heading { display: flex; align-items: center; gap: 12px; }
 .section-heading-spaced { margin-bottom: 18px; }
-.section-heading h2 { margin: 0; color: #172033; font-size: 18px; font-weight: 700; }
-.section-heading p { margin: 3px 0 0; color: #94a3b8; font-size: 12px; }
-.heading-icon { width: 38px; height: 38px; flex: 0 0 38px; display: grid; place-items: center; border-radius: 12px; font-size: 19px; }
-.heading-icon-blue { color: #2563eb; background: #eff6ff; }
-.heading-icon-violet { color: #7c3aed; background: #f5f3ff; }
-.heading-icon-emerald { color: #059669; background: #ecfdf5; }
-.heading-icon-amber { color: #d97706; background: #fffbeb; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
 .field-block { display: flex; min-width: 0; flex-direction: column; gap: 7px; }
 .field-block > span, .category-label { color: #475569; font-size: 13px; font-weight: 650; }
@@ -473,7 +445,6 @@ calculate()
 .contribution-status strong { color: #047857; font-size: 13px; }
 .shortfall .contribution-status strong { color: #c2410c; }
 .contribution-status small { color: #94a3b8; font-size: 9px; }
-.grow { flex: 1; }
 .table-heading { align-items: center; }
 .reference-tabs :deep(.el-tabs__header) { margin-bottom: 12px; }
 .reference-tabs :deep(.el-tabs__item) { color: #64748b; font-size: 12px; }
@@ -505,7 +476,6 @@ calculate()
 :global(html.dark .retirement-page .flexible-section),
 :global(html.dark .retirement-page .contribution-section),
 :global(html.dark .retirement-page .reference-section) { border-color: #334155; background: #1e293b; box-shadow: none; }
-:global(html.dark .retirement-page .section-heading h2),
 :global(html.dark .retirement-page .hero-copy h2),
 :global(html.dark .retirement-page .timeline-card strong),
 :global(html.dark .retirement-page .flexible-grid article > strong),
@@ -513,10 +483,6 @@ calculate()
 :global(html.dark .retirement-page .policy-notes strong) { color: #e2e8f0; }
 :global(html.dark .retirement-page .field-block > span),
 :global(html.dark .retirement-page .category-label) { color: #cbd5e1; }
-:global(html.dark .retirement-page .heading-icon-blue) { color: #60a5fa; background: rgba(30,64,175,.28); }
-:global(html.dark .retirement-page .heading-icon-violet) { color: #a78bfa; background: rgba(91,33,182,.25); }
-:global(html.dark .retirement-page .heading-icon-emerald) { color: #34d399; background: rgba(6,95,70,.3); }
-:global(html.dark .retirement-page .heading-icon-amber) { color: #fbbf24; background: rgba(146,64,14,.25); }
 :global(html.dark .retirement-page .category-grid button),
 :global(html.dark .retirement-page .timeline-card),
 :global(html.dark .retirement-page .flexible-grid article) { border-color: #334155; color: #cbd5e1; background: #172033; }
@@ -535,14 +501,10 @@ calculate()
 :global(html.dark .retirement-page .table-summary) { color: #93c5fd; background: rgba(30,64,175,.22); }
 :global(html.dark .retirement-page .minimum-years-reference) { border-color: #334155; }
 :global(html.dark .retirement-page .year-chips div) { border-color: #334155; background: #172033; }
-:global(html.dark .retirement-page .year-chips strong) { color: #cbd5e1; }
-
-@media (max-width: 900px) {
+:global(html.dark .retirement-page .year-chips strong) { color: #cbd5e1; }@media (max-width: 900px) {
   .retirement-timeline { grid-template-columns: 1fr; gap: 9px; }
   .timeline-connector { width: 1px; height: 14px; margin-left: 18px; }
-  .year-chips { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (max-width: 760px) {
+  .year-chips { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 760px) {
   .calculator-card, .result-section, .flexible-section, .contribution-section, .reference-section { padding: 16px; border-radius: 14px; }
   .result-section { padding: 0; }
   .form-grid, .category-grid, .flexible-grid, .policy-notes { grid-template-columns: 1fr; }
@@ -555,10 +517,6 @@ calculate()
   .contribution-card > div + div { border-top: 1px solid rgba(148,163,184,.22); border-left: 0; }
   .table-heading { align-items: flex-start; flex-wrap: wrap; }
   .table-heading :deep(.el-button) { margin-left: 50px; }
-  .year-chips { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (max-width: 440px) {
+  .year-chips { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 440px) {
   .calculate-bar, .year-chips { grid-template-columns: 1fr 1fr; }
-  .reference-tabs :deep(.el-tabs__item) { padding: 0 10px; font-size: 11px; }
-}
-</style>
+  .reference-tabs :deep(.el-tabs__item) { padding: 0 10px; font-size: 11px; }}</style>

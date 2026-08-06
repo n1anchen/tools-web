@@ -4,6 +4,7 @@ import { Aim, Clock, Collection, Delete, MagicStick, RefreshRight } from '@eleme
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { parseDecisionOptions, pickDecision } from '@/utils/generators'
 
 type PresetKey = 'food' | 'activity' | 'custom'
@@ -113,13 +114,7 @@ onBeforeUnmount(() => {
 
     <div class="workspace-grid">
       <section class="settings-card">
-        <div class="section-heading">
-          <div class="heading-icon"><el-icon><Collection /></el-icon></div>
-          <div>
-            <h2>准备候选项</h2>
-            <p>每行一个选项，也兼容逗号分隔</p>
-          </div>
-        </div>
+        <SectionHeading :icon="Collection" title="准备候选项" description="每行一个选项，也兼容逗号分隔" tone="pink" />
 
         <div class="preset-tabs">
           <button
@@ -191,10 +186,7 @@ onBeforeUnmount(() => {
 
     <section v-if="history.length" class="history-card">
       <div class="history-header">
-        <div class="section-heading">
-          <div class="heading-icon green"><el-icon><Clock /></el-icon></div>
-          <div><h2>选择历史</h2><p>按最近顺序保留 8 次结果</p></div>
-        </div>
+        <SectionHeading :icon="Clock" title="选择历史" description="按最近顺序保留 8 次结果" tone="green" />
         <button type="button" @click="history = []">清空历史</button>
       </div>
       <div class="history-list">
@@ -222,10 +214,6 @@ onBeforeUnmount(() => {
 .settings-card, .decision-card, .history-card {padding: 24px}
 .history-header, .setting-row {display: flex; align-items: center;}
 
-.heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #db2777; background: #fdf2f8; font-size: 20px; }
-.heading-icon.green { color: #059669; background: #ecfdf5; }
-.section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
-.section-heading p { margin: 3px 0 0; color: #64748b; font-size: 13px; }
 .preset-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 21px; padding: 4px; border-radius: 12px; background: #f1f5f9; }
 .preset-tabs button { padding: 9px 7px; border-radius: 9px; color: #64748b; font-size: 12px; }
 .preset-tabs button.active { color: #be185d; background: #fff; box-shadow: 0 2px 8px rgba(15, 23, 42, .08); font-weight: 650; }
@@ -276,7 +264,4 @@ onBeforeUnmount(() => {
 :global(html.dark .decision-page .section-heading h2), :global(html.dark .decision-page .option-editor > span), :global(html.dark .decision-page .setting-row strong), :global(html.dark .decision-page .decision-result), :global(html.dark .decision-page .history-list strong), :global(html.dark .decision-page .guide-grid strong) { color: #e2e8f0; }
 :global(html.dark .decision-page .preset-tabs), :global(html.dark .decision-page .option-preview), :global(html.dark .decision-page .history-list > div), :global(html.dark .decision-page .guide-grid div) { background: #0f172a; }
 :global(html.dark .decision-page .preset-tabs button.active) { color: #f9a8d4; background: #334155; }
-:global(html.dark .decision-page .setting-row + .setting-row) { border-color: #334155; }
-@media (max-width: 900px) { .workspace-grid { grid-template-columns: 1fr; } .decision-card { min-height: 470px; } .history-list { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px) { .settings-card, .decision-card, .history-card { padding: 18px; } .preset-tabs { grid-template-columns: 1fr; } .option-editor > span { align-items: flex-start; flex-direction: column; gap: 3px; } .history-list, .guide-grid { grid-template-columns: 1fr; } }
-</style>
+:global(html.dark .decision-page .setting-row + .setting-row) { border-color: #334155; }@media (max-width: 900px) { .workspace-grid { grid-template-columns: 1fr; } .decision-card { min-height: 470px; } .history-list { grid-template-columns: repeat(2, 1fr); }}@media (max-width: 640px) { .settings-card, .decision-card, .history-card { padding: 18px; } .preset-tabs { grid-template-columns: 1fr; } .option-editor > span { align-items: flex-start; flex-direction: column; gap: 3px; } .history-list, .guide-grid { grid-template-columns: 1fr; }}</style>

@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { CopyDocument, Delete, Link, Promotion, RefreshRight, Switch } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { copy } from '@/utils/string'
 
 type Mode = 'encode' | 'decode'
@@ -82,13 +83,7 @@ function useExample(value: string) {
 
     <section class="workspace-card">
       <div class="mode-panel">
-        <div class="section-heading">
-          <div class="heading-icon"><el-icon><Link /></el-icon></div>
-          <div>
-            <h2>选择处理方式</h2>
-            <p>组件模式会编码保留字符，完整 URL 模式保留路径结构</p>
-          </div>
-        </div>
+        <SectionHeading :icon="Link" title="选择处理方式" description="组件模式会编码保留字符，完整 URL 模式保留路径结构" tone="blue" />
 
         <div class="mode-controls">
           <el-segmented
@@ -190,30 +185,6 @@ function useExample(value: string) {
 }
 
 
-
-.heading-icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  place-items: center;
-  border-radius: 13px;
-  color: #2563eb;
-  background: #eff6ff;
-  font-size: 20px;
-}
-
-.section-heading h2 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 18px;
-}
-
-.section-heading p {
-  margin: 3px 0 0;
-  color: #64748b;
-  font-size: 13px;
-}
 
 .mode-controls {
   flex-wrap: wrap;
@@ -374,11 +345,6 @@ function useExample(value: string) {
   color: #f1f5f9;
 }
 
-:global(html.dark .url-page .section-heading p),
-:global(html.dark .url-page .detail-grid p) {
-  color: #94a3b8;
-}
-
 :global(html.dark .url-page .editor-panel) {
   border-color: #334155;
   background: #111c2f;
@@ -408,9 +374,7 @@ function useExample(value: string) {
 :global(html.dark .url-page .error-message) {
   border-color: #7f1d1d;
   color: #fca5a5;
-}
-
-@media (max-width: 900px) {
+}@media (max-width: 900px) {
   .mode-panel {
     align-items: flex-start;
     flex-direction: column;
@@ -427,10 +391,7 @@ function useExample(value: string) {
 
   .direction-column {
     flex-direction: row;
-  }
-}
-
-@media (max-width: 640px) {
+  }}@media (max-width: 640px) {
   .workspace-card {
     padding: 18px;
     border-radius: 16px;
@@ -461,6 +422,4 @@ function useExample(value: string) {
 
   .detail-grid {
     grid-template-columns: 1fr;
-  }
-}
-</style>
+  }}</style>

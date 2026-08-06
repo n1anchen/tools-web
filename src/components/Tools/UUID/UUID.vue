@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import { v4 as uuidv4, v7 as uuidv7 } from 'uuid'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { formatUuid } from '@/utils/generators'
 import { copy } from '@/utils/string'
 
@@ -53,13 +54,7 @@ onMounted(generateAll)
     <ToolHero />
 
     <section class="workspace-card">
-      <div class="section-heading">
-        <div class="heading-icon"><el-icon><DataBoard /></el-icon></div>
-        <div>
-          <h2>生成规则</h2>
-          <p>选择 UUID 版本与输出格式，单次最多生成 100 条</p>
-        </div>
-      </div>
+      <SectionHeading :icon="DataBoard" title="生成规则" description="选择 UUID 版本与输出格式，单次最多生成 100 条" tone="blue" />
 
       <div class="version-grid">
         <button type="button" :class="{ active: version === 'v4' }" @click="selectVersion('v4')">
@@ -91,13 +86,7 @@ onMounted(generateAll)
 
     <section class="result-card">
       <div class="result-header">
-        <div class="section-heading">
-          <div class="heading-icon green"><el-icon><DocumentCopy /></el-icon></div>
-          <div>
-            <h2>UUID 列表</h2>
-            <p>{{ formattedUuids.length }} 条 · {{ formatLabel }}</p>
-          </div>
-        </div>
+        <SectionHeading :icon="DocumentCopy" title="UUID 列表" :description="formattedUuids.length + ' 条 · ' + formatLabel" tone="green" />
         <el-button :icon="CopyDocument" :disabled="!formattedUuids.length" @click="copyAll">复制全部</el-button>
       </div>
 
@@ -141,10 +130,6 @@ onMounted(generateAll)
 .workspace-card {padding: 24px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05);}
 .result-header, .control-grid {display: flex; align-items: center;}
 
-.heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #2563eb; background: #eff6ff; font-size: 20px; }
-.heading-icon.green { color: #059669; background: #ecfdf5; }
-.section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
-.section-heading p { margin: 3px 0 0; color: #64748b; font-size: 13px; }
 .version-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 22px; }
 .version-grid > button { display: flex; align-items: center; gap: 14px; padding: 17px; border: 1px solid #e2e8f0; border-radius: 15px; color: #334155; background: #f8fafc; text-align: left; transition: .2s ease; }
 .version-grid > button:hover { border-color: #93c5fd; transform: translateY(-1px); }
@@ -176,7 +161,4 @@ onMounted(generateAll)
 :global(html.dark .uuid-page .workspace-card), :global(html.dark .uuid-page .result-card) { border-color: #334155; background: #1e293b; box-shadow: none; }
 :global(html.dark .uuid-page .section-heading h2), :global(html.dark .uuid-page .version-grid strong), :global(html.dark .uuid-page .uuid-list code), :global(html.dark .uuid-page .reference-grid strong) { color: #e2e8f0; }
 :global(html.dark .uuid-page .version-grid > button), :global(html.dark .uuid-page .control-grid), :global(html.dark .uuid-page .uuid-list > button), :global(html.dark .uuid-page .reference-grid article) { border-color: #334155; background: #0f172a; }
-:global(html.dark .uuid-page .version-grid > button.active) { border-color: #3b82f6; background: rgba(30, 64, 175, .18); }
-@media (max-width: 760px) { .control-grid { align-items: stretch; flex-direction: column; gap: 14px; } .format-options { flex-wrap: wrap; gap: 4px 16px; } .control-grid > .el-button { align-self: stretch; } .reference-grid { grid-template-columns: 1fr; } }
-@media (max-width: 640px) { .workspace-card, .result-card { padding: 18px; } .version-grid { grid-template-columns: 1fr; } .uuid-list > button { grid-template-columns: 24px minmax(0, 1fr) 18px; } .row-version { display: none; } .result-header { align-items: flex-start; } }
-</style>
+:global(html.dark .uuid-page .version-grid > button.active) { border-color: #3b82f6; background: rgba(30, 64, 175, .18); }@media (max-width: 760px) { .control-grid { align-items: stretch; flex-direction: column; gap: 14px; } .format-options { flex-wrap: wrap; gap: 4px 16px; } .control-grid > .el-button { align-self: stretch; } .reference-grid { grid-template-columns: 1fr; }}@media (max-width: 640px) { .workspace-card, .result-card { padding: 18px; } .version-grid { grid-template-columns: 1fr; } .uuid-list > button { grid-template-columns: 24px minmax(0, 1fr) 18px; } .row-version { display: none; } .result-header { align-items: flex-start; }}</style>

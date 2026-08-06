@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { CopyDocument, DataAnalysis, Delete, Document, Reading, Timer } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { copy } from '@/utils/string'
 import { analyzeText } from '@/utils/textTools'
 
@@ -60,13 +61,7 @@ function useSample(value: string) {
 
     <section class="workspace-card">
       <div class="editor-header">
-        <div class="section-heading">
-          <div class="heading-icon"><el-icon><Document /></el-icon></div>
-          <div>
-            <h2>输入或粘贴文本</h2>
-            <p>内容变化时实时更新，不会上传文本</p>
-          </div>
-        </div>
+        <SectionHeading :icon="Document" title="输入或粘贴文本" description="内容变化时实时更新，不会上传文本" tone="blue" />
         <div class="editor-actions">
           <el-button :icon="CopyDocument" :disabled="!content" @click="copy(content)">复制文本</el-button>
           <el-button :icon="Delete" :disabled="!content" @click="content = ''">清空</el-button>
@@ -94,13 +89,7 @@ function useSample(value: string) {
     </section>
 
     <section class="statistics-card">
-      <div class="section-heading">
-        <div class="heading-icon green"><el-icon><DataAnalysis /></el-icon></div>
-        <div>
-          <h2>文本概览</h2>
-          <p>字符、结构与阅读时间的综合统计</p>
-        </div>
-      </div>
+      <SectionHeading :icon="DataAnalysis" title="文本概览" description="字符、结构与阅读时间的综合统计" tone="green" />
 
       <div class="primary-grid">
         <article v-for="item in primaryStats" :key="item.label" class="stat-card" :class="`tone-${item.tone}`">
@@ -180,32 +169,6 @@ function useSample(value: string) {
 }
 
 
-
-.heading-icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  place-items: center;
-  border-radius: 13px;
-  color: #2563eb;
-  background: #eff6ff;
-  font-size: 20px;
-}
-
-.heading-icon.green { color: #059669; background: #ecfdf5; }
-
-.section-heading h2 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 18px;
-}
-
-.section-heading p {
-  margin: 3px 0 0;
-  color: #64748b;
-  font-size: 13px;
-}
 
 .editor-actions { display: flex; gap: 8px; }
 .editor-actions :deep(.el-button + .el-button) { margin-left: 0; }
@@ -339,8 +302,6 @@ function useSample(value: string) {
 :global(html.dark .word-count-page .section-heading h2),
 :global(html.dark .word-count-page .panel-title),
 :global(html.dark .word-count-page .detail-copy strong) { color: #f1f5f9; }
-:global(html.dark .word-count-page .section-heading p),
-:global(html.dark .word-count-page .detail-copy p) { color: #94a3b8; }
 :global(html.dark .word-count-page .main-editor .el-textarea__inner) {
   color: #e2e8f0;
   background: #0b1324;
@@ -354,15 +315,10 @@ function useSample(value: string) {
 }
 :global(html.dark .word-count-page .secondary-grid div) { background: #0b1324; }
 :global(html.dark .word-count-page .secondary-grid strong) { color: #e2e8f0; }
-:global(html.dark .word-count-page .progress-track) { background: #334155; }
-
-@media (max-width: 1000px) {
+:global(html.dark .word-count-page .progress-track) { background: #334155; }@media (max-width: 1000px) {
   .primary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .analysis-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .reading-panel { grid-column: 1 / -1; }
-}
-
-@media (max-width: 640px) {
+  .reading-panel { grid-column: 1 / -1; }}@media (max-width: 640px) {
   .workspace-card,
   .statistics-card { padding: 18px; border-radius: 16px; }
   .editor-header,
@@ -373,6 +329,4 @@ function useSample(value: string) {
   .primary-grid,
   .analysis-grid,
   .detail-copy { grid-template-columns: 1fr; }
-  .reading-panel { grid-column: auto; }
-}
-</style>
+  .reading-panel { grid-column: auto; }}</style>

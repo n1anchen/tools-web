@@ -4,6 +4,7 @@ import { CircleCheck, CopyDocument, Key, Lock, RefreshRight, WarningFilled } fro
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { estimatePasswordEntropy, generatePassword } from '@/utils/generators'
 import { copy } from '@/utils/string'
 
@@ -82,13 +83,7 @@ onMounted(generateAll)
 
     <div class="workspace-grid">
       <section class="settings-card">
-        <div class="section-heading">
-          <div class="heading-icon"><el-icon><Key /></el-icon></div>
-          <div>
-            <h2>设置密码规则</h2>
-            <p>每条密码都会至少包含一次所选字符类型</p>
-          </div>
-        </div>
+        <SectionHeading :icon="Key" title="设置密码规则" description="每条密码都会至少包含一次所选字符类型" tone="violet" />
 
         <div class="field-label">字符组成</div>
         <div class="group-grid">
@@ -158,13 +153,7 @@ onMounted(generateAll)
 
     <section class="result-card">
       <div class="result-header">
-        <div class="section-heading">
-          <div class="heading-icon green"><el-icon><Lock /></el-icon></div>
-          <div>
-            <h2>生成结果</h2>
-            <p>{{ passwords.length }} 条密码 · 点击任意一条即可复制</p>
-          </div>
-        </div>
+        <SectionHeading :icon="Lock" title="生成结果" :description="(passwords.length) + ' 条密码 · 点击任意一条即可复制'" tone="green" />
         <el-button :icon="CopyDocument" :disabled="!passwords.length" @click="copyAll">复制全部</el-button>
       </div>
 
@@ -205,10 +194,6 @@ onMounted(generateAll)
 .settings-card, .result-card { padding: 24px; }
 .result-header, .switch-row {display: flex; align-items: center;}
 
-.heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #7c3aed; background: #f5f3ff; font-size: 20px; }
-.heading-icon.green { color: #059669; background: #ecfdf5; }
-.section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
-.section-heading p { margin: 3px 0 0; color: #64748b; font-size: 13px; }
 .field-label { margin: 24px 0 10px; color: #334155; font-size: 13px; font-weight: 650; }
 .group-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .group-option { position: relative; display: flex; min-height: 82px; flex-direction: column; justify-content: center; padding: 14px; border: 1px solid #e2e8f0; border-radius: 14px; color: #334155; background: #f8fafc; text-align: left; transition: .2s ease; }
@@ -259,7 +244,4 @@ onMounted(generateAll)
 :global(html.dark .password-page .group-option), :global(html.dark .password-page .switch-row), :global(html.dark .password-page .password-item), :global(html.dark .password-page .advice-grid div) { border-color: #334155; background: #0f172a; }
 :global(html.dark .password-page .group-option) { color: #e2e8f0; }
 :global(html.dark .password-page .group-option.active) { border-color: #8b5cf6; background: rgba(91, 33, 182, .18); }
-:global(html.dark .password-page .metric-list), :global(html.dark .password-page .metric-list div) { border-color: #334155; }
-@media (max-width: 900px) { .workspace-grid { grid-template-columns: 1fr; } .strength-card { min-height: auto; } .privacy-note { margin-top: 12px; } }
-@media (max-width: 640px) { .settings-card, .result-card { padding: 18px; } .group-grid, .password-list, .range-grid, .advice-grid { grid-template-columns: 1fr; } .group-grid { grid-template-columns: repeat(2, 1fr); } .result-header { align-items: flex-start; } }
-</style>
+:global(html.dark .password-page .metric-list), :global(html.dark .password-page .metric-list div) { border-color: #334155; }@media (max-width: 900px) { .workspace-grid { grid-template-columns: 1fr; } .strength-card { min-height: auto; } .privacy-note { margin-top: 12px; }}@media (max-width: 640px) { .settings-card, .result-card { padding: 18px; } .group-grid, .password-list, .range-grid, .advice-grid { grid-template-columns: 1fr; } .group-grid { grid-template-columns: repeat(2, 1fr); } .result-header { align-items: flex-start; }}</style>

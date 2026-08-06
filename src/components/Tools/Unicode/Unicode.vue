@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { Connection, CopyDocument, Grid, MagicStick, Switch } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { copy } from '@/utils/string'
 import { decodeUnicode, encodeUnicode, type UnicodeFormat } from '@/utils/textTools'
 
@@ -50,13 +51,7 @@ function useSample(sample: typeof samples[number]) {
 
     <section class="workspace-card">
       <div class="settings-header">
-        <div class="section-heading">
-          <div class="heading-icon"><el-icon><Connection /></el-icon></div>
-          <div>
-            <h2>Unicode 编码转换</h2>
-            <p>支持 JavaScript 转义、Unicode 码点和 Emoji</p>
-          </div>
-        </div>
+        <SectionHeading :icon="Connection" title="Unicode 编码转换" description="支持 JavaScript 转义、Unicode 码点和 Emoji" tone="blue" />
         <el-segmented
           v-model="mode"
           :options="[
@@ -114,13 +109,7 @@ function useSample(sample: typeof samples[number]) {
     </section>
 
     <section class="inspector-card">
-      <div class="section-heading">
-        <div class="heading-icon green"><el-icon><Grid /></el-icon></div>
-        <div>
-          <h2>字符码点检查</h2>
-          <p>显示前 10 个转换后字符的码点和 UTF-16 表示</p>
-        </div>
-      </div>
+      <SectionHeading :icon="Grid" title="字符码点检查" description="显示前 10 个转换后字符的码点和 UTF-16 表示" tone="green" />
 
       <div v-if="characterRows.length" class="character-grid">
         <article v-for="(row, index) in characterRows" :key="`${row.codePoint}-${index}`">
@@ -152,20 +141,6 @@ function useSample(sample: typeof samples[number]) {
 .settings-header, .option-row, .editor-title, .sample-row {display: flex; align-items: center;}
 .settings-header { justify-content: space-between; gap: 18px; }
 
-.heading-icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  place-items: center;
-  border-radius: 13px;
-  color: #2563eb;
-  background: #eff6ff;
-  font-size: 20px;
-}
-.heading-icon.green { color: #059669; background: #ecfdf5; }
-.section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
-.section-heading p { margin: 3px 0 0; color: #64748b; font-size: 13px; }
 .option-row {
   flex-wrap: wrap;
   gap: 12px 22px;
@@ -271,8 +246,6 @@ function useSample(sample: typeof samples[number]) {
 :global(html.dark .unicode-page .section-heading h2),
 :global(html.dark .unicode-page .editor-title strong),
 :global(html.dark .unicode-page .detail-grid h4) { color: #f1f5f9; }
-:global(html.dark .unicode-page .section-heading p),
-:global(html.dark .unicode-page .detail-grid p) { color: #94a3b8; }
 :global(html.dark .unicode-page .option-row),
 :global(html.dark .unicode-page .editor-panel),
 :global(html.dark .unicode-page .character-grid article),
@@ -283,17 +256,11 @@ function useSample(sample: typeof samples[number]) {
   background: #0b1324;
   box-shadow: 0 0 0 1px #334155 inset;
 }
-:global(html.dark .unicode-page .character-grid strong) { color: #e2e8f0; }
-
-@media (max-width: 1000px) {
-  .character-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (max-width: 900px) {
+:global(html.dark .unicode-page .character-grid strong) { color: #e2e8f0; }@media (max-width: 1000px) {
+  .character-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 900px) {
   .settings-header { align-items: flex-start; flex-direction: column; }
   .editor-grid { grid-template-columns: 1fr; }
-  .direction-column { flex-direction: row; }
-}
-@media (max-width: 640px) {
+  .direction-column { flex-direction: row; }}@media (max-width: 640px) {
   .workspace-card,
   .inspector-card { padding: 18px; border-radius: 16px; }
   .settings-header :deep(.el-segmented) { width: 100%; }
@@ -304,6 +271,4 @@ function useSample(sample: typeof samples[number]) {
   .option-row :deep(.el-radio-button__inner) { width: 100%; font-size: 12px; }
   .editor-panel :deep(.el-textarea__inner) { min-height: 215px !important; }
   .character-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .detail-grid { grid-template-columns: 1fr; }
-}
-</style>
+  .detail-grid { grid-template-columns: 1fr; }}</style>

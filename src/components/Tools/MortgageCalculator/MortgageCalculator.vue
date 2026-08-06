@@ -14,6 +14,7 @@ import {
 } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import {
   buildExtraPaymentScenario,
   buildHoldingSnapshot,
@@ -306,13 +307,7 @@ calculate()
     <ToolHero />
 
     <section class="calculator-card">
-      <div class="section-heading">
-        <div class="heading-icon heading-icon-blue"><el-icon><House /></el-icon></div>
-        <div>
-          <h2>购房与贷款信息</h2>
-          <p>金额均以万元填写，利率按年利率计算</p>
-        </div>
-      </div>
+      <SectionHeading :icon="House" title="购房与贷款信息" description="金额均以万元填写，利率按年利率计算" tone="blue" />
 
       <div class="input-grid">
         <label class="field-block">
@@ -370,13 +365,7 @@ calculate()
 
     <template v-if="plans">
       <section class="results-section">
-        <div class="section-heading section-heading-spaced">
-          <div class="heading-icon heading-icon-violet"><el-icon><Wallet /></el-icon></div>
-          <div>
-            <h2>两种还款方案</h2>
-            <p>同一组贷款条件下同时计算，便于直接比较</p>
-          </div>
-        </div>
+        <SectionHeading class="section-heading-spaced" :icon="Wallet" title="两种还款方案" description="同一组贷款条件下同时计算，便于直接比较" tone="blue" />
 
         <div class="plan-grid">
           <article v-for="card in resultCards" :key="card.key" class="plan-card" :class="`plan-${card.key}`">
@@ -413,23 +402,20 @@ calculate()
       </section>
 
       <section class="schedule-card">
-        <div class="section-heading section-heading-spaced schedule-heading">
-          <div class="heading-icon heading-icon-cyan"><el-icon><Calendar /></el-icon></div>
-          <div class="grow">
-            <h2>逐月还款明细</h2>
-            <p>组合贷已按两部分贷款逐月汇总</p>
-          </div>
-          <div class="schedule-filters">
-            <el-radio-group :model-value="scheduleMethod" size="small" @change="setScheduleMethod">
-              <el-radio-button value="annuity">等额本息</el-radio-button>
-              <el-radio-button value="equalPrincipal">等额本金</el-radio-button>
-            </el-radio-group>
-            <el-select v-model="scheduleYear" size="small" class="year-select">
-              <el-option label="全部年份" :value="0" />
-              <el-option v-for="year in scheduleYears" :key="year" :label="`第 ${year} 年`" :value="year" />
-            </el-select>
-          </div>
-        </div>
+        <SectionHeading class="section-heading-spaced schedule-heading" :icon="Calendar" title="逐月还款明细" description="组合贷已按两部分贷款逐月汇总" tone="blue">
+          <template #actions>
+            <div class="schedule-filters">
+              <el-radio-group :model-value="scheduleMethod" size="small" @change="setScheduleMethod">
+                <el-radio-button value="annuity">等额本息</el-radio-button>
+                <el-radio-button value="equalPrincipal">等额本金</el-radio-button>
+              </el-radio-group>
+              <el-select v-model="scheduleYear" size="small" class="year-select">
+                <el-option label="全部年份" :value="0" />
+                <el-option v-for="year in scheduleYears" :key="year" :label="`第 ${year} 年`" :value="year" />
+              </el-select>
+            </div>
+          </template>
+        </SectionHeading>
         <el-table :data="visibleSchedule" stripe height="460" class="schedule-table">
           <el-table-column label="期数" min-width="130" fixed>
             <template #default="scope">{{ periodLabel(scope.row.month) }}</template>
@@ -450,13 +436,7 @@ calculate()
       </section>
 
       <section class="scenario-section">
-        <div class="section-heading section-heading-spaced">
-          <div class="heading-icon heading-icon-amber"><el-icon><Coin /></el-icon></div>
-          <div>
-            <h2>假设情景分析</h2>
-            <p>对利率、提前还款、月度预算和房价变化进行压力测试</p>
-          </div>
-        </div>
+        <SectionHeading class="section-heading-spaced" :icon="Coin" tone="amber" title="假设情景分析" description="对利率、提前还款、月度预算和房价变化进行压力测试" />
 
         <el-tabs v-model="activeScenario" class="scenario-tabs">
           <el-tab-pane label="利率变化" name="rate">
@@ -585,18 +565,7 @@ calculate()
   background: #fff;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.045);
 }
-.section-heading { display: flex; align-items: center; gap: 12px; }
 .section-heading-spaced { margin-bottom: 18px; }
-.section-heading h2 { margin: 0; color: #172033; font-size: 18px; font-weight: 700; }
-.section-heading p { margin: 3px 0 0; color: #94a3b8; font-size: 12px; }
-.heading-icon {
-  width: 38px; height: 38px; flex: 0 0 38px; display: grid; place-items: center;
-  border-radius: 12px; font-size: 19px;
-}
-.heading-icon-blue { color: #2563eb; background: #eff6ff; }
-.heading-icon-violet { color: #7c3aed; background: #f5f3ff; }
-.heading-icon-cyan { color: #0891b2; background: #ecfeff; }
-.heading-icon-amber { color: #d97706; background: #fffbeb; }
 .input-grid {
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 16px;
   margin-top: 22px;
@@ -651,7 +620,6 @@ calculate()
 .comparison-note strong { font-size: 13px; }
 .comparison-note span { color: #5f8e7d; font-size: 11px; }
 .schedule-heading { align-items: center; }
-.grow { flex: 1; }
 .schedule-filters { display: flex; align-items: center; gap: 10px; }
 .year-select { width: 116px; }
 .schedule-card :deep(.el-table) { --el-table-border-color: #eef2f7; border-radius: 12px; }
@@ -695,7 +663,6 @@ calculate()
 :global(html.dark .mortgage-page .results-section),
 :global(html.dark .mortgage-page .schedule-card),
 :global(html.dark .mortgage-page .scenario-section) { border-color: #334155; background: #1e293b; box-shadow: none; }
-:global(html.dark .mortgage-page .section-heading h2),
 :global(html.dark .mortgage-page .plan-card-head h3),
 :global(html.dark .mortgage-page .payment-hero strong),
 :global(html.dark .mortgage-page .scenario-controls h3),
@@ -704,10 +671,6 @@ calculate()
 :global(html.dark .mortgage-page .explanation-grid strong) { color: #e2e8f0; }
 :global(html.dark .mortgage-page .field-block > span),
 :global(html.dark .mortgage-page .metric-grid strong) { color: #cbd5e1; }
-:global(html.dark .mortgage-page .heading-icon-blue) { color: #60a5fa; background: rgba(30, 64, 175, .28); }
-:global(html.dark .mortgage-page .heading-icon-violet) { color: #a78bfa; background: rgba(91, 33, 182, .25); }
-:global(html.dark .mortgage-page .heading-icon-cyan) { color: #22d3ee; background: rgba(14, 116, 144, .25); }
-:global(html.dark .mortgage-page .heading-icon-amber) { color: #fbbf24; background: rgba(146, 64, 14, .25); }
 :global(html.dark .mortgage-page .loan-preview) { border-color: #1e3a5f; background: linear-gradient(110deg, #172033, #172554); }
 :global(html.dark .mortgage-page .loan-preview strong) { color: #bfdbfe; }
 :global(html.dark .mortgage-page .plan-card),
@@ -720,13 +683,9 @@ calculate()
 :global(html.dark .mortgage-page .comparison-note) { border-color: #14532d; color: #6ee7b7; background: rgba(6, 78, 59, .25); }
 :global(html.dark .mortgage-page .comparison-note span) { color: #6b9e8b; }
 :global(html.dark .mortgage-page .mode-selector button) { border-color: #334155; color: #cbd5e1; background: #0f172a; }
-:global(html.dark .mortgage-page .mode-selector button.active) { border-color: #3b82f6; color: #93c5fd; background: rgba(30, 64, 175, .25); }
-
-@media (max-width: 1100px) {
+:global(html.dark .mortgage-page .mode-selector button.active) { border-color: #3b82f6; color: #93c5fd; background: rgba(30, 64, 175, .25); }@media (max-width: 1100px) {
   .input-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .scenario-layout { grid-template-columns: 1fr; }
-}
-@media (max-width: 760px) {
+  .scenario-layout { grid-template-columns: 1fr; }}@media (max-width: 760px) {
   .calculator-card, .results-section, .schedule-card, .scenario-section { padding: 16px; border-radius: 14px; }
   .input-grid, .plan-grid { grid-template-columns: 1fr; }
   .loan-preview { grid-template-columns: repeat(3, 1fr); }
@@ -734,9 +693,7 @@ calculate()
   .schedule-heading { align-items: flex-start; flex-wrap: wrap; }
   .schedule-filters { width: 100%; justify-content: space-between; }
   .scenario-results { grid-template-columns: 1fr; }
-  .explanation-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 480px) {
+  .explanation-grid { grid-template-columns: 1fr; }}@media (max-width: 480px) {
   .input-grid, .control-grid, .control-grid-dense { grid-template-columns: 1fr; }
   .loan-preview { grid-template-columns: 1fr 1fr; }
   .loan-preview > div:last-of-type { grid-column: 1 / -1; }
@@ -744,6 +701,4 @@ calculate()
   .schedule-filters { align-items: stretch; flex-direction: column; }
   .schedule-filters :deep(.el-radio-group), .year-select { width: 100%; }
   .schedule-filters :deep(.el-radio-button) { flex: 1; }
-  .schedule-filters :deep(.el-radio-button__inner) { width: 100%; }
-}
-</style>
+  .schedule-filters :deep(.el-radio-button__inner) { width: 100%; }}</style>

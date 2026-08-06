@@ -4,6 +4,7 @@ import { CopyDocument, DataAnalysis, Delete, Filter, Search, TrendCharts } from 
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { copy } from '@/utils/string'
 import { analyzeWordFrequency } from '@/utils/textTools'
 
@@ -68,13 +69,7 @@ function copyAll() {
 
     <section class="workspace-card">
       <div class="workspace-header">
-        <div class="section-heading">
-          <div class="heading-icon"><el-icon><DataAnalysis /></el-icon></div>
-          <div>
-            <h2>输入分析文本</h2>
-            <p>使用浏览器智能分词，同时识别中文词语和英文单词</p>
-          </div>
-        </div>
+        <SectionHeading :icon="DataAnalysis" title="输入分析文本" description="使用浏览器智能分词，同时识别中文词语和英文单词" tone="blue" />
         <div>
           <el-button text @click="loadSample">载入示例</el-button>
           <el-button text :icon="Delete" :disabled="!inputText" @click="clearAll">清空</el-button>
@@ -126,10 +121,7 @@ function copyAll() {
 
       <div v-if="result.items.length" class="result-grid">
         <section class="chart-card">
-          <div class="section-heading">
-            <div class="heading-icon violet"><el-icon><TrendCharts /></el-icon></div>
-            <div><h2>高频词概览</h2><p>按出现次数展示前 10 个词语</p></div>
-          </div>
+          <SectionHeading :icon="TrendCharts" title="高频词概览" description="按出现次数展示前 10 个词语" tone="blue" />
           <div class="bar-chart">
             <div v-for="(item, index) in chartItems" :key="item.word" class="bar-row">
               <span>{{ index + 1 }}</span>
@@ -142,10 +134,7 @@ function copyAll() {
 
         <section class="ranking-card">
           <div class="ranking-header">
-            <div class="section-heading">
-              <div class="heading-icon green"><el-icon><Filter /></el-icon></div>
-              <div><h2>完整排行</h2><p>当前显示 {{ filteredItems.length }} 个词语</p></div>
-            </div>
+            <SectionHeading :icon="Filter" title="完整排行" :description="'当前显示 ' + (filteredItems.length) + ' 个词语'" tone="green" />
             <el-button :icon="CopyDocument" :disabled="!filteredItems.length" @click="copyAll">复制表格</el-button>
           </div>
 
@@ -191,10 +180,6 @@ function copyAll() {
 .workspace-header, .analysis-settings, .ranking-header {display: flex; align-items: center;}
 .workspace-header, .ranking-header { justify-content: space-between; gap: 18px; }
 
-.heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #2563eb; background: #eff6ff; font-size: 20px; }
-.heading-icon.violet { color: #7c3aed; background: #f5f3ff; } .heading-icon.green { color: #059669; background: #ecfdf5; }
-.section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
-.section-heading p { margin: 3px 0 0; color: #64748b; font-size: 13px; }
 .workspace-card > :deep(.el-textarea) { margin-top: 20px; }
 .workspace-card :deep(.el-textarea__inner) { font: 13px/1.75 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .analysis-settings { gap: 14px; margin-top: 16px; padding: 15px; border-radius: 14px; background: #f8fafc; }
@@ -238,7 +223,4 @@ function copyAll() {
 :global(html.dark .frequency-page .section-heading h2), :global(html.dark .frequency-page .analysis-settings label > span), :global(html.dark .frequency-page .stop-word-field > span), :global(html.dark .frequency-page .metric-grid strong), :global(html.dark .frequency-page .bar-row > strong), :global(html.dark .frequency-page .ranking-table strong), :global(html.dark .frequency-page .guide-grid strong) { color: #e2e8f0; }
 :global(html.dark .frequency-page .analysis-settings), :global(html.dark .frequency-page .guide-grid div), :global(html.dark .frequency-page .table-head) { background: #0f172a; }
 :global(html.dark .frequency-page .ranking-table) { border-color: #334155; }
-:global(html.dark .frequency-page .ranking-table > button) { border-color: #334155; background: #111c2f; }
-@media (max-width: 960px) { .analysis-settings { display: grid; grid-template-columns: repeat(2, 1fr); } .analysis-settings label { width: auto; } .check-options { align-items: flex-start; flex-direction: column; gap: 0; } .result-grid { grid-template-columns: 1fr; } }
-@media (max-width: 640px) { .workspace-card, .chart-card, .ranking-card { padding: 18px; } .workspace-header, .ranking-header { align-items: flex-start; flex-direction: column; } .analysis-settings, .metric-grid { grid-template-columns: 1fr 1fr; } .analysis-settings > .el-button, .check-options { grid-column: span 2; } .metric-grid > div { padding: 15px; } .bar-row { grid-template-columns: 18px 70px minmax(60px, 1fr) 28px; } .table-head, .ranking-table > button { grid-template-columns: 28px minmax(80px, 1fr) 45px 18px; } .table-head span:nth-child(4), .ranking-table > button > span:nth-child(4) { display: none; } .guide-grid { grid-template-columns: 1fr; } }
-</style>
+:global(html.dark .frequency-page .ranking-table > button) { border-color: #334155; background: #111c2f; }@media (max-width: 960px) { .analysis-settings { display: grid; grid-template-columns: repeat(2, 1fr); } .analysis-settings label { width: auto; } .check-options { align-items: flex-start; flex-direction: column; gap: 0; } .result-grid { grid-template-columns: 1fr; }}@media (max-width: 640px) { .workspace-card, .chart-card, .ranking-card { padding: 18px; } .workspace-header, .ranking-header { align-items: flex-start; flex-direction: column; } .analysis-settings, .metric-grid { grid-template-columns: 1fr 1fr; } .analysis-settings > .el-button, .check-options { grid-column: span 2; } .metric-grid > div { padding: 15px; } .bar-row { grid-template-columns: 18px 70px minmax(60px, 1fr) 28px; } .table-head, .ranking-table > button { grid-template-columns: 28px minmax(80px, 1fr) 45px 18px; } .table-head span:nth-child(4), .ranking-table > button > span:nth-child(4) { display: none; } .guide-grid { grid-template-columns: 1fr; }}</style>

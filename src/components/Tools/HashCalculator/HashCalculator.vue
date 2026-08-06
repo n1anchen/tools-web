@@ -6,6 +6,7 @@ import { Md5 } from 'ts-md5'
 import CryptoJS from 'crypto-js'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { copy } from '@/utils/string'
 
 type OutputFormat = 'hex' | 'base64'
@@ -138,13 +139,7 @@ function copyResult() {
     <section class="workspace-card">
       <div class="workspace-grid">
         <div class="input-column">
-          <div class="section-heading">
-            <div class="heading-icon"><el-icon><MagicStick /></el-icon></div>
-            <div>
-              <h2>输入与算法</h2>
-              <p>内容变化后自动重新计算，无需手动提交</p>
-            </div>
-          </div>
+          <SectionHeading :icon="MagicStick" title="输入与算法" description="内容变化后自动重新计算，无需手动提交" tone="violet" />
 
           <label class="field-block">
             <span>待计算文本</span>
@@ -201,13 +196,7 @@ function copyResult() {
 
     <section class="result-card">
       <div class="result-header">
-        <div class="section-heading">
-          <div class="heading-icon green"><el-icon><DocumentChecked /></el-icon></div>
-          <div>
-            <h2>{{ algorithm }} 结果</h2>
-            <p>{{ outputFormat === 'hex' ? '十六进制摘要' : 'Base64 摘要' }}</p>
-          </div>
-        </div>
+        <SectionHeading :icon="DocumentChecked" :title="(algorithm) + ' 结果'" :description="outputFormat === 'hex' ? '十六进制摘要' : 'Base64 摘要'" tone="green" />
         <el-button type="primary" :icon="CopyDocument" :disabled="!displayResult" @click="copyResult">复制结果</el-button>
       </div>
 
@@ -270,35 +259,6 @@ function copyResult() {
   align-items: center;}
 
 
-
-.heading-icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  place-items: center;
-  border-radius: 13px;
-  color: #7c3aed;
-  background: #f5f3ff;
-  font-size: 20px;
-}
-
-.heading-icon.green {
-  color: #059669;
-  background: #ecfdf5;
-}
-
-.section-heading h2 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 18px;
-}
-
-.section-heading p {
-  margin: 3px 0 0;
-  color: #64748b;
-  font-size: 13px;
-}
 
 .field-block {
   display: block;
@@ -513,11 +473,6 @@ function copyResult() {
   color: #f1f5f9;
 }
 
-:global(html.dark .hash-page .section-heading p),
-:global(html.dark .hash-page .detail-grid p) {
-  color: #94a3b8;
-}
-
 :global(html.dark .hash-page .settings-panel) {
   border-color: #334155;
   background: #111c2f;
@@ -552,15 +507,10 @@ function copyResult() {
 :global(html.dark .hash-page .security-note.warning) {
   color: #fdba74;
   background: #3b1f0d;
-}
-
-@media (max-width: 900px) {
+}@media (max-width: 900px) {
   .workspace-grid {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
+  }}@media (max-width: 640px) {
   .workspace-card,
   .result-card {
     padding: 18px;
@@ -578,6 +528,4 @@ function copyResult() {
 
   .detail-grid {
     grid-template-columns: 1fr;
-  }
-}
-</style>
+  }}</style>

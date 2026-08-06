@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { Connection, CopyDocument, Document, Grid, Lock, Switch } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { copy } from '@/utils/string'
 import { countHtmlEntityChanges, decodeHtmlEntities, encodeHtmlEntities } from '@/utils/textTools'
 
@@ -53,13 +54,7 @@ function useSample(sample: typeof samples[number]) {
 
     <section class="workspace-card">
       <div class="settings-header">
-        <div class="section-heading">
-          <div class="heading-icon"><el-icon><Document /></el-icon></div>
-          <div>
-            <h2>HTML 实体转换</h2>
-            <p>安全处理标签、引号、与号以及数字实体</p>
-          </div>
-        </div>
+        <SectionHeading :icon="Document" title="HTML 实体转换" description="安全处理标签、引号、与号以及数字实体" tone="pink" />
         <el-segmented
           v-model="mode"
           :options="[
@@ -111,13 +106,7 @@ function useSample(sample: typeof samples[number]) {
 
     <section class="reference-card">
       <div class="reference-header">
-        <div class="section-heading">
-          <div class="heading-icon green"><el-icon><Grid /></el-icon></div>
-          <div>
-            <h2>常用实体对照</h2>
-            <p>点击任意实体即可复制</p>
-          </div>
-        </div>
+        <SectionHeading :icon="Grid" title="常用实体对照" description="点击任意实体即可复制" tone="green" />
         <div class="safety-badge"><el-icon><Lock /></el-icon> 结果仅以纯文本显示</div>
       </div>
 
@@ -151,20 +140,6 @@ function useSample(sample: typeof samples[number]) {
 .settings-header,
 .reference-header { justify-content: space-between; gap: 18px; }
 
-.heading-icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  place-items: center;
-  border-radius: 13px;
-  color: #db2777;
-  background: #fdf2f8;
-  font-size: 20px;
-}
-.heading-icon.green { color: #059669; background: #ecfdf5; }
-.section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
-.section-heading p { margin: 3px 0 0; color: #64748b; font-size: 13px; }
 .status-row {
   min-height: 43px;
   justify-content: space-between;
@@ -268,8 +243,6 @@ function useSample(sample: typeof samples[number]) {
 :global(html.dark .entity-page .section-heading h2),
 :global(html.dark .entity-page .editor-title strong),
 :global(html.dark .entity-page .detail-grid h4) { color: #f1f5f9; }
-:global(html.dark .entity-page .section-heading p),
-:global(html.dark .entity-page .detail-grid p) { color: #94a3b8; }
 :global(html.dark .entity-page .status-row),
 :global(html.dark .entity-page .editor-panel),
 :global(html.dark .entity-page .entity-grid button) { border-color: #334155; background: #111c2f; }
@@ -279,17 +252,11 @@ function useSample(sample: typeof samples[number]) {
   background: #0b1324;
   box-shadow: 0 0 0 1px #334155 inset;
 }
-:global(html.dark .entity-page .entity-grid code) { color: #e2e8f0; }
-
-@media (max-width: 1000px) {
-  .entity-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (max-width: 900px) {
+:global(html.dark .entity-page .entity-grid code) { color: #e2e8f0; }@media (max-width: 1000px) {
+  .entity-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 900px) {
   .settings-header { align-items: flex-start; flex-direction: column; }
   .editor-grid { grid-template-columns: 1fr; }
-  .direction-column { flex-direction: row; }
-}
-@media (max-width: 640px) {
+  .direction-column { flex-direction: row; }}@media (max-width: 640px) {
   .workspace-card,
   .reference-card { padding: 18px; border-radius: 16px; }
   .settings-header :deep(.el-segmented) { width: 100%; }
@@ -298,6 +265,4 @@ function useSample(sample: typeof samples[number]) {
   .status-row > span { margin-left: 0; }
   .editor-panel :deep(.el-textarea__inner) { min-height: 215px !important; }
   .entity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .detail-grid { grid-template-columns: 1fr; }
-}
-</style>
+  .detail-grid { grid-template-columns: 1fr; }}</style>

@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { Collection, CopyDocument, DataLine, Files, InfoFilled } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { copy } from '@/utils/string'
 
 type Standard = 'binary' | 'decimal'
@@ -84,13 +85,7 @@ function copyAll() {
     <ToolHero />
 
     <section class="workspace-card">
-      <div class="section-heading">
-        <div class="heading-icon"><el-icon><Files /></el-icon></div>
-        <div>
-          <h2>设置原始容量</h2>
-          <p>输入一次，同时查看 bit 到 EB 的全部换算结果</p>
-        </div>
-      </div>
+      <SectionHeading :icon="Files" title="设置原始容量" description="输入一次，同时查看 bit 到 EB 的全部换算结果" tone="blue" />
 
       <div class="control-grid">
         <label class="field-block value-field">
@@ -130,13 +125,7 @@ function copyAll() {
 
     <section class="results-card">
       <div class="result-header">
-        <div class="section-heading">
-          <div class="heading-icon green"><el-icon><DataLine /></el-icon></div>
-          <div>
-            <h2>换算结果</h2>
-            <p>{{ standardLabel }} · 自动保留有效小数</p>
-          </div>
-        </div>
+        <SectionHeading :icon="DataLine" title="换算结果" :description="(standardLabel) + ' · 自动保留有效小数'" tone="green" />
         <el-button :icon="CopyDocument" :disabled="!results.length" @click="copyAll">复制全部</el-button>
       </div>
 
@@ -210,35 +199,6 @@ function copyAll() {
   align-items: center;}
 
 
-
-.heading-icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  place-items: center;
-  border-radius: 13px;
-  color: #2563eb;
-  background: #eff6ff;
-  font-size: 20px;
-}
-
-.heading-icon.green {
-  color: #059669;
-  background: #ecfdf5;
-}
-
-.section-heading h2 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 18px;
-}
-
-.section-heading p {
-  margin: 3px 0 0;
-  color: #64748b;
-  font-size: 13px;
-}
 
 .control-grid {
   display: grid;
@@ -442,11 +402,6 @@ function copyAll() {
   color: #f1f5f9;
 }
 
-:global(html.dark .storage-page .section-heading p),
-:global(html.dark .storage-page .reference-card p) {
-  color: #94a3b8;
-}
-
 :global(html.dark .storage-page .result-summary) {
   border-color: #1e3a5f;
   color: #94a3b8;
@@ -471,9 +426,7 @@ function copyAll() {
 
 :global(html.dark .storage-page .result-value) {
   color: #e2e8f0;
-}
-
-@media (max-width: 900px) {
+}@media (max-width: 900px) {
   .control-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -484,10 +437,7 @@ function copyAll() {
 
   .result-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 640px) {
+  }}@media (max-width: 640px) {
   .workspace-card,
   .results-card {
     padding: 18px;
@@ -515,6 +465,4 @@ function copyAll() {
 
   .result-grid {
     grid-template-columns: 1fr;
-  }
-}
-</style>
+  }}</style>

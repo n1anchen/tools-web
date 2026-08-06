@@ -4,6 +4,7 @@ import { CopyDocument, DataAnalysis, MagicStick, RefreshRight, SetUp } from '@el
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { generateRandomIntegers } from '@/utils/generators'
 import { copy } from '@/utils/string'
 
@@ -86,13 +87,7 @@ onMounted(generate)
     <ToolHero />
 
     <section class="workspace-card">
-      <div class="section-heading">
-        <div class="heading-icon"><el-icon><SetUp /></el-icon></div>
-        <div>
-          <h2>设置随机范围</h2>
-          <p>支持负整数、批量生成与不重复抽取</p>
-        </div>
-      </div>
+      <SectionHeading :icon="SetUp" title="设置随机范围" description="支持负整数、批量生成与不重复抽取" tone="orange" />
 
       <div class="preset-row">
         <span>快捷场景</span>
@@ -125,13 +120,7 @@ onMounted(generate)
 
     <section class="result-card">
       <div class="result-header">
-        <div class="section-heading">
-          <div class="heading-icon green"><el-icon><DataAnalysis /></el-icon></div>
-          <div>
-            <h2>生成结果</h2>
-            <p>{{ results.length }} 个整数 · 密码学安全随机源</p>
-          </div>
-        </div>
+        <SectionHeading :icon="DataAnalysis" title="生成结果" :description="(results.length) + ' 个整数 · 密码学安全随机源'" tone="green" />
         <div class="result-actions">
           <el-button :icon="RefreshRight" @click="generate">再生成一次</el-button>
           <el-button :icon="CopyDocument" :disabled="!results.length" @click="copyResults()">复制结果</el-button>
@@ -186,10 +175,6 @@ onMounted(generate)
 .workspace-card {padding: 24px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05);}
 .result-header, .preset-row, .control-grid, .unique-control, .history-header {display: flex; align-items: center;}
 
-.heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #ea580c; background: #fff7ed; font-size: 20px; }
-.heading-icon.green { color: #059669; background: #ecfdf5; }
-.section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
-.section-heading p { margin: 3px 0 0; color: #64748b; font-size: 13px; }
 .preset-row { gap: 8px; margin-top: 20px; }
 .preset-row > span { margin-right: 3px; color: #64748b; font-size: 12px; }
 .preset-row button { padding: 6px 11px; border: 1px solid #e2e8f0; border-radius: 999px; color: #475569; background: #f8fafc; font-size: 12px; }
@@ -240,7 +225,4 @@ onMounted(generate)
 :global(html.dark .random-page .section-heading h2), :global(html.dark .random-page .unique-control strong), :global(html.dark .random-page .summary-row strong), :global(html.dark .random-page .history-header strong), :global(html.dark .random-page .history-list code), :global(html.dark .random-page .guide-grid strong) { color: #e2e8f0; }
 :global(html.dark .random-page .control-grid), :global(html.dark .random-page .preset-row button), :global(html.dark .random-page .history-list button), :global(html.dark .random-page .guide-grid div) { border-color: #334155; background: #0f172a; }
 :global(html.dark .random-page .single-result) { background: radial-gradient(circle at 50% 10%, rgba(154, 52, 18, .25), #0f172a 65%); }
-:global(html.dark .random-page .summary-row), :global(html.dark .random-page .summary-row div) { border-color: #334155; }
-@media (max-width: 900px) { .control-grid { display: grid; grid-template-columns: 1fr 24px 1fr; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: span 1; } .control-grid > .el-button { align-self: end; } }
-@media (max-width: 680px) { .workspace-card, .result-card, .history-card { padding: 18px; } .preset-row { flex-wrap: wrap; } .control-grid { display: grid; grid-template-columns: 1fr; } .range-arrow { display: none; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: auto; } .result-header { align-items: flex-start; flex-direction: column; } .result-actions { width: 100%; } .result-actions .el-button { flex: 1; } .summary-row, .guide-grid { grid-template-columns: 1fr; } .summary-row div { border-right: 0; border-bottom: 1px solid #e2e8f0; } .history-list button { grid-template-columns: 90px minmax(0, 1fr) 18px; } }
-</style>
+:global(html.dark .random-page .summary-row), :global(html.dark .random-page .summary-row div) { border-color: #334155; }@media (max-width: 900px) { .control-grid { display: grid; grid-template-columns: 1fr 24px 1fr; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: span 1; } .control-grid > .el-button { align-self: end; }}@media (max-width: 680px) { .workspace-card, .result-card, .history-card { padding: 18px; } .preset-row { flex-wrap: wrap; } .control-grid { display: grid; grid-template-columns: 1fr; } .range-arrow { display: none; } .control-grid label:nth-of-type(3), .unique-control, .control-grid > .el-button { grid-column: auto; } .result-header { align-items: flex-start; flex-direction: column; } .result-actions { width: 100%; } .result-actions .el-button { flex: 1; } .summary-row, .guide-grid { grid-template-columns: 1fr; } .summary-row div { border-right: 0; border-bottom: 1px solid #e2e8f0; } .history-list button { grid-template-columns: 90px minmax(0, 1fr) 18px; }}</style>

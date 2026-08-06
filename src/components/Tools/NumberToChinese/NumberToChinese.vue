@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { CopyDocument, Delete, Money, Reading, Tickets } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { copy, numberToChinese } from '@/utils/string'
 
 const inputValue = ref('100001')
@@ -50,13 +51,7 @@ function clear() {
     <ToolHero />
 
     <section class="workspace-card">
-      <div class="section-heading">
-        <div class="heading-icon"><el-icon><Money /></el-icon></div>
-        <div>
-          <h2>输入阿拉伯数字</h2>
-          <p>支持 0 至 13 位非负整数，输入后实时转换</p>
-        </div>
-      </div>
+      <SectionHeading :icon="Money" title="输入阿拉伯数字" description="支持 0 至 13 位非负整数，输入后实时转换" tone="blue" />
 
       <div class="input-shell">
         <label for="amount-input">待转换数字</label>
@@ -161,12 +156,6 @@ function clear() {
   font-weight: 700;
 }
 
-.section-heading p {
-  margin: 3px 0 0;
-  color: #64748b;
-  font-size: 13px;
-}
-
 .heading-icon {
   display: grid;
   width: 42px;
@@ -177,11 +166,6 @@ function clear() {
   color: #2563eb;
   background: #eff6ff;
   font-size: 20px;
-}
-
-.heading-icon.green {
-  color: #059669;
-  background: #ecfdf5;
 }
 
 .input-shell {
@@ -380,11 +364,6 @@ function clear() {
   color: #f1f5f9;
 }
 
-:global(html.dark .number-page .section-heading p),
-:global(html.dark .number-page .detail-grid p) {
-  color: #94a3b8;
-}
-
 :global(html.dark .number-page .input-shell) {
   border-color: #1e3a5f;
   background: linear-gradient(135deg, #111c31, #0f2038);
@@ -416,9 +395,7 @@ function clear() {
   border-color: #7f1d1d;
   color: #fca5a5;
   background: #2b1217;
-}
-
-@media (max-width: 640px) {
+}@media (max-width: 640px) {
   .workspace-card,
   .result-card {
     padding: 18px;
@@ -447,6 +424,4 @@ function clear() {
   .result-main {
     padding: 20px;
     font-size: 24px;
-  }
-}
-</style>
+  }}</style>

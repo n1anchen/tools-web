@@ -3,6 +3,7 @@ import { computed, reactive, ref } from 'vue'
 import { CopyDocument, Delete, EditPen, RefreshRight, Search, Switch } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import SectionHeading from '@/components/Common/SectionHeading.vue'
 import { copy } from '@/utils/string'
 import { replaceText, type ReplaceScope } from '@/utils/textTools'
 
@@ -46,13 +47,7 @@ function useResultAsInput() {
 
     <section class="workspace-card">
       <div class="settings-header">
-        <div class="section-heading">
-          <div class="heading-icon"><el-icon><Search /></el-icon></div>
-          <div>
-            <h2>设置查找与替换规则</h2>
-            <p>普通文字和正则表达式均支持实时预览</p>
-          </div>
-        </div>
+        <SectionHeading :icon="Search" title="设置查找与替换规则" description="普通文字和正则表达式均支持实时预览" tone="blue" />
         <el-segmented
           v-model="options.scope"
           :options="[
@@ -155,9 +150,6 @@ function useResultAsInput() {
 .settings-header, .option-row, .editor-title, .workspace-footer {display: flex; align-items: center;}
 .settings-header, .workspace-footer { justify-content: space-between; gap: 18px; }
 
-.heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #2563eb; background: #eff6ff; font-size: 20px; }
-.section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
-.section-heading p { margin: 3px 0 0; color: #64748b; font-size: 13px; }
 .rule-grid { display: grid; grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr); align-items: end; gap: 10px; margin-top: 22px; }
 .rule-grid label > span { display: flex; justify-content: space-between; margin-bottom: 8px; color: #334155; font-size: 13px; font-weight: 650; }
 .rule-grid small { color: #94a3b8; font-weight: 400; }
@@ -198,7 +190,4 @@ function useResultAsInput() {
 :global(html.dark .replace-page .option-row), :global(html.dark .replace-page .editor-panel), :global(html.dark .replace-page .guide-grid div) { border-color: #334155; background: #0f172a; }
 :global(html.dark .replace-page .result-panel) { border-color: #1e3a5f; background: #0d1d33; }
 :global(html.dark .replace-page .editor-panel .el-textarea__inner) { border-color: #334155; background: #111c2f; }
-:global(html.dark .replace-page .summary-card > div) { border-color: #334155; }
-@media (max-width: 820px) { .editor-grid { grid-template-columns: 1fr; } .direction-column { flex-direction: row; } .direction-column > .el-icon { transform: rotate(90deg); } .summary-card { grid-template-columns: repeat(2, 1fr); } .summary-card > div:nth-child(2) { border-right: 0; } .summary-card > div:nth-child(-n+2) { border-bottom: 1px solid #e2e8f0; } }
-@media (max-width: 640px) { .workspace-card { padding: 18px; } .settings-header, .workspace-footer { align-items: stretch; flex-direction: column; } .rule-grid { grid-template-columns: 1fr; } .rule-arrow { padding: 0; transform: rotate(90deg); } .option-row { align-items: flex-start; flex-direction: column; gap: 5px; } .regex-tip { margin: 5px 0 0; } .workspace-footer > div { display: grid; gap: 8px; } .workspace-footer .el-button { width: 100%; margin: 0; } .guide-grid { grid-template-columns: 1fr; } }
-</style>
+:global(html.dark .replace-page .summary-card > div) { border-color: #334155; }@media (max-width: 820px) { .editor-grid { grid-template-columns: 1fr; } .direction-column { flex-direction: row; } .direction-column > .el-icon { transform: rotate(90deg); } .summary-card { grid-template-columns: repeat(2, 1fr); } .summary-card > div:nth-child(2) { border-right: 0; } .summary-card > div:nth-child(-n+2) { border-bottom: 1px solid #e2e8f0; }}@media (max-width: 640px) { .workspace-card { padding: 18px; } .settings-header, .workspace-footer { align-items: stretch; flex-direction: column; } .rule-grid { grid-template-columns: 1fr; } .rule-arrow { padding: 0; transform: rotate(90deg); } .option-row { align-items: flex-start; flex-direction: column; gap: 5px; } .regex-tip { margin: 5px 0 0; } .workspace-footer > div { display: grid; gap: 8px; } .workspace-footer .el-button { width: 100%; margin: 0; } .guide-grid { grid-template-columns: 1fr; }}</style>
