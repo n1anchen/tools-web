@@ -179,14 +179,8 @@ function useExample(value: string) {
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
 }
 
-.mode-panel,
-.section-heading,
-.mode-controls,
-.editor-header,
-.example-row {
-  display: flex;
-  align-items: center;
-}
+.mode-panel, .mode-controls, .editor-header, .example-row {display: flex;
+  align-items: center;}
 
 .mode-panel {
   justify-content: space-between;
@@ -195,9 +189,7 @@ function useExample(value: string) {
   border-bottom: 1px solid #e2e8f0;
 }
 
-.section-heading {
-  gap: 12px;
-}
+
 
 .heading-icon {
   display: grid;

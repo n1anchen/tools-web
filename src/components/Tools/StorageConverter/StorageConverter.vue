@@ -206,17 +206,10 @@ function copyAll() {
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
 
-.section-heading,
-.result-header,
-.preset-row,
-.reference-card {
-  display: flex;
-  align-items: center;
-}
+.result-header, .preset-row, .reference-card {display: flex;
+  align-items: center;}
 
-.section-heading {
-  gap: 12px;
-}
+
 
 .heading-icon {
   display: grid;

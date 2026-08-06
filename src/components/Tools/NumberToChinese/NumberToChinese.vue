@@ -149,15 +149,10 @@ function clear() {
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
 
-.section-heading,
-.result-topline {
-  display: flex;
-  align-items: center;
-}
+.result-topline {display: flex;
+  align-items: center;}
 
-.section-heading {
-  gap: 12px;
-}
+
 
 .section-heading h2 {
   margin: 0;

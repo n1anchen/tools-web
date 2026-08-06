@@ -170,14 +170,8 @@ function useSample(value: string) {
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
 
-.editor-header,
-.section-heading,
-.editor-footer,
-.sample-row,
-.panel-title {
-  display: flex;
-  align-items: center;
-}
+.editor-header, .editor-footer, .sample-row, .panel-title {display: flex;
+  align-items: center;}
 
 .editor-header,
 .editor-footer {
@@ -185,7 +179,7 @@ function useSample(value: string) {
   gap: 16px;
 }
 
-.section-heading { gap: 12px; }
+
 
 .heading-icon {
   display: grid;

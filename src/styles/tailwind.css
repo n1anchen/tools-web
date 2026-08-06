@@ -101,6 +101,13 @@
     border-color: #334155;
     background: #1e293b;
   }
+
+  /* 区块标题（16 个工具复用 section-heading 的拆分式形态：display/align + gap:12px） */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 }
 
 :root {

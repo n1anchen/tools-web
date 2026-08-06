@@ -203,8 +203,8 @@ onMounted(generateAll)
 .workspace-grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(260px, .75fr); gap: 18px; }
 
 .settings-card, .result-card { padding: 24px; }
-.section-heading, .result-header, .switch-row { display: flex; align-items: center; }
-.section-heading { gap: 12px; }
+.result-header, .switch-row {display: flex; align-items: center;}
+
 .heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #7c3aed; background: #f5f3ff; font-size: 20px; }
 .heading-icon.green { color: #059669; background: #ecfdf5; }
 .section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }

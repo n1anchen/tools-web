@@ -156,14 +156,9 @@ function useResultAsInput() {
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);}
-.settings-header,
-.section-heading,
-.option-row,
-.editor-title,
-.workspace-footer,
-.duplicate-preview { display: flex; align-items: center; }
+.settings-header, .option-row, .editor-title, .workspace-footer, .duplicate-preview {display: flex; align-items: center;}
 .settings-header { justify-content: space-between; gap: 18px; }
-.section-heading { gap: 12px; }
+
 .heading-icon {
   display: grid;
   width: 42px;

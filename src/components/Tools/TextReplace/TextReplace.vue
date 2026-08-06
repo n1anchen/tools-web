@@ -152,9 +152,9 @@ function useResultAsInput() {
 <style scoped>
 .replace-page { gap: 18px; }
 .workspace-card {padding: 24px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05);}
-.settings-header, .section-heading, .option-row, .editor-title, .workspace-footer { display: flex; align-items: center; }
+.settings-header, .option-row, .editor-title, .workspace-footer {display: flex; align-items: center;}
 .settings-header, .workspace-footer { justify-content: space-between; gap: 18px; }
-.section-heading { gap: 12px; }
+
 .heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #2563eb; background: #eff6ff; font-size: 20px; }
 .section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }
 .section-heading p { margin: 3px 0 0; color: #64748b; font-size: 13px; }

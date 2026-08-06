@@ -188,9 +188,9 @@ function copyAll() {
 .frequency-page { gap: 18px; }
 .workspace-card, .metric-grid > div, .chart-card, .ranking-card, .empty-card { border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(15, 23, 42, .05); }
 .workspace-card, .chart-card, .ranking-card, .empty-card { padding: 24px; }
-.workspace-header, .section-heading, .analysis-settings, .ranking-header { display: flex; align-items: center; }
+.workspace-header, .analysis-settings, .ranking-header {display: flex; align-items: center;}
 .workspace-header, .ranking-header { justify-content: space-between; gap: 18px; }
-.section-heading { gap: 12px; }
+
 .heading-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; color: #2563eb; background: #eff6ff; font-size: 20px; }
 .heading-icon.violet { color: #7c3aed; background: #f5f3ff; } .heading-icon.green { color: #059669; background: #ecfdf5; }
 .section-heading h2 { margin: 0; color: #0f172a; font-size: 18px; }

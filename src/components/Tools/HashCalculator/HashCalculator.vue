@@ -266,18 +266,10 @@ function copyResult() {
   gap: 22px;
 }
 
-.section-heading,
-.settings-title,
-.result-header,
-.example-row,
-.security-note {
-  display: flex;
-  align-items: center;
-}
+.settings-title, .result-header, .example-row, .security-note {display: flex;
+  align-items: center;}
 
-.section-heading {
-  gap: 12px;
-}
+
 
 .heading-icon {
   display: grid;
