@@ -10,6 +10,7 @@ import { provide, onMounted, onUnmounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { isSameFamily } from '@/utils/routeTransition'
+import { rtrim } from '@/utils/string'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { InfoFilled, CircleCheckFilled, Download } from '@element-plus/icons-vue'
 
@@ -173,7 +174,7 @@ const toggleTheme = (event: MouseEvent) => {
 provide('toggleTheme', toggleTheme)
 
 // Set initial theme on component mount
-onMounted(() => {
+onMounted(async () => {
   if (settingStore.isDark) {
     document.documentElement.classList.add('dark')
   } else {
@@ -181,9 +182,15 @@ onMounted(() => {
   }
 
   // 直接通过 URL 进入工具页时默认收起侧边栏（由 VITE_COLLAPSE_SIDEBAR_ON_TOOL_ENTRY 控制）
-  // 用 window.location.pathname 而非 route.path：App 挂载时初始路由导航可能尚未完成，route.path 仍为 '/'
-  if (import.meta.env.VITE_COLLAPSE_SIDEBAR_ON_TOOL_ENTRY === 'true' && window.location.pathname !== '/') {
-    componentStore.setLeftComStatus(true)
+  // 等待初始路由导航（含不存在路径的重定向）完成后，按最终路径判断；
+  // 仅工具页触发，排除首页、About、404 等非工具页（含尾斜杠容错）
+  if (import.meta.env.VITE_COLLAPSE_SIDEBAR_ON_TOOL_ENTRY === 'true') {
+    await router.isReady()
+    const pathname = rtrim(router.currentRoute.value.path, '/')
+    const isToolEntry = pathname !== '' && !['/about', '/404'].includes(pathname)
+    if (isToolEntry) {
+      componentStore.setLeftComStatus(true)
+    }
   }
 })
 
