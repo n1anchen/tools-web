@@ -363,7 +363,7 @@ watch(expression, parseExpression, { immediate: true })
   margin-top: 19px;
   padding: 16px;
   border-radius: var(--radius-md);
-  background:linear-gradient(135deg,#ecfeff,#eff6ff)
+  background:linear-gradient(135deg,#ecfeff,var(--c-primary-50))
 }
 .summary-copy strong,.error-state strong {
   color: var(--c-text-primary);

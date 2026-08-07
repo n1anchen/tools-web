@@ -167,9 +167,9 @@ defineExpose({ formatEditor, openSearchBox })
 
 <style scoped>
 .code-workbench-page {
-  --accent: #2563eb;
-  --accent-soft: #eff6ff;
-  --accent-border: #bfdbfe;
+  --accent: var(--c-primary);
+  --accent-soft: var(--c-primary-50);
+  --accent-border: var(--c-primary-200);
   gap: 16px;
 }
 .accent-violet {

@@ -149,7 +149,7 @@ function copyAll() {
 
 <style scoped>
 .md5-page {
-  --blue: #2563eb;
+  --blue: var(--c-primary);
   gap: 16px;
 }
 .panel, .knowledge-card {
@@ -183,8 +183,8 @@ function copyAll() {
   transition: .18s ease;
 }
 .mode-tabs button:hover, .mode-tabs button.active {
-  border-color: #93c5fd;
-  background: #eff6ff;
+  border-color: var(--c-primary-300);
+  background: var(--c-primary-50);
   transform: translateY(-2px);
 }
 .mode-tabs button > span {
@@ -282,17 +282,17 @@ function copyAll() {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border: 1px dashed #bfdbfe;
+  border: 1px dashed var(--c-primary-200);
   border-radius: var(--radius-lg);
   background: var(--c-surface-subtle);
   transition: .18s ease;
 }
 .drop-zone.dragging {
-  border-color: #2563eb;
-  background: #eff6ff;
+  border-color: var(--c-primary);
+  background: var(--c-primary-50);
 }
 .drop-zone > .el-icon {
-  color: #3b82f6;
+  color: var(--c-primary-500);
   font-size: 36px;
 }
 .drop-zone strong {
@@ -308,7 +308,7 @@ function copyAll() {
   padding: 7px 13px;
   border-radius: var(--radius-sm);
   color: var(--c-on-accent);
-  background: #2563eb;
+  background: var(--c-primary);
   font-size: 12px;
   cursor: pointer;
 }
@@ -333,8 +333,8 @@ function copyAll() {
   flex: none;
   place-items: center;
   border-radius: var(--radius-md);
-  color: #2563eb;
-  background: #dbeafe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
 }
 .file-main > div:nth-child(2) {
   display: flex;
@@ -383,8 +383,8 @@ function copyAll() {
 .digest-visual {
   padding: 15px;
   border-radius: var(--radius-md);
-  color: #dbeafe;
-  background: linear-gradient(145deg, #172554, #1e3a8a);
+  color: var(--c-primary-100);
+  background: linear-gradient(145deg, #172554, var(--c-primary-900));
 }
 .digest-visual > span {
   font-size: 12px;
@@ -405,7 +405,7 @@ function copyAll() {
 .digest-visual i {
   height: 21px;
   border-radius: 3px;
-  background: #60a5fa;
+  background: var(--c-primary-400);
 }
 .result-list {
   display: flex;
@@ -427,8 +427,8 @@ function copyAll() {
   cursor: pointer;
 }
 .result-list button.primary {
-  border-color: #bfdbfe;
-  background: #eff6ff;
+  border-color: var(--c-primary-200);
+  background: var(--c-primary-50);
 }
 .result-list span {
   font-size: 12px;
@@ -506,7 +506,7 @@ function copyAll() {
   color: #f8fafc;
 }
 :global(html.dark .md5-page .mode-tabs button.active), :global(html.dark .md5-page .result-list button.primary) {
-  border-color: #1d4ed8;
+  border-color: var(--c-primary-700);
   background: #172554;
 }
 :global(html.dark .md5-page .drop-zone), :global(html.dark .md5-page .file-progress-card), :global(html.dark .md5-page .result-list button), :global(html.dark .md5-page .result-meta div), :global(html.dark .md5-page .knowledge-grid article) {

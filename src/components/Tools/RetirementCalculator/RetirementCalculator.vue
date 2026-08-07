@@ -421,12 +421,12 @@ calculate()
   transition: .2s;
 }
 .category-grid button:hover {
-  border-color: #93c5fd;
+  border-color: var(--c-primary-300);
 }
 .category-grid button.active {
-  border-color: #3b82f6;
-  color: #1d4ed8;
-  background: #eff6ff;
+  border-color: var(--c-primary-500);
+  color: var(--c-primary-700);
+  background: var(--c-primary-50);
   box-shadow: 0 0 0 2px rgba(59, 130, 246, .08);
 }
 .category-radio {
@@ -438,7 +438,7 @@ calculate()
   border-radius: 50%;
 }
 .category-grid button.active .category-radio {
-  border: 4px solid #3b82f6;
+  border: 4px solid var(--c-primary-500);
   background: var(--c-surface);
 }
 .category-grid button > span:last-child {
@@ -461,9 +461,9 @@ calculate()
   gap: 12px;
   margin-top: 18px;
   padding: 13px 15px;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--c-primary-100);
   border-radius: var(--radius-md);
-  background: linear-gradient(110deg, #f8fbff, #eff6ff);
+  background: linear-gradient(110deg, #f8fbff, var(--c-primary-50));
 }
 .calculate-bar > div {
   display: flex;
@@ -475,7 +475,7 @@ calculate()
   font-size: 11px;
 }
 .calculate-bar strong {
-  color: #1e3a8a;
+  color: var(--c-primary-900);
   font-size: 14px;
 }
 .calculate-bar :deep(.el-button) {
@@ -492,7 +492,7 @@ calculate()
   align-items: center;
   gap: 24px;
   padding: 28px;
-  background: linear-gradient(120deg, #eff6ff 0%, #f5f3ff 55%, #ecfeff 100%);
+  background: linear-gradient(120deg, var(--c-primary-50) 0%, #f5f3ff 55%, #ecfeff 100%);
 }
 .hero-copy {
   display: flex;
@@ -500,7 +500,7 @@ calculate()
   align-items: flex-start;
 }
 .eyebrow {
-  color: #2563eb;
+  color: var(--c-primary);
   font-size: 11px;
   font-weight: 750;
   letter-spacing: .08em;
@@ -573,7 +573,7 @@ calculate()
   background: var(--c-surface);
 }
 .timeline-card.featured {
-  border-color: #bfdbfe;
+  border-color: var(--c-primary-200);
   background: #f8fbff;
 }
 .timeline-card > div {
@@ -605,8 +605,8 @@ calculate()
   background: #94a3b8;
 }
 .timeline-dot.statutory {
-  background: #3b82f6;
-  box-shadow: 0 0 0 4px #dbeafe;
+  background: var(--c-primary-500);
+  box-shadow: 0 0 0 4px var(--c-primary-100);
 }
 .timeline-dot.latest {
   background: #8b5cf6;
@@ -628,7 +628,7 @@ calculate()
   background: var(--c-surface);
 }
 .flexible-grid article.recommended {
-  border-color: #bfdbfe;
+  border-color: var(--c-primary-200);
   background: #f8fbff;
 }
 .option-icon {
@@ -644,8 +644,8 @@ calculate()
   background: #ecfdf5;
 }
 .option-icon.normal {
-  color: #2563eb;
-  background: #eff6ff;
+  color: var(--c-primary);
+  background: var(--c-primary-50);
 }
 .option-icon.late {
   color: #7c3aed;
@@ -754,10 +754,10 @@ calculate()
   margin-bottom: 12px;
   padding: 10px 12px;
   border-radius: var(--radius-sm);
-  color: #1d4ed8;
+  color: var(--c-primary-700);
   font-size: 11px;
   line-height: 1.55;
-  background: #eff6ff;
+  background: var(--c-primary-50);
 }
 .table-summary .el-icon {
   flex: 0 0 auto;
@@ -776,8 +776,8 @@ calculate()
   font-size: 11px;
 }
 .reference-table :deep(.current-cohort td.el-table__cell) {
-  color: #1d4ed8 !important;
-  background: #dbeafe !important;
+  color: var(--c-primary-700) !important;
+  background: var(--c-primary-100) !important;
 }
 .table-footnote {
   margin: 9px 0 0;
@@ -830,7 +830,7 @@ calculate()
 .policy-notes > div > .el-icon {
   flex: 0 0 auto;
   margin-top: 2px;
-  color: #3b82f6;
+  color: var(--c-primary-500);
   font-size: 18px;
 }
 .policy-notes p {
@@ -849,7 +849,7 @@ calculate()
   line-height: 1.55;
 }
 .policy-notes a {
-  color: #2563eb;
+  color: var(--c-primary);
   font-size: 10px;
   text-decoration: none;
 }
@@ -876,8 +876,8 @@ calculate()
   background: #172033;
 }
 :global(html.dark .retirement-page .category-grid button.active), :global(html.dark .retirement-page .timeline-card.featured), :global(html.dark .retirement-page .flexible-grid article.recommended) {
-  border-color: #3b82f6;
-  color: #93c5fd;
+  border-color: var(--c-primary-500);
+  color: var(--c-primary-300);
   background: rgba(30,64,175,.22);
 }
 :global(html.dark .retirement-page .calculate-bar) {
@@ -885,7 +885,7 @@ calculate()
   background: linear-gradient(110deg,#172033,#172554);
 }
 :global(html.dark .retirement-page .calculate-bar strong) {
-  color: #bfdbfe;
+  color: var(--c-primary-200);
 }
 :global(html.dark .retirement-page .result-hero) {
   background: linear-gradient(120deg,#172554,#2e1065 55%,#083344);
@@ -912,7 +912,7 @@ calculate()
   color: var(--c-text-primary);
 }
 :global(html.dark .retirement-page .table-summary) {
-  color: #93c5fd;
+  color: var(--c-primary-300);
   background: rgba(30,64,175,.22);
 }
 :global(html.dark .retirement-page .minimum-years-reference) {

@@ -48,7 +48,7 @@ const groups: { title: string; description: string; tools: { type: ChartToolKey;
   flex-direction: column;
   padding: 8px 12px;
   border-radius: var(--radius-md);
-  background:linear-gradient(135deg,#f8fafc,#eff6ff)
+  background:linear-gradient(135deg,#f8fafc,var(--c-primary-50))
 }
 .nav-intro span {
   color: var(--accent);

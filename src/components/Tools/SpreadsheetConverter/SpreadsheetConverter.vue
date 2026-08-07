@@ -436,8 +436,8 @@ function copyPreview() {
 
 <style scoped>
 .sheet-page {
-  --accent: #2563eb;
-  --accent-soft: #eff6ff;
+  --accent: var(--c-primary);
+  --accent-soft: var(--c-primary-50);
   gap:18px
 }
 .source-card,.editor-card,.convert-card {
@@ -485,14 +485,14 @@ function copyPreview() {
   align-items: center;
   gap: 14px;
   padding: 18px;
-  border: 1.5px dashed #bfdbfe;
+  border: 1.5px dashed var(--c-primary-200);
   border-radius: var(--radius-lg);
   background: #f8fbff;
   transition:.18s
 }
 .drop-zone.dragging {
   border-color: var(--accent);
-  background: #eff6ff;
+  background: var(--c-primary-50);
   transform:translateY(-2px)
 }
 .drop-zone>.el-icon {
@@ -623,10 +623,10 @@ function copyPreview() {
   font-size:11px
 }
 .editor-mode-tabs button.active {
-  border-color: #bfdbfe;
+  border-color: var(--c-primary-200);
   background: var(--c-surface);
-  color: #1d4ed8;
-  box-shadow:0 4px 12px rgba(37,99,235,.1)
+  color: var(--c-primary-700);
+  box-shadow:0 4px 12px color-mix(in srgb, var(--c-primary) 10%, transparent)
 }
 .sheet-tabs {
   display: flex;
@@ -662,14 +662,14 @@ function copyPreview() {
   text-align:center
 }
 .sheet-tabs button.active {
-  border-color: #bfdbfe;
+  border-color: var(--c-primary-200);
   background: var(--c-surface);
   color: var(--accent);
-  box-shadow:0 3px 10px rgba(37,99,235,.1)
+  box-shadow:0 3px 10px color-mix(in srgb, var(--c-primary) 10%, transparent)
 }
 .sheet-tabs button.active span {
-  background: #dbeafe;
-  color:#1d4ed8
+  background: var(--c-primary-100);
+  color:var(--c-primary-700)
 }
 .rename-bar {
   display: flex;
@@ -678,7 +678,7 @@ function copyPreview() {
   margin-top: 10px;
   padding: 10px;
   border-radius: var(--radius-md);
-  background:#eff6ff
+  background:var(--c-primary-50)
 }
 .rename-bar label {
   display: flex;
@@ -740,7 +740,7 @@ function copyPreview() {
   outline: 0;
   resize: vertical;
   background: #0f172a;
-  color: #dbeafe;
+  color: var(--c-primary-100);
   font: 12px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;
   tab-size:2
 }
@@ -834,10 +834,10 @@ function copyPreview() {
   font-weight:600
 }
 .format-tabs button.active {
-  border-color: #93c5fd;
-  background: #eff6ff;
-  color: #1d4ed8;
-  box-shadow:0 3px 12px rgba(37,99,235,.1)
+  border-color: var(--c-primary-300);
+  background: var(--c-primary-50);
+  color: var(--c-primary-700);
+  box-shadow:0 3px 12px color-mix(in srgb, var(--c-primary) 10%, transparent)
 }
 .option-grid {
   display: grid;
@@ -877,7 +877,7 @@ function copyPreview() {
   display:block
 }
 .export-summary strong {
-  color: #1e3a8a;
+  color: var(--c-primary-900);
   font-size:14px
 }
 .export-summary span {
@@ -918,7 +918,7 @@ function copyPreview() {
   margin: 0;
   padding: 14px;
   overflow: auto;
-  color: #bfdbfe;
+  color: var(--c-primary-200);
   font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size: 12px;
   line-height: 1.65;
@@ -946,7 +946,7 @@ function copyPreview() {
   line-height:1.7
 }
 :global(html.dark .sheet-page) {
-  --accent: #60a5fa;
+  --accent: var(--c-primary-400);
   --accent-soft:#172554
 }
 :global(html.dark .source-card),:global(html.dark .editor-card),:global(html.dark .convert-card) {
@@ -974,22 +974,22 @@ function copyPreview() {
   color: var(--c-text-muted)
 }
 :global(html.dark .editor-mode-tabs button.active) {
-  border-color: #3b82f6;
-  color:#93c5fd
+  border-color: var(--c-primary-500);
+  color:var(--c-primary-300)
 }
 :global(html.dark .sheet-tabs button) {
   color: var(--c-text-secondary)
 }
 :global(html.dark .sheet-tabs button.active) {
-  border-color: #3b82f6;
+  border-color: var(--c-primary-500);
   background: #172554;
-  color:#93c5fd
+  color:var(--c-primary-300)
 }
 :global(html.dark .export-summary) {
   background:#172554
 }
 :global(html.dark .export-summary strong) {
-  color:#bfdbfe
+  color:var(--c-primary-200)
 }
 :global(html.dark .quality-grid .warning) {
   border-color: #9a3412;

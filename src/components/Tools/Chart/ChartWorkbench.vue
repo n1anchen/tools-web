@@ -281,8 +281,8 @@ function changePrimaryColor(event: Event) {
 <style scoped>
 .chart-page {
   gap: 18px;
-  --accent: #2563eb;
-  --accent-soft:#dbeafe
+  --accent: var(--c-primary);
+  --accent-soft:var(--c-primary-100)
 }
 .chart-family {
   border: 1px solid var(--c-border);

@@ -191,7 +191,7 @@ function downloadSql() {
 
 <style scoped>
 .sql-page {
-  --blue: #2563eb;
+  --blue: var(--c-primary);
   gap: 16px;
 }
 .sample-card, .editor-card, .settings-card, .stat-strip {
@@ -236,8 +236,8 @@ function downloadSql() {
 .sample-card small {
   padding: 2px 4px;
   border-radius: 4px;
-  color: #2563eb;
-  background: #dbeafe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
   font-size: 12px;
 }
 .workspace {
@@ -340,8 +340,8 @@ function downloadSql() {
   cursor: pointer;
 }
 .editor-footer button.active {
-  color: #1d4ed8;
-  background: #dbeafe;
+  color: var(--c-primary-700);
+  background: var(--c-primary-100);
 }
 .settings-card {
   position: sticky;
@@ -362,8 +362,8 @@ function downloadSql() {
 .section-heading > span {
   padding: 3px 6px;
   border-radius: 6px;
-  color: #2563eb;
-  background: #dbeafe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
   font-size: 12px;
 }
 .settings-list {

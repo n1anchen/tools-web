@@ -360,7 +360,7 @@ maskFromPrefix()
 
 <style scoped>
 .ip-tool {
-  --accent: #2563eb;
+  --accent: var(--c-primary);
   --ink: #172033;
   --muted: #667085;
 }
@@ -416,7 +416,7 @@ maskFromPrefix()
 }
 .input-shell:focus-within {
   border-color: #7aa6ee;
-  box-shadow: 0 0 0 3px rgba(37,99,235,.09);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-primary) 9%, transparent);
 }
 .input-shell.invalid {
   border-color: #f08a91;
@@ -738,7 +738,7 @@ maskFromPrefix()
 }
 .prefix-control input {
   width: 100%;
-  accent-color: #2563eb;
+  accent-color: var(--c-primary);
 }
 .split-shortcuts {
   display: flex;

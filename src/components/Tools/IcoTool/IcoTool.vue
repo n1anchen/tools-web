@@ -1107,7 +1107,7 @@ onBeforeUnmount(() => {
 }
 .background-options button.active {
   border-color: #76a7f3;
-  background: #eff6ff;
+  background: var(--c-primary-50);
   color:#326dac
 }
 .background-options i,.color-option input {

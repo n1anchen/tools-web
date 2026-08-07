@@ -359,7 +359,7 @@ onBeforeUnmount(() => {
   border-radius: var(--radius-card);
   color: var(--c-on-accent);
   font-size: 34px;
-  background: linear-gradient(145deg,#0d9488,#2563eb);
+  background: linear-gradient(145deg,#0d9488,var(--c-primary));
   box-shadow:0 14px 28px rgba(13,148,136,.24)
 }
 .upload-card h3,.card-heading h3 {

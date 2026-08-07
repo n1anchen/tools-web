@@ -205,7 +205,7 @@ function useExample(value: string) {
 }
 
 .editor-panel.result-panel {
-  border-color: #bfdbfe;
+  border-color: var(--c-primary-200);
   background: #f8fbff;
 }
 
@@ -266,7 +266,7 @@ function useExample(value: string) {
   justify-content: center;
   flex-direction: column;
   gap: 9px;
-  border: 1px dashed #bfdbfe;
+  border: 1px dashed var(--c-primary-200);
   border-radius: var(--radius-sm);
   color: var(--c-text-muted);
   text-align: center;
@@ -296,17 +296,17 @@ function useExample(value: string) {
 
 .example-row button {
   padding: 6px 11px;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--c-primary-100);
   border-radius: var(--radius-full);
-  color: #2563eb;
-  background: #eff6ff;
+  color: var(--c-primary);
+  background: var(--c-primary-50);
   font-size: 12px;
   cursor: pointer;
 }
 
 .example-row button:hover {
-  border-color: #60a5fa;
-  background: #dbeafe;
+  border-color: var(--c-primary-400);
+  background: var(--c-primary-100);
 }
 
 .detail-grid {

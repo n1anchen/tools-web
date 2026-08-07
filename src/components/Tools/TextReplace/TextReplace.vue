@@ -220,8 +220,8 @@ function useResultAsInput() {
   background: var(--c-surface-subtle);
 }
 .editor-panel.result-panel {
-  border-color: #bfdbfe;
-  background: #eff6ff;
+  border-color: var(--c-primary-200);
+  background: var(--c-primary-50);
 }
 .editor-panel.invalid {
   border-color: #fecaca;
@@ -252,8 +252,8 @@ function useResultAsInput() {
   place-items: center;
   align-content: center;
   border-radius: var(--radius-lg);
-  color: #2563eb;
-  background: #dbeafe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
 }
 .match-badge strong {
   font-size: 20px;
@@ -267,7 +267,7 @@ function useResultAsInput() {
   margin-top: 16px;
 }
 .sample-button {
-  color: #2563eb;
+  color: var(--c-primary);
   font-size: 12px;
 }
 .summary-card {

@@ -303,7 +303,7 @@ onBeforeUnmount(() => {
   left: 0;
   right: 0;
   border-radius: 10px;
-  background: #3b82f6;
+  background: var(--c-primary-500);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
   transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               height 0.3s cubic-bezier(0.4, 0, 0.2, 1),

@@ -160,7 +160,7 @@ function useSample(sample: typeof samples[number]) {
   border-radius: var(--radius-lg);
   background: var(--c-surface-subtle);
 }
-.result-panel { border-color: #bfdbfe; background: #f8fbff; }
+.result-panel { border-color: var(--c-primary-200); background: #f8fbff; }
 .editor-panel :deep(.el-textarea__inner) {
   min-height: 250px !important;
   border-radius: var(--radius-sm);
@@ -176,21 +176,21 @@ function useSample(sample: typeof samples[number]) {
   justify-content: center;
   flex-direction: column;
   gap: 10px;
-  color: #2563eb;
+  color: var(--c-primary);
 }
 .direction-column > .el-icon { font-size: 24px; }
 .sample-row { flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .sample-row > span { color: var(--c-text-secondary); font-size: 12px; }
 .sample-row button {
   padding: 6px 11px;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--c-primary-100);
   border-radius: var(--radius-full);
-  color: #2563eb;
-  background: #eff6ff;
+  color: var(--c-primary);
+  background: var(--c-primary-50);
   font-size: 12px;
   cursor: pointer;
 }
-.sample-row button:hover { border-color: #60a5fa; background: #dbeafe; }
+.sample-row button:hover { border-color: var(--c-primary-400); background: var(--c-primary-100); }
 .character-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -210,8 +210,8 @@ function useSample(sample: typeof samples[number]) {
   height: 38px;
   place-items: center;
   border-radius: var(--radius-sm);
-  color: #1d4ed8;
-  background: #dbeafe;
+  color: var(--c-primary-700);
+  background: var(--c-primary-100);
   font-size: 18px;
   font-weight: 700;
 }

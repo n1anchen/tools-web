@@ -205,7 +205,7 @@ onUnmounted(stopClock)
 
 <style scoped>
 .time-page {
-  --blue: #2563eb;
+  --blue: var(--c-primary);
   --orange: #ea580c;
   gap: 16px;
 }
@@ -220,7 +220,7 @@ onUnmounted(stopClock)
   align-items: center;
   gap: 16px;
   padding: 20px 22px;
-  background: linear-gradient(120deg, #eff6ff, #fff 52%, #f8fafc);
+  background: linear-gradient(120deg, var(--c-primary-50), #fff 52%, #f8fafc);
 }
 .clock-icon {
   display: grid;
@@ -232,7 +232,7 @@ onUnmounted(stopClock)
   color: var(--c-on-accent);
   background: var(--blue);
   font-size: 22px;
-  box-shadow: 0 8px 18px rgb(37 99 235 / 25%);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--c-primary) 25%, transparent);
 }
 .clock-main {
   display: flex;
@@ -258,9 +258,9 @@ onUnmounted(stopClock)
   flex-direction: column;
   align-items: flex-start;
   padding: 8px 12px;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--c-primary-100);
   border-radius: var(--radius-md);
-  color: #1e3a8a;
+  color: var(--c-primary-900);
   background: var(--c-surface);
   cursor: pointer;
 }
@@ -363,8 +363,8 @@ onUnmounted(stopClock)
   margin-top: 18px;
   padding: 5px 9px;
   border-radius: 99px;
-  color: #1d4ed8;
-  background: #eff6ff;
+  color: var(--c-primary-700);
+  background: var(--c-primary-50);
   font-size: 11px;
   font-weight: 700;
 }
@@ -460,7 +460,7 @@ onUnmounted(stopClock)
 }
 :global(html.dark .time-page .clock-stamps button), :global(html.dark .time-page .result-stack button), :global(html.dark .time-page .timestamp-results button) {
   border-color: var(--c-border);
-  color: #bfdbfe;
+  color: var(--c-primary-200);
   background: var(--c-surface-subtle);
 }
 :global(html.dark .time-page .preset-row button) {
@@ -473,7 +473,7 @@ onUnmounted(stopClock)
   background: #450a0a;
 }
 :global(html.dark .time-page .detected-unit) {
-  color: #93c5fd;
+  color: var(--c-primary-300);
   background: #172554;
 }
 :global(html.dark .time-page .note-card) {

@@ -226,7 +226,7 @@ onUnmounted(() => {
   gap:16px
 }
 .preview-card,.control-card,.export-card {
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--c-primary-100);
   border-radius: var(--radius-card);
   background: var(--c-surface);
   box-shadow:0 16px 40px rgba(14,116,144,.07)

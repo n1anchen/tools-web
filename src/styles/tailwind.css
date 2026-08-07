@@ -202,9 +202,9 @@
 
 /* NProgress 路由加载进度条样式 */
 #nprogress .bar {
-  background: #3b82f6 !important;
+  background: var(--c-primary-500) !important;
   height: 3px !important;
 }
 #nprogress .peg {
-  box-shadow: 0 0 10px #3b82f6, 0 0 5px #3b82f6 !important;
+  box-shadow: 0 0 10px var(--c-primary-500), 0 0 5px var(--c-primary-500) !important;
 }

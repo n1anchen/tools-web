@@ -615,8 +615,8 @@ html.dark {
   --w-e-textarea-slight-border-color: #334155;
   --w-e-textarea-slight-color: #64748b;
   --w-e-textarea-slight-bg-color: #334155;
-  --w-e-textarea-selected-border-color: #3b82f6;
-  --w-e-textarea-handler-bg-color: #3b82f6;
+  --w-e-textarea-selected-border-color: var(--c-primary-500);
+  --w-e-textarea-handler-bg-color: var(--c-primary-500);
   --w-e-toolbar-color: #cbd5e1;
   --w-e-toolbar-bg-color: #1e293b;
   --w-e-toolbar-active-color: #f1f5f9;

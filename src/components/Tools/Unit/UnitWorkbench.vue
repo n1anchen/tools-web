@@ -267,9 +267,9 @@ function clearInput() {
 
 <style scoped>
 .unit-page {
-  --accent: #2563eb;
-  --accent-soft: #eff6ff;
-  --accent-deep: #1d4ed8;
+  --accent: var(--c-primary);
+  --accent-soft: var(--c-primary-50);
+  --accent-deep: var(--c-primary-700);
   gap:16px
 }
 .unit-page[data-accent="cyan"] {

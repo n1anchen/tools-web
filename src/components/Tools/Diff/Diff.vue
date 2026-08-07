@@ -181,7 +181,7 @@ function downloadDiff() {
 
 <style scoped>
 .diff-page {
-  --blue: #2563eb;
+  --blue: var(--c-primary);
   gap:18px
 }
 .command-card, .rule-card, .text-card {
@@ -193,7 +193,7 @@ function downloadDiff() {
 .eyebrow {
   display: block;
   margin-bottom: 7px;
-  color: #93c5fd;
+  color: var(--c-primary-300);
   font-size: 12px;
   font-weight: 900;
   letter-spacing:.16em

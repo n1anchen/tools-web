@@ -343,7 +343,7 @@ onBeforeUnmount(releaseObjectUrl)
 
 <style scoped>
 .watermark-page {
-  --studio-accent: #2563eb;
+  --studio-accent: var(--c-primary);
   --studio-warm: #f97316;
   gap: 16px;
 }
@@ -355,7 +355,7 @@ onBeforeUnmount(releaseObjectUrl)
 .eyebrow {
   display: block;
   margin-bottom: 7px;
-  color: #60a5fa;
+  color: var(--c-primary-400);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: .16em;
@@ -372,7 +372,7 @@ onBeforeUnmount(releaseObjectUrl)
 }
 .upload-card.dragging {
   border-color: var(--studio-accent);
-  background: #eff6ff;
+  background: var(--c-primary-50);
   transform: translateY(-2px);
 }
 .upload-icon {
@@ -384,8 +384,8 @@ onBeforeUnmount(releaseObjectUrl)
   border-radius: var(--radius-card);
   color: var(--c-on-accent);
   font-size: 34px;
-  background: linear-gradient(145deg, #2563eb, #0d9488);
-  box-shadow: 0 14px 28px rgba(37,99,235,.25);
+  background: linear-gradient(145deg, var(--c-primary), #0d9488);
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--c-primary) 25%, transparent);
 }
 .upload-card h3, .card-heading h3 {
   margin: 0;
@@ -560,10 +560,10 @@ onBeforeUnmount(releaseObjectUrl)
   cursor: pointer;
 }
 .position-grid button.active {
-  border-color: #60a5fa;
-  color: #1d4ed8;
-  background: #eff6ff;
-  box-shadow: inset 0 0 0 1px #93c5fd;
+  border-color: var(--c-primary-400);
+  color: var(--c-primary-700);
+  background: var(--c-primary-50);
+  box-shadow: inset 0 0 0 1px var(--c-primary-300);
 }
 .toggle-row {
   display: grid;
@@ -654,7 +654,7 @@ onBeforeUnmount(releaseObjectUrl)
   background: var(--c-surface-subtle);
 }
 :global(html.dark .watermark-page .position-grid button.active) {
-  color: #93c5fd;
+  color: var(--c-primary-300);
   background: #172554;
 }
 :global(html.dark .watermark-page .feature-strip b) {

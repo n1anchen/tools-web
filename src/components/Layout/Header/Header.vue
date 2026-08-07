@@ -235,17 +235,17 @@ onBeforeUnmount(() => {
 }
 
 .search-input :deep(.el-select__wrapper:hover) {
-  border-color: #93c5fd;
+  border-color: var(--c-primary-300);
   box-shadow: 0 4px 6px -1px rgb(59 130 246 / 0.1);
 }
 
 .dark .search-input :deep(.el-select__wrapper:hover) {
-  border-color: #3b82f6;
+  border-color: var(--c-primary-500);
   box-shadow: none;
 }
 
 .search-input :deep(.el-select__wrapper.is-focused) {
-  border-color: #3b82f6;
+  border-color: var(--c-primary-500);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -323,7 +323,7 @@ onBeforeUnmount(() => {
 }
 
 .search-dropdown .el-select-dropdown__item.is-selected {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+  background: linear-gradient(135deg, var(--c-primary-500) 0%, var(--c-primary) 100%) !important;
 }
 
 .search-dropdown .el-select-dropdown__item.is-selected .search-option-title,
@@ -350,7 +350,7 @@ onBeforeUnmount(() => {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+  background: linear-gradient(135deg, var(--c-primary-50) 0%, #e0e7ff 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -368,7 +368,7 @@ onBeforeUnmount(() => {
 }
 
 .search-dropdown .search-option-icon span {
-  color: #3b82f6;
+  color: var(--c-primary-500);
   font-weight: 600;
   font-size: 13px;
 }

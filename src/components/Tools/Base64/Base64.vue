@@ -478,7 +478,7 @@ onBeforeUnmount(revokePreview)
   border: 0;
   border-radius: 50%;
   color: var(--c-on-accent);
-  background: linear-gradient(135deg,#7c3aed,#2563eb);
+  background: linear-gradient(135deg,#7c3aed,var(--c-primary));
   box-shadow: 0 12px 25px rgba(124,58,237,.28);
   cursor:pointer
 }
@@ -633,7 +633,7 @@ onBeforeUnmount(revokePreview)
   margin-top: 15px;
   border: 0;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg,#7c3aed,#2563eb);
+  background: linear-gradient(135deg,#7c3aed,var(--c-primary));
   color: var(--c-on-accent);
   font-size: 14px;
   font-weight: 800;

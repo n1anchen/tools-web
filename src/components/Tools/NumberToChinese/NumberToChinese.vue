@@ -164,15 +164,15 @@ function clear() {
   flex: 0 0 42px;
   place-items: center;
   border-radius: var(--radius-md);
-  color: #2563eb;
-  background: #eff6ff;
+  color: var(--c-primary);
+  background: var(--c-primary-50);
   font-size: 20px;
 }
 
 .input-shell {
   margin-top: 22px;
   padding: 18px;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--c-primary-100);
   border-radius: var(--radius-lg);
   background: linear-gradient(135deg, #f8fbff 0%, #f1f7ff 100%);
 }
@@ -229,8 +229,8 @@ function clear() {
 }
 
 .example-row button:hover {
-  border-color: #93c5fd;
-  color: #1d4ed8;
+  border-color: var(--c-primary-300);
+  color: var(--c-primary-700);
   transform: translateY(-1px);
 }
 

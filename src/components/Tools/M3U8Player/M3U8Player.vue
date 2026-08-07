@@ -294,7 +294,7 @@ onBeforeUnmount(() => destroyHls())
 
 <style scoped>
 .hls-page {
-  --blue: #2563eb;
+  --blue: var(--c-primary);
   gap: 16px;
 }
 .source-card, .player-card, .diagnostics-card, .recent-card, .tips-grid article {
@@ -314,14 +314,14 @@ onBeforeUnmount(() => destroyHls())
   align-items: center;
   gap: 7px;
   padding: 7px 11px;
-  border: 1px solid #bfdbfe;
+  border: 1px solid var(--c-primary-200);
   border-radius: var(--radius-sm);
   background: rgba(239,246,255,.8);
   font-size: 12px;
-  color: #3b82f6;
+  color: var(--c-primary-500);
 }
 .hero-capability strong {
-  color: #1d4ed8;
+  color: var(--c-primary-700);
   font-weight: 700;
 }
 .hero-capability small {
@@ -468,7 +468,7 @@ onBeforeUnmount(() => destroyHls())
   text-align: center;
 }
 .video-placeholder > .el-icon {
-  color: #60a5fa;
+  color: var(--c-primary-400);
   font-size: 48px;
 }
 .video-placeholder strong, .loading-overlay strong, .error-overlay strong {
@@ -488,7 +488,7 @@ onBeforeUnmount(() => destroyHls())
   width: 34px;
   height: 34px;
   border: 3px solid #334155;
-  border-top-color: #60a5fa;
+  border-top-color: var(--c-primary-400);
   border-radius: 50%;
   animation: spin .8s linear infinite;
 }
@@ -569,10 +569,10 @@ onBeforeUnmount(() => destroyHls())
   margin-top: 15px;
   padding: 12px;
   border-radius: var(--radius-md);
-  background: #eff6ff;
+  background: var(--c-primary-50);
 }
 .advice-card > span {
-  color: #2563eb;
+  color: var(--c-primary);
   font-size: 12px;
   font-weight: 800;
 }
@@ -714,7 +714,7 @@ onBeforeUnmount(() => destroyHls())
 }
 .recent-list small {
   flex: none;
-  color: #2563eb;
+  color: var(--c-primary);
   font-size: 12px;
 }
 .tips-grid {
@@ -727,7 +727,7 @@ onBeforeUnmount(() => destroyHls())
   border-radius: var(--radius-md);
 }
 .tips-grid strong {
-  color: #2563eb;
+  color: var(--c-primary);
   font-size: 12px;
 }
 .tips-grid p {
@@ -745,11 +745,11 @@ onBeforeUnmount(() => destroyHls())
   color: #f8fafc;
 }
 :global(html.dark .hls-page .advice-card) {
-  border-color: #1d4ed8;
+  border-color: var(--c-primary-700);
   background: #172554;
 }
 :global(html.dark .hls-page .advice-card p) {
-  color: #bfdbfe;
+  color: var(--c-primary-200);
 }
 :global(html.dark .hls-page .sample-row button), :global(html.dark .hls-page .recent-list button), :global(html.dark .hls-page .log-empty) {
   border-color: var(--c-border);
@@ -769,11 +769,11 @@ onBeforeUnmount(() => destroyHls())
   color: #fed7aa;
 }
 :global(html.dark .hls-page .hero-capability) {
-  border-color: #1d4ed8;
+  border-color: var(--c-primary-700);
   background: rgba(23,37,84,.6);
 }
 :global(html.dark .hls-page .hero-capability strong) {
-  color: #bfdbfe;
+  color: var(--c-primary-200);
 }
 :global(html.dark .hls-page .hero-capability small) {
   color: var(--c-text-muted);

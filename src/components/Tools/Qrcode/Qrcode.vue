@@ -195,7 +195,7 @@ function downloadQrCode() {
 
 <style scoped>
 .qr-page {
-  --blue: #2563eb;
+  --blue: var(--c-primary);
   gap: 16px;
 }
 .panel, .preview-card {
@@ -274,7 +274,7 @@ function downloadQrCode() {
   cursor: pointer;
 }
 .type-switcher button.active {
-  color: #1d4ed8;
+  color: var(--c-primary-700);
   background: var(--c-surface);
   box-shadow: 0 3px 10px rgb(15 23 42 / 9%);
 }
@@ -370,10 +370,10 @@ function downloadQrCode() {
   max-width: 160px;
   padding: 7px 11px;
   overflow: hidden;
-  border: 1px solid #bfdbfe;
+  border: 1px solid var(--c-primary-200);
   border-radius: var(--radius-sm);
-  color: #1d4ed8;
-  background: #eff6ff;
+  color: var(--c-primary-700);
+  background: var(--c-primary-50);
   text-overflow: ellipsis;
   font-size: 10px;
   white-space: nowrap;
@@ -490,7 +490,7 @@ function downloadQrCode() {
   background: var(--c-surface-subtle);
 }
 :global(html.dark .qr-page .type-switcher button.active) {
-  color: #93c5fd;
+  color: var(--c-primary-300);
   background: #334155;
 }
 :global(html.dark .qr-page .color-field label), :global(html.dark .qr-page .payload-preview code) {

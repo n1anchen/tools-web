@@ -144,7 +144,7 @@ function clearAll() {
 
 <style scoped>
 .regex-page {
-  --accent: #2563eb;
+  --accent: var(--c-primary);
   gap: 16px;
 }
 .pattern-card, .preset-card, .editor-card, .preview-card, .matches-card, .replacement-card {
@@ -191,7 +191,7 @@ function clearAll() {
   padding: 7px 13px;
   border: 1px solid #cbd5e1;
   border-radius: var(--radius-md);
-  color: #2563eb;
+  color: var(--c-primary);
   background: var(--c-surface-subtle);
   font: 700 16px ui-monospace, monospace;
 }
@@ -226,7 +226,7 @@ function clearAll() {
   font-size: 11px;
 }
 .flag-row code {
-  color: #1d4ed8;
+  color: var(--c-primary-700);
   font-weight: 800;
 }
 .preset-card {
@@ -257,15 +257,15 @@ function clearAll() {
   padding: 6px 10px;
   border: 0;
   border-radius: var(--radius-full);
-  color: #1e40af;
-  background: #eff6ff;
+  color: var(--c-primary-800);
+  background: var(--c-primary-50);
   cursor: pointer;
 }
 .preset-list strong {
   font-size: 11px;
 }
 .preset-list span {
-  color: #60a5fa;
+  color: var(--c-primary-400);
   font-size: 9px;
 }
 .workspace-grid {
@@ -300,9 +300,9 @@ function clearAll() {
 .highlight-box mark {
   padding: 1px 2px;
   border-radius: 4px;
-  color: #1e3a8a;
-  background: #bfdbfe;
-  box-shadow: inset 0 -2px #60a5fa;
+  color: var(--c-primary-900);
+  background: var(--c-primary-200);
+  box-shadow: inset 0 -2px var(--c-primary-400);
 }
 .placeholder {
   color: var(--c-text-muted);
@@ -345,7 +345,7 @@ function clearAll() {
   background: var(--c-surface-subtle);
 }
 .match-index {
-  color: #2563eb;
+  color: var(--c-primary);
   font: 800 11px ui-monospace, monospace;
 }
 .match-value {
@@ -378,7 +378,7 @@ function clearAll() {
   overflow-wrap: anywhere;
 }
 .group-list b {
-  color: #2563eb;
+  color: var(--c-primary);
 }
 .empty-state {
   margin-top: 16px;
@@ -438,7 +438,7 @@ function clearAll() {
   color: var(--c-text-primary);
 }
 :global(html.dark .regex-page .preset-list button) {
-  color: #bfdbfe;
+  color: var(--c-primary-200);
   background: #172554;
 }
 :global(html.dark .regex-page .group-list span) {
@@ -446,9 +446,9 @@ function clearAll() {
   background: #334155;
 }
 :global(html.dark .regex-page .highlight-box mark) {
-  color: #dbeafe;
-  background: #1e40af;
-  box-shadow: inset 0 -2px #60a5fa;
+  color: var(--c-primary-100);
+  background: var(--c-primary-800);
+  box-shadow: inset 0 -2px var(--c-primary-400);
 }
 @media (max-width: 820px) {
   .workspace-grid {

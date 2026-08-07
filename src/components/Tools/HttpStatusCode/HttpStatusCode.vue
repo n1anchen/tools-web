@@ -106,7 +106,7 @@ function selectStatus(status: HttpStatusCode) {
   box-shadow: var(--shadow-card);
 }
 .eyebrow {
-  color: #2563eb;
+  color: var(--c-primary);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .15em;
@@ -231,7 +231,7 @@ function selectStatus(status: HttpStatusCode) {
 }
 .category-tabs button.active {
   color: var(--c-on-accent);
-  background: #2563eb;
+  background: var(--c-primary);
 }
 .selected-card {
   display: grid;
@@ -360,9 +360,9 @@ function selectStatus(status: HttpStatusCode) {
   cursor: pointer;
 }
 .common-list button.active {
-  border-color: #93c5fd;
-  color: #1d4ed8;
-  background: #eff6ff;
+  border-color: var(--c-primary-300);
+  color: var(--c-primary-700);
+  background: var(--c-primary-50);
 }
 .common-list strong {
   font: 800 12px ui-monospace, monospace;
@@ -435,8 +435,8 @@ function selectStatus(status: HttpStatusCode) {
 .status-heading small {
   padding: 3px 6px;
   border-radius: 99px;
-  color: #2563eb;
-  background: #dbeafe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
 }
 .status-grid article > p {
   min-height: 42px;
@@ -472,8 +472,8 @@ function selectStatus(status: HttpStatusCode) {
   color: #f8fafc;
 }
 :global(html.dark .http-page .common-list button.active) {
-  border-color: #1d4ed8;
-  color: #93c5fd;
+  border-color: var(--c-primary-700);
+  color: var(--c-primary-300);
   background: #172554;
 }
 :global(html.dark .http-page .search-box .el-input__wrapper), :global(html.dark .http-page .selected-details > div), :global(html.dark .http-page .common-list button), :global(html.dark .http-page .status-grid article), :global(html.dark .http-page .empty-state) {

@@ -606,9 +606,9 @@ calculate()
   gap: 12px;
   margin-top: 20px;
   padding: 14px 16px;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--c-primary-100);
   border-radius: var(--radius-md);
-  background: linear-gradient(110deg, #f8fbff, #eff6ff);
+  background: linear-gradient(110deg, #f8fbff, var(--c-primary-50));
 }
 .loan-preview > div {
   display: flex;
@@ -620,7 +620,7 @@ calculate()
   font-size: 11px;
 }
 .loan-preview strong {
-  color: #1e3a8a;
+  color: var(--c-primary-900);
   font-size: 15px;
 }
 .loan-preview :deep(.el-button) {
@@ -649,7 +649,7 @@ calculate()
   opacity: .65;
 }
 .plan-annuity::after {
-  background: radial-gradient(circle, #dbeafe, transparent 68%);
+  background: radial-gradient(circle, var(--c-primary-100), transparent 68%);
 }
 .plan-equalPrincipal::after {
   background: radial-gradient(circle, #dcfce7, transparent 68%);
@@ -671,14 +671,14 @@ calculate()
 }
 .plan-card-head > .el-icon {
   z-index: 1;
-  color: #93c5fd;
+  color: var(--c-primary-300);
   font-size: 30px;
 }
 .plan-equalPrincipal .plan-card-head > .el-icon {
   color: #86efac;
 }
 .plan-kicker {
-  color: #2563eb;
+  color: var(--c-primary);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .08em;
@@ -847,12 +847,12 @@ calculate()
   transition: .2s;
 }
 .mode-selector button:hover {
-  border-color: #93c5fd;
+  border-color: var(--c-primary-300);
 }
 .mode-selector button.active {
-  border-color: #3b82f6;
-  color: #1d4ed8;
-  background: #eff6ff;
+  border-color: var(--c-primary-500);
+  color: var(--c-primary-700);
+  background: var(--c-primary-50);
   box-shadow: 0 0 0 2px rgba(59, 130, 246, .08);
 }
 .mode-selector strong {
@@ -912,7 +912,7 @@ calculate()
 .explanation-grid .el-icon {
   flex: 0 0 auto;
   margin-top: 2px;
-  color: #3b82f6;
+  color: var(--c-primary-500);
   font-size: 18px;
 }
 .explanation-grid p {
@@ -949,7 +949,7 @@ calculate()
   background: linear-gradient(110deg, #172033, #172554);
 }
 :global(html.dark .mortgage-page .loan-preview strong) {
-  color: #bfdbfe;
+  color: var(--c-primary-200);
 }
 :global(html.dark .mortgage-page .plan-card), :global(html.dark .mortgage-page .scenario-controls), :global(html.dark .mortgage-page .scenario-result-card) {
   border-color: var(--c-border);
@@ -978,8 +978,8 @@ calculate()
   background: var(--c-surface-subtle);
 }
 :global(html.dark .mortgage-page .mode-selector button.active) {
-  border-color: #3b82f6;
-  color: #93c5fd;
+  border-color: var(--c-primary-500);
+  color: var(--c-primary-300);
   background: rgba(30, 64, 175, .25);
 }
 @media (max-width: 1100px) {

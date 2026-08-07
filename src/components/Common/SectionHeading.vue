@@ -48,7 +48,7 @@ withDefaults(defineProps<{
   .section-heading { flex-wrap: wrap; }
   .sh-grow { flex: 1 0 100%; }
 }
-.heading-blue { color: #2563eb; background: #eff6ff; }
+.heading-blue { color: var(--c-primary); background: var(--c-primary-50); }
 .heading-violet { color: #7c3aed; background: #f5f3ff; }
 .heading-pink { color: #db2777; background: #fdf2f8; }
 .heading-amber { color: #d97706; background: #fffbeb; }

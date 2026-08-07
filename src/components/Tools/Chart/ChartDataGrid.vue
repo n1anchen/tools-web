@@ -237,13 +237,13 @@ thead th {
   position: sticky;
   z-index: 2;
   top: 38px;
-  background:#eff6ff
+  background:var(--c-primary-50)
 }
 .header-row .row-number {
   z-index:4
 }
 .header-row input {
-  color: #1d4ed8;
+  color: var(--c-primary-700);
   font-weight:850
 }
 td input {
@@ -342,7 +342,7 @@ td input:focus {
   color: var(--c-text-primary)
 }
 :global(html.dark .grid-editor .header-row input) {
-  color:#93c5fd
+  color:var(--c-primary-300)
 }
 :global(html.dark .grid-editor td input:focus) {
   background:var(--c-surface)

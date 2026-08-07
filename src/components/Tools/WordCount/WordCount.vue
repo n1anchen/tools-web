@@ -189,14 +189,14 @@ function useSample(value: string) {
 .sample-row > span { color: var(--c-text-secondary); font-size: 12px; }
 .sample-row button {
   padding: 6px 11px;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--c-primary-100);
   border-radius: var(--radius-full);
-  color: #2563eb;
-  background: #eff6ff;
+  color: var(--c-primary);
+  background: var(--c-primary-50);
   font-size: 12px;
   cursor: pointer;
 }
-.sample-row button:hover { border-color: #60a5fa; background: #dbeafe; }
+.sample-row button:hover { border-color: var(--c-primary-400); background: var(--c-primary-100); }
 
 .live-status { color: var(--c-text-secondary); font-size: 12px; white-space: nowrap; }
 .live-status i {
@@ -217,7 +217,7 @@ function useSample(value: string) {
 
 .stat-card {
   padding: 17px;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--c-primary-100);
   border-radius: var(--radius-md);
   background: #f8fbff;
 }
@@ -225,7 +225,7 @@ function useSample(value: string) {
 .stat-card strong,
 .stat-card small { display: block; }
 .stat-card span { color: var(--c-text-secondary); font-size: 12px; }
-.stat-card strong { margin-top: 7px; color: #1d4ed8; font-size: 28px; line-height: 1; }
+.stat-card strong { margin-top: 7px; color: var(--c-primary-700); font-size: 28px; line-height: 1; }
 .stat-card small { margin-top: 8px; color: var(--c-text-muted); font-size: 11px; }
 .tone-cyan { border-color: #cffafe; background: #f0fdff; }
 .tone-cyan strong { color: #0891b2; }
@@ -250,7 +250,7 @@ function useSample(value: string) {
 }
 
 .panel-title { gap: 8px; color: #1e293b; }
-.panel-title .el-icon { color: #2563eb; font-size: 18px; }
+.panel-title .el-icon { color: var(--c-primary); font-size: 18px; }
 
 .secondary-grid {
   display: grid;

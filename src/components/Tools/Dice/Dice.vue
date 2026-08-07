@@ -199,9 +199,9 @@ function copyCurrent() {
   font-size: 11px;
 }
 .preset-row button.active {
-  border-color: #93c5fd;
-  color: #1d4ed8;
-  background: #eff6ff;
+  border-color: var(--c-primary-300);
+  color: var(--c-primary-700);
+  background: var(--c-primary-50);
 }
 .control-row {
   gap: 14px;
@@ -236,10 +236,10 @@ function copyCurrent() {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 45%, #eff6ff, #fff 64%);
+  background: radial-gradient(circle at 50% 45%, var(--c-primary-50), #fff 64%);
 }
 .eyebrow {
-  color: #2563eb;
+  color: var(--c-primary);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .22em;
@@ -264,15 +264,15 @@ function copyCurrent() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--c-primary-100);
   border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, .78);
   transition: .2s ease;
 }
 .die-shell:hover {
-  border-color: #60a5fa;
+  border-color: var(--c-primary-400);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(37, 99, 235, .1);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--c-primary) 10%, transparent);
 }
 .die-shell > span {
   position: absolute;
@@ -283,8 +283,8 @@ function copyCurrent() {
   height: 21px;
   place-items: center;
   border-radius: var(--radius-xs);
-  color: #2563eb;
-  background: #dbeafe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
   font-size: 9px;
   font-weight: 700;
 }
@@ -327,7 +327,7 @@ function copyCurrent() {
 }
 .total-block strong {
   margin-top: 3px;
-  color: #2563eb;
+  color: var(--c-primary);
   font-size: 42px;
   line-height: 1;
 }
@@ -381,8 +381,8 @@ function copyCurrent() {
   text-align: left;
 }
 .history-list button:hover {
-  color: #2563eb;
-  background: #eff6ff;
+  color: var(--c-primary);
+  background: var(--c-primary-50);
 }
 .history-total {
   display: grid;
@@ -390,8 +390,8 @@ function copyCurrent() {
   height: 38px;
   place-items: center;
   border-radius: var(--radius-sm);
-  color: #1d4ed8;
-  background: #dbeafe;
+  color: var(--c-primary-700);
+  background: var(--c-primary-100);
   font-size: 17px;
   font-weight: 800;
 }

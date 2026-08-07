@@ -278,7 +278,7 @@ function copyPaletteVariables() {
 
 <style scoped>
 .color-page {
-  --blue: #2563eb;
+  --blue: var(--c-primary);
   gap: 16px;
 }
 .upload-card, .file-bar, .image-panel, .inspector-panel, .palette-card, .history-card {
@@ -305,8 +305,8 @@ function copyPaletteVariables() {
   transition: .18s ease;
 }
 .upload-card.dragging {
-  border-color: #60a5fa;
-  background: #eff6ff;
+  border-color: var(--c-primary-400);
+  background: var(--c-primary-50);
   transform: scale(.995);
 }
 .upload-icon {
@@ -315,8 +315,8 @@ function copyPaletteVariables() {
   height: 72px;
   place-items: center;
   border-radius: var(--radius-card);
-  color: #2563eb;
-  background: #dbeafe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
   font-size: 32px;
 }
 .upload-card h3 {
@@ -338,7 +338,7 @@ function copyPaletteVariables() {
   padding: 8px 15px;
   border-radius: var(--radius-sm);
   color: var(--c-on-accent);
-  background: #2563eb;
+  background: var(--c-primary);
   font-size: 12px;
   cursor: pointer;
 }
@@ -369,8 +369,8 @@ function copyPaletteVariables() {
   flex: none;
   place-items: center;
   border-radius: var(--radius-sm);
-  color: #2563eb;
-  background: #dbeafe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
 }
 .file-info > div:last-child {
   display: flex;
@@ -492,7 +492,7 @@ function copyPaletteVariables() {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #60a5fa;
+  background: var(--c-primary-400);
 }
 .image-hint span:last-child i {
   background: #a78bfa;
@@ -537,8 +537,8 @@ function copyPaletteVariables() {
   cursor: pointer;
 }
 .format-list button:hover {
-  border-color: #93c5fd;
-  background: #eff6ff;
+  border-color: var(--c-primary-300);
+  background: var(--c-primary-50);
 }
 .format-list span {
   color: var(--c-text-muted);

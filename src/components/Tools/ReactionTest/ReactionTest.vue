@@ -170,7 +170,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .reaction-page {
-  --blue: #2563eb;
+  --blue: var(--c-primary);
   gap: 16px;
 }
 .session-bar, .stats-card, .history-card, .tips-grid article {
@@ -213,7 +213,7 @@ onBeforeUnmount(() => {
 }
 .round-options button.active {
   color: var(--c-on-accent);
-  background: #2563eb;
+  background: var(--c-primary);
 }
 .round-options button:disabled {
   cursor: not-allowed;
@@ -237,7 +237,7 @@ onBeforeUnmount(() => {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #3b82f6, #22c55e);
+  background: linear-gradient(90deg, var(--c-primary-500), #22c55e);
   transition: width .3s ease;
 }
 .session-progress small {
@@ -259,8 +259,8 @@ onBeforeUnmount(() => {
   border: 0;
   border-radius: 24px;
   color: var(--c-on-accent);
-  background: linear-gradient(145deg, #1d4ed8, #3b82f6);
-  box-shadow: 0 18px 45px rgb(37 99 235 / 23%);
+  background: linear-gradient(145deg, var(--c-primary-700), var(--c-primary-500));
+  box-shadow: 0 18px 45px color-mix(in srgb, var(--c-primary) 23%, transparent);
   outline: none;
   cursor: pointer;
   transition: background .16s ease, transform .16s ease;
@@ -268,7 +268,7 @@ onBeforeUnmount(() => {
   -webkit-tap-highlight-color: transparent;
 }
 .reaction-stage:focus-visible {
-  box-shadow: 0 0 0 4px #bfdbfe, 0 18px 45px rgb(37 99 235 / 23%);
+  box-shadow: 0 0 0 4px var(--c-primary-200), 0 18px 45px color-mix(in srgb, var(--c-primary) 23%, transparent);
 }
 .reaction-stage:active {
   transform: scale(.995);
@@ -433,7 +433,7 @@ onBeforeUnmount(() => {
   padding: 13px;
   border-radius: var(--radius-md);
   color: var(--c-on-accent);
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  background: linear-gradient(135deg, var(--c-primary), #7c3aed);
 }
 .rating-card span, .rating-card small {
   font-size: 12px;
@@ -468,7 +468,7 @@ onBeforeUnmount(() => {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #93c5fd, #3b82f6);
+  background: linear-gradient(90deg, var(--c-primary-300), var(--c-primary-500));
   transition: width .25s ease;
 }
 .history-chart i.best {
@@ -497,8 +497,8 @@ onBeforeUnmount(() => {
   flex: none;
   place-items: center;
   border-radius: var(--radius-sm);
-  color: #2563eb;
-  background: #dbeafe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
   font: 800 12px ui-monospace, monospace;
 }
 .tips-grid strong {
@@ -525,7 +525,7 @@ onBeforeUnmount(() => {
 }
 :global(html.dark .reaction-page .round-options button.active) {
   color: var(--c-on-accent);
-  background: #2563eb;
+  background: var(--c-primary);
 }
 @keyframes pulse {
   50% {

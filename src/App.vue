@@ -328,13 +328,13 @@ onUnmounted(() => {
   width: 36px;
   height: 36px;
   border: 3px solid rgba(59, 130, 246, 0.2);
-  border-top-color: #3b82f6;
+  border-top-color: var(--c-primary-500);
   border-radius: 50%;
   animation: route-spin 0.7s linear infinite;
 }
 .route-loading-text {
   font-size: 13px;
-  color: #3b82f6;
+  color: var(--c-primary-500);
   letter-spacing: 0.05em;
 }
 @keyframes route-spin {
