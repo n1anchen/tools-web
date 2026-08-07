@@ -2,6 +2,8 @@
 import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Delete, Download, Refresh } from '@element-plus/icons-vue'
+import { Icon } from '@vicons/utils'
+import { Hdd } from '@vicons/fa'
 import {
   MANAGED_RESOURCE_GROUPS,
   cacheManagedResourceGroup,
@@ -100,13 +102,25 @@ const statusTagType = (status?: ManagedResourceStatus) => {
 <template>
   <el-dialog
     v-model="visible"
-    title="资源管理"
     width="min(720px, calc(100vw - 24px))"
     top="4vh"
     class="resource-manager-dialog"
   >
+    <!-- 自定义标题：图标 + 主标题 + 副标题（与 PrivacyNotice 弹窗风格一致） -->
+    <template #header>
+      <div class="flex items-center gap-3 px-1">
+        <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex-shrink-0">
+          <Icon size="17"><Hdd /></Icon>
+        </span>
+        <div>
+          <p class="text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight">资源管理</p>
+          <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">管理离线缓存的大型可选资源</p>
+        </div>
+      </div>
+    </template>
+
     <div class="flex flex-col gap-3" v-loading="loading">
-      <div class="flex items-start justify-between gap-3 rounded-lg border border-blue-100 bg-blue-50 px-4 py-3
+      <div class="flex items-start justify-between gap-3 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3
                   dark:border-blue-900/70 dark:bg-blue-950/40">
         <div>
           <div class="text-sm font-semibold text-slate-800 dark:text-slate-100">离线资源缓存</div>
@@ -122,7 +136,7 @@ const statusTagType = (status?: ManagedResourceStatus) => {
       <div
         v-for="{ group, status } in resourceRows"
         :key="group.id"
-        class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800"
+        class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
       >
         <div class="flex flex-col gap-3 c-sm:flex-row c-sm:items-start c-sm:justify-between">
           <div class="min-w-0 flex-1">
@@ -145,6 +159,7 @@ const statusTagType = (status?: ManagedResourceStatus) => {
                 :model-value="Boolean(status?.enabled)"
                 :loading="busyId === group.id"
                 :disabled="!status?.supported"
+                width="52"
                 @change="value => toggleResource(group.id, Boolean(value))"
               />
             </template>
@@ -201,6 +216,7 @@ const statusTagType = (status?: ManagedResourceStatus) => {
   flex-direction: column;
   margin-bottom: 0;
   overflow: hidden;
+  border-radius: var(--radius-lg);
 }
 
 :deep(.resource-manager-dialog .el-dialog__body) {
