@@ -60,10 +60,13 @@
 }
 /* --- 开关 el-switch：高度与按钮/输入框统一，饱满协调 ---
  * EP 默认 40×20（2:1）细长；高度提升到 32px（与 el-button / el-input
- * 默认高度一致），宽度保持 EP 默认 40px 不缩小，圆钮 28px 与轨道匹配。
+ * 默认高度一致），无字开关加宽到 52px min-width（有 width prop 的文字开关
+ * 不受影响），圆钮 28px 与轨道匹配，避免 40×32 显得细窄。
  * 带文字（inline-prompt）开关与旁边按钮并排时高度齐平，比例协调。
- * small 保持 EP 默认尺寸；action 水平位置使用 calc(100% - 29px) 自适应。 */
+ * small 保持 EP 默认尺寸（EP 的 .el-switch--small 选择器特异性更高）；
+ * action 水平位置使用 calc(100% - 29px) 自适应，加宽无需额外调整。 */
 .el-switch__core {
+  min-width: 52px;
   height: 32px;
   border-radius: var(--radius-full);
 }

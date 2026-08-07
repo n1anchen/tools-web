@@ -142,7 +142,7 @@ function copyCurrent() {
       <div class="history-section">
         <SectionHeading :icon="Clock" title="投掷历史" description="保留最近 8 组结果" tone="green">
           <template #actions>
-            <el-button text :icon="Delete" :disabled="!history.length" @click="history = []">清空历史</el-button>
+            <el-button :icon="Delete" :disabled="!history.length" @click="history = []">清空历史</el-button>
           </template>
         </SectionHeading>
         <div v-if="history.length" class="history-list">

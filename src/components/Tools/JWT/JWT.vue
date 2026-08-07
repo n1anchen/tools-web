@@ -105,8 +105,8 @@ function loadSample() {
       <div class="card-heading">
         <div><span class="eyebrow">TOKEN INPUT</span><h2>粘贴 JSON Web Token</h2></div>
         <div>
-          <el-button text @click="loadSample">载入示例</el-button>
-          <el-button text :icon="Delete" @click="token = ''">清空</el-button>
+          <el-button @click="loadSample">载入示例</el-button>
+          <el-button :icon="Delete" @click="token = ''">清空</el-button>
         </div>
       </div>
       <el-input v-model="token" type="textarea" :rows="6" resize="none" placeholder="eyJhbGciOi..." />

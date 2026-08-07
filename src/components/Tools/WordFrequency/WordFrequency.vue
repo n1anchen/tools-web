@@ -72,8 +72,8 @@ function copyAll() {
       <SectionHeading :icon="DataAnalysis" title="输入分析文本" description="使用浏览器智能分词，同时识别中文词语和英文单词" tone="blue">
         <template #actions>
           <div>
-            <el-button text @click="loadSample">载入示例</el-button>
-            <el-button text :icon="Delete" :disabled="!inputText" @click="clearAll">清空</el-button>
+            <el-button @click="loadSample">载入示例</el-button>
+            <el-button :icon="Delete" :disabled="!inputText" @click="clearAll">清空</el-button>
           </div>
         </template>
       </SectionHeading>

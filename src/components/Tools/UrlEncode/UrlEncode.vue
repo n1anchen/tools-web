@@ -107,7 +107,7 @@ function useExample(value: string) {
                 <strong>输入内容</strong>
                 <span>{{ input.length }} 字符 · {{ inputBytes }} Bytes</span>
               </div>
-              <el-button text :icon="Delete" @click="clearAll">清空</el-button>
+              <el-button :icon="Delete" @click="clearAll">清空</el-button>
             </div>
             <el-input v-model="input" type="textarea" :rows="10" resize="none" :placeholder="inputPlaceholder" />
           </article>

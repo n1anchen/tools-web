@@ -114,7 +114,7 @@ onBeforeUnmount(() => {
     <section class="statistics-card">
       <SectionHeading :icon="TrendCharts" title="本次统计" description="最多保留最近 40 次抛掷结果" tone="green">
         <template #actions>
-          <el-button text :icon="Delete" :disabled="!records.length" @click="clearRecords">清空记录</el-button>
+          <el-button :icon="Delete" :disabled="!records.length" @click="clearRecords">清空记录</el-button>
         </template>
       </SectionHeading>
 

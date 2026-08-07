@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-plus/icons-vue'
+import { CopyDocument, Delete, Download, FolderOpened, Right } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
 import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
+import SwapButton from '@/components/Common/SwapButton.vue'
 import { downloadBlob } from '@/utils/file'
 import { copy } from '@/utils/string'
 import { buildDocumentFilename, formatDocumentBytes } from '@/utils/documentStudio'
@@ -239,18 +240,19 @@ onBeforeUnmount(revokePreview)
         <div><span class="eyebrow">TEXT FLOW</span><h3>文本双向转换</h3></div>
         <el-radio-group v-model="textMode"><el-radio-button value="encode">文本 → Base64</el-radio-button><el-radio-button value="decode">Base64 → 文本</el-radio-button></el-radio-group>
         <el-checkbox v-if="textMode === 'encode'" v-model="urlSafe">生成 Base64 URL</el-checkbox>
-        <div class="toolbar-actions"><el-button :icon="Refresh" aria-label="将结果作为下一步输入" :disabled="!textOutput" @click="swapTextFlow">反向继续</el-button><el-button :icon="Delete" aria-label="清空文本编解码内容" @click="clearText">清空</el-button></div>
+        <div class="toolbar-actions"><el-button :icon="Delete" aria-label="清空文本编解码内容" @click="clearText">清空</el-button></div>
       </section>
 
       <section class="sample-card"><span>快速示例</span><button v-for="sample in textSamples" :key="sample.title" type="button" @click="applyTextSample(sample.value)"><strong>{{ sample.title }}</strong><small>{{ sample.value.length }} 字符</small></button></section>
 
-      <SplitWorkspace :actions-width="70" :gap="0" :margin-top="0" :collapse="1050">
+      <SplitWorkspace :actions-width="132" :gap="12" :margin-top="0" :collapse="1050">
         <template #input>
           <article class="io-card input"><header><div><span>INPUT</span><h3>{{ textMode === 'encode' ? '原始文本' : 'Base64 内容' }}</h3></div><small>{{ textInput.length }} 字符 · {{ formatDocumentBytes(textInputBytes) }}</small></header><el-input v-model="textInput" type="textarea" :rows="15" resize="vertical" :placeholder="textMode === 'encode' ? '输入 UTF-8 文本…' : '输入 Base64、Base64 URL 或 Data URL…'" aria-label="Base64 文本输入" /></article>
         </template>
 
         <template #actions>
-          <div class="flow-action"><button type="button" @click="processText"><span>{{ textMode === 'encode' ? '编码' : '解码' }}</span><b>→</b></button></div>
+          <el-button type="primary" :icon="Right" round @click="processText">{{ textMode === 'encode' ? '编码' : '解码' }}</el-button>
+          <SwapButton label="把结果作为下一步输入" :disabled="!textOutput" @click="swapTextFlow" />
         </template>
 
         <template #output>
@@ -450,29 +452,6 @@ onBeforeUnmount(revokePreview)
   justify-content: flex-end;
   gap: 8px;
   margin-top:12px
-}
-.flow-action {
-  display: grid;
-  place-items:center
-}
-.flow-action button {
-  display: grid;
-  width: 54px;
-  height: 54px;
-  place-items: center;
-  border: 0;
-  border-radius: 50%;
-  color: var(--c-on-accent);
-  background: linear-gradient(135deg,var(--c-primary-700),var(--c-primary));
-  box-shadow: 0 12px 25px color-mix(in srgb, var(--c-primary) 28%, transparent);
-  cursor:pointer
-}
-.flow-action span {
-  font-size: 12px;
-  font-weight:800
-}
-.flow-action b {
-  line-height:.7
 }
 .file-workspace,.decode-grid {
   display: grid;
@@ -706,18 +685,6 @@ onBeforeUnmount(revokePreview)
 @media(max-width:1050px) {
   .text-toolbar {
     grid-template-columns:1fr 1fr
-  }
-  .flow-action {
-    width: 100%;
-    padding: 8px
-  }
-  .flow-action button {
-    width: 100%;
-    height: 42px;
-    border-radius:var(--radius-sm)
-  }
-  .flow-action b {
-    display:none
   }
   .file-workspace,.decode-grid {
     grid-template-columns:1fr

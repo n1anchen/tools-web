@@ -78,7 +78,7 @@ function useSample(sample: typeof samples[number]) {
         <template #input>
           <article class="editor-panel">
             <PanelHeading :title="mode === 'encode' ? '原始文本' : 'Unicode 内容'" :stats="`${input.length} 字符 · ${inputBytes} Bytes`">
-              <template #actions><el-button text @click="input = ''">清空</el-button></template>
+              <template #actions><el-button @click="input = ''">清空</el-button></template>
             </PanelHeading>
             <el-input
               v-model="input"

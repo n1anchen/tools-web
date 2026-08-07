@@ -88,7 +88,7 @@ function useResultAsInput() {
         <template #input>
           <article class="editor-panel">
             <PanelHeading title="原始文本" :stats="`${Array.from(inputText).length} 个字符`" size="bar">
-              <template #actions><el-button text :icon="Delete" :disabled="!inputText" @click="inputText = ''">清空</el-button></template>
+              <template #actions><el-button :icon="Delete" :disabled="!inputText" @click="inputText = ''">清空</el-button></template>
             </PanelHeading>
             <el-input v-model="inputText" type="textarea" :rows="12" resize="none" placeholder="粘贴需要批量查找和替换的文本" />
           </article>

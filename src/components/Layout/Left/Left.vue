@@ -250,7 +250,10 @@ onBeforeUnmount(() => {
   border-radius: 10px !important;
   height: auto !important;
   line-height: 1.5 !important;
-  transition: all 0.3s ease !important;
+  /* 只过渡 transform 和 color；
+     background-color / box-shadow 必须瞬时切换，否则悬浮背景会缓慢淡出，
+     与滑入的主题色滑块短暂重合形成「印子」 */
+  transition: transform 0.3s ease, color 0.3s ease !important;
   color: #64748b !important;
 }
 
@@ -258,6 +261,8 @@ onBeforeUnmount(() => {
   background: #f1f5f9 !important;
   color: var(--c-primary-500) !important;
   transform: translateX(4px);
+  /* 与激活滑块的底部光晕同尺寸，避免悬浮高亮看起来「短一截」 */
+  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.15);
 }
 
 .menu-item-custom.is-active {

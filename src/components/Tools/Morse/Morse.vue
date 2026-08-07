@@ -133,8 +133,8 @@ onUnmounted(stopPlayback)
           <button :class="{ active: mode === 'decode' }" @click="mode = 'decode'">电码 → 文字</button>
         </div>
         <div class="toolbar-actions">
-          <el-button text @click="loadExample">载入示例</el-button>
-          <el-button text :icon="Delete" @click="clear">清空</el-button>
+          <el-button @click="loadExample">载入示例</el-button>
+          <el-button :icon="Delete" @click="clear">清空</el-button>
         </div>
       </div>
 

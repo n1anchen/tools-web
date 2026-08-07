@@ -59,7 +59,7 @@ function clearAll() {
     <section class="pattern-card">
       <div class="section-heading">
         <div><span class="eyebrow">EXPRESSION</span><h3>正则表达式</h3></div>
-        <div class="header-actions"><el-button text @click="sourceText = sampleText">载入示例</el-button><el-button text :icon="Delete" @click="clearAll">清空</el-button></div>
+        <div class="header-actions"><el-button @click="sourceText = sampleText">载入示例</el-button><el-button :icon="Delete" @click="clearAll">清空</el-button></div>
       </div>
       <div class="pattern-input" :class="{ invalid: analysis.error }">
         <span>/</span>
@@ -68,9 +68,7 @@ function clearAll() {
       </div>
       <div v-if="analysis.error" class="error-message">{{ analysis.error }}</div>
       <div class="flag-row">
-        <label v-for="option in flagOptions" :key="option.key">
-          <el-switch v-model="flags[option.key]" size="small" /><code>{{ option.key }}</code><span>{{ option.label }}</span>
-        </label>
+        <el-checkbox v-for="option in flagOptions" :key="option.key" v-model="flags[option.key]"><code>{{ option.key }}</code><span>{{ option.label }}</span></el-checkbox>
       </div>
     </section>
 
@@ -218,8 +216,11 @@ function clearAll() {
   gap: 9px 18px;
   margin-top: 15px;
 }
-.flag-row label {
-  display: flex;
+.flag-row .el-checkbox {
+  margin-right: 0;
+}
+.flag-row .el-checkbox__label {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   color: var(--c-text-secondary);

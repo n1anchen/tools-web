@@ -184,7 +184,7 @@ onUnmounted(() => {
         <div class="primary-actions">
           <el-button type="primary" aria-label="生成 ASCII 字形" :loading="busy" :disabled="!content.trim()" @click="generate"><el-icon><VideoPlay /></el-icon>生成字形</el-button>
           <el-button aria-label="随机选择字体" @click="surpriseMe"><el-icon><MagicStick /></el-icon>随机字体</el-button>
-          <el-button text @click="clear">清空</el-button>
+          <el-button @click="clear">清空</el-button>
         </div>
 
         <div v-if="recentFonts.length" class="recent-row"><span>最近使用</span><button v-for="item in recentFonts" :key="item" type="button" @click="font = item">{{ item }}</button></div>

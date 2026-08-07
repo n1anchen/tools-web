@@ -74,7 +74,7 @@ function useResultAsInput() {
         <template #input>
           <article class="editor-panel">
             <PanelHeading title="原始文本" :stats="`${result.originalLines} 行`">
-              <template #actions><el-button text :icon="Delete" :disabled="!content" @click="clearAll">清空</el-button></template>
+              <template #actions><el-button :icon="Delete" :disabled="!content" @click="clearAll">清空</el-button></template>
             </PanelHeading>
             <el-input v-model="content" type="textarea" :rows="11" resize="none" placeholder="每行输入一项，支持直接粘贴名单、URL 或数据列表" />
           </article>
