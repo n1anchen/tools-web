@@ -1,3 +1,5 @@
+import { relativeLuminance, rgbToHex } from './colorTools.ts'
+
 export interface RgbColor { r: number; g: number; b: number }
 
 export function hexToRgb(hex: string): RgbColor | null {
@@ -11,24 +13,15 @@ export function hexToRgb(hex: string): RgbColor | null {
   }
 }
 
-export function rgbToHex({ r, g, b }: RgbColor) {
-  const channel = (value: number) => Math.min(255, Math.max(0, Math.round(value))).toString(16).padStart(2, '0')
-  return `#${channel(r)}${channel(g)}${channel(b)}`.toUpperCase()
-}
-
-export function relativeLuminance(hex: string) {
+function luminanceOfHex(hex: string) {
   const rgb = hexToRgb(hex)
   if (!rgb) return 0
-  const channel = (value: number) => {
-    const normalized = value / 255
-    return normalized <= 0.04045 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4
-  }
-  return 0.2126 * channel(rgb.r) + 0.7152 * channel(rgb.g) + 0.0722 * channel(rgb.b)
+  return relativeLuminance(rgb.r, rgb.g, rgb.b)
 }
 
 export function contrastRatio(foreground: string, background: string) {
-  const first = relativeLuminance(foreground)
-  const second = relativeLuminance(background)
+  const first = luminanceOfHex(foreground)
+  const second = luminanceOfHex(background)
   return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05)
 }
 
@@ -50,21 +43,22 @@ function mixHexColors(first: string, second: string, amount: number) {
   const to = hexToRgb(second)
   if (!from || !to) return first
   const ratio = Math.min(1, Math.max(0, amount))
-  return rgbToHex({
-    r: from.r + (to.r - from.r) * ratio,
-    g: from.g + (to.g - from.g) * ratio,
-    b: from.b + (to.b - from.b) * ratio,
-  })
+  return rgbToHex(
+    from.r + (to.r - from.r) * ratio,
+    from.g + (to.g - from.g) * ratio,
+    from.b + (to.b - from.b) * ratio,
+  )
 }
 
 export function createColorScale(hex: string) {
+  const base = hexToRgb(hex) ?? { r: 0, g: 0, b: 0 }
   return [
     ['50', mixHexColors(hex, '#FFFFFF', 0.9)],
     ['100', mixHexColors(hex, '#FFFFFF', 0.78)],
     ['200', mixHexColors(hex, '#FFFFFF', 0.62)],
     ['300', mixHexColors(hex, '#FFFFFF', 0.42)],
     ['400', mixHexColors(hex, '#FFFFFF', 0.2)],
-    ['500', rgbToHex(hexToRgb(hex) ?? { r: 0, g: 0, b: 0 })],
+    ['500', rgbToHex(base.r, base.g, base.b)],
     ['600', mixHexColors(hex, '#000000', 0.15)],
     ['700', mixHexColors(hex, '#000000', 0.3)],
     ['800', mixHexColors(hex, '#000000', 0.45)],

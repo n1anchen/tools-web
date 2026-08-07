@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import { ElMessage } from 'element-plus'
+import { computed, reactive, ref, watch } from 'vue'
 import { CopyDocument, Download, Refresh, UploadFilled } from '@element-plus/icons-vue'
-import * as echarts from 'echarts'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import { formatNumber } from '@/utils/format'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown } from '@/utils/file'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import ChartToolNav from '@/components/Tools/Chart/ChartToolNav.vue'
 import { useSettingStore } from '@/store/modules/setting'
 import { useRoute } from 'vue-router'
 import { getTools } from '@/components/Tools/tools.ts'
 import { copy, rtrim } from '@/utils/string'
-import { clearChartDraft, loadChartDraft, saveChartDraft } from '@/utils/chartDraft'
+import { useChartWorkbench } from '@/composables/useChartWorkbench'
 import { CHART_PALETTES } from '@/utils/chartStudio'
 import {
   SPECIAL_SAMPLES,
@@ -42,8 +39,6 @@ const dataMode = ref<EditorMode>('grid')
 const activeSample = ref(SPECIAL_SAMPLES[props.type][0].id)
 const chartHeight = ref(480)
 const currentPaletteId = ref<string>(CHART_PALETTES[0].id)
-let chart: echarts.ECharts | null = null
-let resizeObserver: ResizeObserver | null = null
 
 const typeMeta = {
   treemap: { eyebrow: 'TREEMAP STUDIO', headline: '从层级路径中看见结构与占比', accent: '#059669', soft: '#D1FAE5', detail: '矩形树图用面积表达数量、用嵌套表达层级。表格模式中的“层级路径”使用 / 分隔，例如 产品/专业版；每条路径应指向叶节点，同一路径不能既作为数据项又作为其他路径的父级。' },
@@ -76,38 +71,6 @@ const settings = reactive<SpecialChartSettings>(createSettings())
 const parserMode = computed<SpecialDataMode>(() => dataMode.value === 'json' ? 'json' : 'table')
 const dataText = ref(serializeSpecialChartData(samples.value[0].data, 'table'))
 
-// 恢复该图表类型的本地草稿（跨工具切换 / 刷新后保留输入数据与配置）
-const restoredDraft = loadChartDraft<SpecialChartSettings>(props.type)
-if (restoredDraft) {
-  dataMode.value = restoredDraft.dataMode as EditorMode
-  activeSample.value = restoredDraft.activeSample
-  chartHeight.value = restoredDraft.chartHeight
-  currentPaletteId.value = restoredDraft.currentPaletteId
-  dataText.value = restoredDraft.dataText
-  Object.assign(settings, { ...createSettings(), ...restoredDraft.settings })
-  if (props.type === 'calendar') nextTick(syncCalendarYear)
-}
-
-// 草稿保存：变更后防抖写入；仅在有实际改动时才落盘，重置后清除
-let draftTimer: ReturnType<typeof setTimeout> | null = null
-let draftDirty = false
-function writeDraft() {
-  saveChartDraft(props.type, {
-    dataText: dataText.value,
-    dataMode: dataMode.value,
-    activeSample: activeSample.value,
-    chartHeight: chartHeight.value,
-    currentPaletteId: currentPaletteId.value,
-    settings: { ...settings },
-  })
-}
-function scheduleDraft() {
-  draftDirty = true
-  if (draftTimer) clearTimeout(draftTimer)
-  draftTimer = setTimeout(writeDraft, 400)
-}
-watch([dataMode, dataText, activeSample, chartHeight, currentPaletteId], scheduleDraft)
-watch(settings, scheduleDraft, { deep: true })
 const parsed = computed(() => parseSpecialChartData(dataText.value, props.type, parserMode.value))
 const data = computed(() => parsed.value.data)
 const availableYears = computed(() => data.value.kind === 'calendar' ? data.value.years : [])
@@ -116,6 +79,24 @@ const runtimeWarnings = computed(() => props.type === 'calendar' && availableYea
 const allErrors = computed(() => [...parsed.value.errors, ...runtimeWarnings.value])
 const option = computed(() => buildSpecialChartOption(props.type, data.value, settings, settingStore.isDark))
 
+const { resetWorkbench, importData, downloadData, downloadPng } = useChartWorkbench({
+  type: props.type,
+  settings,
+  createSettings,
+  refs: { dataMode, activeSample, chartHeight, currentPaletteId, dataText },
+  defaultChartHeight: 480,
+  defaultActiveSample: () => samples.value[0].id,
+  hasData: () => stats.value.count > 0,
+  serializeCurrent: mode => serializeSpecialChartData(data.value, mode),
+  serializeDefault: () => serializeSpecialChartData(samples.value[0].data, 'table'),
+  detectJson: content => content.trimStart().startsWith('['),
+  chartElement,
+  option,
+  isDark: computed(() => settingStore.isDark),
+  filenameBase: () => settings.title || workbenchTitle.value,
+  onAfterRestore: syncCalendarYear,
+  onAfterImport: syncCalendarYear,
+})
 const formatHint = computed(() => {
   if (dataMode.value === 'grid') return '直接编辑单元格，或粘贴 Excel / WPS 中复制的多行多列区域'
   if (dataMode.value === 'json') return ({ treemap: '节点数组：name、value 或 children', sankey: '连接数组：source、target、value', boxplot: '分组数组：samples 或 values 与 outliers', calendar: '日期数组：date、value' })[props.type]
@@ -130,8 +111,6 @@ const heroMetrics = computed(() => {
   return [{ value: settings.calendarYear, label: '当前年度' }, { value: stats.value.count, label: '有效日期' }, { value: stats.value.detail, label: '连续性检查' }]
 })
 
-function renderChart() { if (!chartElement.value) return; if (!chart) chart = echarts.init(chartElement.value, settingStore.isDark ? 'dark' : undefined, { renderer: 'canvas' }); chart.setOption(option.value, true); chart.resize() }
-function recreateChart() { chart?.dispose(); chart = null; nextTick(renderChart) }
 function syncCalendarYear() { if (availableYears.value.length && !availableYears.value.includes(settings.calendarYear)) settings.calendarYear = lastYear(availableYears.value)! }
 
 function applySample(id: string) {
@@ -141,21 +120,7 @@ function applySample(id: string) {
 }
 function changeMode(mode: EditorMode) { if (mode === dataMode.value) return; const nextParserMode: SpecialDataMode = mode === 'json' ? 'json' : 'table'; if (nextParserMode === parserMode.value) { dataMode.value = mode; return }; const current = stats.value.count ? data.value : samples.value[0].data; dataMode.value = mode; dataText.value = serializeSpecialChartData(current, nextParserMode) }
 function choosePalette(item: typeof CHART_PALETTES[number]) { currentPaletteId.value = item.id; settings.palette = [...item.colors] }
-function resetWorkbench() { Object.assign(settings, createSettings()); dataMode.value = 'grid'; activeSample.value = samples.value[0].id; dataText.value = serializeSpecialChartData(samples.value[0].data, 'table'); chartHeight.value = 480; currentPaletteId.value = CHART_PALETTES[0].id; draftDirty = false; clearChartDraft(props.type); ElMessage.success('已恢复默认示例与配置') }
-
-async function importData(event: Event) {
-  const input = event.target as HTMLInputElement; const file = input.files?.[0]; input.value = ''; if (!file) return
-  if (file.size > 1024 * 1024) { ElMessage.warning('单个数据文件请控制在 1 MB 以内'); return }
-  const content = await file.text(); dataMode.value = file.name.toLowerCase().endsWith('.json') || content.trimStart().startsWith('[') ? 'json' : 'grid'; dataText.value = content; activeSample.value = ''; nextTick(syncCalendarYear); ElMessage.success(`已载入 ${file.name}`)
-}
-function downloadData() { if (!stats.value.count) return ElMessage.warning('没有可导出的有效数据'); const content = serializeSpecialChartData(data.value, parserMode.value); const blob = new Blob([content], { type: parserMode.value === 'json' ? 'application/json;charset=utf-8' : 'text/csv;charset=utf-8' }); const url = URL.createObjectURL(blob); autoDown(url, `chart-data.${parserMode.value === 'json' ? 'json' : 'csv'}`) }
-function downloadPng() { if (!chart || !stats.value.count) return ElMessage.warning('请先输入有效数据'); autoDown(chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: settingStore.isDark ? '#0F172A' : '#FFFFFF' }), `${(settings.title || workbenchTitle.value).replace(/[\\/:*?"<>|]/g, '-')}.png`) }
-
-watch(option, () => nextTick(renderChart), { deep: true })
 watch(availableYears, syncCalendarYear)
-watch(() => settingStore.isDark, recreateChart)
-onMounted(() => nextTick(() => { renderChart(); if (chartElement.value) { resizeObserver = new ResizeObserver(() => chart?.resize()); resizeObserver.observe(chartElement.value) } }))
-onBeforeUnmount(() => { if (draftTimer) { clearTimeout(draftTimer); draftTimer = null } if (draftDirty) writeDraft(); resizeObserver?.disconnect(); chart?.dispose(); chart = null })
 </script>
 
 <template>

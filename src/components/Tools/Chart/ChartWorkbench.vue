@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import { ElMessage } from 'element-plus'
+import { computed, reactive, ref } from 'vue'
 import { CopyDocument, Download, Refresh, UploadFilled } from '@element-plus/icons-vue'
-import * as echarts from 'echarts'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import { formatNumber } from '@/utils/format'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown } from '@/utils/file'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import ChartToolNav from '@/components/Tools/Chart/ChartToolNav.vue'
 import { useSettingStore } from '@/store/modules/setting'
 import { useRoute } from 'vue-router'
 import { getTools } from '@/components/Tools/tools.ts'
 import { copy, rtrim } from '@/utils/string'
-import { clearChartDraft, loadChartDraft, saveChartDraft } from '@/utils/chartDraft'
+import { useChartWorkbench } from '@/composables/useChartWorkbench'
 import {
   CHART_PALETTES,
   CHART_SAMPLES,
@@ -41,8 +38,6 @@ type EditorMode = 'grid' | ChartDataMode
 const dataMode = ref<EditorMode>('grid')
 const activeSample = ref(CHART_SAMPLES[props.type][0].id)
 const chartHeight = ref(440)
-let chart: echarts.ECharts | null = null
-let resizeObserver: ResizeObserver | null = null
 
 const typeMeta: Record<ChartKind, {
   eyebrow: string
@@ -120,37 +115,22 @@ const stats = computed(() => getChartStats(rows.value, props.type))
 const option = computed(() => buildChartOption(props.type, rows.value, settings, settingStore.isDark))
 const currentPaletteId = ref<string>(CHART_PALETTES[0].id)
 
-// 恢复该图表类型的本地草稿（跨工具切换 / 刷新后保留输入数据与配置）
-const restoredDraft = loadChartDraft<ChartSettings>(props.type)
-if (restoredDraft) {
-  dataMode.value = restoredDraft.dataMode as EditorMode
-  activeSample.value = restoredDraft.activeSample
-  chartHeight.value = restoredDraft.chartHeight
-  currentPaletteId.value = restoredDraft.currentPaletteId
-  dataText.value = restoredDraft.dataText
-  Object.assign(settings, { ...createSettings(), ...restoredDraft.settings })
-}
-
-// 草稿保存：变更后防抖写入；仅在有实际改动时才落盘，重置后清除
-let draftTimer: ReturnType<typeof setTimeout> | null = null
-let draftDirty = false
-function writeDraft() {
-  saveChartDraft(props.type, {
-    dataText: dataText.value,
-    dataMode: dataMode.value,
-    activeSample: activeSample.value,
-    chartHeight: chartHeight.value,
-    currentPaletteId: currentPaletteId.value,
-    settings: { ...settings },
-  })
-}
-function scheduleDraft() {
-  draftDirty = true
-  if (draftTimer) clearTimeout(draftTimer)
-  draftTimer = setTimeout(writeDraft, 400)
-}
-watch([dataMode, dataText, activeSample, chartHeight, currentPaletteId], scheduleDraft)
-watch(settings, scheduleDraft, { deep: true })
+const { resetWorkbench, importData, downloadData, downloadPng } = useChartWorkbench({
+  type: props.type,
+  settings,
+  createSettings,
+  refs: { dataMode, activeSample, chartHeight, currentPaletteId, dataText },
+  defaultChartHeight: 440,
+  defaultActiveSample: () => samples.value[0].id,
+  hasData: () => rows.value.length > 0,
+  serializeCurrent: mode => serializeChartData(rows.value, props.type, mode),
+  serializeDefault: () => serializeChartData(samples.value[0].rows, props.type, 'table'),
+  detectJson: content => content.trimStart().startsWith('['),
+  chartElement,
+  option,
+  isDark: computed(() => settingStore.isDark),
+  filenameBase: () => settings.title || workbenchTitle.value,
+})
 
 const heroMetrics = computed(() => [
   { value: stats.value.count.toLocaleString('zh-CN'), label: stats.value.primaryLabel },
@@ -165,19 +145,6 @@ const formatHint = computed(() => dataMode.value === 'grid'
     : props.type === 'scatter' ? 'CSV 列：X、Y、名称（名称可省略）' : 'CSV 列：名称、数值；也支持 Tab 分隔')
 const gridColumns = computed(() => props.type === 'scatter' ? 3 : 2)
 
-
-function renderChart() {
-  if (!chartElement.value) return
-  if (!chart) chart = echarts.init(chartElement.value, settingStore.isDark ? 'dark' : undefined, { renderer: 'canvas' })
-  chart.setOption(option.value, true)
-  chart.resize()
-}
-
-function recreateChart() {
-  chart?.dispose()
-  chart = null
-  nextTick(renderChart)
-}
 
 function applySample(sampleId: string) {
   const sample = samples.value.find(item => item.id === sampleId)
@@ -206,75 +173,6 @@ function changePrimaryColor(event: Event) {
   currentPaletteId.value = 'custom'
 }
 
-function resetWorkbench() {
-  Object.assign(settings, createSettings())
-  dataMode.value = 'grid'
-  activeSample.value = samples.value[0].id
-  dataText.value = serializeChartData(samples.value[0].rows, props.type, 'table')
-  chartHeight.value = 440
-  currentPaletteId.value = CHART_PALETTES[0].id
-  draftDirty = false
-  clearChartDraft(props.type)
-  ElMessage.success('已恢复默认示例与配置')
-}
-
-async function importData(event: Event) {
-  const input = event.target as HTMLInputElement
-  const file = input.files?.[0]
-  input.value = ''
-  if (!file) return
-  if (file.size > 1024 * 1024) {
-    ElMessage.warning('单个数据文件请控制在 1 MB 以内')
-    return
-  }
-  const content = await file.text()
-  const nextMode: EditorMode = file.name.toLowerCase().endsWith('.json') || content.trimStart().startsWith('[') ? 'json' : 'grid'
-  dataMode.value = nextMode
-  dataText.value = content
-  activeSample.value = ''
-  ElMessage.success(`已载入 ${file.name}`)
-}
-
-function downloadPng() {
-  if (!chart || !rows.value.length) {
-    ElMessage.warning('请先输入有效数据')
-    return
-  }
-  autoDown(chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: settingStore.isDark ? '#0F172A' : '#FFFFFF' }), `${(settings.title || workbenchTitle.value).replace(/[\\\/:*?"<>|]/g, '-')}.png`)
-}
-
-function downloadData() {
-  if (!rows.value.length) {
-    ElMessage.warning('没有可导出的有效数据')
-    return
-  }
-  const content = serializeChartData(rows.value, props.type, parserMode.value)
-  const blob = new Blob([content], { type: parserMode.value === 'json' ? 'application/json;charset=utf-8' : 'text/csv;charset=utf-8' })
-  const url = URL.createObjectURL(blob)
-  autoDown(url, `chart-data.${parserMode.value === 'json' ? 'json' : 'csv'}`)
-}
-
-watch(option, () => nextTick(renderChart), { deep: true })
-watch(() => settingStore.isDark, recreateChart)
-
-onMounted(() => {
-  nextTick(() => {
-    renderChart()
-    if (chartElement.value) {
-      resizeObserver = new ResizeObserver(() => chart?.resize())
-      resizeObserver.observe(chartElement.value)
-    }
-  })
-})
-
-onBeforeUnmount(() => {
-  // 组件销毁前把未落盘的草稿写入，保证跨工具切换后数据不丢失
-  if (draftTimer) { clearTimeout(draftTimer); draftTimer = null }
-  if (draftDirty) writeDraft()
-  resizeObserver?.disconnect()
-  chart?.dispose()
-  chart = null
-})
 </script>
 
 <template>
