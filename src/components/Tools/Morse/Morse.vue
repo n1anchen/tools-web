@@ -2,6 +2,7 @@
 import { computed, onUnmounted, ref } from 'vue'
 import { Delete, Switch, VideoPause, VideoPlay } from '@element-plus/icons-vue'
 import CopyButton from '@/components/Common/CopyButton.vue'
+import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
@@ -136,41 +137,47 @@ onUnmounted(stopPlayback)
         </div>
       </div>
 
-      <div class="editor-grid">
-        <div class="editor-panel">
-          <div class="panel-heading">
-            <div>
-              <span class="panel-kicker">INPUT</span>
-              <strong>{{ mode === 'encode' ? '原始文字' : '摩斯电码' }}</strong>
+      <SplitWorkspace :actions-width="42" :gap="0" :margin-top="20" :collapse="640">
+        <template #input>
+          <div class="editor-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-kicker">INPUT</span>
+                <strong>{{ mode === 'encode' ? '原始文字' : '摩斯电码' }}</strong>
+              </div>
+              <span>{{ input.length }} 字符</span>
             </div>
-            <span>{{ input.length }} 字符</span>
+            <el-input
+              v-model="input"
+              type="textarea"
+              :rows="10"
+              resize="none"
+              :placeholder="mode === 'encode' ? '输入文字，例如 SOS 或 中文' : '输入 .- 与 -，字符间用空格、单词间用 /'"
+            />
           </div>
-          <el-input
-            v-model="input"
-            type="textarea"
-            :rows="10"
-            resize="none"
-            :placeholder="mode === 'encode' ? '输入文字，例如 SOS 或 中文' : '输入 .- 与 -，字符间用空格、单词间用 /'"
-          />
-        </div>
+        </template>
 
-        <button class="swap-button" title="把结果带到另一侧继续转换" @click="switchMode">
-          <el-icon><Switch /></el-icon>
-        </button>
+        <template #actions>
+          <button class="swap-button" title="把结果带到另一侧继续转换" @click="switchMode">
+            <el-icon><Switch /></el-icon>
+          </button>
+        </template>
 
-        <div class="editor-panel output-panel">
-          <div class="panel-heading">
-            <div>
-              <span class="panel-kicker">OUTPUT</span>
-              <strong>{{ mode === 'encode' ? '摩斯电码' : '解码文字' }}</strong>
+        <template #output>
+          <div class="editor-panel output-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-kicker">OUTPUT</span>
+                <strong>{{ mode === 'encode' ? '摩斯电码' : '解码文字' }}</strong>
+              </div>
+              <CopyButton link type="primary" :text="result" />
             </div>
-            <CopyButton link type="primary" :text="result" />
+            <div class="result-box" :class="{ 'morse-output': mode === 'encode' }">
+              {{ result || '转换结果会显示在这里' }}
+            </div>
           </div>
-          <div class="result-box" :class="{ 'morse-output': mode === 'encode' }">
-            {{ result || '转换结果会显示在这里' }}
-          </div>
-        </div>
-      </div>
+        </template>
+      </SplitWorkspace>
 
       <div class="control-strip">
         <div v-if="mode === 'encode'" class="control-group">
@@ -268,12 +275,6 @@ onUnmounted(stopPlayback)
   color: var(--c-on-accent);
   background: var(--accent);
   box-shadow: 0 5px 14px rgb(15 118 110 / 25%);
-}
-.editor-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr);
-  align-items: center;
-  margin-top: 20px;
 }
 .editor-panel {
   min-width: 0;
@@ -482,10 +483,6 @@ onUnmounted(stopPlayback)
   .mode-switch {
     display: grid;
     grid-template-columns: 1fr 1fr;
-  }
-  .editor-grid {
-    grid-template-columns: 1fr;
-    gap: 0;
   }
   .swap-button {
     margin: -3px auto;

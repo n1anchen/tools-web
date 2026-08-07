@@ -5,6 +5,7 @@ import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
 
 type Mode = 'encode' | 'decode'
 type Scope = 'component' | 'url'
@@ -97,39 +98,43 @@ function useExample(value: string) {
         </div>
       </div>
 
-      <div class="editor-grid">
-        <article class="editor-panel">
-          <div class="editor-header">
-            <div>
-              <strong>输入内容</strong>
-              <span>{{ input.length }} 字符 · {{ inputBytes }} Bytes</span>
+      <SplitWorkspace :actions-width="116" :gap="14" :margin-top="22" :collapse="900">
+        <template #input>
+          <article class="editor-panel">
+            <div class="editor-header">
+              <div>
+                <strong>输入内容</strong>
+                <span>{{ input.length }} 字符 · {{ inputBytes }} Bytes</span>
+              </div>
+              <el-button text :icon="Delete" @click="clearAll">清空</el-button>
             </div>
-            <el-button text :icon="Delete" @click="clearAll">清空</el-button>
-          </div>
-          <el-input v-model="input" type="textarea" :rows="10" resize="none" :placeholder="inputPlaceholder" />
-        </article>
+            <el-input v-model="input" type="textarea" :rows="10" resize="none" :placeholder="inputPlaceholder" />
+          </article>
+        </template>
 
-        <div class="direction-column">
+        <template #actions>
           <el-button type="primary" :icon="Promotion" round @click="transform">{{ actionLabel }}</el-button>
           <el-button :icon="Switch" circle title="交换方向" aria-label="交换方向" @click="switchDirection" />
-        </div>
+        </template>
 
-        <article class="editor-panel result-panel" :class="{ error: errorMessage }">
-          <div class="editor-header">
-            <div>
-              <strong>处理结果</strong>
-              <span>{{ output.length }} 字符 · {{ outputBytes }} Bytes</span>
+        <template #output>
+          <article class="editor-panel result-panel" :class="{ error: errorMessage }">
+            <div class="editor-header">
+              <div>
+                <strong>处理结果</strong>
+                <span>{{ output.length }} 字符 · {{ outputBytes }} Bytes</span>
+              </div>
+              <CopyButton text-btn :text="output" :disabled="!output" />
             </div>
-            <CopyButton text-btn :text="output" :disabled="!output" />
-          </div>
-          <div v-if="errorMessage" class="editor-message error-message">{{ errorMessage }}</div>
-          <div v-else-if="!output" class="editor-message">
-            <el-icon><RefreshRight /></el-icon>
-            <span>点击“{{ actionLabel }}”后在这里查看结果</span>
-          </div>
-          <el-input v-else v-model="output" type="textarea" :rows="10" resize="none" readonly />
-        </article>
-      </div>
+            <div v-if="errorMessage" class="editor-message error-message">{{ errorMessage }}</div>
+            <div v-else-if="!output" class="editor-message">
+              <el-icon><RefreshRight /></el-icon>
+              <span>点击“{{ actionLabel }}”后在这里查看结果</span>
+            </div>
+            <el-input v-else v-model="output" type="textarea" :rows="10" resize="none" readonly />
+          </article>
+        </template>
+      </SplitWorkspace>
 
       <div class="example-row">
         <span>试试示例</span>
@@ -189,13 +194,6 @@ function useExample(value: string) {
   gap: 10px;
 }
 
-.editor-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 116px minmax(0, 1fr);
-  gap: 14px;
-  margin-top: 22px;
-}
-
 .editor-panel {
   min-width: 0;
   padding: 16px;
@@ -247,17 +245,6 @@ function useExample(value: string) {
   box-shadow: 0 0 0 1px #dbe3ef inset;
 }
 
-.direction-column {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.direction-column :deep(.el-button + .el-button) {
-  margin-left: 0;
-}
 
 .editor-message {
   display: flex;
@@ -379,14 +366,6 @@ function useExample(value: string) {
   .mode-controls {
     width: 100%;
     justify-content: flex-start;
-  }
-
-  .editor-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .direction-column {
-    flex-direction: row;
   }}@media (max-width: 640px) {
   .workspace-card {
     padding: 18px;

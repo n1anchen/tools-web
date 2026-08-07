@@ -6,6 +6,7 @@ import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
 import PanelHeading from '@/components/Common/PanelHeading.vue'
+import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
 import { replaceText, type ReplaceScope } from '@/utils/textTools'
 
 const inputText = ref('')
@@ -83,36 +84,40 @@ function useResultAsInput() {
         <span>{{ result.error }}</span>
       </div>
 
-      <div class="editor-grid">
-        <article class="editor-panel">
-          <PanelHeading title="原始文本" :stats="`${Array.from(inputText).length} 个字符`" size="bar">
-            <template #actions><el-button text :icon="Delete" :disabled="!inputText" @click="inputText = ''">清空</el-button></template>
-          </PanelHeading>
-          <el-input v-model="inputText" type="textarea" :rows="12" resize="none" placeholder="粘贴需要批量查找和替换的文本" />
-        </article>
+      <SplitWorkspace :actions-width="72" :gap="12" :margin-top="18" :collapse="820">
+        <template #input>
+          <article class="editor-panel">
+            <PanelHeading title="原始文本" :stats="`${Array.from(inputText).length} 个字符`" size="bar">
+              <template #actions><el-button text :icon="Delete" :disabled="!inputText" @click="inputText = ''">清空</el-button></template>
+            </PanelHeading>
+            <el-input v-model="inputText" type="textarea" :rows="12" resize="none" placeholder="粘贴需要批量查找和替换的文本" />
+          </article>
+        </template>
 
-        <div class="direction-column">
+        <template #actions>
           <div class="match-badge">
             <strong>{{ result.replacementCount }}</strong>
             <span>处替换</span>
           </div>
           <el-icon><Switch /></el-icon>
-        </div>
+        </template>
 
-        <article class="editor-panel result-panel" :class="{ invalid: result.error }">
-          <PanelHeading title="替换结果" :stats="`${Array.from(result.text).length} 个字符`" size="bar">
-            <template #actions><CopyButton text-btn :text="result.text" :disabled="!result.text || !!result.error" /></template>
-          </PanelHeading>
-          <el-input
-            :model-value="result.text"
-            type="textarea"
-            :rows="12"
-            resize="none"
-            readonly
-            :placeholder="result.error ? '修正规则后显示结果' : '替换结果会实时显示在这里'"
-          />
-        </article>
-      </div>
+        <template #output>
+          <article class="editor-panel result-panel" :class="{ invalid: result.error }">
+            <PanelHeading title="替换结果" :stats="`${Array.from(result.text).length} 个字符`" size="bar">
+              <template #actions><CopyButton text-btn :text="result.text" :disabled="!result.text || !!result.error" /></template>
+            </PanelHeading>
+            <el-input
+              :model-value="result.text"
+              type="textarea"
+              :rows="12"
+              resize="none"
+              readonly
+              :placeholder="result.error ? '修正规则后显示结果' : '替换结果会实时显示在这里'"
+            />
+          </article>
+        </template>
+      </SplitWorkspace>
 
       <div class="workspace-footer">
         <button type="button" class="sample-button" @click="loadSample">载入正则示例</button>
@@ -207,12 +212,6 @@ function useResultAsInput() {
   background: #fef2f2;
   font-size: 12px;
 }
-.editor-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
-  gap: 12px;
-  margin-top: 18px;
-}
 .editor-panel {
   overflow: hidden;
   border: 1px solid var(--c-border);
@@ -237,14 +236,7 @@ function useResultAsInput() {
 .result-panel :deep(.el-textarea__inner) {
   background: #f8fbff;
 }
-.direction-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: var(--c-text-muted);
-}
+.replace-page :deep(.split-actions .el-icon) { color: var(--c-text-muted); }
 .match-badge {
   display: grid;
   width: 58px;
@@ -347,13 +339,7 @@ function useResultAsInput() {
   border-color: var(--c-border);
 }
 @media (max-width: 820px) {
-  .editor-grid {
-    grid-template-columns: 1fr;
-  }
-  .direction-column {
-    flex-direction: row;
-  }
-  .direction-column > .el-icon {
+  .replace-page :deep(.split-actions > .el-icon) {
     transform: rotate(90deg);
   }
   .summary-card {

@@ -6,6 +6,7 @@ import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
 import PanelHeading from '@/components/Common/PanelHeading.vue'
+import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
 import { decodeUnicode, encodeUnicode, type UnicodeFormat } from '@/utils/textTools'
 
 type Mode = 'encode' | 'decode'
@@ -72,32 +73,36 @@ function useSample(sample: typeof samples[number]) {
         <el-checkbox v-model="uppercase">十六进制使用大写</el-checkbox>
       </div>
 
-      <div class="editor-grid">
-        <article class="editor-panel">
-          <PanelHeading :title="mode === 'encode' ? '原始文本' : 'Unicode 内容'" :stats="`${input.length} 字符 · ${inputBytes} Bytes`">
-            <template #actions><el-button text @click="input = ''">清空</el-button></template>
-          </PanelHeading>
-          <el-input
-            v-model="input"
-            type="textarea"
-            :rows="10"
-            resize="none"
-            :placeholder="mode === 'encode' ? '输入中文、英文或 Emoji' : '输入 \\u4F60\\u597D 或 \\u{1F600}'"
-          />
-        </article>
+      <SplitWorkspace :actions-width="72" :gap="12" :margin-top="18" :collapse="900">
+        <template #input>
+          <article class="editor-panel">
+            <PanelHeading :title="mode === 'encode' ? '原始文本' : 'Unicode 内容'" :stats="`${input.length} 字符 · ${inputBytes} Bytes`">
+              <template #actions><el-button text @click="input = ''">清空</el-button></template>
+            </PanelHeading>
+            <el-input
+              v-model="input"
+              type="textarea"
+              :rows="10"
+              resize="none"
+              :placeholder="mode === 'encode' ? '输入中文、英文或 Emoji' : '输入 \\u4F60\\u597D 或 \\u{1F600}'"
+            />
+          </article>
+        </template>
 
-        <div class="direction-column">
+        <template #actions>
           <el-icon><MagicStick /></el-icon>
           <el-button :icon="Switch" circle title="交换输入输出" aria-label="交换输入输出" @click="switchDirection" />
-        </div>
+        </template>
 
-        <article class="editor-panel result-panel">
-          <PanelHeading title="转换结果" :stats="`${output.length} 字符 · ${outputBytes} Bytes`">
-            <template #actions><CopyButton text-btn :text="output" :disabled="!output" /></template>
-          </PanelHeading>
-          <el-input :model-value="output" type="textarea" :rows="10" resize="none" readonly placeholder="转换结果会实时显示" />
-        </article>
-      </div>
+        <template #output>
+          <article class="editor-panel result-panel">
+            <PanelHeading title="转换结果" :stats="`${output.length} 字符 · ${outputBytes} Bytes`">
+              <template #actions><CopyButton text-btn :text="output" :disabled="!output" /></template>
+            </PanelHeading>
+            <el-input :model-value="output" type="textarea" :rows="10" resize="none" readonly placeholder="转换结果会实时显示" />
+          </article>
+        </template>
+      </SplitWorkspace>
 
       <div class="sample-row">
         <span>快速示例</span>
@@ -147,12 +152,6 @@ function useSample(sample: typeof samples[number]) {
 }
 .option-row label { display: flex; align-items: center; gap: 10px; }
 .option-row label > span { color: var(--c-text-body); font-size: 12px; font-weight: 650; }
-.editor-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
-  gap: 12px;
-  margin-top: 18px;
-}
 .editor-panel {
   min-width: 0;
   padding: 15px;
@@ -170,15 +169,7 @@ function useSample(sample: typeof samples[number]) {
   line-height: 1.7;
   box-shadow: 0 0 0 1px #dbe3ef inset;
 }
-.direction-column {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 10px;
-  color: var(--c-primary);
-}
-.direction-column > .el-icon { font-size: 24px; }
+.unicode-page :deep(.split-actions .el-icon) { color: var(--c-primary); font-size: 24px; }
 .sample-row { flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .sample-row > span { color: var(--c-text-secondary); font-size: 12px; }
 .sample-row button {
@@ -246,9 +237,7 @@ function useSample(sample: typeof samples[number]) {
   box-shadow: 0 0 0 1px #334155 inset;
 }
 :global(html.dark .unicode-page .character-grid strong) { color: var(--c-text-primary); }@media (max-width: 1000px) {
-  .character-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 900px) {
-  .editor-grid { grid-template-columns: 1fr; }
-  .direction-column { flex-direction: row; }}@media (max-width: 640px) {
+  .character-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 640px) {
   .workspace-card,
   .inspector-card { padding: 18px; border-radius: var(--radius-lg); }
   .option-row { align-items: flex-start; flex-direction: column; }

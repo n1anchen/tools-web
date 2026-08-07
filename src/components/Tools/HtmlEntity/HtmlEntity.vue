@@ -6,6 +6,7 @@ import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
 import PanelHeading from '@/components/Common/PanelHeading.vue'
+import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
 import { copy } from '@/utils/string'
 import { countHtmlEntityChanges, decodeHtmlEntities, encodeHtmlEntities } from '@/utils/textTools'
 
@@ -69,32 +70,36 @@ function useSample(sample: typeof samples[number]) {
         <span><strong>{{ changeCount }}</strong> 个实体{{ mode === 'encode' ? '已生成' : '已识别' }}</span>
       </div>
 
-      <div class="editor-grid">
-        <article class="editor-panel">
-          <PanelHeading :title="mode === 'encode' ? 'HTML / 普通文本' : '实体内容'" :stats="`${input.length} 字符`">
-            <template #actions><el-button text @click="input = ''">清空</el-button></template>
-          </PanelHeading>
-          <el-input
-            v-model="input"
-            type="textarea"
-            :rows="10"
-            resize="none"
-            :placeholder="mode === 'encode' ? '输入需要安全显示的 HTML 或文本' : '输入 &lt;div&gt;、&#20013; 等实体'"
-          />
-        </article>
+      <SplitWorkspace :actions-width="72" :gap="12" :margin-top="16" :collapse="900">
+        <template #input>
+          <article class="editor-panel">
+            <PanelHeading :title="mode === 'encode' ? 'HTML / 普通文本' : '实体内容'" :stats="`${input.length} 字符`">
+              <template #actions><el-button text @click="input = ''">清空</el-button></template>
+            </PanelHeading>
+            <el-input
+              v-model="input"
+              type="textarea"
+              :rows="10"
+              resize="none"
+              :placeholder="mode === 'encode' ? '输入需要安全显示的 HTML 或文本' : '输入 &lt;div&gt;、&#20013; 等实体'"
+            />
+          </article>
+        </template>
 
-        <div class="direction-column">
+        <template #actions>
           <el-icon><Connection /></el-icon>
           <el-button :icon="Switch" circle title="交换输入输出" aria-label="交换输入输出" @click="switchDirection" />
-        </div>
+        </template>
 
-        <article class="editor-panel result-panel">
-          <PanelHeading title="转换结果" :stats="`${output.length} 字符`">
-            <template #actions><CopyButton text-btn :text="output" :disabled="!output" /></template>
-          </PanelHeading>
-          <el-input :model-value="output" type="textarea" :rows="10" resize="none" readonly placeholder="转换结果会实时显示" />
-        </article>
-      </div>
+        <template #output>
+          <article class="editor-panel result-panel">
+            <PanelHeading title="转换结果" :stats="`${output.length} 字符`">
+              <template #actions><CopyButton text-btn :text="output" :disabled="!output" /></template>
+            </PanelHeading>
+            <el-input :model-value="output" type="textarea" :rows="10" resize="none" readonly placeholder="转换结果会实时显示" />
+          </article>
+        </template>
+      </SplitWorkspace>
 
       <div class="sample-row">
         <span>快速示例</span>
@@ -149,12 +154,6 @@ function useSample(sample: typeof samples[number]) {
 }
 .status-row > span { margin-left: auto; }
 .status-row strong { color: #db2777; font-size: 15px; }
-.editor-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
-  gap: 12px;
-  margin-top: 16px;
-}
 .editor-panel {
   min-width: 0;
   padding: 15px;
@@ -173,15 +172,7 @@ function useSample(sample: typeof samples[number]) {
   line-height: 1.7;
   box-shadow: 0 0 0 1px #dbe3ef inset;
 }
-.direction-column {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 10px;
-  color: #db2777;
-}
-.direction-column > .el-icon { font-size: 24px; }
+.entity-page :deep(.split-actions .el-icon) { color: #db2777; font-size: 24px; }
 .sample-row { flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .sample-row > span { color: var(--c-text-secondary); font-size: 12px; }
 .sample-row button {
@@ -243,9 +234,7 @@ function useSample(sample: typeof samples[number]) {
   box-shadow: 0 0 0 1px #334155 inset;
 }
 :global(html.dark .entity-page .entity-grid code) { color: var(--c-text-primary); }@media (max-width: 1000px) {
-  .entity-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 900px) {
-  .editor-grid { grid-template-columns: 1fr; }
-  .direction-column { flex-direction: row; }}@media (max-width: 640px) {
+  .entity-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }}@media (max-width: 640px) {
   .workspace-card,
   .reference-card { padding: 18px; border-radius: var(--radius-lg); }
   .status-row,

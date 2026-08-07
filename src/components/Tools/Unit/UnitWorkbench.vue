@@ -20,6 +20,7 @@ import { useRoute, useRouter } from 'vue-router'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
+import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
 import { copy } from '@/utils/string'
 import {
   UNIT_CATEGORIES,
@@ -203,27 +204,33 @@ function clearInput() {
           <span class="live-badge">LIVE</span>
         </header>
 
-        <div class="conversion-board">
-          <div class="unit-panel source-panel">
-            <label for="unit-source-value">原始数值</label>
-            <el-input id="unit-source-value" v-model="inputValue" size="large" inputmode="decimal" placeholder="输入数值" @keydown.enter="saveHistory">
-              <template #suffix><button v-if="inputValue" class="inline-clear" type="button" @click="clearInput">清除</button></template>
-            </el-input>
-            <el-select v-model="fromUnit" size="large" filterable aria-label="原始单位">
-              <el-option v-for="unit in activeCategory.units" :key="unit.key" :value="unit.key" :label="`${unit.name} · ${unit.symbol}`"><span>{{ unit.name }}</span><small>{{ unit.symbol }} · {{ unit.system }}</small></el-option>
-            </el-select>
-          </div>
+        <SplitWorkspace :actions-width="48" :gap="10" :margin-top="0" :collapse="640">
+          <template #input>
+            <div class="unit-panel source-panel">
+              <label for="unit-source-value">原始数值</label>
+              <el-input id="unit-source-value" v-model="inputValue" size="large" inputmode="decimal" placeholder="输入数值" @keydown.enter="saveHistory">
+                <template #suffix><button v-if="inputValue" class="inline-clear" type="button" @click="clearInput">清除</button></template>
+              </el-input>
+              <el-select v-model="fromUnit" size="large" filterable aria-label="原始单位">
+                <el-option v-for="unit in activeCategory.units" :key="unit.key" :value="unit.key" :label="`${unit.name} · ${unit.symbol}`"><span>{{ unit.name }}</span><small>{{ unit.symbol }} · {{ unit.system }}</small></el-option>
+              </el-select>
+            </div>
+          </template>
 
-          <button type="button" class="swap-button" title="交换单位并保留当前换算值" @click="swapUnits"><el-icon><SwitchIcon /></el-icon></button>
+          <template #actions>
+            <button type="button" class="swap-button" title="交换单位并保留当前换算值" @click="swapUnits"><el-icon><SwitchIcon /></el-icon></button>
+          </template>
 
-          <div class="unit-panel target-panel">
-            <label>换算结果</label>
-            <div class="primary-result" :class="{ invalid: !hasValidInput }"><strong>{{ formattedResult }}</strong><span>{{ targetDefinition?.symbol }}</span></div>
-            <el-select v-model="toUnit" size="large" filterable aria-label="目标单位">
-              <el-option v-for="unit in activeCategory.units" :key="unit.key" :value="unit.key" :label="`${unit.name} · ${unit.symbol}`"><span>{{ unit.name }}</span><small>{{ unit.symbol }} · {{ unit.system }}</small></el-option>
-            </el-select>
-          </div>
-        </div>
+          <template #output>
+            <div class="unit-panel target-panel">
+              <label>换算结果</label>
+              <div class="primary-result" :class="{ invalid: !hasValidInput }"><strong>{{ formattedResult }}</strong><span>{{ targetDefinition?.symbol }}</span></div>
+              <el-select v-model="toUnit" size="large" filterable aria-label="目标单位">
+                <el-option v-for="unit in activeCategory.units" :key="unit.key" :value="unit.key" :label="`${unit.name} · ${unit.symbol}`"><span>{{ unit.name }}</span><small>{{ unit.symbol }} · {{ unit.system }}</small></el-option>
+              </el-select>
+            </div>
+          </template>
+        </SplitWorkspace>
 
         <div v-if="belowAbsoluteZero" class="warning-banner">当前温度低于绝对零度（−273.15°C），数学换算仍显示，但物理上无效。</div>
         <div v-else-if="!hasValidInput" class="warning-banner neutral">请输入有效数字，支持负数、小数和科学计数法。</div>
@@ -414,12 +421,6 @@ function clearInput() {
   font-size: 9px;
   font-weight: 900;
   letter-spacing:.12em
-}
-.conversion-board {
-  display: grid;
-  grid-template-columns: minmax(0,1fr) 48px minmax(0,1fr);
-  align-items: center;
-  gap:10px
 }
 .unit-panel {
   min-width: 0;
@@ -845,9 +846,6 @@ function clearInput() {
   .converter-card,.insight-card,.all-results-card,.history-card {
     padding: 15px;
     border-radius:19px
-  }
-  .conversion-board {
-    grid-template-columns:1fr
   }
   .swap-button {
     margin: -2px auto;

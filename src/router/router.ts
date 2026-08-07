@@ -618,7 +618,7 @@ export const constantRoute = [
     }
   },
   {
-    path: '/head-sticker',
+    path: '/headsticker',
     component: () => import('@/components/Tools/HeadSticker/HeadSticker.vue'),
     name: 'headSticker',
     meta: {

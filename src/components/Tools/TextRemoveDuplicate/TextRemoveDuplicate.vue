@@ -6,6 +6,7 @@ import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
 import PanelHeading from '@/components/Common/PanelHeading.vue'
+import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
 import { copy } from '@/utils/string'
 import { dedupeLines, type DedupeMode } from '@/utils/textTools'
 
@@ -69,29 +70,33 @@ function useResultAsInput() {
         <el-checkbox v-model="options.sort">结果按文字排序</el-checkbox>
       </div>
 
-      <div class="editor-grid">
-        <article class="editor-panel">
-          <PanelHeading title="原始文本" :stats="`${result.originalLines} 行`">
-            <template #actions><el-button text :icon="Delete" :disabled="!content" @click="clearAll">清空</el-button></template>
-          </PanelHeading>
-          <el-input v-model="content" type="textarea" :rows="11" resize="none" placeholder="每行输入一项，支持直接粘贴名单、URL 或数据列表" />
-        </article>
+      <SplitWorkspace :actions-width="80" :gap="12" :margin-top="18" :collapse="900">
+        <template #input>
+          <article class="editor-panel">
+            <PanelHeading title="原始文本" :stats="`${result.originalLines} 行`">
+              <template #actions><el-button text :icon="Delete" :disabled="!content" @click="clearAll">清空</el-button></template>
+            </PanelHeading>
+            <el-input v-model="content" type="textarea" :rows="11" resize="none" placeholder="每行输入一项，支持直接粘贴名单、URL 或数据列表" />
+          </article>
+        </template>
 
-        <div class="direction-column">
+        <template #actions>
           <div class="removed-badge">
             <strong>-{{ result.removedLines }}</strong>
             <span>重复行</span>
           </div>
           <el-icon><Switch /></el-icon>
-        </div>
+        </template>
 
-        <article class="editor-panel result-panel">
-          <PanelHeading title="去重结果" :stats="`${result.resultLines} 行 · 减少 ${reductionRate}%`">
-            <template #actions><CopyButton text-btn :text="result.text" :disabled="!result.text" /></template>
-          </PanelHeading>
-          <el-input :model-value="result.text" type="textarea" :rows="11" resize="none" readonly placeholder="处理结果会显示在这里" />
-        </article>
-      </div>
+        <template #output>
+          <article class="editor-panel result-panel">
+            <PanelHeading title="去重结果" :stats="`${result.resultLines} 行 · 减少 ${reductionRate}%`">
+              <template #actions><CopyButton text-btn :text="result.text" :disabled="!result.text" /></template>
+            </PanelHeading>
+            <el-input :model-value="result.text" type="textarea" :rows="11" resize="none" readonly placeholder="处理结果会显示在这里" />
+          </article>
+        </template>
+      </SplitWorkspace>
 
       <div class="workspace-footer">
         <button type="button" class="sample-button" @click="content = sampleText">载入示例数据</button>
@@ -147,12 +152,6 @@ function useResultAsInput() {
   border-radius: var(--radius-md);
   background: var(--c-surface-subtle);
 }
-.editor-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 80px minmax(0, 1fr);
-  gap: 12px;
-  margin-top: 18px;
-}
 .editor-panel {
   min-width: 0;
   padding: 15px;
@@ -170,15 +169,7 @@ function useResultAsInput() {
   line-height: 1.65;
   box-shadow: 0 0 0 1px #dbe3ef inset;
 }
-.direction-column {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 10px;
-  color: var(--c-text-muted);
-}
-.direction-column > .el-icon { font-size: 22px; }
+.dedupe-page :deep(.split-actions .el-icon) { color: var(--c-text-muted); font-size: 22px; }
 .removed-badge {
   min-width: 64px;
   padding: 9px 6px;
@@ -258,8 +249,6 @@ function useResultAsInput() {
 :global(html.dark .dedupe-page .summary-grid .removed) { background: #3b1f0d; }
 :global(html.dark .dedupe-page .duplicate-preview) { border-color: var(--c-border); }
 :global(html.dark .dedupe-page .duplicate-list button) { border-color: var(--c-border); color: var(--c-text-secondary); background: #111c2f; }@media (max-width: 900px) {
-  .editor-grid { grid-template-columns: 1fr; }
-  .direction-column { flex-direction: row; }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }}@media (max-width: 640px) {
   .workspace-card,
   .summary-card { padding: 18px; border-radius: var(--radius-lg); }
