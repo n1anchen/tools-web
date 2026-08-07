@@ -133,6 +133,9 @@
     border-radius: var(--radius-card);
     background: var(--c-surface);
     box-shadow: var(--shadow-card);
+    /* 默认内边距：内容卡片统一 20px；偏离工具用 scoped 覆盖（未分层 scoped 优先于本层），
+       页面级可用 --card-padding 调整 */
+    padding: var(--card-padding, 20px);
   }
   .dark .preview-card,
   .dark .result-card,
@@ -159,6 +162,36 @@
   .dark .reference-card {
     border-color: var(--c-border);
     background: var(--c-surface);
+  }
+
+  /* 卡片族窄屏默认内边距：仅对未写 scoped padding 的卡片生效（有 scoped 规则的以 scoped 为准），
+     页面级可用 --card-padding-mobile 调整 */
+  @media (max-width: 640px) {
+    .preview-card,
+    .result-card,
+    .sample-card,
+    .data-card,
+    .config-card,
+    .contrast-card,
+    .preset-card,
+    .insight-card,
+    .document-bar,
+    .editor-card,
+    .template-card,
+    .export-card,
+    .settings-card,
+    .statistics-card,
+    .summary-card,
+    .history-card,
+    .toss-card,
+    .decision-card,
+    .dice-board,
+    .strength-card,
+    .results-card,
+    .inspector-card,
+    .reference-card {
+      padding: var(--card-padding-mobile, 16px);
+    }
   }
 
   /* 区块标题（16 个工具复用 section-heading 的拆分式形态：display/align + gap:12px） */

@@ -240,6 +240,8 @@ defineExpose({ formatEditor, openSearchBox })
 .editor-card {
   min-width: 0;
   overflow: hidden;
+  /* 工具条式通栏布局：工具栏/编辑器/底部条贴边，覆盖全局卡片默认 padding */
+  padding: 0;
 }
 .editor-heading {
   display: flex;
