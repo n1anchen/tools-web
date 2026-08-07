@@ -384,7 +384,7 @@ onBeforeUnmount(releaseObjectUrl)
   border-radius: var(--radius-card);
   color: var(--c-on-accent);
   font-size: 34px;
-  background: linear-gradient(145deg, var(--c-primary), #0d9488);
+  background: linear-gradient(145deg, var(--c-primary), var(--c-primary-700));
   box-shadow: 0 14px 28px color-mix(in srgb, var(--c-primary) 25%, transparent);
 }
 .upload-card h3, .card-heading h3 {

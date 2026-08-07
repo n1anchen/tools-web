@@ -314,7 +314,7 @@ function loadExample(value: string) {
 
 <style scoped>
 .url-tool {
-  --accent: #0f766e;
+  --accent: var(--c-primary-700);
   --ink: #1f2937;
   --muted: #667085;
 }
@@ -549,7 +549,7 @@ function loadExample(value: string) {
 .tracking-settings input {
   grid-column: 1/-1;
   width: 100%;
-  accent-color: #0f766e;
+  accent-color: var(--c-primary-700);
 }
 .action-row {
   grid-column: 1/-1;

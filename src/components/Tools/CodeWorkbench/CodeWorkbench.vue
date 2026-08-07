@@ -173,9 +173,9 @@ defineExpose({ formatEditor, openSearchBox })
   gap: 16px;
 }
 .accent-violet {
-  --accent: #7c3aed;
-  --accent-soft: #f5f3ff;
-  --accent-border: #ddd6fe;
+  --accent: var(--c-primary);
+  --accent-soft: var(--c-primary-50);
+  --accent-border: var(--c-primary-200);
 }
 .accent-orange {
   --accent: #ea580c;
@@ -183,9 +183,9 @@ defineExpose({ formatEditor, openSearchBox })
   --accent-border: #fed7aa;
 }
 .accent-cyan {
-  --accent: #0891b2;
-  --accent-soft: #ecfeff;
-  --accent-border: #a5f3fc;
+  --accent: var(--c-primary);
+  --accent-soft: var(--c-primary-50);
+  --accent-border: var(--c-primary-200);
 }
 .sample-card, .editor-card, .settings-card, .metric-strip, .tips-grid article {
   border: 1px solid var(--c-border);

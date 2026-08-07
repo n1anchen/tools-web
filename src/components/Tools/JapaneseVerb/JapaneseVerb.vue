@@ -761,7 +761,7 @@ function copyResult(result: Result) {
 
 <style scoped>
 .verb-tool {
-  --accent: #6d4fc2;
+  --accent: var(--c-primary-700);
   --ink: #292a36;
   --muted: #747384;
 }

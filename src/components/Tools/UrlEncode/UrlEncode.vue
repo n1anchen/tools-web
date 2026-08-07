@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { Delete, Link, Promotion, RefreshRight, Switch } from '@element-plus/icons-vue'
+import { Delete, Link, Promotion, RefreshRight } from '@element-plus/icons-vue'
 import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
 import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
+import SwapButton from '@/components/Common/SwapButton.vue'
 
 type Mode = 'encode' | 'decode'
 type Scope = 'component' | 'url'
@@ -114,7 +115,7 @@ function useExample(value: string) {
 
         <template #actions>
           <el-button type="primary" :icon="Promotion" round @click="transform">{{ actionLabel }}</el-button>
-          <el-button :icon="Switch" circle title="交换方向" aria-label="交换方向" @click="switchDirection" />
+          <SwapButton label="交换方向" @click="switchDirection" />
         </template>
 
         <template #output>

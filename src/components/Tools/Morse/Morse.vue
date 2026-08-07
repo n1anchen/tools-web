@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref } from 'vue'
-import { Delete, Switch, VideoPause, VideoPlay } from '@element-plus/icons-vue'
+import { Delete, VideoPause, VideoPlay } from '@element-plus/icons-vue'
 import CopyButton from '@/components/Common/CopyButton.vue'
 import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
+import SwapButton from '@/components/Common/SwapButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { copy } from '@/utils/string'
@@ -158,9 +159,7 @@ onUnmounted(stopPlayback)
         </template>
 
         <template #actions>
-          <button class="swap-button" title="把结果带到另一侧继续转换" @click="switchMode">
-            <el-icon><Switch /></el-icon>
-          </button>
+          <SwapButton label="把结果带到另一侧继续转换" @click="switchMode" />
         </template>
 
         <template #output>
@@ -226,8 +225,8 @@ onUnmounted(stopPlayback)
 
 <style scoped>
 .morse-page {
-  --accent: #0f766e;
-  --accent-soft: #ccfbf1;
+  --accent: var(--c-primary-700);
+  --accent-soft: var(--c-primary-100);
   gap: 16px;
 }
 .workspace-card, .reference-card {
@@ -314,29 +313,15 @@ onUnmounted(stopPlayback)
   font: 14px/1.75 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 .result-box.morse-output {
-  color: #0f766e;
+  color: var(--c-primary-700);
   font-size: 16px;
   font-weight: 700;
   letter-spacing: .055em;
 }
 .output-panel {
-  background: linear-gradient(145deg, #f0fdfa, #f8fafc);
+  background: linear-gradient(145deg, var(--c-primary-50), #f8fafc);
 }
-.swap-button {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  width: 40px;
-  height: 40px;
-  margin: 0 auto;
-  place-items: center;
-  border: 1px solid #cbd5e1;
-  border-radius: 50%;
-  color: var(--accent);
-  background: var(--c-surface);
-  cursor: pointer;
-  box-shadow: 0 5px 15px rgb(15 23 42 / 10%);
-}
+
 .control-strip {
   flex-wrap: wrap;
   margin-top: 18px;
@@ -413,15 +398,15 @@ onUnmounted(stopPlayback)
   cursor: pointer;
 }
 .reference-grid button:hover {
-  border-color: #5eead4;
-  background: #f0fdfa;
+  border-color: var(--c-primary-300);
+  background: var(--c-primary-50);
 }
 .reference-grid span {
-  color: #0f766e;
+  color: var(--c-primary-700);
   font: 10px ui-monospace, monospace;
 }
 :global(html.dark .morse-page) {
-  --accent: #5eead4;
+  --accent: var(--c-primary-300);
   --accent-soft: #134e4a;
 }
 :global(html.dark .morse-page .workspace-card), :global(html.dark .morse-page .reference-card) {
@@ -446,12 +431,7 @@ onUnmounted(stopPlayback)
   color: var(--c-text-primary);
 }
 :global(html.dark .morse-page .result-box.morse-output), :global(html.dark .morse-page .speed-control strong) {
-  color: #5eead4;
-}
-:global(html.dark .morse-page .swap-button) {
-  border-color: var(--c-border-strong);
-  color: #5eead4;
-  background: var(--c-surface);
+  color: var(--c-primary-300);
 }
 :global(html.dark .morse-page .stats-grid > div) {
   border-color: var(--c-border);
@@ -484,8 +464,7 @@ onUnmounted(stopPlayback)
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
-  .swap-button {
-    margin: -3px auto;
+  :deep(.split-actions .swap-button) {
     transform: rotate(90deg);
   }
   .result-box {

@@ -270,7 +270,7 @@ onBeforeUnmount(() => {
 .eyebrow {
   display: block;
   margin-bottom: 8px;
-  color: #c4b5fd;
+  color: var(--c-primary-300);
   font-size: 11px;
   font-weight: 900;
   letter-spacing:.17em
@@ -340,8 +340,8 @@ onBeforeUnmount(() => {
   cursor:pointer
 }
 .bar-actions button.primary {
-  border-color: #7c3aed;
-  background: #7c3aed;
+  border-color: var(--c-primary);
+  background: var(--c-primary);
   color: var(--c-on-accent)
 }
 .bar-actions button:disabled,.export-card button:disabled {
@@ -414,11 +414,11 @@ onBeforeUnmount(() => {
   margin-top: 14px;
   padding: 17px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg,#4c1d95,#7c3aed);
+  background: linear-gradient(135deg,var(--c-primary-900),var(--c-primary));
   color: var(--c-on-accent)
 }
 .reading-card span,.reading-card p {
-  color: #ddd6fe;
+  color: var(--c-primary-200);
   font-size:11px
 }
 .reading-card strong {
@@ -449,8 +449,8 @@ onBeforeUnmount(() => {
   cursor:pointer
 }
 .template-list button:hover {
-  border-color: #a78bfa;
-  background:#f5f3ff
+  border-color: var(--c-primary-400);
+  background:var(--c-primary-50)
 }
 .template-list span {
   color: var(--c-text-muted);
@@ -491,7 +491,7 @@ onBeforeUnmount(() => {
   color:#e2e8f0
 }
 .dark .template-list button:hover {
-  border-color: #a78bfa;
+  border-color: var(--c-primary-400);
   background:#261846
 }
 .dark .editor-card :deep(.md-editor) {

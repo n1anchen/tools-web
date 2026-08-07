@@ -464,7 +464,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .sticker-tool {
-  --accent: #7157d9;
+  --accent: var(--c-primary-500);
   --ink: #292b38;
   --muted: #737789;
 }

@@ -342,7 +342,7 @@ onBeforeUnmount(clearAll)
 
 <style scoped>
 .stitch-page {
-  --stitch-accent: #7c3aed;
+  --stitch-accent: var(--c-primary);
   gap:16px
 }
 .preview-card,.settings-card,.feature-strip article {
@@ -353,7 +353,7 @@ onBeforeUnmount(clearAll)
 .eyebrow {
   display: block;
   margin-bottom: 6px;
-  color: #7c3aed;
+  color: var(--c-primary);
   font-size: 11px;
   font-weight: 900;
   letter-spacing:.16em
@@ -389,8 +389,8 @@ onBeforeUnmount(clearAll)
 .canvas-size {
   padding: 5px 9px;
   border-radius: var(--radius-full);
-  color: #6d28d9;
-  background: #ede9fe;
+  color: var(--c-primary-700);
+  background: var(--c-primary-100);
   font-size: 10px;
   font-weight:800
 }
@@ -469,10 +469,10 @@ onBeforeUnmount(clearAll)
   gap: 10px;
   margin-bottom: 8px;
   padding: 13px;
-  border: 1px dashed #c4b5fd;
+  border: 1px dashed var(--c-primary-300);
   border-radius: var(--radius-md);
-  color: #7c3aed;
-  background: #faf5ff;
+  color: var(--c-primary);
+  background: var(--c-primary-50);
   cursor: pointer;
   transition:.18s
 }
@@ -542,7 +542,7 @@ onBeforeUnmount(clearAll)
   transition:.15s
 }
 .image-item.over {
-  border-color: #a78bfa;
+  border-color: var(--c-primary-400);
   transform:translateY(-1px)
 }
 .image-item.dragging {
@@ -596,8 +596,8 @@ onBeforeUnmount(clearAll)
   cursor:pointer
 }
 .item-actions button:hover {
-  color: #7c3aed;
-  background:#ede9fe
+  color: var(--c-primary);
+  background:var(--c-primary-100)
 }
 .item-actions button:last-child:hover {
   color: #ef4444;
@@ -655,26 +655,26 @@ onBeforeUnmount(clearAll)
   font-size:9px
 }
 .mode-grid button.active {
-  border-color: #c4b5fd;
-  color: #6d28d9;
-  background: #faf5ff;
-  box-shadow:inset 0 0 0 1px #ddd6fe
+  border-color: var(--c-primary-300);
+  color: var(--c-primary-700);
+  background: var(--c-primary-50);
+  box-shadow:inset 0 0 0 1px var(--c-primary-200)
 }
 .mode-grid button.active>b {
   color: var(--c-on-accent);
-  background:#7c3aed
+  background:var(--c-primary)
 }
 .slider-field {
   margin-bottom:14px
 }
 .slider-field label strong,.caption-box label strong {
-  color:#7c3aed
+  color:var(--c-primary)
 }
 .caption-box {
   margin-bottom: 14px;
   padding: 12px;
   border-radius: var(--radius-md);
-  background:#faf5ff
+  background:var(--c-primary-50)
 }
 .caption-box p {
   margin: 6px 0 0;
@@ -719,8 +719,8 @@ onBeforeUnmount(clearAll)
   flex: 0 0 34px;
   height: 34px;
   border-radius: var(--radius-sm);
-  color: #7c3aed;
-  background: #ede9fe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
   font-size:11px
 }
 .feature-strip strong {
@@ -752,21 +752,21 @@ onBeforeUnmount(clearAll)
   color: var(--c-text-primary)
 }
 :global(html.dark .stitch-page .add-zone),:global(html.dark .stitch-page .caption-box) {
-  background:#2e1065
+  background:var(--c-primary-900)
 }
 :global(html.dark .stitch-page .demo-button),:global(html.dark .stitch-page .image-item),:global(html.dark .stitch-page .mode-grid button),:global(html.dark .stitch-page .export-box) {
   color: var(--c-text-muted);
   background:var(--c-surface-subtle)
 }
 :global(html.dark .stitch-page .mode-grid button.active) {
-  color: #d8b4fe;
+  color: var(--c-primary-300);
   background:#3b0764
 }
 :global(html.dark .stitch-page .field-group>label),:global(html.dark .stitch-page .slider-field>label),:global(html.dark .stitch-page .caption-box>label),:global(html.dark .stitch-page .color-setting),:global(html.dark .stitch-page .feature-strip p) {
   color: var(--c-text-muted)
 }
 :global(html.dark .stitch-page .feature-strip article>b) {
-  color: #d8b4fe;
+  color: var(--c-primary-300);
   background:#3b0764
 }
 @media(max-width:1120px) {

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Connection, Grid, MagicStick, Switch } from '@element-plus/icons-vue'
+import { Connection, Grid, MagicStick } from '@element-plus/icons-vue'
 import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
 import PanelHeading from '@/components/Common/PanelHeading.vue'
 import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
+import SwapButton from '@/components/Common/SwapButton.vue'
 import { decodeUnicode, encodeUnicode, type UnicodeFormat } from '@/utils/textTools'
 
 type Mode = 'encode' | 'decode'
@@ -91,7 +92,7 @@ function useSample(sample: typeof samples[number]) {
 
         <template #actions>
           <el-icon><MagicStick /></el-icon>
-          <el-button :icon="Switch" circle title="交换输入输出" aria-label="交换输入输出" @click="switchDirection" />
+          <SwapButton @click="switchDirection" />
         </template>
 
         <template #output>

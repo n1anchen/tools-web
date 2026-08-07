@@ -492,7 +492,7 @@ calculate()
   align-items: center;
   gap: 24px;
   padding: 28px;
-  background: linear-gradient(120deg, var(--c-primary-50) 0%, #f5f3ff 55%, #ecfeff 100%);
+  background: linear-gradient(120deg, var(--c-primary-50) 0%, var(--c-primary-100) 55%, var(--c-primary-50) 100%);
 }
 .hero-copy {
   display: flex;
@@ -550,7 +550,7 @@ calculate()
   font-size: 10px;
 }
 .delay-badge strong {
-  color: #4f46e5;
+  color: var(--c-primary);
   font-size: 18px;
 }
 .policy-alert {
@@ -609,7 +609,7 @@ calculate()
   box-shadow: 0 0 0 4px var(--c-primary-100);
 }
 .timeline-dot.latest {
-  background: #8b5cf6;
+  background: var(--c-primary-500);
 }
 .timeline-connector {
   width: 26px;
@@ -648,8 +648,8 @@ calculate()
   background: var(--c-primary-50);
 }
 .option-icon.late {
-  color: #7c3aed;
-  background: #f5f3ff;
+  color: var(--c-primary);
+  background: var(--c-primary-50);
 }
 .flexible-grid article > span {
   display: block;
@@ -888,7 +888,7 @@ calculate()
   color: var(--c-primary-200);
 }
 :global(html.dark .retirement-page .result-hero) {
-  background: linear-gradient(120deg,#172554,#2e1065 55%,#083344);
+  background: linear-gradient(120deg,#172554,var(--c-primary-900) 55%,#083344);
 }
 :global(html.dark .retirement-page .hero-copy p strong) {
   color: var(--c-text-secondary);
@@ -898,7 +898,7 @@ calculate()
   background: rgba(15,23,42,.72);
 }
 :global(html.dark .retirement-page .delay-badge strong) {
-  color: #a5b4fc;
+  color: var(--c-primary-300);
 }
 :global(html.dark .retirement-page .contribution-card.enough) {
   border-color: #14532d;

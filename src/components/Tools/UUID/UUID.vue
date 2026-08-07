@@ -192,8 +192,8 @@ onMounted(generateAll)
   font-weight: 800;
 }
 .version-badge.violet {
-  color: #6d28d9;
-  background: #ede9fe;
+  color: var(--c-primary-700);
+  background: var(--c-primary-100);
 }
 .control-grid {
   gap: 20px;
@@ -294,8 +294,8 @@ onMounted(generateAll)
   background: var(--c-primary-100);
 }
 .reference-icon.violet {
-  color: #7c3aed;
-  background: #ede9fe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
 }
 .reference-icon.green {
   color: #059669;

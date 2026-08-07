@@ -223,7 +223,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .wordcloud-page {
-  --accent: #0f766e;
+  --accent: var(--c-primary-700);
   gap:18px
 }
 .panel,.preview-panel,.frequency-card {
@@ -275,10 +275,10 @@ onBeforeUnmount(() => {
 .panel-heading button,.preview-heading>button {
   min-height: 34px;
   padding: 0 11px;
-  border: 1px solid #99f6e4;
+  border: 1px solid var(--c-primary-200);
   border-radius: var(--radius-sm);
-  background: #f0fdfa;
-  color: #0f766e;
+  background: var(--c-primary-50);
+  color: var(--c-primary-700);
   font-size: 12px;
   font-weight: 850;
   cursor:pointer
@@ -321,7 +321,7 @@ onBeforeUnmount(() => {
   min-height:70px
 }
 .textarea-field textarea:focus,.stop-field textarea:focus {
-  border-color: #2dd4bf;
+  border-color: var(--c-primary-400);
   box-shadow:0 0 0 3px rgba(45,212,191,.13)
 }
 .filter-grid {
@@ -388,9 +388,9 @@ onBeforeUnmount(() => {
   font-size:11px
 }
 .shape-grid button.active {
-  border-color: #5eead4;
-  background: #f0fdfa;
-  color:#0f766e
+  border-color: var(--c-primary-300);
+  background: var(--c-primary-50);
+  color:var(--c-primary-700)
 }
 .palette-grid {
   display: grid;
@@ -416,8 +416,8 @@ onBeforeUnmount(() => {
   border-radius:3px
 }
 .palette-grid button.active {
-  border-color: #14b8a6;
-  box-shadow:0 0 0 2px #ccfbf1
+  border-color: var(--c-primary-500);
+  box-shadow:0 0 0 2px var(--c-primary-100)
 }
 .range-grid {
   display: grid;
@@ -445,11 +445,11 @@ onBeforeUnmount(() => {
 .range-grid input {
   min-width: 0;
   flex: 1;
-  accent-color:#0f766e
+  accent-color:var(--c-primary-700)
 }
 .range-grid strong {
   min-width: 50px;
-  color: #0f766e;
+  color: var(--c-primary-700);
   font-size: 11px;
   text-align:right
 }
@@ -484,9 +484,9 @@ onBeforeUnmount(() => {
   border-radius:4px
 }
 .background-row button.active {
-  border-color: #14b8a6;
-  background: #f0fdfa;
-  color:#0f766e
+  border-color: var(--c-primary-500);
+  background: var(--c-primary-50);
+  color:var(--c-primary-700)
 }
 .preview-panel {
   display: flex;
@@ -561,7 +561,7 @@ onBeforeUnmount(() => {
   margin-top: 10px;
   padding: 10px;
   border-radius: var(--radius-md);
-  background:#ecfeff
+  background:var(--c-primary-50)
 }
 .export-bar label {
   display: flex;
@@ -577,7 +577,7 @@ onBeforeUnmount(() => {
   height: 34px;
   min-width: 130px;
   padding: 0 7px;
-  border: 1px solid #a5f3fc;
+  border: 1px solid var(--c-primary-200);
   border-radius: var(--radius-xs);
   background: var(--c-surface);
   color: var(--c-text-strong);
@@ -592,13 +592,13 @@ onBeforeUnmount(() => {
   cursor:pointer
 }
 .export-bar .secondary {
-  border: 1px solid #5eead4;
+  border: 1px solid var(--c-primary-300);
   background: var(--c-surface);
-  color:#0f766e
+  color:var(--c-primary-700)
 }
 .export-bar .primary {
   border: 0;
-  background: #0f766e;
+  background: var(--c-primary-700);
   color: var(--c-on-accent)
 }
 .frequency-card {
@@ -646,7 +646,7 @@ onBeforeUnmount(() => {
   display: block;
   height: 100%;
   border-radius: var(--radius-full);
-  background:linear-gradient(90deg,#14b8a6,#0ea5e9)
+  background:linear-gradient(90deg,var(--c-primary-500),var(--c-primary-700))
 }
 .frequency-empty {
   display: flex;
@@ -696,21 +696,21 @@ onBeforeUnmount(() => {
   color: var(--c-text-primary)
 }
 :global(html.dark .shape-grid button.active),:global(html.dark .background-row button.active) {
-  border-color: #0d9488;
+  border-color: var(--c-primary-700);
   background: #134e4a;
-  color:#99f6e4
+  color:var(--c-primary-200)
 }
 :global(html.dark .palette-grid button.active) {
-  border-color: #2dd4bf;
+  border-color: var(--c-primary-400);
   box-shadow:0 0 0 2px #134e4a
 }
 :global(html.dark .export-bar) {
   background:#083344
 }
 :global(html.dark .export-bar .secondary) {
-  border-color: #0d9488;
+  border-color: var(--c-primary-700);
   background: #172033;
-  color:#5eead4
+  color:var(--c-primary-300)
 }
 :global(html.dark .frequency-table),:global(html.dark .table-row) {
   border-color: var(--c-border)

@@ -83,7 +83,7 @@ onMounted(generateAll)
 
     <div class="workspace-grid">
       <section class="settings-card">
-        <SectionHeading :icon="Key" title="设置密码规则" description="每条密码都会至少包含一次所选字符类型" tone="violet" />
+        <SectionHeading :icon="Key" title="设置密码规则" description="每条密码都会至少包含一次所选字符类型" tone="blue" />
 
         <div class="field-label">字符组成</div>
         <div class="group-grid">
@@ -230,13 +230,13 @@ onMounted(generateAll)
   transition: .2s ease;
 }
 .group-option:hover {
-  border-color: #c4b5fd;
+  border-color: var(--c-primary-300);
   transform: translateY(-1px);
 }
 .group-option.active {
-  border-color: #8b5cf6;
-  background: #f5f3ff;
-  box-shadow: inset 0 0 0 1px #8b5cf6;
+  border-color: var(--c-primary-500);
+  background: var(--c-primary-50);
+  box-shadow: inset 0 0 0 1px var(--c-primary-500);
 }
 .group-option strong {
   font-size: 14px;
@@ -253,7 +253,7 @@ onMounted(generateAll)
   color: #cbd5e1;
 }
 .active .check-dot {
-  color: #7c3aed;
+  color: var(--c-primary);
 }
 .custom-field {
   display: block;
@@ -310,7 +310,7 @@ onMounted(generateAll)
   align-items: center;
   padding: 30px 24px;
   text-align: center;
-  background: linear-gradient(155deg, #faf5ff, #fff 58%);
+  background: linear-gradient(155deg, var(--c-primary-50), #fff 58%);
 }
 .strength-icon {
   display: grid;
@@ -318,8 +318,8 @@ onMounted(generateAll)
   height: 58px;
   place-items: center;
   border-radius: var(--radius-lg);
-  color: #7c3aed;
-  background: #ede9fe;
+  color: var(--c-primary);
+  background: var(--c-primary-100);
   font-size: 27px;
 }
 .eyebrow {
@@ -342,7 +342,7 @@ onMounted(generateAll)
   color: #059669;
 }
 .excellent {
-  color: #7c3aed;
+  color: var(--c-primary);
 }
 .strength-track {
   width: 100%;
@@ -415,9 +415,9 @@ onMounted(generateAll)
   transition: .2s ease;
 }
 .password-item:hover {
-  border-color: #a78bfa;
-  color: #7c3aed;
-  background: #faf5ff;
+  border-color: var(--c-primary-400);
+  color: var(--c-primary);
+  background: var(--c-primary-50);
 }
 .password-item > span {
   color: var(--c-text-muted);
@@ -480,7 +480,7 @@ onMounted(generateAll)
   color: var(--c-text-primary);
 }
 :global(html.dark .password-page .group-option.active) {
-  border-color: #8b5cf6;
+  border-color: var(--c-primary-500);
   background: rgba(91, 33, 182, .18);
 }
 :global(html.dark .password-page .metric-list), :global(html.dark .password-page .metric-list div) {

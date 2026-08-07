@@ -313,7 +313,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .font-preview-page {
-  --accent: #6366f1;
+  --accent: var(--c-primary-500);
   gap:18px
 }
 .preview-card,.control-card,.insight-card,.font-browser-card {
@@ -325,7 +325,7 @@ onBeforeUnmount(() => {
 .eyebrow {
   display: block;
   margin-bottom: 8px;
-  color: #a5b4fc;
+  color: var(--c-primary-300);
   font-size: 11px;
   font-weight: 900;
   letter-spacing:.17em
@@ -418,7 +418,7 @@ onBeforeUnmount(() => {
   padding: 5px 9px;
   border-radius: var(--radius-full);
   background: #eef2ff;
-  color: #4f46e5;
+  color: var(--c-primary);
   font-size: 11px;
   font-weight:750
 }
@@ -466,7 +466,7 @@ onBeforeUnmount(() => {
   cursor:pointer
 }
 .sample-presets button:hover {
-  border-color: #818cf8;
+  border-color: var(--c-primary-400);
   background:#eef2ff
 }
 .sample-presets small {
@@ -506,7 +506,7 @@ onBeforeUnmount(() => {
   font-weight:800
 }
 .slider-setting strong {
-  color:#4f46e5
+  color:var(--c-primary)
 }
 .slider-setting :deep(.el-slider) {
   padding:0 5px
@@ -581,23 +581,23 @@ onBeforeUnmount(() => {
 .css-card button {
   border: 0;
   background: transparent;
-  color: #c7d2fe;
+  color: var(--c-primary-200);
   cursor:pointer
 }
 .css-card pre {
   margin: 0;
   padding: 14px;
   overflow: auto;
-  color: #c7d2fe;
+  color: var(--c-primary-200);
   font: 11px/1.75 ui-monospace,SFMono-Regular,monospace;
   white-space:pre-wrap
 }
 .browse-action {
   width: 100%;
   margin-top: 14px;
-  border-color: #c7d2fe;
+  border-color: var(--c-primary-200);
   background: #eef2ff;
-  color:#4338ca
+  color:var(--c-primary-700)
 }
 .privacy-note {
   display: flex;
@@ -639,7 +639,7 @@ onBeforeUnmount(() => {
   cursor:pointer
 }
 .font-list button.active {
-  border-color: #6366f1;
+  border-color: var(--c-primary-500);
   background: #eef2ff;
   box-shadow:0 0 0 2px rgba(99,102,241,.12)
 }
@@ -678,29 +678,29 @@ onBeforeUnmount(() => {
 }
 .dark .preview-meta span {
   background: #312e81;
-  color:#c7d2fe
+  color:var(--c-primary-200)
 }
 .dark .sample-presets button,.dark .metric-grid div,.dark .privacy-note,.dark .font-list button {
   border-color: #334155;
   background:#0f172a
 }
 .dark .sample-presets button:hover,.dark .font-list button.active {
-  border-color: #818cf8;
+  border-color: var(--c-primary-400);
   background:#22224e
 }
 .dark .font-source-field {
   border-color:#334155
 }
 .dark .metric-grid strong {
-  color:#a5b4fc
+  color:var(--c-primary-300)
 }
 .dark .privacy-note strong,.dark .font-list strong {
   color:#e2e8f0
 }
 .dark .browse-action {
-  border-color: #4338ca;
+  border-color: var(--c-primary-700);
   background: #312e81;
-  color:#e0e7ff
+  color:var(--c-primary-100)
 }
 @media(max-width:980px) {
   .workspace-grid {

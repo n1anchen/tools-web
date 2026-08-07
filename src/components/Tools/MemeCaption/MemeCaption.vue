@@ -343,8 +343,8 @@ onUnmounted(() => themeObserver?.disconnect())
   cursor:pointer
 }
 .preview-actions button.primary {
-  border-color: #0284c7;
-  background: #0284c7;
+  border-color: var(--c-primary);
+  background: var(--c-primary);
   color: var(--c-on-accent)
 }
 .preview-actions button:disabled {
@@ -381,7 +381,7 @@ onUnmounted(() => themeObserver?.disconnect())
   padding: 5px 9px;
   border-radius: var(--radius-full);
   background: #e0f2fe;
-  color: #0369a1;
+  color: var(--c-primary-700);
   font-size: 11px;
   font-weight:750
 }
@@ -444,7 +444,7 @@ onUnmounted(() => themeObserver?.disconnect())
   cursor:pointer
 }
 .style-presets button:hover,.text-presets button:hover {
-  border-color: #38bdf8;
+  border-color: var(--c-primary-400);
   background:#f0f9ff
 }
 .style-presets small {
@@ -506,7 +506,7 @@ onUnmounted(() => themeObserver?.disconnect())
   font-weight:800
 }
 .slider-setting strong {
-  color:#0284c7
+  color:var(--c-primary)
 }
 .slider-setting :deep(.el-slider) {
   padding:0 5px
@@ -542,7 +542,7 @@ onUnmounted(() => themeObserver?.disconnect())
   margin-top: 18px;
   padding: 18px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg,#0369a1,#0e7490);
+  background: linear-gradient(135deg,var(--c-primary-700),#0e7490);
   color: var(--c-on-accent)
 }
 .export-summary span,.export-summary small {
@@ -560,7 +560,7 @@ onUnmounted(() => themeObserver?.disconnect())
 .related-link {
   display: block;
   margin-top: 14px;
-  color: #0284c7;
+  color: var(--c-primary);
   font-size: 12px;
   font-weight:750
 }
@@ -592,7 +592,7 @@ onUnmounted(() => themeObserver?.disconnect())
   color: var(--c-text-muted)
 }
 .dark .style-presets button:hover,.dark .text-presets button:hover {
-  border-color: #38bdf8;
+  border-color: var(--c-primary-400);
   background:#0c3045
 }
 .dark .switch-row strong,.dark .summary-list strong {

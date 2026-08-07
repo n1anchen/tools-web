@@ -136,7 +136,7 @@ watch(backgroundHex, value => { if (value) backgroundInput.value = value.toUpper
 
 <style scoped>
 .color-page {
-  --violet: #7c3aed;
+  --violet: var(--c-primary);
   gap:18px
 }
 .picker-card, .format-card, .scale-card {
@@ -148,7 +148,7 @@ watch(backgroundHex, value => { if (value) backgroundInput.value = value.toUpper
 .eyebrow {
   display: block;
   margin-bottom: 6px;
-  color: #c4b5fd;
+  color: var(--c-primary-300);
   font-size: 12px;
   font-weight: 900;
   letter-spacing:.16em
@@ -227,7 +227,7 @@ watch(backgroundHex, value => { if (value) backgroundInput.value = value.toUpper
   cursor:pointer
 }
 .preset-list button.active {
-  outline:3px solid #8b5cf6
+  outline:3px solid var(--c-primary-500)
 }
 .workspace-grid {
   display: grid;
@@ -268,8 +268,8 @@ watch(backgroundHex, value => { if (value) backgroundInput.value = value.toUpper
   cursor:pointer
 }
 .format-grid button:hover {
-  border-color: #a78bfa;
-  background:#f5f3ff
+  border-color: var(--c-primary-400);
+  background:var(--c-primary-50)
 }
 .format-grid span {
   font-size: 12px;
@@ -444,8 +444,8 @@ watch(backgroundHex, value => { if (value) backgroundInput.value = value.toUpper
   color: var(--c-text-primary)
 }
 :global(html.dark .color-page .format-grid button:hover) {
-  border-color: #8b5cf6;
-  background:#2e1065
+  border-color: var(--c-primary-500);
+  background:var(--c-primary-900)
 }
 :global(html.dark .color-page .preview-box) {
   border-color: var(--c-border-strong)

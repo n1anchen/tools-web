@@ -183,8 +183,8 @@ function loadSample() {
 <style scoped>
 .jwt-page {
   --rose: #e11d48;
-  --violet: #7c3aed;
-  --cyan: #0891b2;
+  --violet: var(--c-primary);
+  --cyan: var(--c-primary);
   gap: 16px;
 }
 .security-banner, .decoder-card, .segments-card, .json-card, .claims-card, .status-card, .algorithm-card {
@@ -433,7 +433,7 @@ function loadSample() {
   background: var(--c-surface-subtle);
 }
 .claims-list code {
-  color: #7c3aed;
+  color: var(--c-primary);
   font-weight: 800;
 }
 .claims-list > div > div {

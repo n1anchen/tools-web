@@ -495,7 +495,7 @@ function copyPaletteVariables() {
   background: var(--c-primary-400);
 }
 .image-hint span:last-child i {
-  background: #a78bfa;
+  background: var(--c-primary-400);
 }
 .inspector-panel {
   position: sticky;

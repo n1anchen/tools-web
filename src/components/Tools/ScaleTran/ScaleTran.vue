@@ -158,7 +158,7 @@ function continueFromResult(base: SupportedRadix, value: string) {
 
 <style scoped>
 .radix-page {
-  --accent: #7c3aed;
+  --accent: var(--c-primary);
   gap: 16px;
 }
 .input-card, .results-card, .alphabet-card {
@@ -169,7 +169,7 @@ function continueFromResult(base: SupportedRadix, value: string) {
   box-shadow: var(--shadow-card);
 }
 .input-card {
-  background: radial-gradient(circle at 92% 8%, #ede9fe 0, transparent 25%), #fff;
+  background: radial-gradient(circle at 92% 8%, var(--c-primary-100) 0, transparent 25%), #fff;
 }
 .input-heading, .section-heading, .option-row, .result-meta, .result-footer {
   display: flex;
@@ -204,10 +204,10 @@ function continueFromResult(base: SupportedRadix, value: string) {
   gap: 6px;
   flex: none;
   padding: 8px 12px;
-  border: 1px solid #ddd6fe;
+  border: 1px solid var(--c-primary-200);
   border-radius: var(--radius-full);
-  color: #6d28d9;
-  background: #f5f3ff;
+  color: var(--c-primary-700);
+  background: var(--c-primary-50);
   font-size: 12px;
   font-weight: 700;
 }
@@ -258,8 +258,8 @@ function continueFromResult(base: SupportedRadix, value: string) {
   padding: 5px 10px;
   border: 0;
   border-radius: 99px;
-  color: #5b21b6;
-  background: #f5f3ff;
+  color: var(--c-primary-800);
+  background: var(--c-primary-50);
   cursor: pointer;
 }
 .option-row {
@@ -327,14 +327,14 @@ function continueFromResult(base: SupportedRadix, value: string) {
   transition: .18s ease;
 }
 .result-item:hover {
-  border-color: #c4b5fd;
+  border-color: var(--c-primary-300);
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgb(76 29 149 / 8%);
 }
 .result-item.source {
-  border-color: #a78bfa;
-  background: #faf5ff;
-  box-shadow: inset 3px 0 #7c3aed;
+  border-color: var(--c-primary-400);
+  background: var(--c-primary-50);
+  box-shadow: inset 3px 0 var(--c-primary);
 }
 .result-meta > div {
   display: flex;
@@ -388,7 +388,7 @@ function continueFromResult(base: SupportedRadix, value: string) {
   font-size: 12px;
 }
 .alphabet-list code {
-  color: #6d28d9;
+  color: var(--c-primary-700);
   overflow-wrap: anywhere;
   font: 11px ui-monospace, monospace;
 }
@@ -415,9 +415,9 @@ function continueFromResult(base: SupportedRadix, value: string) {
   color: var(--c-text-muted);
 }
 :global(html.dark .radix-page .precision-badge), :global(html.dark .radix-page .preset-row button) {
-  border-color: #5b21b6;
-  color: #c4b5fd;
-  background: #2e1065;
+  border-color: var(--c-primary-800);
+  color: var(--c-primary-300);
+  background: var(--c-primary-900);
 }
 :global(html.dark .radix-page .base-picker), :global(html.dark .radix-page .number-input), :global(html.dark .radix-page .option-row), :global(html.dark .radix-page .result-item), :global(html.dark .radix-page .alphabet-list > div) {
   border-color: var(--c-border);
@@ -435,11 +435,11 @@ function continueFromResult(base: SupportedRadix, value: string) {
   background: #450a0a;
 }
 :global(html.dark .radix-page .result-item.source) {
-  border-color: #8b5cf6;
+  border-color: var(--c-primary-500);
   background: #25143d;
 }
 :global(html.dark .radix-page .alphabet-list code) {
-  color: #c4b5fd;
+  color: var(--c-primary-300);
 }
 @media (max-width: 760px) {
   .input-card, .results-card, .alphabet-card {

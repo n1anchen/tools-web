@@ -221,9 +221,9 @@ onUnmounted(() => {
 
 <style scoped>
 .ascii-page {
-  --accent: #8b5cf6;
-  --accent-deep: #6d28d9;
-  --soft: #f5f3ff;
+  --accent: var(--c-primary-500);
+  --accent-deep: var(--c-primary-700);
+  --soft: var(--c-primary-50);
   gap:16px
 }
 .control-card,.preview-card {
@@ -425,6 +425,7 @@ onUnmounted(() => {
 .window-dots i:nth-child(3) {
   background:#34d399
 }
+
 .terminal {
   min-height: 360px;
   max-height: 520px;
@@ -433,6 +434,7 @@ onUnmounted(() => {
   color: #d8b4fe;
   background:radial-gradient(circle at 100% 0,rgba(139,92,246,.16),transparent 32%),#070b16
 }
+
 .terminal pre {
   min-width: max-content;
   margin: 0;
@@ -440,6 +442,7 @@ onUnmounted(() => {
   line-height: 1.16;
   text-shadow:0 0 18px rgba(192,132,252,.28)
 }
+
 .terminal.empty {
   display: grid;
   place-items:center
@@ -496,6 +499,7 @@ onUnmounted(() => {
   .studio-grid {
     grid-template-columns:1fr
   }
+
   .terminal {
     min-height:330px
   }
@@ -513,6 +517,7 @@ onUnmounted(() => {
   .preview-heading {
     align-items:flex-start
   }
+
   .terminal {
     min-height: 280px;
     padding:16px

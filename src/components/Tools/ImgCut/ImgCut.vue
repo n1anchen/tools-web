@@ -319,7 +319,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .cut-page {
-  --cut-accent: #0d9488;
+  --cut-accent: var(--c-primary-700);
   gap: 16px;
 }
 .upload-card,.preview-card,.settings-card,.results-card,.feature-strip article {
@@ -330,7 +330,7 @@ onBeforeUnmount(() => {
 .eyebrow {
   display: block;
   margin-bottom: 6px;
-  color: #0f766e;
+  color: var(--c-primary-700);
   font-size: 11px;
   font-weight: 900;
   letter-spacing:.16em
@@ -346,8 +346,8 @@ onBeforeUnmount(() => {
   transition:.2s
 }
 .upload-card.dragging {
-  border-color: #14b8a6;
-  background: #f0fdfa;
+  border-color: var(--c-primary-500);
+  background: var(--c-primary-50);
   transform:translateY(-2px)
 }
 .upload-icon {
@@ -359,7 +359,7 @@ onBeforeUnmount(() => {
   border-radius: var(--radius-card);
   color: var(--c-on-accent);
   font-size: 34px;
-  background: linear-gradient(145deg,#0d9488,var(--c-primary));
+  background: linear-gradient(145deg,var(--c-primary-700),var(--c-primary));
   box-shadow:0 14px 28px rgba(13,148,136,.24)
 }
 .upload-card h3,.card-heading h3 {
@@ -410,8 +410,8 @@ onBeforeUnmount(() => {
 .status-pill {
   padding: 5px 9px;
   border-radius: var(--radius-full);
-  color: #0f766e;
-  background: #ccfbf1;
+  color: var(--c-primary-700);
+  background: var(--c-primary-100);
   font-size: 10px;
   font-weight: 800;
   text-transform:uppercase
@@ -519,10 +519,10 @@ onBeforeUnmount(() => {
   font-size:10px
 }
 .preset-grid button.active {
-  border-color: #2dd4bf;
-  color: #0f766e;
-  background: #f0fdfa;
-  box-shadow:inset 0 0 0 1px #5eead4
+  border-color: var(--c-primary-400);
+  color: var(--c-primary-700);
+  background: var(--c-primary-50);
+  box-shadow:inset 0 0 0 1px var(--c-primary-300)
 }
 .number-grid {
   display: grid;
@@ -552,12 +552,12 @@ onBeforeUnmount(() => {
 .setting-note {
   margin: 0 0 16px;
   padding: 12px 13px;
-  border-left: 3px solid #14b8a6;
+  border-left: 3px solid var(--c-primary-500);
   border-radius: 0 12px 12px 0;
-  background:#f0fdfa
+  background:var(--c-primary-50)
 }
 .setting-note b {
-  color: #0f766e;
+  color: var(--c-primary-700);
   font-size:12px
 }
 .setting-note p {
@@ -570,7 +570,7 @@ onBeforeUnmount(() => {
   margin-bottom:14px
 }
 .slider-field label strong {
-  color:#0d9488
+  color:var(--c-primary-700)
 }
 .output-summary {
   display: grid;
@@ -623,7 +623,7 @@ onBeforeUnmount(() => {
   transition:.18s
 }
 .result-grid button:hover {
-  border-color: #2dd4bf;
+  border-color: var(--c-primary-400);
   transform: translateY(-2px);
   box-shadow:0 10px 20px rgba(13,148,136,.12)
 }
@@ -643,7 +643,7 @@ onBeforeUnmount(() => {
   font-size:10px
 }
 .result-grid b {
-  color:#0f766e
+  color:var(--c-primary-700)
 }
 .result-grid .el-icon {
   margin-left:auto
@@ -670,8 +670,8 @@ onBeforeUnmount(() => {
   flex: 0 0 34px;
   height: 34px;
   border-radius: var(--radius-sm);
-  color: #0f766e;
-  background: #ccfbf1;
+  color: var(--c-primary-700);
+  background: var(--c-primary-100);
   font-size:11px
 }
 .feature-strip strong {
@@ -709,12 +709,12 @@ onBeforeUnmount(() => {
   background:var(--c-surface-subtle)
 }
 :global(html.dark .cut-page .preset-grid button.active) {
-  color: #5eead4;
+  color: var(--c-primary-300);
   background:#134e4a
 }
 :global(html.dark .cut-page .feature-strip article>b) {
   background: #134e4a;
-  color:#5eead4
+  color:var(--c-primary-300)
 }
 @media(max-width:1080px) {
   .studio-grid {

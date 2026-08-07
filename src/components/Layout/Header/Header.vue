@@ -350,7 +350,7 @@ onBeforeUnmount(() => {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--c-primary-50) 0%, #e0e7ff 100%);
+  background: linear-gradient(135deg, var(--c-primary-50) 0%, var(--c-primary-100) 100%);
   display: flex;
   align-items: center;
   justify-content: center;

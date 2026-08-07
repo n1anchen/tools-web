@@ -275,7 +275,7 @@ onBeforeUnmount(() => {
 .eyebrow {
   display: block;
   margin-bottom: 8px;
-  color: #99f6e4;
+  color: var(--c-primary-200);
   font-size: 11px;
   font-weight: 900;
   letter-spacing:.17em
@@ -307,8 +307,8 @@ onBeforeUnmount(() => {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: #14b8a6;
-  box-shadow:0 0 0 4px #ccfbf1
+  background: var(--c-primary-500);
+  box-shadow:0 0 0 4px var(--c-primary-100)
 }
 .document-state i.dirty {
   background: #f59e0b;
@@ -345,8 +345,8 @@ onBeforeUnmount(() => {
   cursor:pointer
 }
 .bar-actions button.primary {
-  border-color: #0d9488;
-  background: #0d9488;
+  border-color: var(--c-primary-700);
+  background: var(--c-primary-700);
   color: var(--c-on-accent)
 }
 .bar-actions button:disabled,.source-actions button:disabled,.delivery-actions button:disabled {
@@ -439,8 +439,8 @@ onBeforeUnmount(() => {
   cursor:pointer
 }
 .template-list button:hover {
-  border-color: #2dd4bf;
-  background:#f0fdfa
+  border-color: var(--c-primary-400);
+  background:var(--c-primary-50)
 }
 .template-list span {
   color: var(--c-text-muted);
@@ -514,7 +514,7 @@ onBeforeUnmount(() => {
   color:#e2e8f0
 }
 .dark .template-list button:hover {
-  border-color: #2dd4bf;
+  border-color: var(--c-primary-400);
   background:#073b38
 }
 .dark .editor-shell {

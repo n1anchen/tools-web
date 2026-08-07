@@ -92,11 +92,11 @@ function selectStatus(status: HttpStatusCode) {
 
 <style scoped>
 .http-page {
-  --sky: #0284c7;
+  --sky: var(--c-primary);
   --emerald: #059669;
   --amber: #d97706;
   --rose: #e11d48;
-  --violet: #7c3aed;
+  --violet: var(--c-primary);
   gap: 16px;
 }
 .search-card, .selected-card, .common-card, .results-card {
@@ -190,8 +190,8 @@ function selectStatus(status: HttpStatusCode) {
   background: #fff1f2;
 }
 .category-grid .violet.active {
-  border-color: #c4b5fd;
-  background: #f5f3ff;
+  border-color: var(--c-primary-300);
+  background: var(--c-primary-50);
 }
 .search-card {
   padding: 17px 20px;

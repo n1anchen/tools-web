@@ -54,7 +54,7 @@ function useResultAsInput() {
     <ToolHero />
 
     <section class="workspace-card">
-      <SectionHeading :icon="Filter" title="设置去重规则" description="结果会随输入和规则实时更新，并保持原始顺序" tone="violet">
+      <SectionHeading :icon="Filter" title="设置去重规则" description="结果会随输入和规则实时更新，并保持原始顺序" tone="blue">
         <template #actions>
           <el-radio-group v-model="options.mode">
             <el-radio-button value="global">全局重复行</el-radio-button>
@@ -174,8 +174,8 @@ function useResultAsInput() {
   min-width: 64px;
   padding: 9px 6px;
   border-radius: var(--radius-md);
-  color: #7c3aed;
-  background: #f5f3ff;
+  color: var(--c-primary);
+  background: var(--c-primary-50);
   text-align: center;
 }
 .removed-badge strong,
@@ -185,14 +185,14 @@ function useResultAsInput() {
 .workspace-footer { justify-content: space-between; gap: 12px; margin-top: 14px; }
 .sample-button {
   padding: 7px 12px;
-  border: 1px solid #e9d5ff;
+  border: 1px solid var(--c-primary-200);
   border-radius: var(--radius-full);
-  color: #7c3aed;
-  background: #faf5ff;
+  color: var(--c-primary);
+  background: var(--c-primary-50);
   font-size: 12px;
   cursor: pointer;
 }
-.sample-button:hover { border-color: #c084fc; background: #f3e8ff; }
+.sample-button:hover { border-color: var(--c-primary-400); background: #f3e8ff; }
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -227,7 +227,7 @@ function useResultAsInput() {
   cursor: pointer;
 }
 .duplicate-list button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.duplicate-list button strong { color: #7c3aed; white-space: nowrap; }
+.duplicate-list button strong { color: var(--c-primary); white-space: nowrap; }
 .duplicate-preview p { margin: 5px 0 0; color: var(--c-text-muted); font-size: 12px; }
 .detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
 .detail-grid h4 { margin: 0 0 6px; color: #1e293b; }

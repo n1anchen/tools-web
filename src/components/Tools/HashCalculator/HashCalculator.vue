@@ -139,7 +139,7 @@ function copyResult() {
     <section class="workspace-card">
       <div class="workspace-grid">
         <div class="input-column">
-          <SectionHeading :icon="MagicStick" title="输入与算法" description="内容变化后自动重新计算，无需手动提交" tone="violet" />
+          <SectionHeading :icon="MagicStick" title="输入与算法" description="内容变化后自动重新计算，无需手动提交" tone="blue" />
 
           <label class="field-block">
             <span>待计算文本</span>
@@ -304,16 +304,16 @@ function copyResult() {
 
 .example-row button {
   padding: 6px 10px;
-  border: 1px solid #e9d5ff;
+  border: 1px solid var(--c-primary-200);
   border-radius: var(--radius-full);
-  color: #7c3aed;
-  background: #faf5ff;
+  color: var(--c-primary);
+  background: var(--c-primary-50);
   font-size: 12px;
   cursor: pointer;
 }
 
 .example-row button:hover {
-  border-color: #c084fc;
+  border-color: var(--c-primary-400);
   background: #f3e8ff;
 }
 
@@ -330,7 +330,7 @@ function copyResult() {
 }
 
 .settings-title .el-icon {
-  color: #7c3aed;
+  color: var(--c-primary);
   font-size: 18px;
 }
 
@@ -354,9 +354,9 @@ function copyResult() {
 
 .hmac-field {
   padding: 14px;
-  border: 1px solid #ddd6fe;
+  border: 1px solid var(--c-primary-200);
   border-radius: var(--radius-md);
-  background: #f5f3ff;
+  background: var(--c-primary-50);
 }
 
 .algorithm-facts {
@@ -474,7 +474,7 @@ function copyResult() {
 }
 
 :global(html.dark .hash-page .hmac-field) {
-  border-color: #4c1d95;
+  border-color: var(--c-primary-900);
   background: #22143d;
 }
 

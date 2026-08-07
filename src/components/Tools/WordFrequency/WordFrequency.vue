@@ -277,7 +277,7 @@ function copyAll() {
   gap: 8px;
 }
 .bar-row > span {
-  color: #c4b5fd;
+  color: var(--c-primary-300);
   font-size: 10px;
 }
 .bar-row > strong {
@@ -291,16 +291,16 @@ function copyAll() {
   height: 8px;
   overflow: hidden;
   border-radius: var(--radius-full);
-  background: #ede9fe;
+  background: var(--c-primary-100);
 }
 .bar-row i {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #8b5cf6, #c084fc);
+  background: linear-gradient(90deg, var(--c-primary-500), var(--c-primary-400));
 }
 .bar-row b {
-  color: #7c3aed;
+  color: var(--c-primary);
   font-size: 12px;
   text-align: right;
 }

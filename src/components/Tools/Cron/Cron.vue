@@ -177,7 +177,7 @@ watch(expression, parseExpression, { immediate: true })
 
 <style scoped>
 .cron-page {
-  --cyan: #0891b2;
+  --cyan: var(--c-primary);
   gap:18px
 }
 .expression-card, .builder-card, .analysis-card, .schedule-card {
@@ -189,7 +189,7 @@ watch(expression, parseExpression, { immediate: true })
 .eyebrow {
   display: block;
   margin-bottom: 6px;
-  color: #67e8f9;
+  color: var(--c-primary-300);
   font-size: 12px;
   font-weight: 900;
   letter-spacing:.16em
@@ -342,7 +342,7 @@ watch(expression, parseExpression, { immediate: true })
   margin-top: 18px;
   padding: 14px;
   border-radius: var(--radius-md);
-  background:#ecfeff
+  background:var(--c-primary-50)
 }
 .builder-preview span {
   color: #0e7490;
@@ -363,7 +363,7 @@ watch(expression, parseExpression, { immediate: true })
   margin-top: 19px;
   padding: 16px;
   border-radius: var(--radius-md);
-  background:linear-gradient(135deg,#ecfeff,var(--c-primary-50))
+  background:linear-gradient(135deg,var(--c-primary-50),var(--c-primary-100))
 }
 .summary-copy strong,.error-state strong {
   color: var(--c-text-primary);
@@ -439,7 +439,7 @@ watch(expression, parseExpression, { immediate: true })
 .schedule-list b {
   grid-row: 1/3;
   align-self: center;
-  color: #0891b2;
+  color: var(--c-primary);
   font:800 13px ui-monospace,monospace
 }
 .schedule-list span {

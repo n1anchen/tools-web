@@ -368,7 +368,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .mirage-tool {
-  --accent: #2d6eb5;
+  --accent: var(--c-primary-700);
   --ink: #262d38;
   --muted: #707b89;
 }
@@ -602,7 +602,7 @@ onBeforeUnmount(() => {
 .source-controls input,.mix-controls input,.decode-settings input {
   grid-column: 1/-1;
   width: 100%;
-  accent-color: #2d6eb5;
+  accent-color: var(--c-primary-700);
 }
 .switch-row {
   display: flex;

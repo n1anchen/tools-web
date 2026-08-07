@@ -15,12 +15,13 @@ let sharedHistoryId = 0
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { CopyDocument, Delete, RefreshRight, Search, Star, Switch as SwitchIcon, TrendCharts } from '@element-plus/icons-vue'
+import { CopyDocument, Delete, RefreshRight, Search, Star, TrendCharts } from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
 import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
+import SwapButton from '@/components/Common/SwapButton.vue'
 import { copy } from '@/utils/string'
 import {
   UNIT_CATEGORIES,
@@ -218,7 +219,7 @@ function clearInput() {
           </template>
 
           <template #actions>
-            <button type="button" class="swap-button" title="交换单位并保留当前换算值" @click="swapUnits"><el-icon><SwitchIcon /></el-icon></button>
+            <SwapButton label="交换单位并保留当前换算值" @click="swapUnits" />
           </template>
 
           <template #output>
@@ -280,8 +281,8 @@ function clearInput() {
   gap:16px
 }
 .unit-page[data-accent="cyan"] {
-  --accent: #0891b2;
-  --accent-soft: #ecfeff;
+  --accent: var(--c-primary);
+  --accent-soft: var(--c-primary-50);
   --accent-deep:#0e7490
 }
 .unit-page[data-accent="amber"] {
@@ -290,9 +291,9 @@ function clearInput() {
   --accent-deep:#b45309
 }
 .unit-page[data-accent="violet"] {
-  --accent: #7c3aed;
-  --accent-soft: #f5f3ff;
-  --accent-deep:#6d28d9
+  --accent: var(--c-primary);
+  --accent-soft: var(--c-primary-50);
+  --accent-deep:var(--c-primary-700)
 }
 .unit-page[data-accent="rose"] {
   --accent: #e11d48;
@@ -300,9 +301,9 @@ function clearInput() {
   --accent-deep:#be123c
 }
 .unit-page[data-accent="sky"] {
-  --accent: #0284c7;
+  --accent: var(--c-primary);
   --accent-soft: #f0f9ff;
-  --accent-deep:#0369a1
+  --accent-deep:var(--c-primary-700)
 }
 .unit-page[data-accent="orange"] {
   --accent: #ea580c;
@@ -473,19 +474,6 @@ function clearInput() {
   background: none;
   cursor: pointer;
   font-size:10px
-}
-.swap-button {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border: 0;
-  border-radius: 50%;
-  color: var(--c-on-accent);
-  background: var(--accent);
-  box-shadow: 0 8px 18px color-mix(in srgb,var(--accent) 28%,transparent);
-  cursor: pointer;
-  font-size:18px
 }
 .warning-banner {
   margin-top: 12px;
@@ -847,9 +835,8 @@ function clearInput() {
     padding: 15px;
     border-radius:19px
   }
-  .swap-button {
-    margin: -2px auto;
-    transform:rotate(90deg)
+  :deep(.split-actions .swap-button) {
+    transform: rotate(90deg);
   }
   .equation-bar {
     align-items: flex-start;

@@ -207,8 +207,8 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 
 <style scoped>
 .riddle-page {
-  --accent: #7c3aed;
-  --accent-soft: #f5f3ff;
+  --accent: var(--c-primary);
+  --accent-soft: var(--c-primary-50);
   gap:18px
 }
 .workspace-card,.result-card,.guide-card {
@@ -247,10 +247,10 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 .ghost-button {
   min-height: 36px;
   padding: 0 14px;
-  border: 1px solid #d8b4fe;
+  border: 1px solid var(--c-primary-300);
   border-radius: var(--radius-sm);
   background: var(--c-surface);
-  color: #7e22ce;
+  color: var(--c-primary-700);
   font-size: 12px;
   font-weight: 800;
   cursor:pointer
@@ -289,10 +289,10 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   font-size:12px
 }
 .source-tabs button.active {
-  border-color: #c4b5fd;
+  border-color: var(--c-primary-300);
   background: var(--c-surface);
-  color: #6d28d9;
-  box-shadow:0 4px 12px rgba(124,58,237,.12)
+  color: var(--c-primary-700);
+  box-shadow:0 4px 12px color-mix(in srgb, var(--c-primary) 12%, transparent)
 }
 .source-editor {
   margin-top: 11px;
@@ -336,11 +336,11 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   outline: 0;
   resize: vertical;
   background: #171026;
-  color: #f5f3ff;
+  color: var(--c-primary-50);
   font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace
 }
 .source-editor textarea:focus {
-  box-shadow:inset 0 0 0 2px #8b5cf6
+  box-shadow:inset 0 0 0 2px var(--c-primary-500)
 }
 .source-editor footer {
   min-height: 48px;
@@ -406,8 +406,8 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   grid-column:1/-1
 }
 .result-grid article.source {
-  border-color: #a78bfa;
-  box-shadow:0 0 0 2px #ede9fe
+  border-color: var(--c-primary-400);
+  box-shadow:0 0 0 2px var(--c-primary-100)
 }
 .result-grid article>header,.result-grid article>footer {
   display: flex;
@@ -431,8 +431,8 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 .result-grid em {
   padding: 3px 7px;
   border-radius: var(--radius-full);
-  background: #ede9fe;
-  color: #6d28d9;
+  background: var(--c-primary-100);
+  color: var(--c-primary-700);
   font-size: 11px;
   font-style: normal;
   font-weight:850
@@ -467,7 +467,7 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 .result-grid footer button {
   border: 0;
   background: transparent;
-  color: #7c3aed;
+  color: var(--c-primary);
   font-size: 12px;
   font-weight: 850;
   cursor:pointer
@@ -504,8 +504,8 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   width: 52px;
   padding: 4px 5px;
   border-radius: var(--radius-xs);
-  background: #ede9fe;
-  color: #6d28d9;
+  background: var(--c-primary-100);
+  color: var(--c-primary-700);
   font-size: 11px;
   font-weight: 850;
   text-align:center
@@ -540,7 +540,7 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 .history-panel header button {
   border: 0;
   background: transparent;
-  color: #7c3aed;
+  color: var(--c-primary);
   font-size: 12px;
   font-weight: 800;
   cursor:pointer
@@ -562,7 +562,7 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   display:block
 }
 .history-list span {
-  color: #7c3aed;
+  color: var(--c-primary);
   font-size:11px
 }
 .history-list strong {
@@ -611,8 +611,8 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   color: var(--c-text-strong)
 }
 :global(html.dark .riddle-page) {
-  --accent: #a78bfa;
-  --accent-soft:#2e1065
+  --accent: var(--c-primary-400);
+  --accent-soft:var(--c-primary-900)
 }
 :global(html.dark .workspace-card),:global(html.dark .result-card),:global(html.dark .guide-card) {
   border-color: var(--c-border);
@@ -629,15 +629,15 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 :global(html.dark .source-tabs button.active),:global(html.dark .history-list button),:global(html.dark .ghost-button),:global(html.dark .example-row button),:global(html.dark .source-editor header),:global(html.dark .source-editor footer) {
   border-color: var(--c-border-strong);
   background: var(--c-surface-subtle);
-  color:#c4b5fd
+  color:var(--c-primary-300)
 }
 :global(html.dark .source-editor) {
   border-color: var(--c-border-strong);
   background:var(--c-surface-subtle)
 }
 :global(html.dark .result-grid article.source) {
-  border-color: #8b5cf6;
-  box-shadow:0 0 0 2px #4c1d95
+  border-color: var(--c-primary-500);
+  box-shadow:0 0 0 2px var(--c-primary-900)
 }
 :global(html.dark .result-grid textarea),:global(html.dark .result-grid input) {
   border-color: var(--c-border);

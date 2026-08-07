@@ -227,10 +227,10 @@ function useSample(value: string) {
 .stat-card span { color: var(--c-text-secondary); font-size: 12px; }
 .stat-card strong { margin-top: 7px; color: var(--c-primary-700); font-size: 28px; line-height: 1; }
 .stat-card small { margin-top: 8px; color: var(--c-text-muted); font-size: 11px; }
-.tone-cyan { border-color: #cffafe; background: #f0fdff; }
-.tone-cyan strong { color: #0891b2; }
-.tone-violet { border-color: #ede9fe; background: #faf8ff; }
-.tone-violet strong { color: #7c3aed; }
+.tone-cyan { border-color: var(--c-primary-100); background: #f0fdff; }
+.tone-cyan strong { color: var(--c-primary); }
+.tone-violet { border-color: var(--c-primary-100); background: #faf8ff; }
+.tone-violet strong { color: var(--c-primary); }
 .tone-amber { border-color: #fef3c7; background: #fffdf5; }
 .tone-amber strong { color: #d97706; }
 

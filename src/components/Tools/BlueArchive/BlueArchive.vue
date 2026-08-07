@@ -220,8 +220,8 @@ onUnmounted(() => {
 
 <style scoped>
 .blue-logo-page {
-  --accent: #0ea5e9;
-  --deep: #0369a1;
+  --accent: var(--c-primary-500);
+  --deep: var(--c-primary-700);
   --soft: #f0f9ff;
   gap:16px
 }
@@ -481,7 +481,7 @@ onUnmounted(() => {
   padding: 15px;
   border-radius: var(--radius-md);
   color: var(--c-on-accent);
-  background:linear-gradient(135deg,#075985,#0284c7)
+  background:linear-gradient(135deg,#075985,var(--c-primary))
 }
 .dimension-summary span,.dimension-summary strong,.dimension-summary small {
   display:block

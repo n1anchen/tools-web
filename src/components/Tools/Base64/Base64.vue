@@ -5,6 +5,7 @@ import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
+import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
 import { downloadBlob } from '@/utils/file'
 import { copy } from '@/utils/string'
 import { buildDocumentFilename, formatDocumentBytes } from '@/utils/documentStudio'
@@ -243,11 +244,19 @@ onBeforeUnmount(revokePreview)
 
       <section class="sample-card"><span>快速示例</span><button v-for="sample in textSamples" :key="sample.title" type="button" @click="applyTextSample(sample.value)"><strong>{{ sample.title }}</strong><small>{{ sample.value.length }} 字符</small></button></section>
 
-      <section class="text-workspace">
-        <article class="io-card input"><header><div><span>INPUT</span><h3>{{ textMode === 'encode' ? '原始文本' : 'Base64 内容' }}</h3></div><small>{{ textInput.length }} 字符 · {{ formatDocumentBytes(textInputBytes) }}</small></header><el-input v-model="textInput" type="textarea" :rows="15" resize="vertical" :placeholder="textMode === 'encode' ? '输入 UTF-8 文本…' : '输入 Base64、Base64 URL 或 Data URL…'" aria-label="Base64 文本输入" /></article>
-        <div class="flow-action"><button type="button" @click="processText"><span>{{ textMode === 'encode' ? '编码' : '解码' }}</span><b>→</b></button></div>
-        <article class="io-card output"><header><div><span>OUTPUT</span><h3>{{ textMode === 'encode' ? 'Base64 结果' : '还原文本' }}</h3></div><small>{{ textOutput.length }} 字符 · {{ formatDocumentBytes(textOutputBytes) }}</small></header><el-input v-model="textOutput" type="textarea" :rows="15" resize="vertical" readonly placeholder="处理结果将在这里显示…" aria-label="Base64 文本结果" /><footer><button type="button" aria-label="复制文本转换结果" :disabled="!textOutput" @click="copy(textOutput)"><el-icon><CopyDocument /></el-icon>复制结果</button><button type="button" aria-label="导出文本转换结果" :disabled="!textOutput" @click="downloadTextResult"><el-icon><Download /></el-icon>导出 TXT</button></footer></article>
-      </section>
+      <SplitWorkspace :actions-width="70" :gap="0" :margin-top="0" :collapse="1050">
+        <template #input>
+          <article class="io-card input"><header><div><span>INPUT</span><h3>{{ textMode === 'encode' ? '原始文本' : 'Base64 内容' }}</h3></div><small>{{ textInput.length }} 字符 · {{ formatDocumentBytes(textInputBytes) }}</small></header><el-input v-model="textInput" type="textarea" :rows="15" resize="vertical" :placeholder="textMode === 'encode' ? '输入 UTF-8 文本…' : '输入 Base64、Base64 URL 或 Data URL…'" aria-label="Base64 文本输入" /></article>
+        </template>
+
+        <template #actions>
+          <div class="flow-action"><button type="button" @click="processText"><span>{{ textMode === 'encode' ? '编码' : '解码' }}</span><b>→</b></button></div>
+        </template>
+
+        <template #output>
+          <article class="io-card output"><header><div><span>OUTPUT</span><h3>{{ textMode === 'encode' ? 'Base64 结果' : '还原文本' }}</h3></div><small>{{ textOutput.length }} 字符 · {{ formatDocumentBytes(textOutputBytes) }}</small></header><el-input v-model="textOutput" type="textarea" :rows="15" resize="vertical" readonly placeholder="处理结果将在这里显示…" aria-label="Base64 文本结果" /><footer><button type="button" aria-label="复制文本转换结果" :disabled="!textOutput" @click="copy(textOutput)"><el-icon><CopyDocument /></el-icon>复制结果</button><button type="button" aria-label="导出文本转换结果" :disabled="!textOutput" @click="downloadTextResult"><el-icon><Download /></el-icon>导出 TXT</button></footer></article>
+        </template>
+      </SplitWorkspace>
     </template>
 
     <template v-else-if="mode === 'file-encode'">
@@ -287,7 +296,7 @@ onBeforeUnmount(revokePreview)
 
 <style scoped>
 .base64-page {
-  --violet: #7c3aed;
+  --violet: var(--c-primary);
   gap:18px
 }
 .mode-nav, .text-toolbar, .io-card, .upload-card, .file-result-card, .decode-input-card, .decode-result-card {
@@ -299,7 +308,7 @@ onBeforeUnmount(revokePreview)
 .eyebrow {
   display: block;
   margin-bottom: 7px;
-  color: #c4b5fd;
+  color: var(--c-primary-300);
   font-size: 12px;
   font-weight: 900;
   letter-spacing:.16em
@@ -345,16 +354,16 @@ onBeforeUnmount(revokePreview)
   font-size:12px
 }
 .mode-nav button.active {
-  border-color: #c4b5fd;
-  background: #f5f3ff;
-  color:#6d28d9
+  border-color: var(--c-primary-300);
+  background: var(--c-primary-50);
+  color:var(--c-primary-700)
 }
 .mode-nav button.active>b {
   color: var(--c-on-accent);
   background:var(--violet)
 }
 .mode-nav button.active strong {
-  color:#5b21b6
+  color:var(--c-primary-800)
 }
 .text-toolbar {
   display: grid;
@@ -428,11 +437,6 @@ onBeforeUnmount(revokePreview)
   color: var(--c-text-muted);
   font-size:12px
 }
-.text-workspace {
-  display: grid;
-  grid-template-columns: minmax(0,1fr) 70px minmax(0,1fr);
-  align-items:stretch
-}
 .io-card {
   min-width: 0;
   padding:20px
@@ -478,8 +482,8 @@ onBeforeUnmount(revokePreview)
   border: 0;
   border-radius: 50%;
   color: var(--c-on-accent);
-  background: linear-gradient(135deg,#7c3aed,var(--c-primary));
-  box-shadow: 0 12px 25px rgba(124,58,237,.28);
+  background: linear-gradient(135deg,var(--c-primary-700),var(--c-primary));
+  box-shadow: 0 12px 25px color-mix(in srgb, var(--c-primary) 28%, transparent);
   cursor:pointer
 }
 .flow-action span {
@@ -536,8 +540,8 @@ onBeforeUnmount(revokePreview)
   margin-top: 14px;
   padding: 12px;
   border-radius: var(--radius-sm);
-  color: #6d28d9;
-  background: #f5f3ff;
+  color: var(--c-primary-700);
+  background: var(--c-primary-50);
   text-align:center
 }
 .file-meta,.restore-summary {
@@ -633,7 +637,7 @@ onBeforeUnmount(revokePreview)
   margin-top: 15px;
   border: 0;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg,#7c3aed,var(--c-primary));
+  background: linear-gradient(135deg,var(--c-primary-700),var(--c-primary));
   color: var(--c-on-accent);
   font-size: 14px;
   font-weight: 800;
@@ -714,11 +718,11 @@ onBeforeUnmount(revokePreview)
   color: var(--c-text-primary)
 }
 :global(html.dark .base64-page .mode-nav button.active) {
-  border-color: #7c3aed;
-  background:#2e1065
+  border-color: var(--c-primary);
+  background:var(--c-primary-900)
 }
 :global(html.dark .base64-page .mode-nav button.active strong) {
-  color:#ddd6fe
+  color:var(--c-primary-200)
 }
 :global(html.dark .base64-page .file-meta),:global(html.dark .base64-page .restore-summary) {
   border-color: var(--c-border)
@@ -739,11 +743,9 @@ onBeforeUnmount(revokePreview)
   .text-toolbar {
     grid-template-columns:1fr 1fr
   }
-  .text-workspace {
-    grid-template-columns:1fr
-  }
   .flow-action {
-    padding:8px
+    width: 100%;
+    padding: 8px
   }
   .flow-action button {
     width: 100%;

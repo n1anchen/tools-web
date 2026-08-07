@@ -256,7 +256,7 @@ onBeforeUnmount(() => {
 
 .menu-item-custom:hover {
   background: #f1f5f9 !important;
-  color: #6366f1 !important;
+  color: var(--c-primary-500) !important;
   transform: translateX(4px);
 }
 
@@ -324,7 +324,7 @@ onBeforeUnmount(() => {
 
 .dark .menu-item-custom:not(.is-active):hover {
   background: #1e293b !important;
-  color: #a5b4fc !important;
+  color: var(--c-primary-300) !important;
 }
 
 .dark .menu-item-custom.is-active {

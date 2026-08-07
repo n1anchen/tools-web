@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
   background: #f59e0b;
 }
 .dot.tails {
-  background: #8b5cf6;
+  background: var(--c-primary-500);
 }
 .count-field {
   display: block;
@@ -292,11 +292,11 @@ onBeforeUnmount(() => {
   white-space: nowrap;
 }
 .coin-back {
-  color: #5b21b6;
-  background: radial-gradient(circle at 35% 25%, #f5f3ff, #c4b5fd 48%, #7c3aed 100%);
-  border-color: #8b5cf6;
+  color: var(--c-primary-800);
+  background: radial-gradient(circle at 35% 25%, var(--c-primary-50), var(--c-primary-300) 48%, var(--c-primary) 100%);
+  border-color: var(--c-primary-500);
   transform: rotateY(180deg);
-  box-shadow: inset 0 0 0 4px #ddd6fe, 0 17px 35px rgba(124, 58, 237, .24);
+  box-shadow: inset 0 0 0 4px var(--c-primary-200), 0 17px 35px color-mix(in srgb, var(--c-primary) 24%, transparent);
 }
 @keyframes flip-head {
   from {
@@ -373,7 +373,7 @@ onBeforeUnmount(() => {
   color: #d97706;
 }
 .stats-grid .tails-stat strong {
-  color: #7c3aed;
+  color: var(--c-primary);
 }
 .distribution-track {
   display: flex;
@@ -390,7 +390,7 @@ onBeforeUnmount(() => {
   background: #f59e0b;
 }
 .tails-bar {
-  background: #8b5cf6;
+  background: var(--c-primary-500);
 }
 .distribution-track.empty {
   opacity: .35;
@@ -422,8 +422,8 @@ onBeforeUnmount(() => {
   background: #fef3c7;
 }
 .history-list .tails {
-  color: #5b21b6;
-  background: #ede9fe;
+  color: var(--c-primary-800);
+  background: var(--c-primary-100);
 }
 .empty-history {
   display: flex;
