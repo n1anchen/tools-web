@@ -580,7 +580,7 @@ onMounted(() => {
   width: 28px;
   height: 28px;
   border: 0;
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-full);
   background: transparent;
   color: #f59e0b;
   font-size: 18px;

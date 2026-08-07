@@ -14,6 +14,74 @@
   border-radius: var(--radius-full);
 }
 
+/* --- 普通按钮 el-button：全局胶囊圆角（与 round 主按钮 / CopyButton 一致）---
+ * circle 按钮（.is-circle）仍为 50%；工具内 scoped 自定义圆角以 scoped 为准。 */
+.el-button {
+  border-radius: var(--radius-full);
+}
+
+/* --- 输入类组件 el-input / el-textarea / el-select：统一圆角跟随设计令牌 ---
+ * 注意：EP 在组件根类 .el-input / .el-textarea 上直接重定义了
+ * --el-input-border-radius:4px，因此在 :root 上设该变量会被组件根覆盖，
+ * 这里直接覆盖各输入类组件自身的 wrapper/inner 类（与 .el-button 同法）。
+ * 取 --radius-sm(10px)：比按钮胶囊克制，与卡片圆角形成层次。
+ * 工具内 scoped 自定义圆角（如 .lookup-input :deep(.el-input__wrapper)）
+ * 特异性更高，以 scoped 为准。 */
+.el-input__wrapper,
+.el-textarea__inner {
+  border-radius: var(--radius-sm);
+}
+.el-select__wrapper {
+  border-radius: var(--radius-sm);
+}
+
+/* --- 数字输入框 el-input-number：快捷增减按钮圆角与输入框对齐 ---
+ * 按钮绝对定位贴在 wrapper 角落，默认双侧布局（左减右增）；
+ * controls-position="right" 时两个按钮叠放于右侧。
+ * 圆角跟随 --radius-sm，与 .el-input__wrapper 完全一致，避免角落被裁剪。 */
+.el-input-number__increase {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.el-input-number__decrease {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+.el-input-number.is-controls-right .el-input-number__increase {
+  border-radius: 0 var(--radius-sm) 0 0;
+}
+.el-input-number.is-controls-right .el-input-number__decrease {
+  border-radius: 0 0 var(--radius-sm) 0;
+}/* controls-right 时按钮高度跟随 wrapper 自适应（各占一半），
+ * 避免 wrapper 被 scoped 样式撑高（如房贷 min-height:40px）时
+ * 两个按钮中间露出空隙/隔断；中间仅保留 EP 自带 1px 分隔线。 */
+.el-input-number.is-controls-right .el-input-number__increase,
+.el-input-number.is-controls-right .el-input-number__decrease {
+  height: calc(50% - 1px);
+  line-height: calc(50% - 1px);
+}
+/* --- 开关 el-switch：高度与按钮/输入框统一，饱满协调 ---
+ * EP 默认 40×20（2:1）细长；高度提升到 32px（与 el-button / el-input
+ * 默认高度一致），宽度保持 EP 默认 40px 不缩小，圆钮 28px 与轨道匹配。
+ * 带文字（inline-prompt）开关与旁边按钮并排时高度齐平，比例协调。
+ * small 保持 EP 默认尺寸；action 水平位置使用 calc(100% - 29px) 自适应。 */
+.el-switch__core {
+  height: 32px;
+  border-radius: var(--radius-full);
+}
+.el-switch__core .el-switch__action {
+  width: 28px;
+  height: 28px;
+}
+.el-switch.is-checked .el-switch__core .el-switch__action {
+  left: calc(100% - 29px);
+}
+.el-switch__core .el-switch__inner {
+  height: 28px;
+  padding: 0 10px 0 35px;
+}
+.el-switch.is-checked .el-switch__core .el-switch__inner {
+  padding: 0 35px 0 10px;
+}
+
 /* --- 主色挂钩：Element Plus 全组件主色跟随 --c-primary ---
  * 亮色：light-N 向白派生（浅底/悬停）、dark-2 向黑派生（深色悬停）
  * 暗色：light-N 向黑派生（暗底）、dark-2 向白派生（暗色下悬停需提亮）
