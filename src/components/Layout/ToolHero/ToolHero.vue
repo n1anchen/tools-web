@@ -68,7 +68,7 @@ onBeforeUnmount(() => {
       <div class="hero-head">
         <div class="hero-context">
           <div class="tool-icon">
-            <ToolIcon v-if="toolInfo.logo" :logo="toolInfo.logo" :size="34" rounded="rounded" />
+            <ToolIcon v-if="toolInfo.logo" :logo="toolInfo.logo" :size="44" rounded="rounded" />
             <Setting v-else />
           </div>
           <div>
