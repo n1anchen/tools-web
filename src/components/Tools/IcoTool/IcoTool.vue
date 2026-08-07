@@ -6,7 +6,7 @@ import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown, getFileExtension } from '@/utils/file'
+import { downloadBlob, getFileExtension } from '@/utils/file'
 import { copy } from '@/utils/string'
 import {
   ICON_PRESETS,
@@ -457,11 +457,6 @@ async function createIcoBlob(sizes: number[]) {
   return new Blob([buildIcoBytes(pngEntries)], { type: 'image/x-icon' })
 }
 
-function downloadBlob(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob)
-  autoDown(url, filename)
-  setTimeout(() => URL.revokeObjectURL(url), 5000)
-}
 
 async function downloadPng(size: number) {
   if (!hasImage.value) return
@@ -535,9 +530,7 @@ async function exportZip() {
 
     await zipWriter.close()
     const zipBlob = await blobWriter.getData()
-    const url = URL.createObjectURL(zipBlob)
-    autoDown(url, `${sanitizeIconName(state.imageName)}-icons.zip`)
-    setTimeout(() => URL.revokeObjectURL(url), 5000)
+    downloadBlob(zipBlob, `${sanitizeIconName(state.imageName)}-icons.zip`)
 
     if (skippedIcoSizes.length) {
       ElMessage.warning(`ICO 已跳过 ${skippedIcoSizes.join('、')} 尺寸，ICO 标准通常仅支持到 256`)

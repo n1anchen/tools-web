@@ -5,7 +5,7 @@ import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown } from '@/utils/file'
+import { downloadBlob } from '@/utils/file'
 import { copy } from '@/utils/string'
 import { buildDocumentFilename, formatDocumentBytes } from '@/utils/documentStudio'
 import {
@@ -142,7 +142,7 @@ function clearText() {
 
 function downloadTextResult() {
   if (!textOutput.value) return
-  downloadBlob(new Blob([textOutput.value], { type: 'text/plain;charset=utf-8' }), buildDocumentFilename(textMode.value === 'encode' ? 'base64-encoded' : 'base64-decoded', 'txt'))
+  downloadBlob(new Blob([textOutput.value], { type: 'text/plain;charset=utf-8' }), sanitizeBase64Filename(buildDocumentFilename(textMode.value === 'encode' ? 'base64-encoded' : 'base64-decoded', 'txt')))
 }
 
 async function handleFileChange(file: { raw?: File }) {
@@ -204,14 +204,10 @@ function restoreFile() {
 function downloadDecodedFile() {
   if (!decodedBytes.value) return ElMessage.warning('请先还原 Base64 内容')
   const buffer = decodedBytes.value.buffer.slice(decodedBytes.value.byteOffset, decodedBytes.value.byteOffset + decodedBytes.value.byteLength) as ArrayBuffer
-  downloadBlob(new Blob([buffer], { type: resolvedMime.value }), filename.value)
+  downloadBlob(new Blob([buffer], { type: resolvedMime.value }), sanitizeBase64Filename(filename.value))
   ElMessage.success('文件已开始下载')
 }
 
-function downloadBlob(blob: Blob, name: string) {
-  const url = URL.createObjectURL(blob)
-  autoDown(url, sanitizeBase64Filename(name))
-}
 
 function clearDecode() {
   b64Input.value = ''

@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import { CopyDocument, Download, Refresh, UploadFilled } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import { formatNumber } from '@/utils/format'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
 import { autoDown } from '@/utils/file'
@@ -164,11 +165,6 @@ const formatHint = computed(() => dataMode.value === 'grid'
     : props.type === 'scatter' ? 'CSV 列：X、Y、名称（名称可省略）' : 'CSV 列：名称、数值；也支持 Tab 分隔')
 const gridColumns = computed(() => props.type === 'scatter' ? 3 : 2)
 
-function formatNumber(value: number) {
-  return Number.isInteger(value)
-    ? value.toLocaleString('zh-CN')
-    : value.toLocaleString('zh-CN', { maximumFractionDigits: 2 })
-}
 
 function renderChart() {
   if (!chartElement.value) return

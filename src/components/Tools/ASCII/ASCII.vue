@@ -44,9 +44,6 @@ function locateEntry() {
   query.value = ''
 }
 
-function copyValue(value: string) {
-  copy(value)
-}
 </script>
 
 <template>
@@ -86,12 +83,12 @@ function copyValue(value: string) {
         <header><div><span class="eyebrow">CHARACTER DETAIL</span><h3>编码详情</h3></div><span class="category-pill">{{ selected.category }}</span></header>
         <div class="symbol-preview"><strong>{{ selected.symbol }}</strong><div><span>{{ selected.name }}</span><p>{{ selected.description }}</p></div></div>
         <div class="value-list">
-          <button type="button" aria-label="复制十进制编码" @click="copyValue(selected.dec)"><span>十进制 DEC</span><code>{{ selected.dec }}</code><el-icon><CopyDocument /></el-icon></button>
-          <button type="button" aria-label="复制十六进制编码" @click="copyValue(`0x${selected.hex}`)"><span>十六进制 HEX</span><code>0x{{ selected.hex }}</code><el-icon><CopyDocument /></el-icon></button>
-          <button type="button" aria-label="复制八进制编码" @click="copyValue(selected.oct)"><span>八进制 OCT</span><code>{{ selected.oct }}</code><el-icon><CopyDocument /></el-icon></button>
-          <button type="button" aria-label="复制二进制编码" @click="copyValue(selected.binary)"><span>二进制 BIN</span><code>{{ selected.binary }}</code><el-icon><CopyDocument /></el-icon></button>
-          <button type="button" aria-label="复制 Unicode 编码" @click="copyValue(selected.unicode)"><span>Unicode</span><code>{{ selected.unicode }}</code><el-icon><CopyDocument /></el-icon></button>
-          <button type="button" aria-label="复制 HTML 实体" @click="copyValue(`&#${selected.dec};`)"><span>HTML 实体</span><code>&amp;#{{ selected.dec }};</code><el-icon><CopyDocument /></el-icon></button>
+          <button type="button" aria-label="复制十进制编码" @click="copy(selected.dec)"><span>十进制 DEC</span><code>{{ selected.dec }}</code><el-icon><CopyDocument /></el-icon></button>
+          <button type="button" aria-label="复制十六进制编码" @click="copy(`0x${selected.hex}`)"><span>十六进制 HEX</span><code>0x{{ selected.hex }}</code><el-icon><CopyDocument /></el-icon></button>
+          <button type="button" aria-label="复制八进制编码" @click="copy(selected.oct)"><span>八进制 OCT</span><code>{{ selected.oct }}</code><el-icon><CopyDocument /></el-icon></button>
+          <button type="button" aria-label="复制二进制编码" @click="copy(selected.binary)"><span>二进制 BIN</span><code>{{ selected.binary }}</code><el-icon><CopyDocument /></el-icon></button>
+          <button type="button" aria-label="复制 Unicode 编码" @click="copy(selected.unicode)"><span>Unicode</span><code>{{ selected.unicode }}</code><el-icon><CopyDocument /></el-icon></button>
+          <button type="button" aria-label="复制 HTML 实体" @click="copy(`&#${selected.dec};`)"><span>HTML 实体</span><code>&amp;#{{ selected.dec }};</code><el-icon><CopyDocument /></el-icon></button>
         </div>
         <div class="byte-map"><span>8 位字节结构</span><div><b v-for="(bit, index) in selected.binary" :key="index">{{ bit }}</b></div><small>最高位在左，最低位在右</small></div>
       </aside>

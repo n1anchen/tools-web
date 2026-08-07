@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown } from '@/utils/file'
+import { downloadText } from '@/utils/file'
 import { copy } from '@/utils/string'
 import {
   buildBatchCoordinateSets,
@@ -248,9 +248,6 @@ function copyAllCoordinates() {
   ElMessage.success('五种坐标已复制')
 }
 
-function downloadText(content: string, filename: string, type: string) {
-  autoDown(URL.createObjectURL(new Blob([content], { type })), filename)
-}
 
 function downloadCurrentJson() {
   if (!state.current) return

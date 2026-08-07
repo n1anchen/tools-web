@@ -8,7 +8,7 @@ import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown } from '@/utils/file'
+import { downloadText } from '@/utils/file'
 import { copy } from '@/utils/string'
 import { analyzeText } from '@/utils/textTools'
 import {
@@ -170,20 +170,16 @@ async function importDocument(event: Event) {
   }
 }
 
-function download(value: string, filename: string, type: string) {
-  const url = URL.createObjectURL(new Blob([value], { type }))
-  autoDown(url, filename)
-}
 
 function exportHtml() {
   if (!hasContent.value) return ElMessage.warning('请先输入内容')
-  download(buildStandaloneHtml(title.value, content.value), buildDocumentFilename(title.value, 'html'), 'text/html;charset=utf-8')
+  downloadText(buildStandaloneHtml(title.value, content.value), buildDocumentFilename(title.value, 'html'), 'text/html;charset=utf-8')
   ElMessage.success('HTML 文档已导出')
 }
 
 function exportText() {
   if (!hasContent.value) return ElMessage.warning('请先输入内容')
-  download(plainText.value, buildDocumentFilename(title.value, 'txt'), 'text/plain;charset=utf-8')
+  downloadText(plainText.value, buildDocumentFilename(title.value, 'txt'), 'text/plain;charset=utf-8')
   ElMessage.success('纯文本文档已导出')
 }
 

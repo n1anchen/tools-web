@@ -1,3 +1,5 @@
+import { getLineColumn } from './format.ts'
+
 interface CodeMetrics {
   characters: number
   bytes: number
@@ -41,13 +43,6 @@ function getEntries(value: unknown) {
   if (Array.isArray(value)) return value.length
   if (value && typeof value === 'object') return Object.keys(value).length
   return 1
-}
-
-function getLineColumn(source: string, index: number) {
-  const safeIndex = Math.max(0, Math.min(source.length, index))
-  const before = source.slice(0, safeIndex)
-  const lines = before.split(/\r?\n/)
-  return { line: lines.length, column: (lines[lines.length - 1]?.length ?? 0) + 1 }
 }
 
 function locateJsonError(source: string, message: string) {

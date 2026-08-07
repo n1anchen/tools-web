@@ -6,7 +6,7 @@ import { ElMessage } from 'element-plus'
 import { format, type IndentStyle, type KeywordCase, type LogicalOperatorNewline, type SqlLanguage } from 'sql-formatter'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
-import { autoDown } from '@/utils/file'
+import { downloadText } from '@/utils/file'
 import AceEditor from '@/components/Common/AceEditor.vue'
 import { countSqlStatements, minifySqlSafely } from '@/utils/workbenchTools'
 
@@ -146,8 +146,7 @@ function clear() {
 function downloadSql() {
   const code = getCode()
   if (!code) return
-  const url = URL.createObjectURL(new Blob([code], { type: 'text/sql;charset=utf-8' }))
-  autoDown(url, `formatted-${options.dialect}.sql`)
+  downloadText(code, `formatted-${options.dialect}.sql`, 'text/sql;charset=utf-8')
 }
 </script>
 

@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import { CopyDocument, Download, Refresh, UploadFilled } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import { formatNumber } from '@/utils/format'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
 import { autoDown } from '@/utils/file'
@@ -131,14 +132,13 @@ const formatHint = computed(() => {
 const gridColumns = computed(() => ({ radar: 4, gauge: 2, heatmap: 3, candlestick: 5, stack: 4 })[props.type])
 
 const heroMetrics = computed(() => {
-  if (props.type === 'radar') return [{ value: stats.value.count, label: '维度数' }, { value: stats.value.series, label: '对比系列' }, { value: format(stats.value.max), label: '当前峰值' }]
-  if (props.type === 'gauge') return [{ value: stats.value.count, label: '指标数' }, { value: `${settings.gaugeMin}–${settings.gaugeMax}`, label: '仪表范围' }, { value: format(stats.value.max), label: '当前最高' }]
-  if (props.type === 'heatmap' && data.value.kind === 'heatmap') return [{ value: stats.value.count, label: '有效单元' }, { value: `${data.value.xCategories.length} × ${data.value.yCategories.length}`, label: '矩阵规模' }, { value: format(stats.value.max), label: '热度峰值' }]
-  if (props.type === 'candlestick' && data.value.kind === 'candlestick') return [{ value: stats.value.count, label: '行情周期' }, { value: data.value.items.filter(item => item.close >= item.open).length, label: '上涨周期' }, { value: format(stats.value.max), label: '区间最高' }]
-  return [{ value: stats.value.count, label: '分类数' }, { value: stats.value.series, label: '堆叠系列' }, { value: format(stats.value.max), label: '单项峰值' }]
+  if (props.type === 'radar') return [{ value: stats.value.count, label: '维度数' }, { value: stats.value.series, label: '对比系列' }, { value: formatNumber(stats.value.max), label: '当前峰值' }]
+  if (props.type === 'gauge') return [{ value: stats.value.count, label: '指标数' }, { value: `${settings.gaugeMin}–${settings.gaugeMax}`, label: '仪表范围' }, { value: formatNumber(stats.value.max), label: '当前最高' }]
+  if (props.type === 'heatmap' && data.value.kind === 'heatmap') return [{ value: stats.value.count, label: '有效单元' }, { value: `${data.value.xCategories.length} × ${data.value.yCategories.length}`, label: '矩阵规模' }, { value: formatNumber(stats.value.max), label: '热度峰值' }]
+  if (props.type === 'candlestick' && data.value.kind === 'candlestick') return [{ value: stats.value.count, label: '行情周期' }, { value: data.value.items.filter(item => item.close >= item.open).length, label: '上涨周期' }, { value: formatNumber(stats.value.max), label: '区间最高' }]
+  return [{ value: stats.value.count, label: '分类数' }, { value: stats.value.series, label: '堆叠系列' }, { value: formatNumber(stats.value.max), label: '单项峰值' }]
 })
 
-function format(value: number) { return Number.isInteger(value) ? value.toLocaleString('zh-CN') : value.toLocaleString('zh-CN', { maximumFractionDigits: 2 }) }
 function renderChart() { if (!chartElement.value) return; if (!chart) chart = echarts.init(chartElement.value, settingStore.isDark ? 'dark' : undefined, { renderer: 'canvas' }); chart.setOption(option.value, true); chart.resize() }
 function recreateChart() { chart?.dispose(); chart = null; nextTick(renderChart) }
 
@@ -176,7 +176,7 @@ onBeforeUnmount(() => { if (draftTimer) { clearTimeout(draftTimer); draftTimer =
     <section class="workspace-grid">
       <article class="data-card"><header class="card-header"><div><span class="eyebrow">STRUCTURED DATA</span><h3>数据输入</h3></div><div class="header-actions"><button type="button" @click="fileInput?.click()"><el-icon><UploadFilled /></el-icon>导入</button><button type="button" @click="downloadData">导出</button><input ref="fileInput" type="file" accept=".csv,.tsv,.txt,.json" hidden @change="importData"></div></header><div class="mode-tabs" aria-label="数据输入方式"><button type="button" :class="{ active: dataMode === 'grid' }" @click="changeMode('grid')">可视表格</button><button type="button" :class="{ active: dataMode === 'table' }" @click="changeMode('table')">CSV / TSV</button><button type="button" :class="{ active: dataMode === 'json' }" @click="changeMode('json')">JSON</button></div><ChartDataGrid v-if="dataMode === 'grid'" v-model="dataText" :min-columns="gridColumns" :aria-label="`${workbenchTitle}可视数据表格`" @update:model-value="activeSample = ''" /><textarea v-else v-model="dataText" spellcheck="false" :aria-label="`${workbenchTitle}数据输入`" @input="activeSample = ''"></textarea><div class="format-hint"><span>{{ formatHint }}</span><b>{{ stats.count }} 条有效记录</b></div><div v-if="allErrors.length" class="validation-box" role="alert"><strong>有 {{ allErrors.length }} 处需要检查</strong><ul><li v-for="error in allErrors.slice(0, 4)" :key="error">{{ error }}</li></ul></div><div v-else class="validation-box success"><strong>数据结构有效</strong><span>修改数据后，预览和统计会自动更新。</span></div></article>
 
-      <article class="preview-card"><header class="card-header"><div><span class="eyebrow">LIVE PREVIEW</span><h3>实时预览</h3></div><div class="header-actions"><button type="button" aria-label="复制 ECharts 配置" @click="copy(JSON.stringify(option, null, 2))"><el-icon><CopyDocument /></el-icon>复制配置</button><button type="button" class="primary" @click="downloadPng"><el-icon><Download /></el-icon>导出 PNG</button></div></header><div class="chart-shell" :style="{ height: `${chartHeight}px` }"><div ref="chartElement" class="chart-canvas" role="img" :aria-label="`${workbenchTitle}实时预览，共 ${stats.count} 条记录`"></div><div v-if="!stats.count" class="chart-empty">输入有效数据后，这里会显示图表</div></div><div class="preview-summary"><span><i></i>实时同步</span><span>{{ stats.count }} 条记录</span><span>{{ stats.series }} 个系列 / 维度组</span><span>峰值 {{ format(stats.max) }}</span></div></article>
+      <article class="preview-card"><header class="card-header"><div><span class="eyebrow">LIVE PREVIEW</span><h3>实时预览</h3></div><div class="header-actions"><button type="button" aria-label="复制 ECharts 配置" @click="copy(JSON.stringify(option, null, 2))"><el-icon><CopyDocument /></el-icon>复制配置</button><button type="button" class="primary" @click="downloadPng"><el-icon><Download /></el-icon>导出 PNG</button></div></header><div class="chart-shell" :style="{ height: `${chartHeight}px` }"><div ref="chartElement" class="chart-canvas" role="img" :aria-label="`${workbenchTitle}实时预览，共 ${stats.count} 条记录`"></div><div v-if="!stats.count" class="chart-empty">输入有效数据后，这里会显示图表</div></div><div class="preview-summary"><span><i></i>实时同步</span><span>{{ stats.count }} 条记录</span><span>{{ stats.series }} 个系列 / 维度组</span><span>峰值 {{ formatNumber(stats.max) }}</span></div></article>
     </section>
 
     <section class="config-card"><header class="card-header"><div><span class="eyebrow">PRO SETTINGS</span><h3>专业配置</h3><p>通用排版与当前图表的专属参数集中在这里。</p></div><button type="button" class="reset-button" @click="resetWorkbench"><el-icon><Refresh /></el-icon>恢复默认</button></header><div class="config-grid">

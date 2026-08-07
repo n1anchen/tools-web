@@ -4,7 +4,7 @@ import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown, formatBytes } from '@/utils/file'
+import { downloadBlob, downloadText, formatBytes } from '@/utils/file'
 import exifr from 'exifr'
 import type { Map as LMap } from 'leaflet'
 import { copy } from '@/utils/string'
@@ -623,7 +623,7 @@ function copyMetadataSummary() {
 
 function downloadMetadataJson() {
   if (!rawMetadata.value) return
-  autoDown(URL.createObjectURL(new Blob([JSON.stringify(rawMetadata.value, null, 2)], { type: 'application/json;charset=utf-8' })), `${fileName.value.replace(/\.[^.]+$/, '') || 'image'}_metadata.json`)
+  downloadText(JSON.stringify(rawMetadata.value, null, 2), `${fileName.value.replace(/\.[^.]+$/, '') || 'image'}_metadata.json`, 'application/json;charset=utf-8')
 }
 
 function copyGpsCoordinate() {
@@ -685,7 +685,7 @@ async function downloadClean() {
     canvas.toBlob(blob => {
       if (!blob) return
       const ext = mimeType === 'image/png' ? '.png' : '.jpg'
-      autoDown(URL.createObjectURL(blob), fileName.value.replace(/\.[^.]+$/, '') + '_no_exif' + ext)
+      downloadBlob(blob, fileName.value.replace(/\.[^.]+$/, '') + '_no_exif' + ext)
       isDownloading.value = false
     }, mimeType, quality)
   } catch (e) {

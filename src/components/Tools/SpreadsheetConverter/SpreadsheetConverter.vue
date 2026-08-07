@@ -6,7 +6,7 @@ import { CopyDocument, Delete, DocumentAdd, Download, EditPen, FolderOpened, Plu
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown } from '@/utils/file'
+import { downloadBlob } from '@/utils/file'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import { copy } from '@/utils/string'
 import {
@@ -313,10 +313,6 @@ function autoColumns(rows: string[][]) {
   return Array.from({ length: count }, (_, column) => ({ wch: Math.min(42, Math.max(10, ...rows.slice(0, 300).map(row => String(row[column] ?? '').length + 2))) }))
 }
 
-function downloadBlob(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob)
-  autoDown(url, filename)
-}
 
 function exportData() {
   if (!activeSheet.value) return

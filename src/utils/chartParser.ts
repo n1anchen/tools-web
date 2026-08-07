@@ -57,3 +57,13 @@ export function isFiniteNumber(value: unknown): boolean {
 export function numberValue(value: unknown): number | null {
   return isFiniteNumber(value) ? Number(value) : null
 }
+
+/** CSV 单元格转义：含逗号/引号/换行/tab 时加双引号并转义引号（三图表工作室共用） */
+export function escapeCsvCell(value: string) {
+  return /[",\n\t]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value
+}
+
+/** 图表标题位置映射：left → 24px，right → "right"，否则 "center" */
+export function titleLeft(position: "left" | "right" | "center") {
+  return position === "left" ? 24 : position === "right" ? "right" : "center"
+}

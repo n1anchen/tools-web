@@ -5,7 +5,7 @@ import figlet, { type FontName } from 'figlet'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown } from '@/utils/file'
+import { downloadText } from '@/utils/file'
 import { getAsciiMetrics } from '@/utils/displayStudio'
 import { secureRandomInt } from '@/utils/random'
 import { copy } from '@/utils/string'
@@ -125,10 +125,9 @@ function clear() {
   busy.value = false
 }
 
-function downloadText() {
+function downloadTxt() {
   if (!output.value) return
-  const url = URL.createObjectURL(new Blob([output.value], { type: 'text/plain;charset=utf-8' }))
-  autoDown(url, `ascii-${String(font.value).toLowerCase().replace(/\s+/g, '-')}.txt`)
+  downloadText(output.value, `ascii-${String(font.value).toLowerCase().replace(/\s+/g, '-')}.txt`)
 }
 
 watch([content, font, outputWidth, horizontalLayout], scheduleGenerate)
@@ -196,7 +195,7 @@ onUnmounted(() => {
           <div><span class="window-dots"><i></i><i></i><i></i></span><strong>ascii-preview.txt</strong></div>
           <div>
             <button type="button" aria-label="复制 ASCII 字形" :disabled="!output" @click="copy(output)">复制</button>
-            <button type="button" aria-label="下载 ASCII 文本" :disabled="!output" @click="downloadText"><el-icon><Download /></el-icon>TXT</button>
+            <button type="button" aria-label="下载 ASCII 文本" :disabled="!output" @click="downloadTxt"><el-icon><Download /></el-icon>TXT</button>
           </div>
         </header>
         <div class="terminal" :class="{ empty: !output }">

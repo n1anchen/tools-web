@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import { CopyDocument, Download, Refresh, UploadFilled } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
+import { formatNumber } from '@/utils/format'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
 import { autoDown } from '@/utils/file'
@@ -123,13 +124,12 @@ const formatHint = computed(() => {
 const gridColumns = computed(() => ({ treemap: 2, sankey: 3, boxplot: 2, calendar: 2 })[props.type])
 
 const heroMetrics = computed(() => {
-  if (props.type === 'treemap') return [{ value: stats.value.count, label: '叶节点' }, { value: stats.value.detail, label: '最大深度' }, { value: format(stats.value.total), label: '数据总量' }]
-  if (props.type === 'sankey') return [{ value: stats.value.count, label: '有效连线' }, { value: stats.value.groups, label: '关系节点' }, { value: format(stats.value.total), label: '流量合计' }]
-  if (props.type === 'boxplot') return [{ value: stats.value.count, label: '对比分组' }, { value: stats.value.detail, label: '检测结果' }, { value: format(stats.value.max), label: '区间峰值' }]
+  if (props.type === 'treemap') return [{ value: stats.value.count, label: '叶节点' }, { value: stats.value.detail, label: '最大深度' }, { value: formatNumber(stats.value.total), label: '数据总量' }]
+  if (props.type === 'sankey') return [{ value: stats.value.count, label: '有效连线' }, { value: stats.value.groups, label: '关系节点' }, { value: formatNumber(stats.value.total), label: '流量合计' }]
+  if (props.type === 'boxplot') return [{ value: stats.value.count, label: '对比分组' }, { value: stats.value.detail, label: '检测结果' }, { value: formatNumber(stats.value.max), label: '区间峰值' }]
   return [{ value: settings.calendarYear, label: '当前年度' }, { value: stats.value.count, label: '有效日期' }, { value: stats.value.detail, label: '连续性检查' }]
 })
 
-function format(value: number) { return Number.isInteger(value) ? value.toLocaleString('zh-CN') : value.toLocaleString('zh-CN', { maximumFractionDigits: 2 }) }
 function renderChart() { if (!chartElement.value) return; if (!chart) chart = echarts.init(chartElement.value, settingStore.isDark ? 'dark' : undefined, { renderer: 'canvas' }); chart.setOption(option.value, true); chart.resize() }
 function recreateChart() { chart?.dispose(); chart = null; nextTick(renderChart) }
 function syncCalendarYear() { if (availableYears.value.length && !availableYears.value.includes(settings.calendarYear)) settings.calendarYear = lastYear(availableYears.value)! }

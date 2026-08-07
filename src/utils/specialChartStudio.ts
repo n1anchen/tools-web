@@ -1,4 +1,4 @@
-import { numberValue, parseTableRows as tableRows } from './chartParser.ts'
+import { escapeCsvCell, numberValue, parseTableRows as tableRows, titleLeft } from './chartParser.ts'
 
 export type SpecialChartKind = 'treemap' | 'sankey' | 'boxplot' | 'calendar'
 export type SpecialDataMode = 'table' | 'json'
@@ -279,7 +279,6 @@ export function parseSpecialChartData(text: string, kind: SpecialChartKind, mode
   return mode === 'json' ? parseJson(text.trim(), kind) : parseTable(text, kind)
 }
 
-function csv(value: string) { return /[",\n\t]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value }
 function flattenTree(nodes: TreeNode[], parent = ''): { path: string; value: number }[] {
   return nodes.flatMap(node => {
     const path = parent ? `${parent}/${node.name}` : node.name
@@ -294,14 +293,13 @@ export function serializeSpecialChartData(data: SpecialChartData, mode: SpecialD
     if (data.kind === 'calendar') return JSON.stringify(data.items, null, 2)
     return JSON.stringify(data.groups.map(group => group.samples?.length ? { name: group.name, samples: group.samples } : { name: group.name, values: group.values, outliers: group.outliers }), null, 2)
   }
-  if (data.kind === 'treemap') return ['层级路径,数值', ...flattenTree(data.nodes).map(item => `${csv(item.path)},${item.value}`)].join('\n')
-  if (data.kind === 'sankey') return ['来源,目标,流量', ...data.links.map(link => `${csv(link.source)},${csv(link.target)},${link.value}`)].join('\n')
+  if (data.kind === 'treemap') return ['层级路径,数值', ...flattenTree(data.nodes).map(item => `${escapeCsvCell(item.path)},${item.value}`)].join('\n')
+  if (data.kind === 'sankey') return ['来源,目标,流量', ...data.links.map(link => `${escapeCsvCell(link.source)},${escapeCsvCell(link.target)},${link.value}`)].join('\n')
   if (data.kind === 'calendar') return ['日期,数值', ...data.items.map(item => `${item.date},${item.value}`)].join('\n')
-  if (data.groups.every(group => group.samples?.length)) return ['分组,样本值', ...data.groups.flatMap(group => group.samples!.map(value => `${csv(group.name)},${value}`))].join('\n')
-  return ['分组,最小值,Q1,中位数,Q3,最大值,异常值（分号分隔）', ...data.groups.map(group => `${csv(group.name)},${group.values.join(',')},${group.outliers.join(';')}`)].join('\n')
+  if (data.groups.every(group => group.samples?.length)) return ['分组,样本值', ...data.groups.flatMap(group => group.samples!.map(value => `${escapeCsvCell(group.name)},${value}`))].join('\n')
+  return ['分组,最小值,Q1,中位数,Q3,最大值,异常值（分号分隔）', ...data.groups.map(group => `${escapeCsvCell(group.name)},${group.values.join(',')},${group.outliers.join(';')}`)].join('\n')
 }
 
-function titleLeft(position: SpecialChartSettings['titlePosition']) { return position === 'left' ? 24 : position === 'right' ? 'right' : 'center' }
 function treeValue(nodes: TreeNode[]): number { return nodes.reduce((sum, node) => sum + (node.children?.length ? treeValue(node.children) : node.value ?? 0), 0) }
 
 export function buildSpecialChartOption(kind: SpecialChartKind, data: SpecialChartData, settings: SpecialChartSettings, dark = false) {

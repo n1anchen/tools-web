@@ -7,7 +7,7 @@ import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown } from '@/utils/file'
+import { downloadText } from '@/utils/file'
 import { useSettingStore } from '@/store/modules/setting'
 import { copy } from '@/utils/string'
 import { analyzeText } from '@/utils/textTools'
@@ -139,20 +139,16 @@ async function importMarkdown(event: Event) {
   }
 }
 
-function download(contentValue: string, filename: string, type: string) {
-  const url = URL.createObjectURL(new Blob([contentValue], { type }))
-  autoDown(url, filename)
-}
 
 function exportMarkdown() {
   if (!content.value.trim()) return ElMessage.warning('请先输入 Markdown 内容')
-  download(content.value, buildDocumentFilename(title.value, 'md'), 'text/markdown;charset=utf-8')
+  downloadText(content.value, buildDocumentFilename(title.value, 'md'), 'text/markdown;charset=utf-8')
   ElMessage.success('Markdown 文档已导出')
 }
 
 function exportHtml() {
   if (!content.value.trim()) return ElMessage.warning('请先输入 Markdown 内容')
-  download(buildStandaloneHtml(title.value, renderedHtml.value), buildDocumentFilename(title.value, 'html'), 'text/html;charset=utf-8')
+  downloadText(buildStandaloneHtml(title.value, renderedHtml.value), buildDocumentFilename(title.value, 'html'), 'text/html;charset=utf-8')
   ElMessage.success('独立 HTML 已导出')
 }
 

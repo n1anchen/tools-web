@@ -2,6 +2,7 @@
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
 import { ElMessage, genFileId } from 'element-plus'
+import { copyImageToClipboard } from '@/utils/clipboard'
 import { CopyDocument, Download, Picture, Refresh, Upload } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
@@ -213,17 +214,10 @@ async function downloadImage() {
 
 async function copyPng() {
   if (!hasImage.value || state.exporting) return
-  if (typeof ClipboardItem === 'undefined' || !navigator.clipboard?.write) {
-    ElMessage.warning('当前浏览器不支持复制图片，请使用下载')
-    return
-  }
   state.exporting = true
   try {
-    const blob = await canvasToBlob('image/png')
-    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
-    ElMessage.success('梗图 PNG 已复制')
-  } catch {
-    ElMessage.error('复制失败，请尝试直接下载')
+    const blob = await canvasToBlob("image/png")
+    await copyImageToClipboard(blob, "梗图 PNG")
   } finally {
     state.exporting = false
   }

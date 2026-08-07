@@ -1,3 +1,5 @@
+import { getLineColumn } from './format.ts'
+
 interface RegexMatchResult {
   index: number
   end: number
@@ -30,12 +32,6 @@ function normalizeRegexFlags(flags: string) {
     if (!unique.includes(flag)) unique.push(flag)
   }
   return unique.join('')
-}
-
-function getLineColumn(text: string, index: number) {
-  const before = text.slice(0, index)
-  const lines = before.split('\n')
-  return { line: lines.length, column: (lines[lines.length - 1]?.length ?? 0) + 1 }
 }
 
 function advanceStringIndex(text: string, index: number, unicode: boolean) {

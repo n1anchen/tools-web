@@ -6,7 +6,7 @@ import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown } from '@/utils/file'
+import { autoDown, downloadText } from '@/utils/file'
 import { analyzeWordFrequency } from '@/utils/textTools'
 
 const sampleText = `在线工具让复杂的工作变得简单。数据分析帮助我们理解趋势，数据可视化帮助我们表达趋势。好的工具应该清晰、快速、可靠，也应该让每一次操作都有明确反馈。设计服务于内容，内容服务于用户。`
@@ -135,8 +135,7 @@ function downloadImage() {
 function downloadFrequency() {
   if (!analysis.value.items.length) return ElMessage.warning('当前没有词频数据')
   const rows = ['词语,次数,占比', ...analysis.value.items.map(item => `"${item.word.replace(/"/g, '""')}",${item.count},${item.percentage.toFixed(2)}%`)]
-  const url = URL.createObjectURL(new Blob([`\uFEFF${rows.join('\r\n')}`], { type: 'text/csv;charset=utf-8' }))
-  autoDown(url, 'word-frequency.csv')
+  downloadText(`\uFEFF${rows.join('\r\n')}`, 'word-frequency.csv', 'text/csv;charset=utf-8')
 }
 
 function loadSample() {

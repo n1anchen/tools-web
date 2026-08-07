@@ -1,4 +1,4 @@
-import { numberValue, parseTableRows as tableRows } from './chartParser.ts'
+import { escapeCsvCell, numberValue, parseTableRows as tableRows, titleLeft } from './chartParser.ts'
 
 export type AdvancedChartKind = 'radar' | 'gauge' | 'heatmap' | 'candlestick' | 'stack'
 export type AdvancedDataMode = 'table' | 'json'
@@ -174,7 +174,6 @@ export function parseAdvancedChartData(text: string, kind: AdvancedChartKind, mo
   return mode === 'json' ? parseJson(text.trim(), kind) : parseTable(text, kind)
 }
 
-function csv(value: string) { return /[",\n\t]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value }
 
 export function serializeAdvancedChartData(data: AdvancedChartData, mode: AdvancedDataMode) {
   if (mode === 'json') {
@@ -184,15 +183,13 @@ export function serializeAdvancedChartData(data: AdvancedChartData, mode: Advanc
     if (data.kind === 'heatmap') return JSON.stringify(data.points, null, 2)
     return JSON.stringify(data.items, null, 2)
   }
-  if (data.kind === 'gauge') return ['指标,数值', ...data.items.map(item => `${csv(item.name)},${item.value}`)].join('\n')
-  if (data.kind === 'heatmap') return ['X,Y,数值', ...data.points.map(item => `${csv(item.x)},${csv(item.y)},${item.value}`)].join('\n')
-  if (data.kind === 'candlestick') return ['日期,开盘,收盘,最低,最高', ...data.items.map(item => `${csv(item.date)},${item.open},${item.close},${item.low},${item.high}`)].join('\n')
+  if (data.kind === 'gauge') return ['指标,数值', ...data.items.map(item => `${escapeCsvCell(item.name)},${item.value}`)].join('\n')
+  if (data.kind === 'heatmap') return ['X,Y,数值', ...data.points.map(item => `${escapeCsvCell(item.x)},${escapeCsvCell(item.y)},${item.value}`)].join('\n')
+  if (data.kind === 'candlestick') return ['日期,开盘,收盘,最低,最高', ...data.items.map(item => `${escapeCsvCell(item.date)},${item.open},${item.close},${item.low},${item.high}`)].join('\n')
   const labels = data.kind === 'radar' ? data.dimensions : data.categories
-  const header = [data.kind === 'radar' ? '维度' : '分类', ...data.series.map(item => csv(item.name)), ...(data.kind === 'radar' ? ['最大值'] : [])]
-  return [header.join(','), ...labels.map((label, index) => [csv(label), ...data.series.map(item => item.values[index]), ...(data.kind === 'radar' ? [data.maxima[index]] : [])].join(','))].join('\n')
+  const header = [data.kind === 'radar' ? '维度' : '分类', ...data.series.map(item => escapeCsvCell(item.name)), ...(data.kind === 'radar' ? ['最大值'] : [])]
+  return [header.join(','), ...labels.map((label, index) => [escapeCsvCell(label), ...data.series.map(item => item.values[index]), ...(data.kind === 'radar' ? [data.maxima[index]] : [])].join(','))].join('\n')
 }
-
-function titleLeft(position: AdvancedChartSettings['titlePosition']) { return position === 'left' ? 24 : position === 'right' ? 'right' : 'center' }
 
 export function buildAdvancedChartOption(kind: AdvancedChartKind, data: AdvancedChartData, settings: AdvancedChartSettings, dark = false) {
   const text = dark ? '#E2E8F0' : '#334155'; const muted = dark ? '#94A3B8' : '#64748B'; const grid = dark ? '#334155' : '#E2E8F0'

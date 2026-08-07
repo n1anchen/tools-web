@@ -5,7 +5,7 @@ import * as wanakana from 'wanakana'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown } from '@/utils/file'
+import { downloadText } from '@/utils/file'
 import { copy } from '@/utils/string'
 import {
   analyzeJapaneseText,
@@ -926,7 +926,7 @@ function downloadStudyNotes() {
     line.romaji ? `Romaji: ${line.romaji}` : '',
     line.translation ? `翻译: ${line.translation}` : '',
   ].filter(Boolean).join('\n')).join('\n\n')
-  autoDown(URL.createObjectURL(new Blob([result], { type: 'text/plain;charset=utf-8' })), 'japanese-lyrics-study.txt')
+  downloadText(result, 'japanese-lyrics-study.txt')
 }
 </script>
 

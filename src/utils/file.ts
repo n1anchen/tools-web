@@ -21,6 +21,14 @@ export function autoDown(url: string, filename: string) {
 /**
  * 获取文件后缀
  */
+export function downloadText(content: string, filename: string, type = 'text/plain;charset=utf-8') {
+  autoDown(URL.createObjectURL(new Blob([content], { type })), filename)
+}
+
+export function downloadBlob(blob: Blob, filename: string) {
+  autoDown(URL.createObjectURL(blob), filename)
+}
+
 export function getFileExtension(filename) {  
   const dotIndex = filename.lastIndexOf('.');  
   if (dotIndex === -1) {  

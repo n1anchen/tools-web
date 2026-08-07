@@ -1,4 +1,4 @@
-import { isFiniteNumber, splitDelimitedLine } from './chartParser.ts'
+import { escapeCsvCell, isFiniteNumber, splitDelimitedLine, titleLeft } from './chartParser.ts'
 
 export type ChartKind = 'bar' | 'line' | 'pie' | 'scatter' | 'funnel'
 export type ChartDataMode = 'table' | 'json'
@@ -181,9 +181,6 @@ export function parseChartData(text: string, kind: ChartKind, mode: ChartDataMod
   return mode === 'json' ? parseJson(text.trim(), kind) : parseTable(text, kind)
 }
 
-function escapeCsvCell(value: string) {
-  return /[",\n\t]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value
-}
 
 export function serializeChartData(rows: ChartDataRow[], kind: ChartKind, mode: ChartDataMode) {
   if (mode === 'json') {
@@ -197,10 +194,6 @@ export function serializeChartData(rows: ChartDataRow[], kind: ChartKind, mode: 
     ? [row.x ?? 0, row.y ?? row.value, escapeCsvCell(row.name)].join(',')
     : [escapeCsvCell(row.name), row.value].join(','))
   return [header, ...lines].join('\n')
-}
-
-function titleLeft(position: ChartTitlePosition) {
-  return position === 'left' ? 24 : position === 'right' ? 'right' : 'center'
 }
 
 export function buildChartOption(kind: ChartKind, rows: ChartDataRow[], settings: ChartSettings, dark = false) {

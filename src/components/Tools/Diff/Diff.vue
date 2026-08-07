@@ -6,7 +6,7 @@ import { CopyDocument, Delete, Download, FolderOpened, Refresh } from '@element-
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
-import { autoDown } from '@/utils/file'
+import { downloadText } from '@/utils/file'
 import { copy } from '@/utils/string'
 import { sanitizeDocumentName } from '@/utils/documentStudio'
 import { buildDiffRows, createUnifiedDiffText, normalizeComparisonText, summarizeDiffRows } from '@/utils/textDiff'
@@ -112,8 +112,7 @@ async function importText(event: Event, side: 'left' | 'right') {
 
 function downloadDiff() {
   if (!hasInput.value) return ElMessage.warning('请先输入需要对比的文本')
-  const url = URL.createObjectURL(new Blob([unifiedText.value], { type: 'text/plain;charset=utf-8' }))
-  autoDown(url, `${sanitizeDocumentName('文本差异', 'comparison')}.diff`)
+  downloadText(unifiedText.value, `${sanitizeDocumentName('文本差异', 'comparison')}.diff`)
   ElMessage.success('差异文件已导出')
 }
 </script>
