@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Collection, CopyDocument, DataLine, Files, InfoFilled } from '@element-plus/icons-vue'
+import { Collection, DataLine, Files, InfoFilled } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { copy } from '@/utils/string'
 
 type Standard = 'binary' | 'decimal'
@@ -123,7 +124,7 @@ function copyAll() {
     <section class="results-card">
       <SectionHeading :icon="DataLine" title="换算结果" :description="(standardLabel) + ' · 自动保留有效小数'" tone="green">
         <template #actions>
-          <el-button :icon="CopyDocument" :disabled="!results.length" @click="copyAll">复制全部</el-button>
+          <CopyButton :disabled="!results.length" @click="copyAll" label="复制全部" />
         </template>
       </SectionHeading>
 
@@ -366,6 +367,7 @@ function copyAll() {
 }
 
 .reference-card {
+  padding: 14px 16px;
   align-items: flex-start;
   gap: 10px;
 }

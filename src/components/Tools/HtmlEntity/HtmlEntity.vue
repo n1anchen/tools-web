@@ -222,6 +222,8 @@ function useSample(sample: typeof samples[number]) {
 .detail-grid h4 { margin: 0 0 6px; color: #1e293b; }
 .detail-grid p { margin: 0; color: var(--c-text-secondary); line-height: 1.7; }
 
+.reference-card { padding: 22px; }
+
 :global(html.dark .entity-page .workspace-card),
 :global(html.dark .entity-page .reference-card) { border-color: var(--c-border); background: var(--c-surface-subtle); box-shadow: none; }
 :global(html.dark .entity-page .detail-grid h4) { color: #f1f5f9; }

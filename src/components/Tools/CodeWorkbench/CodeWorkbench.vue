@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { CopyDocument, Delete, Download, RefreshLeft, Search } from '@element-plus/icons-vue'
+import { Delete, Download, RefreshLeft, Search } from '@element-plus/icons-vue'
 import AceEditor from '@/components/Common/AceEditor.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import { downloadText } from '@/utils/file'
@@ -120,7 +121,7 @@ defineExpose({ formatEditor, openSearchBox })
           <div><span :class="['status-dot', statusTone]" /><strong>{{ status }}</strong><small v-if="statusDetail">{{ statusDetail }}</small></div>
           <div class="utility-actions">
             <el-button :icon="RefreshLeft" :disabled="!canRestore" @click="emit('restore')">撤回</el-button>
-            <el-button :icon="CopyDocument" :disabled="!code" @click="copyCode">复制</el-button>
+            <CopyButton :disabled="!code" @click="copyCode" label="复制" />
             <el-button :icon="Download" :disabled="!code" @click="downloadCode">导出</el-button>
           </div>
         </div>

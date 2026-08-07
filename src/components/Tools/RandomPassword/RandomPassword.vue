@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { estimatePasswordEntropy, generatePassword } from '@/utils/generators'
 import { copy } from '@/utils/string'
 
@@ -154,7 +155,7 @@ onMounted(generateAll)
     <section class="result-card">
       <SectionHeading :icon="Lock" title="生成结果" :description="(passwords.length) + ' 条密码 · 点击任意一条即可复制'" tone="green">
         <template #actions>
-          <el-button :icon="CopyDocument" :disabled="!passwords.length" @click="copyAll">复制全部</el-button>
+          <CopyButton :disabled="!passwords.length" @click="copyAll" label="复制全部" />
         </template>
       </SectionHeading>
 

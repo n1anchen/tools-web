@@ -22,6 +22,7 @@ import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
 import SplitWorkspace from '@/components/Common/SplitWorkspace.vue'
 import SwapButton from '@/components/Common/SwapButton.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { copy } from '@/utils/string'
 import {
   UNIT_CATEGORIES,
@@ -253,7 +254,7 @@ function clearInput() {
     <section class="all-results-card">
       <header class="results-heading">
         <div><span class="eyebrow">ALL UNIT RESULTS</span><h3>全部换算结果</h3><p>{{ hasValidInput ? `共 ${visibleResultCount} 个结果，点击任意卡片可设为新的原始单位` : '输入数值后显示全部单位' }}</p></div>
-        <div class="result-tools"><el-input v-model="resultSearch" :prefix-icon="Search" clearable placeholder="搜索单位或体系" /><el-button :icon="CopyDocument" :disabled="!allResults.length" @click="copyAllResults">复制全部</el-button></div>
+        <div class="result-tools"><el-input v-model="resultSearch" :prefix-icon="Search" clearable placeholder="搜索单位或体系" /><CopyButton :disabled="!allResults.length" @click="copyAllResults" label="复制全部" /></div>
       </header>
 
       <div v-if="resultGroups.length" class="result-groups">

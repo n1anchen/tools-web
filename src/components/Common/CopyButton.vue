@@ -25,6 +25,8 @@ const props = withDefaults(defineProps<{
   textBtn?: boolean
   link?: boolean
   circle?: boolean
+  /** 全圆角（胶囊），默认 true，与项目圆角设计语言一致 */
+  round?: boolean
   /** @click.stop（如嵌套在可点击元素内） */
   stop?: boolean
 }>(), {
@@ -34,6 +36,7 @@ const props = withDefaults(defineProps<{
   textBtn: false,
   link: false,
   circle: false,
+  round: true,
   stop: false,
 })
 
@@ -54,6 +57,7 @@ function handleClick(event: MouseEvent) {
     :text="textBtn"
     :link="link"
     :circle="circle"
+    :round="round"
     @click="handleClick"
   >
     <slot>{{ label }}</slot>

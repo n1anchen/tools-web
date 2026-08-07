@@ -2,10 +2,11 @@
 import { computed, ref } from 'vue'
 import * as XLSX from 'xlsx'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { CopyDocument, Delete, DocumentAdd, Download, EditPen, FolderOpened, Plus, Refresh, UploadFilled } from '@element-plus/icons-vue'
+import { Delete, DocumentAdd, Download, EditPen, FolderOpened, Plus, Refresh, UploadFilled } from '@element-plus/icons-vue'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { downloadBlob } from '@/utils/file'
 import ChartDataGrid from '@/components/Tools/Chart/ChartDataGrid.vue'
 import { copy } from '@/utils/string'
@@ -417,7 +418,7 @@ function copyPreview() {
           <div class="export-summary"><div><strong>{{ outputFilename }}</strong><span>{{ formatNote }}</span></div><el-button type="primary" size="large" :icon="Download" @click="exportData">生成并下载</el-button></div>
         </div>
         <div class="preview-panel">
-          <header><div><span>转换预览</span><small>{{ exportFormat === 'xlsx' ? '以 TSV 形式预览当前工作表前 15 行' : '根据当前设置实时生成' }}</small></div><el-button :icon="CopyDocument" @click="copyPreview">复制</el-button></header>
+          <header><div><span>转换预览</span><small>{{ exportFormat === 'xlsx' ? '以 TSV 形式预览当前工作表前 15 行' : '根据当前设置实时生成' }}</small></div><CopyButton @click="copyPreview" label="复制" /></header>
           <pre>{{ previewText }}</pre>
         </div>
       </div>

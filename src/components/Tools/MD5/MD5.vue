@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import { Md5 } from 'ts-md5'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { copy } from '@/utils/string'
 import { buildMd5Variants, formatFileSize } from '@/utils/workbenchTools'
 
@@ -133,7 +134,7 @@ function copyAll() {
       </div>
 
       <aside class="panel result-panel">
-        <div class="panel-heading"><div><span class="eyebrow">DIGEST OUTPUT</span><h3>计算结果</h3></div><el-button link type="primary" :icon="CopyDocument" :disabled="!activeHash" @click="copyAll">复制全部</el-button></div>
+        <div class="panel-heading"><div><span class="eyebrow">DIGEST OUTPUT</span><h3>计算结果</h3></div><CopyButton link type="primary" :disabled="!activeHash" @click="copyAll" label="复制全部" /></div>
         <div v-if="activeHash" class="digest-visual"><span>MD5 · 128 BIT</span><code>{{ variants.lower32 }}</code><div><i v-for="index in 16" :key="index" :style="{ opacity: .25 + Number.parseInt(variants.lower32[index - 1], 16) / 22 }" /></div></div>
         <div v-if="activeHash" class="result-list"><button v-for="item in resultItems" :key="item.label" :class="{ primary: item.primary }" @click="copy(item.value)"><span>{{ item.label }}</span><code>{{ item.value }}</code><el-icon><CopyDocument /></el-icon></button></div>
         <div v-else class="result-empty">选择文件并等待计算完成后显示摘要</div>

@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import MetricsBar from '@/components/Common/MetricsBar.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { copy } from '@/utils/string'
 import { formatBytes } from '@/utils/file'
 import {
@@ -258,7 +259,7 @@ function copyPaletteVariables() {
       </section>
 
       <section class="palette-card">
-        <div class="section-heading"><div><span class="eyebrow">DOMINANT PALETTE</span><h3>图片主色</h3></div><el-button link type="primary" :icon="CopyDocument" :disabled="!palette.length" @click="copyPaletteVariables">复制 CSS 变量</el-button></div>
+        <div class="section-heading"><div><span class="eyebrow">DOMINANT PALETTE</span><h3>图片主色</h3></div><CopyButton link type="primary" :disabled="!palette.length" @click="copyPaletteVariables" label="复制 CSS 变量" /></div>
         <div class="palette-grid">
           <button v-for="(color, index) in palette" :key="color.hex" :style="{ background: color.hex, color: recommendedTextColor(color.r, color.g, color.b) }" @click="useColor(color)"><span>0{{ index + 1 }}</span><strong>{{ color.hex }}</strong></button>
         </div>

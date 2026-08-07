@@ -6,6 +6,7 @@ import { v4 as uuidv4, v7 as uuidv7 } from 'uuid'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { formatUuid } from '@/utils/generators'
 import { copy } from '@/utils/string'
 
@@ -87,7 +88,7 @@ onMounted(generateAll)
     <section class="result-card">
       <SectionHeading :icon="DocumentCopy" title="UUID 列表" :description="formattedUuids.length + ' 条 · ' + formatLabel" tone="green">
         <template #actions>
-          <el-button :icon="CopyDocument" :disabled="!formattedUuids.length" @click="copyAll">复制全部</el-button>
+          <CopyButton :disabled="!formattedUuids.length" @click="copyAll" label="复制全部" />
         </template>
       </SectionHeading>
 

@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { copy } from '@/utils/string'
 import { analyzeWordFrequency } from '@/utils/textTools'
 
@@ -136,7 +137,7 @@ function copyAll() {
         <section class="ranking-card">
           <SectionHeading :icon="Filter" title="完整排行" :description="'当前显示 ' + (filteredItems.length) + ' 个词语'" tone="green">
             <template #actions>
-              <el-button :icon="CopyDocument" :disabled="!filteredItems.length" @click="copyAll">复制表格</el-button>
+              <CopyButton :disabled="!filteredItems.length" @click="copyAll" label="复制表格" />
             </template>
           </SectionHeading>
 

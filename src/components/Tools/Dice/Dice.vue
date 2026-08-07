@@ -4,6 +4,7 @@ import { Clock, CopyDocument, Delete, MagicStick, RefreshRight, SetUp, TrendChar
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import DiceCore from '@/components/Tools/Dice/DiceCore.vue'
 import { copy } from '@/utils/string'
 
@@ -135,7 +136,7 @@ function copyCurrent() {
           <div><span>最高点</span><b>{{ Math.max(...diceResults) }}</b></div>
           <div><span>最低点</span><b>{{ Math.min(...diceResults) }}</b></div>
         </div>
-        <el-button :icon="CopyDocument" @click="copyCurrent">复制本次结果</el-button>
+        <CopyButton @click="copyCurrent" label="复制本次结果" />
       </div>
 
       <div class="history-section">

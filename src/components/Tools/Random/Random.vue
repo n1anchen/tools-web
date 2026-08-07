@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { generateRandomIntegers } from '@/utils/generators'
 import { copy } from '@/utils/string'
 
@@ -123,7 +124,7 @@ onMounted(generate)
         <template #actions>
           <div class="result-actions">
             <el-button :icon="RefreshRight" @click="generate">再生成一次</el-button>
-            <el-button :icon="CopyDocument" :disabled="!results.length" @click="copyResults()">复制结果</el-button>
+            <CopyButton :disabled="!results.length" @click="copyResults()" label="复制结果" />
           </div>
         </template>
       </SectionHeading>

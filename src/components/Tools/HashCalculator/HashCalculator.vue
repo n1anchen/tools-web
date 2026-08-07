@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { CopyDocument, DocumentChecked, Key, MagicStick, WarningFilled } from '@element-plus/icons-vue'
+import { DocumentChecked, Key, MagicStick, WarningFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { Md5 } from 'ts-md5'
 import CryptoJS from 'crypto-js'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
+import CopyButton from '@/components/Common/CopyButton.vue'
 import { copy } from '@/utils/string'
 
 type OutputFormat = 'hex' | 'base64'
@@ -197,7 +198,7 @@ function copyResult() {
     <section class="result-card">
       <SectionHeading :icon="DocumentChecked" :title="(algorithm) + ' 结果'" :description="outputFormat === 'hex' ? '十六进制摘要' : 'Base64 摘要'" tone="green">
         <template #actions>
-          <el-button type="primary" :icon="CopyDocument" :disabled="!displayResult" @click="copyResult">复制结果</el-button>
+          <CopyButton type="primary" :disabled="!displayResult" @click="copyResult" label="复制结果" />
         </template>
       </SectionHeading>
 
@@ -453,6 +454,10 @@ function copyResult() {
   margin: 0;
   color: var(--c-text-secondary);
   line-height: 1.7;
+}
+
+.result-card {
+  padding: 24px;
 }
 
 :global(html.dark .hash-page .workspace-card),
