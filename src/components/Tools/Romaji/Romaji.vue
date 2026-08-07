@@ -187,7 +187,7 @@ function formatRomaji(value: string, style: typeof letterCase.value) {
       <div class="editor-pane">
         <div class="pane-heading">
           <div><span>INPUT</span><h3>日语原文</h3></div>
-          <button v-if="input" type="button" class="text-button" @click="clearAll">清空</button>
+          <el-button v-if="input" class="text-button" @click="clearAll">清空</el-button>
         </div>
         <textarea
           v-model="input"
@@ -197,9 +197,7 @@ function formatRomaji(value: string, style: typeof letterCase.value) {
         ></textarea>
         <div class="editor-footer">
           <span>{{ inputStats.characters }} 字符 · {{ inputStats.lines }} 行</span>
-          <button class="primary-button" type="button" :disabled="isEmpty || converting" @click="convert">
-            <span v-if="converting" class="loading-dot"></span>{{ converting ? '正在分析读音' : '开始转换' }}
-          </button>
+          <el-button type="primary" :disabled="isEmpty || converting" :loading="converting" @click="convert">{{ converting ? '正在分析读音' : '开始转换' }}</el-button>
         </div>
       </div>
 
@@ -211,8 +209,8 @@ function formatRomaji(value: string, style: typeof letterCase.value) {
             <button :class="{ active: outputView === 'katakana' }" :disabled="!hasResult" @click="outputView = 'katakana'">片假名</button>
           </div>
           <div v-if="hasResult" class="result-actions">
-            <button @click="copyResult">复制</button>
-            <button @click="downloadResult">下载 TXT</button>
+            <el-button @click="copyResult">复制</el-button>
+            <el-button @click="downloadResult">下载 TXT</el-button>
           </div>
         </div>
 
@@ -390,13 +388,14 @@ function formatRomaji(value: string, style: typeof letterCase.value) {
   font-size: 18px;
   font-weight: 800;
 }
-.text-button,.result-actions button {
+.text-button {
   border: 0;
   background: transparent;
   color: #a05c4b;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
+  padding: 4px 8px;
 }
 .editor-pane textarea {
   display: block;
@@ -429,36 +428,6 @@ function formatRomaji(value: string, style: typeof letterCase.value) {
 .editor-footer>span {
   color: #8b858e;
   font-size: 13px;
-}
-.primary-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  border: 0;
-  border-radius: var(--radius-sm);
-  padding: 11px 17px;
-  background: var(--accent);
-  color: white;
-  font-size: 14px;
-  font-weight: 750;
-  cursor: pointer;
-}
-.primary-button:disabled {
-  opacity: .45;
-  cursor: not-allowed;
-}
-.loading-dot {
-  width: 13px;
-  height: 13px;
-  border: 2px solid rgba(255,255,255,.45);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin .8s linear infinite;
-}
-@keyframes spin {
-  to {
-    transform:rotate(360deg)
-  }
 }
 .output-tabs {
   display: flex;

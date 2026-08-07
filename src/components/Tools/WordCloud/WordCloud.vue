@@ -176,7 +176,7 @@ onBeforeUnmount(() => {
     <section class="studio-grid">
       <div class="control-column">
         <section class="panel input-panel">
-          <div class="panel-heading"><div><span class="eyebrow">01 · DATA</span><h3>输入与清洗</h3><p>中文使用浏览器分词能力，英文自动按单词统计。</p></div><div><button type="button" @click="loadSample">载入示例</button><button type="button" @click="clearText">清空</button></div></div>
+          <div class="panel-heading"><div><span class="eyebrow">01 · DATA</span><h3>输入与清洗</h3><p>中文使用浏览器分词能力，英文自动按单词统计。</p></div><div><el-button @click="loadSample">载入示例</el-button><el-button @click="clearText">清空</el-button></div></div>
           <label class="textarea-field"><span>原始文本 <em>{{ inputText.length.toLocaleString() }} 字符</em></span><textarea v-model="inputText" aria-label="词云原始文本" placeholder="粘贴文章、会议纪要、评论或关键词列表"></textarea></label>
           <div class="filter-grid">
             <label><span>最短词长</span><input v-model.number="minLength" type="number" min="1" max="8"></label>
@@ -189,23 +189,23 @@ onBeforeUnmount(() => {
 
         <section class="panel settings-panel">
           <div class="panel-heading"><div><span class="eyebrow">02 · STYLE</span><h3>布局与视觉</h3><p>参数修改后约 0.3 秒自动刷新预览。</p></div></div>
-          <div class="setting-group"><span>外轮廓</span><div class="shape-grid"><button v-for="item in shapes" :key="item.value" type="button" :class="{ active: shape === item.value }" @click="shape = item.value"><strong>{{ item.icon }}</strong><span>{{ item.label }}</span></button></div></div>
-          <div class="setting-group"><span>配色方案</span><div class="palette-grid"><button v-for="(colors, key) in colorSchemes" :key="key" type="button" :class="{ active: colorScheme === key }" :aria-label="`选择 ${key} 配色`" @click="colorScheme = key"><i v-for="color in colors.slice(0, 5)" :key="color" :style="{ backgroundColor: color }"></i></button></div></div>
+          <div class="setting-group"><span>外轮廓</span><div class="shape-grid"><el-button v-for="item in shapes" :key="item.value" :type="shape === item.value ? 'primary' : 'default'" @click="shape = item.value"><strong>{{ item.icon }}</strong><span>{{ item.label }}</span></el-button></div></div>
+          <div class="setting-group"><span>配色方案</span><div class="palette-grid"><el-button v-for="(colors, key) in colorSchemes" :key="key" :type="colorScheme === key ? 'primary' : 'default'" :aria-label="`选择 ${key} 配色`" @click="colorScheme = key"><i v-for="color in colors.slice(0, 5)" :key="color" :style="{ backgroundColor: color }"></i></el-button></div></div>
           <div class="range-grid">
             <label><span>最小字号</span><div><input v-model.number="fontMin" type="range" min="10" max="32"><strong>{{ fontMin }} px</strong></div></label>
             <label><span>最大字号</span><div><input v-model.number="fontMax" type="range" min="36" max="100"><strong>{{ fontMax }} px</strong></div></label>
             <label><span>旋转角度</span><div><input v-model.number="rotation" type="range" min="0" max="90" step="15"><strong>±{{ rotation }}°</strong></div></label>
             <label><span>词间距</span><div><input v-model.number="gridSize" type="range" min="2" max="20" step="2"><strong>{{ gridSize }} px</strong></div></label>
           </div>
-          <div class="background-row"><span>画布背景</span><button v-for="item in backgrounds" :key="item.value" type="button" :class="{ active: background === item.value }" @click="background = item.value"><i :style="{ background: item.value === 'transparent' ? 'linear-gradient(135deg,#e2e8f0 50%,#fff 50%)' : item.value }"></i>{{ item.label }}</button></div>
+          <div class="background-row"><span>画布背景</span><el-button v-for="item in backgrounds" :key="item.value" :type="background === item.value ? 'primary' : 'default'" @click="background = item.value"><i :style="{ background: item.value === 'transparent' ? 'linear-gradient(135deg,#e2e8f0 50%,#fff 50%)' : item.value }"></i>{{ item.label }}</el-button></div>
         </section>
       </div>
 
       <section class="preview-panel">
-        <div class="preview-heading"><div><span class="eyebrow">03 · PREVIEW</span><h3>实时词云</h3><p>{{ renderedAt ? `最近更新 ${renderedAt}` : '等待有效词频数据' }} · 当前展示 {{ cloudData.length }} 个词</p></div><button type="button" @click="renderChart(true)">重新布局</button></div>
+        <div class="preview-heading"><div><span class="eyebrow">03 · PREVIEW</span><h3>实时词云</h3><p>{{ renderedAt ? `最近更新 ${renderedAt}` : '等待有效词频数据' }} · 当前展示 {{ cloudData.length }} 个词</p></div><el-button @click="renderChart(true)">重新布局</el-button></div>
         <div class="chart-shell" :style="backgroundStyle"><div ref="chartEl" class="chart-canvas" role="img" aria-label="词云图预览"></div><div v-if="!cloudData.length" class="chart-empty"><strong>没有可展示的词语</strong><span>输入文本，或放宽最短词长和停用词条件。</span></div></div>
         <div class="preview-summary"><div><span>最高频词</span><strong>{{ topWord ? `${topWord.word} · ${topWord.count} 次` : '—' }}</strong></div><div><span>画布形状</span><strong>{{ shapes.find(item => item.value === shape)?.label }}</strong></div><div><span>输出清晰度</span><strong>{{ pixelRatio }}× PNG</strong></div></div>
-        <div class="export-bar"><label><span>图片倍率</span><select v-model.number="pixelRatio"><option :value="2">2× 标准高清</option><option :value="3">3× 推荐</option><option :value="4">4× 超高清</option></select></label><button type="button" class="secondary" @click="downloadFrequency">导出词频 CSV</button><button type="button" class="primary" @click="downloadImage">下载高清 PNG</button></div>
+        <div class="export-bar"><label><span>图片倍率</span><select v-model.number="pixelRatio"><option :value="2">2× 标准高清</option><option :value="3">3× 推荐</option><option :value="4">4× 超高清</option></select></label><el-button plain type="primary" @click="downloadFrequency">导出词频 CSV</el-button><el-button type="primary" @click="downloadImage">下载高清 PNG</el-button></div>
       </section>
     </section>
 
@@ -271,17 +271,6 @@ onBeforeUnmount(() => {
 .panel-heading>div+div {
   display: flex;
   gap:6px
-}
-.panel-heading button,.preview-heading>button {
-  min-height: 34px;
-  padding: 0 11px;
-  border: 1px solid var(--c-primary-200);
-  border-radius: var(--radius-sm);
-  background: var(--c-primary-50);
-  color: var(--c-primary-700);
-  font-size: 12px;
-  font-weight: 850;
-  cursor:pointer
 }
 .textarea-field,.stop-field {
   display: block;
@@ -369,16 +358,17 @@ onBeforeUnmount(() => {
   gap: 6px;
   margin-top:7px
 }
-.shape-grid button {
+.shape-grid :deep(.el-button) {
+  width: 100%;
+  height: auto;
   padding: 8px 4px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface-subtle);
-  color: var(--c-text-secondary);
-  cursor:pointer
+  white-space: normal;
 }
-.shape-grid strong,.shape-grid span {
-  display:block
+.shape-grid :deep(.el-button > span) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
 }
 .shape-grid strong {
   font-size:21px
@@ -387,37 +377,27 @@ onBeforeUnmount(() => {
   margin-top: 3px;
   font-size:11px
 }
-.shape-grid button.active {
-  border-color: var(--c-primary-300);
-  background: var(--c-primary-50);
-  color:var(--c-primary-700)
-}
 .palette-grid {
   display: grid;
   grid-template-columns: repeat(5,1fr);
   gap: 6px;
   margin-top:7px
 }
-.palette-grid button {
-  display: flex;
+.palette-grid :deep(.el-button) {
+  width: 100%;
   height: 38px;
+  padding: 5px;
+}
+.palette-grid :deep(.el-button > span) {
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 2px;
-  padding: 5px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface-subtle);
-  cursor:pointer
 }
 .palette-grid button i {
   width: 14%;
   height: 22px;
   border-radius:3px
-}
-.palette-grid button.active {
-  border-color: var(--c-primary-500);
-  box-shadow:0 0 0 2px var(--c-primary-100)
 }
 .range-grid {
   display: grid;
@@ -464,18 +444,14 @@ onBeforeUnmount(() => {
   flex: none;
   margin-right:3px
 }
-.background-row button {
-  display: flex;
+.background-row :deep(.el-button) {
   min-width: max-content;
+  padding: 6px 8px;
+}
+.background-row :deep(.el-button > span) {
+  display: flex;
   align-items: center;
   gap: 5px;
-  padding: 6px 8px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-xs);
-  background: var(--c-surface-subtle);
-  color: var(--c-text-secondary);
-  font-size: 11px;
-  cursor:pointer
 }
 .background-row button i {
   width: 14px;
@@ -483,18 +459,10 @@ onBeforeUnmount(() => {
   border: 1px solid #cbd5e1;
   border-radius:4px
 }
-.background-row button.active {
-  border-color: var(--c-primary-500);
-  background: var(--c-primary-50);
-  color:var(--c-primary-700)
-}
 .preview-panel {
   display: flex;
   min-width: 0;
   flex-direction:column
-}
-.preview-heading>button {
-  flex:none
 }
 .chart-shell {
   position: relative;
@@ -583,24 +551,6 @@ onBeforeUnmount(() => {
   color: var(--c-text-strong);
   font-size:12px
 }
-.export-bar button {
-  min-height: 36px;
-  padding: 0 13px;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  font-weight: 850;
-  cursor:pointer
-}
-.export-bar .secondary {
-  border: 1px solid var(--c-primary-300);
-  background: var(--c-surface);
-  color:var(--c-primary-700)
-}
-.export-bar .primary {
-  border: 0;
-  background: var(--c-primary-700);
-  color: var(--c-on-accent)
-}
 .frequency-card {
   padding:22px
 }
@@ -685,7 +635,7 @@ onBeforeUnmount(() => {
 :global(html.dark .panel-heading h3),:global(html.dark .preview-heading h3),:global(html.dark .textarea-field>span),:global(html.dark .stop-field>span),:global(html.dark .setting-group>span),:global(html.dark .background-row>span),:global(html.dark .preview-summary strong),:global(html.dark .table-row strong),:global(html.dark .detail-grid strong) {
   color:#f1f5f9
 }
-:global(html.dark .textarea-field textarea),:global(html.dark .stop-field textarea),:global(html.dark .filter-grid>label),:global(html.dark .shape-grid button),:global(html.dark .palette-grid button),:global(html.dark .range-grid label),:global(html.dark .background-row button),:global(html.dark .preview-summary>div),:global(html.dark .detail-grid article) {
+:global(html.dark .textarea-field textarea),:global(html.dark .stop-field textarea),:global(html.dark .filter-grid>label),:global(html.dark .range-grid label),:global(html.dark .preview-summary>div),:global(html.dark .detail-grid article) {
   border-color: var(--c-border);
   background: #172033;
   color: var(--c-text-secondary)
@@ -695,22 +645,8 @@ onBeforeUnmount(() => {
   background: var(--c-surface-subtle);
   color: var(--c-text-primary)
 }
-:global(html.dark .shape-grid button.active),:global(html.dark .background-row button.active) {
-  border-color: var(--c-primary-700);
-  background: #134e4a;
-  color:var(--c-primary-200)
-}
-:global(html.dark .palette-grid button.active) {
-  border-color: var(--c-primary-400);
-  box-shadow:0 0 0 2px #134e4a
-}
 :global(html.dark .export-bar) {
   background:#083344
-}
-:global(html.dark .export-bar .secondary) {
-  border-color: var(--c-primary-700);
-  background: #172033;
-  color:var(--c-primary-300)
 }
 :global(html.dark .frequency-table),:global(html.dark .table-row) {
   border-color: var(--c-border)

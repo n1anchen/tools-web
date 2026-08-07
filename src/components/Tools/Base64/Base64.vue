@@ -239,7 +239,7 @@ onBeforeUnmount(revokePreview)
         <div><span class="eyebrow">TEXT FLOW</span><h3>文本双向转换</h3></div>
         <el-radio-group v-model="textMode"><el-radio-button value="encode">文本 → Base64</el-radio-button><el-radio-button value="decode">Base64 → 文本</el-radio-button></el-radio-group>
         <el-checkbox v-if="textMode === 'encode'" v-model="urlSafe">生成 Base64 URL</el-checkbox>
-        <div class="toolbar-actions"><button type="button" aria-label="将结果作为下一步输入" :disabled="!textOutput" @click="swapTextFlow"><el-icon><Refresh /></el-icon>反向继续</button><button type="button" aria-label="清空文本编解码内容" @click="clearText"><el-icon><Delete /></el-icon>清空</button></div>
+        <div class="toolbar-actions"><el-button :icon="Refresh" aria-label="将结果作为下一步输入" :disabled="!textOutput" @click="swapTextFlow">反向继续</el-button><el-button :icon="Delete" aria-label="清空文本编解码内容" @click="clearText">清空</el-button></div>
       </section>
 
       <section class="sample-card"><span>快速示例</span><button v-for="sample in textSamples" :key="sample.title" type="button" @click="applyTextSample(sample.value)"><strong>{{ sample.title }}</strong><small>{{ sample.value.length }} 字符</small></button></section>
@@ -254,7 +254,7 @@ onBeforeUnmount(revokePreview)
         </template>
 
         <template #output>
-          <article class="io-card output"><header><div><span>OUTPUT</span><h3>{{ textMode === 'encode' ? 'Base64 结果' : '还原文本' }}</h3></div><small>{{ textOutput.length }} 字符 · {{ formatDocumentBytes(textOutputBytes) }}</small></header><el-input v-model="textOutput" type="textarea" :rows="15" resize="vertical" readonly placeholder="处理结果将在这里显示…" aria-label="Base64 文本结果" /><footer><button type="button" aria-label="复制文本转换结果" :disabled="!textOutput" @click="copy(textOutput)"><el-icon><CopyDocument /></el-icon>复制结果</button><button type="button" aria-label="导出文本转换结果" :disabled="!textOutput" @click="downloadTextResult"><el-icon><Download /></el-icon>导出 TXT</button></footer></article>
+          <article class="io-card output"><header><div><span>OUTPUT</span><h3>{{ textMode === 'encode' ? 'Base64 结果' : '还原文本' }}</h3></div><small>{{ textOutput.length }} 字符 · {{ formatDocumentBytes(textOutputBytes) }}</small></header><el-input v-model="textOutput" type="textarea" :rows="15" resize="vertical" readonly placeholder="处理结果将在这里显示…" aria-label="Base64 文本结果" /><footer><el-button :icon="CopyDocument" aria-label="复制文本转换结果" :disabled="!textOutput" @click="copy(textOutput)">复制结果</el-button><el-button :icon="Download" aria-label="导出文本转换结果" :disabled="!textOutput" @click="downloadTextResult">导出 TXT</el-button></footer></article>
         </template>
       </SplitWorkspace>
     </template>
@@ -267,25 +267,25 @@ onBeforeUnmount(revokePreview)
           <div v-if="fileLoading" class="loading-state">正在读取并编码文件…</div>
           <div v-if="fileInfo" class="file-meta"><div><span>文件名</span><strong>{{ fileInfo.name }}</strong></div><div><span>原始大小</span><strong>{{ formatDocumentBytes(fileInfo.size) }}</strong></div><div><span>MIME</span><strong>{{ fileInfo.type }}</strong></div><div><span>编码长度</span><strong>{{ formatDocumentBytes(fileBase64.length) }}</strong></div></div>
         </article>
-        <article class="file-result-card"><header><div><span class="eyebrow">BASE64 OUTPUT</span><h3>编码结果</h3></div><el-checkbox v-model="includeHeader" :disabled="!fileBase64">包含 Data URL 头部</el-checkbox></header><el-input :model-value="fileOutput" type="textarea" :rows="17" resize="vertical" readonly placeholder="选择文件后生成 Base64…" aria-label="文件 Base64 结果" /><footer><button type="button" class="primary" aria-label="复制文件 Base64" :disabled="!fileOutput" @click="copy(fileOutput)"><el-icon><CopyDocument /></el-icon>复制 Base64</button><button type="button" aria-label="清空待编码文件" :disabled="!fileInfo" @click="clearFile"><el-icon><Delete /></el-icon>清空文件</button></footer></article>
+        <article class="file-result-card"><header><div><span class="eyebrow">BASE64 OUTPUT</span><h3>编码结果</h3></div><el-checkbox v-model="includeHeader" :disabled="!fileBase64">包含 Data URL 头部</el-checkbox></header><el-input :model-value="fileOutput" type="textarea" :rows="17" resize="vertical" readonly placeholder="选择文件后生成 Base64…" aria-label="文件 Base64 结果" /><footer><el-button type="primary" :icon="CopyDocument" aria-label="复制文件 Base64" :disabled="!fileOutput" @click="copy(fileOutput)">复制 Base64</el-button><el-button :icon="Delete" aria-label="清空待编码文件" :disabled="!fileInfo" @click="clearFile">清空文件</el-button></footer></article>
       </section>
     </template>
 
     <template v-else>
       <section class="decode-grid">
         <article class="decode-input-card">
-          <header><div><span class="eyebrow">BASE64 INPUT</span><h3>粘贴编码内容</h3><p>支持标准 Base64、Base64 URL 和完整 Data URL。</p></div><button type="button" aria-label="清空待还原 Base64" @click="clearDecode"><el-icon><Delete /></el-icon>清空</button></header>
+          <header><div><span class="eyebrow">BASE64 INPUT</span><h3>粘贴编码内容</h3><p>支持标准 Base64、Base64 URL 和完整 Data URL。</p></div><el-button :icon="Delete" aria-label="清空待还原 Base64" @click="clearDecode">清空</el-button></header>
           <div class="textarea-wrap"><el-input v-model="b64Input" type="textarea" :rows="13" resize="vertical" placeholder="粘贴 Base64 字符串或 data:mime;base64,..." aria-label="待还原 Base64 内容" /><span :class="{ danger: b64TooLong }">{{ formatDocumentBytes(b64Length) }} / 14 MB 字符</span></div>
           <div v-if="decodeError" class="error-banner">{{ decodeError }}</div>
           <div class="filename-row"><label><span>文件名</span><el-input v-model="b64BaseName" maxlength="80" /></label><label><span>扩展名</span><el-select v-model="b64Ext" filterable allow-create default-first-option><el-option-group label="图片"><el-option v-for="extension in ['png','jpg','gif','webp','bmp','svg','ico','avif']" :key="extension" :label="extension" :value="extension" /></el-option-group><el-option-group label="文档"><el-option v-for="extension in ['pdf','txt','csv','json','xml','html','css','js','md']" :key="extension" :label="extension" :value="extension" /></el-option-group><el-option-group label="压缩与媒体"><el-option v-for="extension in ['zip','gz','mp3','mp4','wav','webm','avi','bin']" :key="extension" :label="extension" :value="extension" /></el-option-group></el-select></label></div>
-          <button type="button" class="restore-button" :disabled="!b64Input.trim() || b64TooLong" @click="restoreFile">解析并还原</button>
+          <el-button class="restore-button" type="primary" :disabled="!b64Input.trim() || b64TooLong" @click="restoreFile">解析并还原</el-button>
         </article>
         <article class="decode-result-card">
           <header><div><span class="eyebrow">RESTORE RESULT</span><h3>文件检查与交付</h3></div><span :class="['status-pill', { ready: decodedBytes }]">{{ decodedBytes ? '已还原' : '等待解析' }}</span></header>
           <div class="restore-summary"><div><span>文件名</span><strong>{{ filename }}</strong></div><div><span>预计大小</span><strong>{{ estimatedBytes ? formatDocumentBytes(estimatedBytes) : '—' }}</strong></div><div><span>声明类型</span><strong>{{ declaredMime || '未提供' }}</strong></div><div><span>检测类型</span><strong>{{ detectedMime || '待检测' }}</strong></div></div>
           <div v-if="previewUrl && canPreview" class="preview-box"><span>图片预览</span><img :src="previewUrl" alt="还原文件预览"></div>
           <div v-else class="file-placeholder"><el-icon><FolderOpened /></el-icon><strong>{{ decodedBytes ? '文件已准备完成' : '解析后将在这里显示结果' }}</strong><span>{{ decodedBytes ? resolvedMime : '图片文件会提供安全预览，其他类型可直接下载' }}</span></div>
-          <button type="button" class="download-button" :aria-label="`下载 ${filename}`" :disabled="!decodedBytes" @click="downloadDecodedFile"><el-icon><Download /></el-icon>下载 {{ filename }}</button>
+          <el-button class="download-button" type="primary" :icon="Download" :aria-label="`下载 ${filename}`" :disabled="!decodedBytes" @click="downloadDecodedFile">下载 {{ filename }}</el-button>
         </article>
       </section>
     </template>
@@ -384,25 +384,6 @@ onBeforeUnmount(revokePreview)
 .toolbar-actions {
   display: flex;
   gap:8px
-}
-.toolbar-actions button,.io-card footer button,.file-result-card footer button,.decode-input-card header button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  min-height: 36px;
-  padding: 0 11px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-text-body);
-  font-size: 13px;
-  font-weight: 750;
-  cursor:pointer
-}
-.toolbar-actions button:disabled,.io-card footer button:disabled,.file-result-card footer button:disabled {
-  opacity: .45;
-  cursor:not-allowed
 }
 .sample-card {
   display: flex;
@@ -628,25 +609,8 @@ onBeforeUnmount(revokePreview)
   font-size:12px
 }
 .restore-button,.download-button {
-  display: flex;
   width: 100%;
-  min-height: 43px;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
   margin-top: 15px;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: linear-gradient(135deg,var(--c-primary-700),var(--c-primary));
-  color: var(--c-on-accent);
-  font-size: 14px;
-  font-weight: 800;
-  cursor:pointer
-}
-.restore-button:disabled,.download-button:disabled {
-  cursor: not-allowed;
-  filter: grayscale(1);
-  opacity:.5
 }
 .status-pill {
   padding: 5px 9px;
@@ -712,7 +676,7 @@ onBeforeUnmount(revokePreview)
 :global(html.dark .base64-page h3),:global(html.dark .base64-page .mode-nav strong),:global(html.dark .base64-page .file-meta strong),:global(html.dark .base64-page .restore-summary strong),:global(html.dark .base64-page .file-placeholder strong) {
   color:#f8fafc
 }
-:global(html.dark .base64-page .mode-nav button>b),:global(html.dark .base64-page .sample-card button),:global(html.dark .base64-page .toolbar-actions button),:global(html.dark .base64-page .io-card footer button),:global(html.dark .base64-page .file-result-card footer button),:global(html.dark .base64-page .decode-input-card header button) {
+:global(html.dark .base64-page .mode-nav button>b),:global(html.dark .base64-page .sample-card button) {
   border-color: var(--c-border-strong);
   background: var(--c-surface-subtle);
   color: var(--c-text-primary)
@@ -773,6 +737,9 @@ onBeforeUnmount(revokePreview)
   .toolbar-actions {
     display: grid;
     grid-template-columns:1fr 1fr
+  }
+  .toolbar-actions :deep(.el-button) {
+    width:100%
   }
   .sample-card {
     padding:11px

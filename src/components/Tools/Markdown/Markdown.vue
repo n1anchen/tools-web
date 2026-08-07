@@ -201,15 +201,15 @@ onBeforeUnmount(() => {
       <div class="document-state"><i :class="{ dirty }"></i><div><strong>{{ saveStatus }}</strong><span>{{ draftRestored ? '已恢复本地草稿 · 继续编辑会自动保存' : '内容变化后 0.7 秒自动保存' }}</span></div></div>
       <div class="bar-actions">
         <input ref="fileInputRef" class="file-input" type="file" hidden tabindex="-1" aria-hidden="true" accept=".md,.markdown,.txt,text/markdown,text/plain" @change="importMarkdown">
-        <button type="button" aria-label="导入 Markdown 文档" @click="triggerImport"><el-icon><FolderOpened /></el-icon>导入</button>
-        <button type="button" aria-label="复制 Markdown 原文" :disabled="!content" @click="copy(content)"><el-icon><CopyDocument /></el-icon>复制</button>
-        <button type="button" class="primary" aria-label="导出 Markdown 文档" :disabled="!content" @click="exportMarkdown"><el-icon><Download /></el-icon>导出 MD</button>
+        <el-button :icon="FolderOpened" aria-label="导入 Markdown 文档" @click="triggerImport">导入</el-button>
+        <el-button :icon="CopyDocument" aria-label="复制 Markdown 原文" :disabled="!content" @click="copy(content)">复制</el-button>
+        <el-button type="primary" :icon="Download" aria-label="导出 Markdown 文档" :disabled="!content" @click="exportMarkdown">导出 MD</el-button>
       </div>
     </section>
 
     <div class="workspace-grid">
       <section class="editor-card">
-        <header class="card-heading"><div><span class="eyebrow">WRITE & PREVIEW</span><h3>编辑与实时预览</h3></div><button type="button" aria-label="立即保存 Markdown 草稿" @click="saveDraft(true)"><el-icon><Refresh /></el-icon>立即保存</button></header>
+        <header class="card-heading"><div><span class="eyebrow">WRITE & PREVIEW</span><h3>编辑与实时预览</h3></div><el-button :icon="Refresh" aria-label="立即保存 Markdown 草稿" @click="saveDraft(true)">立即保存</el-button></header>
         <MdEditor
           v-model="content"
           :theme="editorTheme"
@@ -241,14 +241,14 @@ onBeforeUnmount(() => {
 
         <section class="template-card">
           <header class="card-heading"><div><span class="eyebrow">QUICK START</span><h3>文档模板</h3></div></header>
-          <div class="template-list"><button v-for="template in templates" :key="template.title" type="button" @click="applyTemplate(template)"><strong>{{ template.title }}</strong><span>{{ template.note }}</span></button></div>
+          <div class="template-list"><el-button v-for="template in templates" :key="template.title" @click="applyTemplate(template)"><strong>{{ template.title }}</strong><span>{{ template.note }}</span></el-button></div>
         </section>
 
         <section class="export-card">
           <span class="eyebrow">DELIVERY</span><h3>交付与整理</h3>
-          <button type="button" aria-label="导出 Markdown 渲染后的独立 HTML" :disabled="!content" @click="exportHtml"><el-icon><Download /></el-icon>导出独立 HTML</button>
-          <button type="button" aria-label="复制 Markdown 渲染后的 HTML" :disabled="!renderedHtml" @click="copy(renderedHtml)"><el-icon><CopyDocument /></el-icon>复制渲染 HTML</button>
-          <button type="button" class="danger" aria-label="新建空白 Markdown 文档" @click="clearDocument"><el-icon><Delete /></el-icon>新建空白文档</button>
+          <el-button :icon="Download" aria-label="导出 Markdown 渲染后的独立 HTML" :disabled="!content" @click="exportHtml">导出独立 HTML</el-button>
+          <el-button :icon="CopyDocument" aria-label="复制 Markdown 渲染后的 HTML" :disabled="!renderedHtml" @click="copy(renderedHtml)">复制渲染 HTML</el-button>
+          <el-button type="danger" :icon="Delete" aria-label="新建空白 Markdown 文档" @click="clearDocument">新建空白文档</el-button>
         </section>
       </aside>
     </div>
@@ -325,29 +325,6 @@ onBeforeUnmount(() => {
   display: flex;
   gap:8px
 }
-.bar-actions button,.card-heading>button,.export-card button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: 38px;
-  padding: 0 12px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-text-body);
-  font-weight: 750;
-  cursor:pointer
-}
-.bar-actions button.primary {
-  border-color: var(--c-primary);
-  background: var(--c-primary);
-  color: var(--c-on-accent)
-}
-.bar-actions button:disabled,.export-card button:disabled {
-  cursor: not-allowed;
-  opacity:.45
-}
 .file-input {
   position: absolute;
   width: 1px;
@@ -376,9 +353,6 @@ onBeforeUnmount(() => {
   margin: 0;
   color: var(--c-text-primary);
   font-size:20px
-}
-.card-heading>button {
-  min-height:34px
 }
 .editor-card :deep(.md-editor) {
   height: 650px;
@@ -436,21 +410,17 @@ onBeforeUnmount(() => {
   display: grid;
   gap:8px
 }
-.template-list button {
+.template-list :deep(.el-button) {
+  width: 100%;
+  height: auto;
+  padding: 12px;
+  white-space: normal;
+}
+.template-list :deep(.el-button > span) {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 4px;
-  padding: 12px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface-subtle);
-  color: var(--c-text-strong);
-  text-align: left;
-  cursor:pointer
-}
-.template-list button:hover {
-  border-color: var(--c-primary-400);
-  background:var(--c-primary-50)
 }
 .template-list span {
   color: var(--c-text-muted);
@@ -463,20 +433,11 @@ onBeforeUnmount(() => {
 .export-card h3 {
   margin-bottom:14px
 }
-.export-card button+button {
+.export-card .el-button + .el-button {
   margin-top:8px
-}
-.export-card button.danger {
-  border-color: #fecaca;
-  color:#b91c1c
 }
 .dark .card-heading h3,.dark .export-card h3,.dark .document-state strong {
   color:#f8fafc
-}
-.dark .bar-actions button,.dark .card-heading>button,.dark .export-card button {
-  border-color: #475569;
-  background: #0f172a;
-  color:#cbd5e1
 }
 .dark .summary-list {
   border-color: #334155;
@@ -531,7 +492,10 @@ onBeforeUnmount(() => {
     display: grid;
     grid-template-columns:1fr 1fr
   }
-  .bar-actions button.primary {
+  .bar-actions :deep(.el-button) {
+    width:100%
+  }
+  .bar-actions .el-button--primary {
     grid-column:1/-1
   }
   .editor-card,.insight-card,.template-card,.export-card {
@@ -550,16 +514,10 @@ onBeforeUnmount(() => {
     padding-bottom:0
   }
 }
-.dark .bar-actions button,.dark .card-heading>button,.dark .export-card button {
-  color:#e2e8f0
-}
-.dark .summary-list div,.dark .template-list button {
+.dark .summary-list div {
   color:#cbd5e1
 }
-.dark .summary-list strong,.dark .template-list strong {
+.dark .summary-list strong {
   color:#f8fafc
-}
-.dark .template-list span {
-  color:#cbd5e1
 }
 </style>

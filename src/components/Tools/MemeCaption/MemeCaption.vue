@@ -249,9 +249,9 @@ onUnmounted(() => themeObserver?.disconnect())
       <header class="preview-heading">
         <div><span class="eyebrow">LIVE MEME PREVIEW</span><h3>最终效果预览</h3><p>{{ hasImage ? `${state.sourceName} · 所有处理均在本地完成` : '先载入一张图片，字幕设置会立即应用' }}</p></div>
         <div class="preview-actions">
-          <el-upload ref="uploadRef" :limit="1" accept="image/png,image/jpeg,image/webp,image/gif" :auto-upload="false" :show-file-list="false" @change="handleUploadChange" @exceed="handleUploadExceed"><template #trigger><button type="button" aria-label="载入梗图原图"><el-icon><Upload /></el-icon>{{ hasImage ? '更换图片' : '载入图片' }}</button></template></el-upload>
-          <button type="button" aria-label="复制梗图 PNG" :disabled="!hasImage || state.exporting" @click="copyPng"><el-icon><CopyDocument /></el-icon>复制 PNG</button>
-          <button type="button" class="primary" aria-label="下载字幕梗图" :disabled="!hasImage || state.exporting" @click="downloadImage"><el-icon><Download /></el-icon>下载图片</button>
+          <el-upload ref="uploadRef" :limit="1" accept="image/png,image/jpeg,image/webp,image/gif" :auto-upload="false" :show-file-list="false" @change="handleUploadChange" @exceed="handleUploadExceed"><template #trigger><el-button :icon="Upload" aria-label="载入梗图原图">{{ hasImage ? '更换图片' : '载入图片' }}</el-button></template></el-upload>
+          <el-button :icon="CopyDocument" aria-label="复制梗图 PNG" :disabled="!hasImage || state.exporting" @click="copyPng">复制 PNG</el-button>
+          <el-button type="primary" :icon="Download" aria-label="下载字幕梗图" :disabled="!hasImage || state.exporting" @click="downloadImage">下载图片</el-button>
         </div>
       </header>
       <div class="canvas-stage"><canvas ref="canvasRef" role="img" aria-label="字幕梗图预览" /></div>
@@ -260,10 +260,10 @@ onUnmounted(() => themeObserver?.disconnect())
 
     <div class="workspace-grid">
       <section class="control-card">
-        <header class="card-heading"><div><span class="eyebrow">CAPTION COMPOSER</span><h3>字幕与样式</h3></div><button type="button" aria-label="恢复梗图字幕默认设置" @click="resetStyle"><el-icon><Refresh /></el-icon>重置</button></header>
+        <header class="card-heading"><div><span class="eyebrow">CAPTION COMPOSER</span><h3>字幕与样式</h3></div><el-button :icon="Refresh" aria-label="恢复梗图字幕默认设置" @click="resetStyle">重置</el-button></header>
         <label class="text-field"><span>字幕文本</span><el-input v-model="state.text" type="textarea" :rows="4" maxlength="160" show-word-limit placeholder="输入字幕，支持手动换行" aria-label="梗图字幕文本" /></label>
-        <div class="text-presets"><span>快速文案</span><div><button v-for="text in textPresets" :key="text" type="button" @click="state.text = text">{{ text }}</button></div></div>
-        <div class="style-presets"><span>视觉模板</span><div><button v-for="preset in stylePresets" :key="preset.label" type="button" @click="applyStyle(preset)"><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small></button></div></div>
+        <div class="text-presets"><span>快速文案</span><div><el-button v-for="text in textPresets" :key="text" size="small" @click="state.text = text">{{ text }}</el-button></div></div>
+        <div class="style-presets"><span>视觉模板</span><div><el-button v-for="preset in stylePresets" :key="preset.label" @click="applyStyle(preset)"><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small></el-button></div></div>
         <div class="segment-grid"><label><span>字幕位置</span><el-radio-group v-model="state.placement"><el-radio-button v-for="item in placementOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label><label><span>字幕背景</span><el-radio-group v-model="state.bgMode"><el-radio-button v-for="item in backgroundOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label></div>
         <div class="switch-row"><div><strong>自动换行</strong><span>按图片宽度最多排成 5 行</span></div><el-switch v-model="state.autoWrap" aria-label="切换字幕自动换行" /></div>
         <div class="slider-grid"><div class="slider-setting"><label><span>字体大小</span><strong>{{ state.fontSize }} px</strong></label><el-slider v-model="state.fontSize" :min="12" :max="120" /></div><div class="slider-setting"><label><span>上下留白</span><strong>{{ state.captionPadding }} px</strong></label><el-slider v-model="state.captionPadding" :min="0" :max="60" /></div><div class="slider-setting"><label><span>距{{ state.placement === 'bottom' ? '底' : '顶' }}部</span><strong>{{ state.offset }} px</strong></label><el-slider v-model="state.offset" :min="0" :max="maxOffset" :disabled="!hasImage" /></div><div class="slider-setting"><label><span>描边粗细</span><strong>{{ state.stroke ? `${state.strokeWidth} px` : '关闭' }}</strong></label><el-slider v-model="state.strokeWidth" :min="1" :max="12" :disabled="!state.stroke" /></div></div>
@@ -277,7 +277,7 @@ onUnmounted(() => themeObserver?.disconnect())
         <label class="option-field"><span>文件格式</span><el-radio-group v-model="state.format"><el-radio-button v-for="item in formatOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <div v-if="state.format === 'jpeg'" class="slider-setting quality"><label><span>JPG 品质</span><strong>{{ state.quality }}%</strong></label><el-slider v-model="state.quality" :min="40" :max="100" /></div>
         <div class="export-summary"><span>最终文件</span><strong>{{ hasImage ? `${outputDimensions.width} × ${outputDimensions.height}` : '等待图片' }}</strong><small>{{ formatLabel }}</small></div>
-        <button v-if="hasImage" type="button" class="clear-action" aria-label="移除当前梗图图片" @click="clearImage"><el-icon><Picture /></el-icon>移除当前图片</button>
+        <el-button v-if="hasImage" class="clear-action" :icon="Picture" aria-label="移除当前梗图图片" @click="clearImage">移除当前图片</el-button>
         <a class="related-link" href="/electronicpatina/">下一步：为成品添加电子包浆效果 →</a>
       </aside>
     </div>
@@ -328,29 +328,6 @@ onUnmounted(() => themeObserver?.disconnect())
   gap: 8px;
   flex-wrap:wrap
 }
-.preview-actions button,.card-heading>button,.clear-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: 38px;
-  padding: 0 13px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-text-body);
-  font-weight: 750;
-  cursor:pointer
-}
-.preview-actions button.primary {
-  border-color: var(--c-primary);
-  background: var(--c-primary);
-  color: var(--c-on-accent)
-}
-.preview-actions button:disabled {
-  cursor: not-allowed;
-  opacity:.45
-}
 .canvas-stage {
   display: flex;
   align-items: center;
@@ -393,10 +370,6 @@ onUnmounted(() => themeObserver?.disconnect())
 .card-heading {
   margin-bottom:20px
 }
-.card-heading>button {
-  min-height: 34px;
-  padding:0 10px
-}
 .text-field,.segment-grid label,.option-field {
   display: flex;
   flex-direction: column;
@@ -416,14 +389,9 @@ onUnmounted(() => themeObserver?.disconnect())
   gap: 7px;
   margin-top:8px
 }
-.text-presets button {
+.text-presets :deep(.el-button) {
+  height: auto;
   padding: 7px 10px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-full);
-  background: var(--c-surface-subtle);
-  color: var(--c-text-body);
-  font-size: 12px;
-  cursor:pointer
 }
 .style-presets>div {
   display: grid;
@@ -431,21 +399,17 @@ onUnmounted(() => themeObserver?.disconnect())
   gap: 8px;
   margin-top:8px
 }
-.style-presets button {
+.style-presets :deep(.el-button) {
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  white-space: normal;
+}
+.style-presets :deep(.el-button > span) {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 3px;
-  padding: 10px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface-subtle);
-  color: var(--c-text-strong);
-  text-align: left;
-  cursor:pointer
-}
-.style-presets button:hover,.text-presets button:hover {
-  border-color: var(--c-primary-400);
-  background:#f0f9ff
 }
 .style-presets small {
   color: var(--c-text-muted)
@@ -574,11 +538,6 @@ onUnmounted(() => themeObserver?.disconnect())
 .dark .preview-heading p,.dark .text-field>span,.dark .text-presets>span,.dark .style-presets>span,.dark .segment-grid label>span,.dark .option-field>span {
   color: var(--c-text-muted)
 }
-.dark .preview-actions button,.dark .card-heading>button,.dark .clear-action {
-  border-color: #475569;
-  background: #0f172a;
-  color:#cbd5e1
-}
 .dark .canvas-stage {
   background:#0f172a
 }
@@ -586,14 +545,10 @@ onUnmounted(() => themeObserver?.disconnect())
   background: #0c4a6e;
   color:#bae6fd
 }
-.dark .text-presets button,.dark .style-presets button,.dark .switch-row,.dark .summary-list div {
+.dark .switch-row,.dark .summary-list div {
   border-color: #334155;
   background: #0f172a;
   color: var(--c-text-muted)
-}
-.dark .style-presets button:hover,.dark .text-presets button:hover {
-  border-color: var(--c-primary-400);
-  background:#0c3045
 }
 .dark .switch-row strong,.dark .summary-list strong {
   color:#e2e8f0
@@ -626,7 +581,7 @@ onUnmounted(() => themeObserver?.disconnect())
   .preview-actions>* {
     flex:1
   }
-  .preview-actions button {
+  .preview-actions :deep(.el-button) {
     width:100%
   }
   .canvas-stage {

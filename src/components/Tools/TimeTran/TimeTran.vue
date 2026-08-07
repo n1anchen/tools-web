@@ -146,9 +146,9 @@ onUnmounted(stopClock)
         </div>
         <div class="preset-row">
           <span>快速填入</span>
-          <button @click="useCurrentTimestamp('seconds')">当前秒</button>
-          <button @click="useCurrentTimestamp('milliseconds')">当前毫秒</button>
-          <button @click="useCurrentTimestamp('microseconds')">当前微秒</button>
+          <el-button size="small" @click="useCurrentTimestamp('seconds')">当前秒</el-button>
+          <el-button size="small" @click="useCurrentTimestamp('milliseconds')">当前毫秒</el-button>
+          <el-button size="small" @click="useCurrentTimestamp('microseconds')">当前微秒</el-button>
         </div>
 
         <div v-if="timestampResult.error" class="error-box">{{ timestampResult.error }}</div>
@@ -175,9 +175,9 @@ onUnmounted(stopClock)
             <el-radio-button value="utc">UTC</el-radio-button>
           </el-radio-group>
           <div class="preset-row compact">
-            <button @click="setDatePreset('now')">现在</button>
-            <button @click="setDatePreset('today')">今天 00:00</button>
-            <button @click="setDatePreset('tomorrow')">明天 00:00</button>
+            <el-button size="small" @click="setDatePreset('now')">现在</el-button>
+            <el-button size="small" @click="setDatePreset('today')">今天 00:00</el-button>
+            <el-button size="small" @click="setDatePreset('tomorrow')">明天 00:00</el-button>
           </div>
         </div>
 
@@ -330,14 +330,6 @@ onUnmounted(stopClock)
   color: var(--c-text-muted);
   font-size: 11px;
 }
-.preset-row button {
-  padding: 4px 9px;
-  border: 0;
-  border-radius: var(--radius-full);
-  color: var(--c-text-body);
-  background: #f1f5f9;
-  cursor: pointer;
-}
 .preset-row.compact {
   justify-content: flex-end;
   margin: 0;
@@ -462,10 +454,6 @@ onUnmounted(stopClock)
   border-color: var(--c-border);
   color: var(--c-primary-200);
   background: var(--c-surface-subtle);
-}
-:global(html.dark .time-page .preset-row button) {
-  color: var(--c-text-secondary);
-  background: #334155;
 }
 :global(html.dark .time-page .error-box) {
   border-color: #7f1d1d;

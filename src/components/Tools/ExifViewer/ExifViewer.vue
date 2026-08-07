@@ -827,13 +827,13 @@ onUnmounted(() => {
             </div>
 
             <div class="flex flex-wrap gap-2 mt-1.5">
-              <el-button type="primary" size="small" :loading="isDownloading" @click="downloadClean">
+              <el-button type="primary" :loading="isDownloading" @click="downloadClean">
                 <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v8m0 0l-3-3m3 3l3-3M12 4v4"/>
                 </svg>
                 下载去除 EXIF 的原图
               </el-button>
-              <el-button v-if="hasGps" size="small" @click="openInAmap">
+              <el-button v-if="hasGps" @click="openInAmap">
                 <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
@@ -841,9 +841,9 @@ onUnmounted(() => {
                 </svg>
                 在高德地图中打开
               </el-button>
-              <el-button size="small" @click="copyMetadataSummary">复制元数据摘要</el-button>
-              <el-button size="small" @click="downloadMetadataJson">导出 JSON</el-button>
-              <el-button size="small" @click="resetViewer">重新开始</el-button>
+              <el-button @click="copyMetadataSummary">复制元数据摘要</el-button>
+              <el-button @click="downloadMetadataJson">导出 JSON</el-button>
+              <el-button @click="resetViewer">重新开始</el-button>
             </div>
           </div>
         </div>

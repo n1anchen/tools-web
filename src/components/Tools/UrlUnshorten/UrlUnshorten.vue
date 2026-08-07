@@ -208,7 +208,7 @@ function loadExample(value: string) {
     <section class="input-card">
       <div class="input-heading">
         <div><span>STEP 1</span><h3>粘贴需要检查的链接</h3></div>
-        <button v-if="inputUrl" class="text-button" @click="clearAll">清空</button>
+        <el-button v-if="inputUrl" class="text-button" @click="clearAll">清空</el-button>
       </div>
       <div class="url-input-shell" :class="{ invalid: showError }">
         <span class="lock-mark">↗</span>
@@ -220,7 +220,7 @@ function loadExample(value: string) {
           @blur="touched = true"
           @keyup.enter="isConfigured ? resolveRedirect() : runLocalAnalysis()"
         />
-        <button class="paste-button" @click="pasteFromClipboard">粘贴</button>
+        <el-button class="paste-button" @click="pasteFromClipboard">粘贴</el-button>
       </div>
       <div v-if="showError" class="field-error">{{ urlErrorText }}</div>
 
@@ -257,10 +257,8 @@ function loadExample(value: string) {
       </div>
 
       <div class="action-row">
-        <button class="secondary-button" :disabled="!isValidUrl" @click="runLocalAnalysis">仅本地检查与清理</button>
-        <button class="primary-button" :disabled="!isConfigured || !isValidUrl || loading" @click="resolveRedirect">
-          <span v-if="loading" class="spinner"></span>{{ loading ? '正在追踪跳转' : '追踪并解析最终链接' }}
-        </button>
+        <el-button :disabled="!isValidUrl" @click="runLocalAnalysis">仅本地检查与清理</el-button>
+        <el-button type="primary" :loading="loading" :disabled="!isConfigured || !isValidUrl" @click="resolveRedirect">{{ loading ? '正在追踪跳转' : '追踪并解析最终链接' }}</el-button>
       </div>
       <p v-if="!isConfigured" class="service-note">即使未配置解析服务，你仍可使用本地链接诊断与参数清理；只有 HTTP 重定向追踪暂不可用。</p>
     </section>
@@ -281,7 +279,7 @@ function loadExample(value: string) {
       <div class="final-url-box">
         <div class="url-status-icon">✓</div>
         <div><span>可复制或在新标签页打开</span><a :href="finalUrl" target="_blank" rel="noopener noreferrer">{{ finalUrl }}</a></div>
-        <div class="url-actions"><button @click="copy(finalUrl)">复制</button><a :href="finalUrl" target="_blank" rel="noopener noreferrer">访问</a></div>
+        <div class="url-actions"><el-button size="small" @click="copy(finalUrl)">复制</el-button><a :href="finalUrl" target="_blank" rel="noopener noreferrer">访问</a></div>
       </div>
 
       <div v-if="removedParams.length" class="removed-list">
@@ -289,7 +287,7 @@ function loadExample(value: string) {
       </div>
 
       <div v-if="resultKind === 'resolved' && chain.length" class="chain-section">
-        <div class="chain-heading"><strong>跳转链路</strong><button @click="copyChain">复制链路</button></div>
+        <div class="chain-heading"><strong>跳转链路</strong><el-button class="text-button" @click="copyChain">复制链路</el-button></div>
         <ol>
           <li v-for="(hop, index) in chain" :key="`${hop}-${index}`">
             <span>{{ index }}</span>
@@ -301,7 +299,7 @@ function loadExample(value: string) {
 
     <section class="safety-card">
       <div><span>盾</span><p><strong>解析服务的安全边界</strong>仅允许公开 HTTP(S) 域名，拒绝私网、环回、特殊 IP、账号密码和自定义端口；每一跳都会重新校验。</p></div>
-      <div class="example-buttons"><button v-for="example in examples" :key="example.label" @click="loadExample(example.value)">{{ example.label }}</button></div>
+      <div class="example-buttons"><el-button v-for="example in examples" :key="example.label" size="small" @click="loadExample(example.value)">{{ example.label }}</el-button></div>
     </section>
 
     <ToolGuide title="使用说明">
@@ -376,13 +374,14 @@ function loadExample(value: string) {
   font-size: 18px;
   font-weight: 800;
 }
-.text-button,.chain-heading button {
+.text-button {
   border: 0;
   background: transparent;
   color: #197a70;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
+  padding: 4px 8px;
 }
 .url-input-shell {
   display: flex;
@@ -559,45 +558,7 @@ function loadExample(value: string) {
   padding-top: 16px;
   border-top: 1px solid #e8edef;
 }
-.primary-button,.secondary-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 42px;
-  border-radius: var(--radius-sm);
-  padding: 10px 16px;
-  font-size: 14px;
-  font-weight: 750;
-  cursor: pointer;
-}
-.primary-button {
-  border: 0;
-  background: var(--accent);
-  color: white;
-}
-.secondary-button {
-  border: 1px solid #cddcde;
-  background: white;
-  color: #356c68;
-}
-.primary-button:disabled,.secondary-button:disabled {
-  opacity: .42;
-  cursor: not-allowed;
-}
-.spinner {
-  width: 13px;
-  height: 13px;
-  border: 2px solid rgba(255,255,255,.4);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin .8s linear infinite;
-}
-@keyframes spin {
-  to {
-    transform:rotate(360deg)
-  }
-}
+
 .service-note {
   grid-column: 1/-1;
   margin: -8px 0 0;
@@ -654,7 +615,7 @@ function loadExample(value: string) {
   display: flex;
   gap: 6px;
 }
-.url-actions button,.url-actions>a {
+.url-actions>a {
   margin: 0;
   border: 1px solid #bdd8d3;
   border-radius: var(--radius-xs);
@@ -780,15 +741,6 @@ function loadExample(value: string) {
   gap: 7px;
   flex: none;
 }
-.example-buttons button {
-  border: 1px solid #dbe4e6;
-  border-radius: var(--radius-sm);
-  padding: 8px 10px;
-  background: var(--c-surface);
-  color: #52706e;
-  font-size: 13px;
-  cursor: pointer;
-}
 :global(.dark) .url-tool {
   --ink: #eef5f4;
   --muted: #a1b0b4;
@@ -811,7 +763,7 @@ function loadExample(value: string) {
 :global(.dark) .diagnostics-row,:global(.dark) .result-summary,:global(.dark) .diagnostics-row div,:global(.dark) .result-summary div,:global(.dark) .action-row,:global(.dark) .chain-section {
   border-color: #354950;
 }
-:global(.dark) .secondary-button,:global(.dark) .url-actions button,:global(.dark) .url-actions>a,:global(.dark) .example-buttons button {
+:global(.dark) .url-actions>a {
   border-color: #3c5358;
   background: #1b2b36;
   color: #8dc4bd;
@@ -882,7 +834,7 @@ function loadExample(value: string) {
   .url-actions {
     grid-column: 1/-1;
   }
-  .url-actions button,.url-actions>a {
+  .url-actions>a {
     flex: 1;
     text-align: center;
   }

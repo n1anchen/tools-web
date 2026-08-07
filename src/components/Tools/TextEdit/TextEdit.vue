@@ -225,15 +225,15 @@ onBeforeUnmount(() => {
       <div class="document-state"><i :class="{ dirty }"></i><div><strong>{{ saveStatus }}</strong><span>{{ draftRestored ? '已恢复本地草稿 · 后续变化会自动保存' : '所有编辑仅在当前浏览器处理' }}</span></div></div>
       <div class="bar-actions">
         <input ref="fileInputRef" class="file-input" type="file" hidden tabindex="-1" aria-hidden="true" accept=".html,.htm,.txt,text/html,text/plain" @change="importDocument">
-        <button type="button" aria-label="导入 HTML 或纯文本文档" @click="triggerImport"><el-icon><FolderOpened /></el-icon>导入</button>
-        <button type="button" :disabled="!hasContent" aria-label="复制富文本 HTML" @click="copy(content)"><el-icon><CopyDocument /></el-icon>复制 HTML</button>
-        <button type="button" class="primary" :disabled="!hasContent" aria-label="导出富文本 HTML 文档" @click="exportHtml"><el-icon><Download /></el-icon>导出 HTML</button>
+        <el-button :icon="FolderOpened" aria-label="导入 HTML 或纯文本文档" @click="triggerImport">导入</el-button>
+        <el-button :icon="CopyDocument" :disabled="!hasContent" aria-label="复制富文本 HTML" @click="copy(content)">复制 HTML</el-button>
+        <el-button type="primary" :icon="Download" :disabled="!hasContent" aria-label="导出富文本 HTML 文档" @click="exportHtml">导出 HTML</el-button>
       </div>
     </section>
 
     <div class="workspace-grid">
       <section class="editor-card">
-        <header class="card-heading"><div><span class="eyebrow">VISUAL EDITOR</span><h3>可视化内容编辑</h3></div><button type="button" aria-label="立即保存富文本草稿" @click="saveDraft(true)"><el-icon><Refresh /></el-icon>立即保存</button></header>
+        <header class="card-heading"><div><span class="eyebrow">VISUAL EDITOR</span><h3>可视化内容编辑</h3></div><el-button :icon="Refresh" aria-label="立即保存富文本草稿" @click="saveDraft(true)">立即保存</el-button></header>
         <div class="editor-shell">
           <Toolbar :editor="editorRef || undefined" :default-config="toolbarConfig" mode="default" />
           <Editor v-model="content" :default-config="editorConfig" mode="default" @on-created="handleCreated" />
@@ -247,15 +247,15 @@ onBeforeUnmount(() => {
         </section>
         <section class="template-card">
           <header class="card-heading"><div><span class="eyebrow">QUICK START</span><h3>内容模板</h3></div></header>
-          <div class="template-list"><button v-for="template in templates" :key="template.title" type="button" @click="applyTemplate(template)"><strong>{{ template.title }}</strong><span>{{ template.note }}</span></button></div>
+          <div class="template-list"><el-button v-for="template in templates" :key="template.title" @click="applyTemplate(template)"><strong>{{ template.title }}</strong><span>{{ template.note }}</span></el-button></div>
         </section>
       </aside>
     </div>
 
     <section class="source-card">
-      <header class="source-heading"><div><span class="eyebrow">DELIVERY SOURCE</span><h3>交付源码</h3><p>随编辑器实时更新，可复制 HTML 或提取纯文本</p></div><div class="source-actions"><el-radio-group v-model="outputMode"><el-radio-button v-for="item in outputOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group><button type="button" aria-label="复制当前富文本交付内容" :disabled="!outputValue" @click="copy(outputValue)"><el-icon><CopyDocument /></el-icon>复制当前内容</button></div></header>
+      <header class="source-heading"><div><span class="eyebrow">DELIVERY SOURCE</span><h3>交付源码</h3><p>随编辑器实时更新，可复制 HTML 或提取纯文本</p></div><div class="source-actions"><el-radio-group v-model="outputMode"><el-radio-button v-for="item in outputOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group><el-button :icon="CopyDocument" aria-label="复制当前富文本交付内容" :disabled="!outputValue" @click="copy(outputValue)">复制当前内容</el-button></div></header>
       <pre aria-label="富文本交付源码">{{ displayOutput || '开始编辑后，这里会出现可交付的源码。' }}</pre>
-      <div class="delivery-actions"><button type="button" aria-label="导出富文本的纯文本内容" :disabled="!hasContent" @click="exportText"><el-icon><Download /></el-icon>导出纯文本</button><button type="button" class="danger" aria-label="新建空白富文本内容" @click="clearDocument"><el-icon><Delete /></el-icon>新建空白内容</button></div>
+      <div class="delivery-actions"><el-button :icon="Download" aria-label="导出富文本的纯文本内容" :disabled="!hasContent" @click="exportText">导出纯文本</el-button><el-button type="danger" :icon="Delete" aria-label="新建空白富文本内容" @click="clearDocument">新建空白内容</el-button></div>
     </section>
 
     <ToolGuide title="导入、安全与隐私说明"><div class="detail-copy">支持导入 HTML 与纯文本文件；导入 HTML 时会移除脚本、嵌入框架、事件属性和危险链接，再交给编辑器处理。正文、草稿和导出文件都在当前浏览器中生成，不会上传到服务器。工具栏不提供图片或视频上传，以避免误以为媒体文件会被托管。</div></ToolGuide>
@@ -330,29 +330,6 @@ onBeforeUnmount(() => {
   display: flex;
   gap:8px
 }
-.bar-actions button,.card-heading>button,.source-actions button,.delivery-actions button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: 38px;
-  padding: 0 12px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-text-body);
-  font-weight: 750;
-  cursor:pointer
-}
-.bar-actions button.primary {
-  border-color: var(--c-primary-700);
-  background: var(--c-primary-700);
-  color: var(--c-on-accent)
-}
-.bar-actions button:disabled,.source-actions button:disabled,.delivery-actions button:disabled {
-  cursor: not-allowed;
-  opacity:.45
-}
 .file-input {
   position: absolute;
   width: 1px;
@@ -380,9 +357,6 @@ onBeforeUnmount(() => {
   margin: 0;
   color: var(--c-text-primary);
   font-size:20px
-}
-.card-heading>button {
-  min-height:34px
 }
 .editor-shell {
   height: 620px;
@@ -426,21 +400,17 @@ onBeforeUnmount(() => {
   display: grid;
   gap:8px
 }
-.template-list button {
+.template-list :deep(.el-button) {
+  width: 100%;
+  height: auto;
+  padding: 12px;
+  white-space: normal;
+}
+.template-list :deep(.el-button > span) {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 4px;
-  padding: 12px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface-subtle);
-  color: var(--c-text-strong);
-  text-align: left;
-  cursor:pointer
-}
-.template-list button:hover {
-  border-color: var(--c-primary-400);
-  background:var(--c-primary-50)
 }
 .template-list span {
   color: var(--c-text-muted);
@@ -485,10 +455,6 @@ onBeforeUnmount(() => {
   gap: 8px;
   margin-top:12px
 }
-.delivery-actions button.danger {
-  border-color: #fecaca;
-  color:#b91c1c
-}
 .dark .source-card {
   border-color: #334155;
   background:#1e293b
@@ -496,26 +462,17 @@ onBeforeUnmount(() => {
 .dark .card-heading h3,.dark .source-heading h3,.dark .document-state strong {
   color:#f8fafc
 }
-.dark .bar-actions button,.dark .card-heading>button,.dark .source-actions button,.dark .delivery-actions button {
-  border-color: #475569;
-  background: #0f172a;
-  color:#cbd5e1
-}
 .dark .summary-list {
   border-color: #334155;
   background:#334155
 }
-.dark .summary-list div,.dark .template-list button {
+.dark .summary-list div {
   border-color: #334155;
   background: #0f172a;
   color: var(--c-text-muted)
 }
 .dark .summary-list strong {
   color:#e2e8f0
-}
-.dark .template-list button:hover {
-  border-color: var(--c-primary-400);
-  background:#073b38
 }
 .dark .editor-shell {
   border-color: #334155;
@@ -564,7 +521,10 @@ onBeforeUnmount(() => {
     display: grid;
     grid-template-columns:1fr 1fr
   }
-  .bar-actions button.primary {
+  .bar-actions :deep(.el-button) {
+    width:100%
+  }
+  .bar-actions .el-button--primary {
     grid-column:1/-1
   }
   .editor-card,.insight-card,.template-card,.source-card {
@@ -595,6 +555,9 @@ onBeforeUnmount(() => {
   }
   .source-actions :deep(.el-radio-button__inner) {
     width: 100%;
+  }
+  .source-actions :deep(.el-button) {
+    width:100%
   }
   .delivery-actions {
     display: grid;

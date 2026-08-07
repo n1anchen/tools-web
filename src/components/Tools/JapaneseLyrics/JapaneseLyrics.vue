@@ -940,7 +940,7 @@ function downloadStudyNotes() {
 
     <section class="source-workbench">
       <div class="source-main">
-        <header class="section-header"><div><span>LYRIC SOURCE</span><h3>粘贴歌词文本或 LRC</h3><p>输入后即时解析；支持相同时间戳双语行与同行翻译。</p></div><div class="header-actions"><button @click="fillSample">载入示例</button><button :disabled="!sourceText && !urlInput" @click="clearAll">清空</button></div></header>
+        <header class="section-header"><div><span>LYRIC SOURCE</span><h3>粘贴歌词文本或 LRC</h3><p>输入后即时解析；支持相同时间戳双语行与同行翻译。</p></div><div class="header-actions"><el-button @click="fillSample">载入示例</el-button><el-button :disabled="!sourceText && !urlInput" @click="clearAll">清空</el-button></div></header>
         <el-input v-model="sourceText" type="textarea" :rows="13" placeholder="粘贴日语歌词、LRC 时间轴或双语歌词……" resize="vertical" />
         <div v-if="Object.keys(parsed.meta).length" class="meta-row"><span v-for="(value,key) in parsed.meta" :key="key"><b>{{ key }}</b>{{ value }}</span></div>
         <div v-if="!hasLyrics && sourceText.trim()" class="parse-warning">暂未解析到有效歌词行，请检查内容是否只有 LRC 元信息或空行。</div>
@@ -949,9 +949,9 @@ function downloadStudyNotes() {
       <aside class="source-sidebar">
         <header><span>IMPORT</span><h3>其他导入方式</h3></header>
         <label class="url-field"><span>歌词 URL</span><el-input v-model="urlInput" placeholder="https://example.com/song.lrc" clearable /></label>
-        <button class="primary-button" :disabled="!canFetchUrl || loadingUrl" @click="fetchUrlLyrics">{{ loadingUrl ? '正在读取…' : '读取 URL 歌词' }}</button>
+        <el-button type="primary" class="sidebar-action" :disabled="!canFetchUrl || loadingUrl" :loading="loadingUrl" @click="fetchUrlLyrics">{{ loadingUrl ? '正在读取…' : '读取 URL 歌词' }}</el-button>
         <input ref="fileInput" type="file" accept=".lrc,.txt,text/plain,.srt" class="hidden" @change="handleFileChange" />
-        <button class="secondary-button" @click="openFilePicker">上传 .lrc / .txt 文件</button>
+        <el-button class="sidebar-action" @click="openFilePicker">上传 .lrc / .txt 文件</el-button>
 
         <div class="settings-group">
           <div class="setting-row"><div><strong>精准汉字读音</strong><span>使用 kuromoji 形态素词典</span></div><el-switch v-model="preciseReading" :loading="analyzingPrecise" /></div>
@@ -967,7 +967,7 @@ function downloadStudyNotes() {
       <section class="study-toolbar">
         <div class="view-switch"><button :class="{active:displayMode==='all'}" @click="displayMode='all'">全部歌词</button><button :class="{active:displayMode==='focus'}" @click="displayMode='focus'">逐行专注</button></div>
         <div class="display-switches"><label><el-switch v-model="showReading" size="small" />假名</label><label><el-switch v-model="showRomaji" size="small" />罗马音</label><label><el-switch v-model="showTranslation" size="small" />翻译</label></div>
-        <div class="export-actions"><button @click="copyResult">复制学习稿</button><button @click="downloadStudyNotes">下载 TXT</button></div>
+        <div class="export-actions"><el-button @click="copyResult">复制学习稿</el-button><el-button @click="downloadStudyNotes">下载 TXT</el-button></div>
       </section>
 
       <section class="insight-grid">
@@ -978,9 +978,9 @@ function downloadStudyNotes() {
       </section>
 
       <section v-if="displayMode==='focus'" class="focus-nav">
-        <button :disabled="activeLineIndex===0" @click="moveFocus(-1)">← 上一句</button>
+        <el-button :disabled="activeLineIndex===0" @click="moveFocus(-1)">← 上一句</el-button>
         <div><span>专注进度</span><strong>{{ activeLineIndex + 1 }} / {{ displayLines.length }}</strong><div class="progress-track"><i :style="{width:`${(activeLineIndex+1)/displayLines.length*100}%`}"></i></div></div>
-        <button :disabled="activeLineIndex===displayLines.length-1" @click="moveFocus(1)">下一句 →</button>
+        <el-button :disabled="activeLineIndex===displayLines.length-1" @click="moveFocus(1)">下一句 →</el-button>
       </section>
 
       <section class="lyrics-list" :class="{focused:displayMode==='focus'}">
@@ -1007,7 +1007,7 @@ function downloadStudyNotes() {
       <section class="legend-card"><strong>颜色图例</strong><div><span class="legend-particle">助词</span><span class="legend-ending">活用语尾</span><span class="legend-katakana">片假名</span><span class="legend-word">词语</span></div><p>悬停词块可查看词性、原形和读音说明；精准模式的结果依赖本地加载的日语词典。</p></section>
     </template>
 
-    <section v-else class="empty-study"><span>詞</span><strong>等待一段日语歌词</strong><p>可粘贴文本、读取 URL、上传文件，或先载入示例体验逐行学习。</p><button @click="fillSample">使用示例歌词</button></section>
+    <section v-else class="empty-study"><span>詞</span><strong>等待一段日语歌词</strong><p>可粘贴文本、读取 URL、上传文件，或先载入示例体验逐行学习。</p><el-button type="primary" @click="fillSample">使用示例歌词</el-button></section>
 
     <ToolGuide title="使用说明"><div class="detail-copy"><p>支持纯文本、LRC、同时间戳双语歌词、相邻翻译行和“日语 / 翻译”同行写法。</p><p>全部歌词适合整体浏览；逐行专注模式可前后切换并标记学习进度。显示开关只影响页面阅读，不会改变原始文本。</p><p>默认轻量模式主要转换假名；精准读音会加载 kuromoji 词典，改进汉字词读音、词性与原形信息。</p></div></ToolGuide>
   </div>
@@ -1062,16 +1062,13 @@ function downloadStudyNotes() {
   gap: 8px;
   align-items:flex-start
 }
-.header-actions button,.secondary-button,.export-actions button,.line-actions button,.focus-nav button,.empty-study button {
+.line-actions button {
   padding: 8px 11px;
   border: 1px solid #d8deea;
   border-radius: var(--radius-sm);
   background: var(--c-surface);
   font-size: 13px;
   color:#526078
-}
-.header-actions button:disabled,.focus-nav button:disabled {
-  opacity:.4
 }
 .meta-row {
   display: flex;
@@ -1116,21 +1113,9 @@ function downloadStudyNotes() {
   font-weight: 700;
   color:#69758a
 }
-.primary-button,.secondary-button {
+.sidebar-action {
   width: 100%;
   margin-top: 9px;
-  padding:10px
-}
-.primary-button {
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: #7655ca;
-  color: var(--c-on-accent);
-  font-size: 13px;
-  font-weight:700
-}
-.primary-button:disabled {
-  opacity:.4
 }
 .settings-group,.font-setting {
   margin-top: 13px;
@@ -1504,7 +1489,7 @@ function downloadStudyNotes() {
   border-color: #344155;
   background:#111a2a
 }
-.dark .header-actions button,.dark .secondary-button,.dark .export-actions button,.dark .line-actions button,.dark .focus-nav button {
+.dark .line-actions button {
   border-color: #3b485d;
   background: #1a2638;
   color:#cbd6e4
@@ -1555,7 +1540,7 @@ function downloadStudyNotes() {
   .header-actions,.export-actions {
     width:100%
   }
-  .header-actions button,.export-actions button {
+  .header-actions :deep(.el-button),.export-actions :deep(.el-button) {
     flex:1
   }
   .study-toolbar {

@@ -210,14 +210,14 @@ maskFromPrefix()
               placeholder="192.168.1.34/24"
               @keyup.enter="calculateNetwork"
             />
-            <button class="primary-button" type="button" @click="calculateNetwork">开始计算</button>
+            <el-button type="primary" @click="calculateNetwork">开始计算</el-button>
           </div>
           <div v-if="cidrError" class="field-error">{{ cidrError }}</div>
         </div>
         <div class="preset-block">
           <span>常用前缀</span>
           <div class="preset-list">
-            <button v-for="prefix in prefixPresets" :key="prefix" type="button" @click="applyPrefix(prefix)">/{{ prefix }}</button>
+            <el-button v-for="prefix in prefixPresets" :key="prefix" size="small" @click="applyPrefix(prefix)">/{{ prefix }}</el-button>
           </div>
         </div>
       </div>
@@ -271,7 +271,7 @@ maskFromPrefix()
       <div v-else-if="activeTab === 'split' && result" class="panel-content">
         <div class="section-heading split-heading">
           <div><span>SUBNET PLANNER</span><h3>将 {{ result.cidr }} 拆分成更小网段</h3></div>
-          <button class="secondary-button" type="button" @click="copySubnetPlan">复制当前表格</button>
+          <el-button @click="copySubnetPlan">复制当前表格</el-button>
         </div>
 
         <div class="split-controls">
@@ -279,7 +279,7 @@ maskFromPrefix()
             <label>新网络前缀 <strong>/{{ splitPrefix }}</strong></label>
             <input v-model.number="splitPrefix" type="range" :min="result.prefix" max="32" />
             <div class="split-shortcuts">
-              <button v-for="delta in [1, 2, 4, 8]" :key="delta" :disabled="result.prefix + delta > 32" @click="adjustSplitPrefix(delta)">多 {{ delta }} 位</button>
+              <el-button v-for="delta in [1, 2, 4, 8]" :key="delta" size="small" :disabled="result.prefix + delta > 32" @click="adjustSplitPrefix(delta)">多 {{ delta }} 位</el-button>
             </div>
           </div>
           <div v-if="splitPlan" class="split-stats">
@@ -310,10 +310,10 @@ maskFromPrefix()
         <div class="section-heading"><div><span>FORMAT CONVERTER</span><h3>IPv4 多格式互转</h3></div></div>
         <p class="section-intro">编辑任意一行并点击该行转换，其余格式会同步更新。</p>
         <div class="converter-list">
-          <label><span>十进制点分</span><div><input v-model="conv.decimal" @keyup.enter="convertFromDecimal" /><button @click="convertFromDecimal">转换</button></div></label>
-          <label><span>二进制</span><div><input v-model="conv.binary" class="mono" @keyup.enter="convertFromBinary" /><button @click="convertFromBinary">转换</button></div></label>
-          <label><span>十六进制</span><div><input v-model="conv.hex" class="mono" @keyup.enter="convertFromHex" /><button @click="convertFromHex">转换</button></div></label>
-          <label><span>32 位整数</span><div><input v-model="conv.integer" class="mono" @keyup.enter="convertFromInteger" /><button @click="convertFromInteger">转换</button></div></label>
+          <label><span>十进制点分</span><div><input v-model="conv.decimal" @keyup.enter="convertFromDecimal" /><el-button @click="convertFromDecimal">转换</el-button></div></label>
+          <label><span>二进制</span><div><input v-model="conv.binary" class="mono" @keyup.enter="convertFromBinary" /><el-button @click="convertFromBinary">转换</el-button></div></label>
+          <label><span>十六进制</span><div><input v-model="conv.hex" class="mono" @keyup.enter="convertFromHex" /><el-button @click="convertFromHex">转换</el-button></div></label>
+          <label><span>32 位整数</span><div><input v-model="conv.integer" class="mono" @keyup.enter="convertFromInteger" /><el-button @click="convertFromInteger">转换</el-button></div></label>
         </div>
         <div v-if="conv.error" class="inline-error">{{ conv.error }}</div>
         <div class="converter-tip">十六进制同时支持 <code>C0.A8.01.01</code> 与 <code>C0A80101</code> 两种写法。</div>
@@ -324,12 +324,12 @@ maskFromPrefix()
         <div class="mask-editor">
           <div class="mask-source">
             <label>前缀长度</label>
-            <div class="prefix-number"><span>/</span><input v-model.number="maskCalc.prefix" type="number" min="0" max="32" /><button @click="maskFromPrefix">转为掩码</button></div>
+            <div class="prefix-number"><span>/</span><input v-model.number="maskCalc.prefix" type="number" min="0" max="32" /><el-button @click="maskFromPrefix">转为掩码</el-button></div>
           </div>
           <div class="swap-mark">⇄</div>
           <div class="mask-source">
             <label>十进制掩码</label>
-            <div class="prefix-number"><input v-model="maskCalc.decimal" @keyup.enter="prefixFromMask" /><button @click="prefixFromMask">转为前缀</button></div>
+            <div class="prefix-number"><input v-model="maskCalc.decimal" @keyup.enter="prefixFromMask" /><el-button @click="prefixFromMask">转为前缀</el-button></div>
           </div>
         </div>
         <div v-if="maskCalc.error" class="inline-error">{{ maskCalc.error }}</div>
@@ -345,9 +345,9 @@ maskFromPrefix()
 
     <section class="example-row">
       <span>快速示例</span>
-      <button @click="useExample('10.24.8.16/20')">企业内网 /20</button>
-      <button @click="useExample('172.16.0.10/30')">点对点 /30</button>
-      <button @click="useExample('203.0.113.8/29')">小型公网 /29</button>
+      <el-button size="small" @click="useExample('10.24.8.16/20')">企业内网 /20</el-button>
+      <el-button size="small" @click="useExample('172.16.0.10/30')">点对点 /30</el-button>
+      <el-button size="small" @click="useExample('203.0.113.8/29')">小型公网 /29</el-button>
     </section>
 
     <ToolGuide title="使用说明">
@@ -442,21 +442,6 @@ maskFromPrefix()
   font-size: 15px;
   font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
 }
-.primary-button,.secondary-button {
-  border: 0;
-  border-radius: var(--radius-sm);
-  padding: 11px 17px;
-  background: var(--accent);
-  color: var(--c-on-accent);
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.secondary-button {
-  border: 1px solid #ccd8e8;
-  background: var(--c-surface);
-  color: #3d5c87;
-}
 .field-error,.inline-error {
   margin-top: 8px;
   color: #c23c4a;
@@ -468,21 +453,6 @@ maskFromPrefix()
   flex-wrap: wrap;
   gap: 6px;
   max-width: 330px;
-}
-.preset-list button,.split-shortcuts button,.example-row button {
-  border: 1px solid #d8e1ed;
-  border-radius: var(--radius-sm);
-  padding: 7px 10px;
-  background: var(--c-surface);
-  color: #52627b;
-  font-size: 13px;
-  font-weight: 650;
-  cursor: pointer;
-}
-.preset-list button:hover,.split-shortcuts button:hover,.example-row button:hover {
-  border-color: #8db1ea;
-  color: #245fb9;
-  background: #f3f7ff;
 }
 .tool-tabs {
   display: grid;
@@ -745,10 +715,6 @@ maskFromPrefix()
   gap: 7px;
   margin-top: 8px;
 }
-.split-shortcuts button:disabled {
-  opacity: .4;
-  cursor: not-allowed;
-}
 .split-stats {
   display: grid;
   grid-template-columns: repeat(3,1fr);
@@ -916,7 +882,7 @@ maskFromPrefix()
   border-color: #35445a;
   background: #182538;
 }
-:global(.dark) .preset-list button,:global(.dark) .split-shortcuts button,:global(.dark) .example-row button,:global(.dark) .secondary-button,:global(.dark) .range-node,:global(.dark) .result-grid article,:global(.dark) .mask-results article {
+:global(.dark) .range-node,:global(.dark) .result-grid article,:global(.dark) .mask-results article {
   border-color: #35445a;
   background: #172438;
   color: #bac7d8;
@@ -981,7 +947,7 @@ maskFromPrefix()
   .input-shell input {
     min-width: calc(100% - 54px);
   }
-  .primary-button {
+  .cidr-input-row :deep(.el-button--primary) {
     width: 100%;
   }
   .tool-tabs {
@@ -1045,7 +1011,7 @@ maskFromPrefix()
     align-items: stretch;
     flex-direction: column;
   }
-  .example-row button {
+  .example-row :deep(.el-button) {
     text-align: left;
   }
 }

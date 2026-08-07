@@ -215,23 +215,23 @@ onUnmounted(() => {
     </ToolHero>
 
     <section class="comparison-card">
-      <header class="comparison-heading"><div><span class="eyebrow">BEFORE / AFTER</span><h3>原图与包浆结果</h3><p>{{ status }}</p></div><div class="top-actions"><el-upload :show-file-list="false" accept="image/png,image/jpeg,image/webp,image/gif" :on-change="handleFileChange" :auto-upload="false"><template #trigger><button type="button" aria-label="载入需要包浆的图片"><el-icon><Picture /></el-icon>{{ originalImage ? '更换图片' : '载入图片' }}</button></template></el-upload><button v-if="resultImage" type="button" class="download" aria-label="下载电子包浆结果图片" @click="downloadResult"><el-icon><Download /></el-icon>下载结果</button></div></header>
+      <header class="comparison-heading"><div><span class="eyebrow">BEFORE / AFTER</span><h3>原图与包浆结果</h3><p>{{ status }}</p></div><div class="top-actions"><el-upload :show-file-list="false" accept="image/png,image/jpeg,image/webp,image/gif" :on-change="handleFileChange" :auto-upload="false"><template #trigger><el-button :icon="Picture" aria-label="载入需要包浆的图片">{{ originalImage ? '更换图片' : '载入图片' }}</el-button></template></el-upload><el-button v-if="resultImage" type="success" :icon="Download" aria-label="下载电子包浆结果图片" @click="downloadResult">下载结果</el-button></div></header>
       <div class="compare-grid">
         <div class="image-panel"><div class="panel-label"><strong>原图</strong><span>{{ originalImage ? `${dimensions.width} × ${dimensions.height} · ${originalSizeLabel}` : '等待载入' }}</span></div><div class="image-stage"><img v-if="originalImage" :src="originalImage" alt="电子包浆原图" /><div v-else class="empty-state"><el-icon><Picture /></el-icon><strong>载入一张图片</strong><span>支持拖入或点击选择</span></div></div></div>
-        <div class="image-panel"><div class="panel-label"><strong>包浆结果</strong><span>{{ resultImage ? `${outputDimensions.width} × ${outputDimensions.height} · ${resultSizeLabel}` : profile.label }}</span></div><div class="image-stage"><img v-if="resultImage" :src="resultImage" alt="电子包浆处理结果" /><div v-else class="empty-state"><el-icon><Picture /></el-icon><strong>{{ processing ? `正在处理 ${progress}%` : '等待生成结果' }}</strong><span>{{ processing ? status : '调整参数后开始包浆' }}</span></div><div v-if="processing" class="processing-overlay"><div class="progress-ring" :style="{ '--progress': `${progress * 3.6}deg` }"><span>{{ progress }}%</span></div><button type="button" aria-label="取消电子包浆处理" @click="cancelProcessing"><el-icon><Close /></el-icon>取消处理</button></div></div></div>
+        <div class="image-panel"><div class="panel-label"><strong>包浆结果</strong><span>{{ resultImage ? `${outputDimensions.width} × ${outputDimensions.height} · ${resultSizeLabel}` : profile.label }}</span></div><div class="image-stage"><img v-if="resultImage" :src="resultImage" alt="电子包浆处理结果" /><div v-else class="empty-state"><el-icon><Picture /></el-icon><strong>{{ processing ? `正在处理 ${progress}%` : '等待生成结果' }}</strong><span>{{ processing ? status : '调整参数后开始包浆' }}</span></div><div v-if="processing" class="processing-overlay"><div class="progress-ring" :style="{ '--progress': `${progress * 3.6}deg` }"><span>{{ progress }}%</span></div><el-button text type="danger" :icon="Close" aria-label="取消电子包浆处理" @click="cancelProcessing">取消处理</el-button></div></div></div>
       </div>
       <div class="comparison-meta"><span>{{ profile.label }}</span><span>强度 {{ profile.score }} / 100</span><span>{{ maxEdge ? `最长边 ${maxEdge}px` : '保持原始尺寸' }}</span><span>JPEG · 本地生成</span></div>
     </section>
 
     <div class="workspace-grid">
       <section class="control-card">
-        <header class="card-heading"><div><span class="eyebrow">PATINA RECIPE</span><h3>包浆配方</h3></div><button type="button" aria-label="重置电子包浆实验" @click="reset"><el-icon><Refresh /></el-icon>重置</button></header>
-        <div class="preset-grid"><button v-for="preset in patinaPresets" :key="preset.label" type="button" @click="applyPreset(preset)"><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small><span>{{ preset.count }} 次 · {{ preset.quality }}%</span></button></div>
+        <header class="card-heading"><div><span class="eyebrow">PATINA RECIPE</span><h3>包浆配方</h3></div><el-button :icon="Refresh" aria-label="重置电子包浆实验" @click="reset">重置</el-button></header>
+        <div class="preset-grid"><el-button v-for="preset in patinaPresets" :key="preset.label" @click="applyPreset(preset)"><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small><span>{{ preset.count }} 次 · {{ preset.quality }}%</span></el-button></div>
         <div class="slider-setting"><label><span>重复压缩次数</span><strong>{{ compressionCount }} 次</strong></label><el-slider v-model="compressionCount" :min="1" :max="100" :disabled="processing" /></div>
         <div class="slider-setting"><label><span>单轮 JPEG 质量</span><strong>{{ quality }}%</strong></label><el-slider v-model="quality" :min="1" :max="99" :disabled="processing" /></div>
         <label class="option-field"><span>输出尺寸</span><el-radio-group v-model="maxEdge" :disabled="processing"><el-radio-button v-for="item in sizeOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <div class="intensity-card"><div><span>预计效果</span><strong>{{ profile.label }}</strong><p>{{ profile.description }}</p></div><div class="intensity-meter"><i :style="{ width: `${profile.score}%` }"></i></div></div>
-        <div class="process-actions"><button v-if="!processing" type="button" class="primary" aria-label="开始或重新运行电子包浆处理" :disabled="!originalImage" @click="simulate"><el-icon><VideoPlay /></el-icon>{{ resultImage ? '按当前参数重新处理' : '开始包浆' }}</button><button v-else type="button" class="cancel" aria-label="取消电子包浆处理" @click="cancelProcessing"><el-icon><Close /></el-icon>取消处理</button></div>
+        <div class="process-actions"><el-button v-if="!processing" type="success" :icon="VideoPlay" aria-label="开始或重新运行电子包浆处理" :disabled="!originalImage" @click="simulate">{{ resultImage ? '按当前参数重新处理' : '开始包浆' }}</el-button><el-button v-else type="danger" :icon="Close" aria-label="取消电子包浆处理" @click="cancelProcessing">取消处理</el-button></div>
       </section>
 
       <aside class="insight-card">
@@ -287,25 +287,6 @@ onUnmounted(() => {
 .top-actions {
   display: flex;
   gap:9px
-}
-.top-actions button,.card-heading>button,.process-actions button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: 38px;
-  padding: 0 13px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-text-body);
-  font-weight: 750;
-  cursor:pointer
-}
-.top-actions button.download,.process-actions button.primary {
-  border-color: #16a34a;
-  background: #16a34a;
-  color: var(--c-on-accent)
 }
 .compare-grid {
   display: grid;
@@ -381,16 +362,6 @@ onUnmounted(() => {
   gap: 14px;
   background:rgba(248,250,252,.9)
 }
-.processing-overlay button {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  border: 0;
-  background: transparent;
-  color: #b91c1c;
-  font-weight: 750;
-  cursor:pointer
-}
 .progress-ring,.score-ring {
   display: grid;
   place-items: center;
@@ -439,30 +410,22 @@ onUnmounted(() => {
 .card-heading {
   margin-bottom:20px
 }
-.card-heading>button {
-  min-height: 34px;
-  padding:0 10px
-}
 .preset-grid {
   display: grid;
   grid-template-columns: repeat(4,1fr);
   gap:8px
 }
-.preset-grid button {
+.preset-grid :deep(.el-button) {
+  width: 100%;
+  height: auto;
+  padding: 11px;
+  white-space: normal;
+}
+.preset-grid :deep(.el-button > span) {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 3px;
-  padding: 11px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface-subtle);
-  color: var(--c-text-strong);
-  text-align: left;
-  cursor:pointer
-}
-.preset-grid button:hover {
-  border-color: #4ade80;
-  background:#f0fdf4
 }
 .preset-grid small {
   color: var(--c-text-muted)
@@ -550,17 +513,8 @@ onUnmounted(() => {
   display: flex;
   margin-top:16px
 }
-.process-actions button {
+.process-actions :deep(.el-button) {
   width:100%
-}
-.process-actions button:disabled {
-  cursor: not-allowed;
-  opacity:.5
-}
-.process-actions button.cancel {
-  border-color: #fecaca;
-  background: #fef2f2;
-  color:#b91c1c
 }
 .score-ring {
   width: 150px;
@@ -636,11 +590,6 @@ onUnmounted(() => {
 .dark .comparison-heading p,.dark .option-field>span {
   color: var(--c-text-muted)
 }
-.dark .top-actions button,.dark .card-heading>button {
-  border-color: #475569;
-  background: #0f172a;
-  color:#cbd5e1
-}
 .dark .image-panel {
   border-color: #334155;
   background:#0f172a
@@ -661,14 +610,10 @@ onUnmounted(() => {
   background: #14532d;
   color:#bbf7d0
 }
-.dark .preset-grid button,.dark .summary-list div {
+.dark .summary-list div {
   border-color: #334155;
   background: #0f172a;
   color: var(--c-text-muted)
-}
-.dark .preset-grid button:hover {
-  border-color: #4ade80;
-  background:#0d2e1b
 }
 .dark .intensity-card,.dark .privacy-note {
   background:#0d2e1b
@@ -710,7 +655,7 @@ onUnmounted(() => {
   .top-actions>* {
     flex:1
   }
-  .top-actions button {
+  .top-actions :deep(.el-button) {
     width:100%
   }
   .compare-grid {

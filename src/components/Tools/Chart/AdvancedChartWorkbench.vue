@@ -137,12 +137,12 @@ function choosePalette(item: typeof CHART_PALETTES[number]) { currentPaletteId.v
     <section class="sample-card"><div class="section-heading"><div><span class="eyebrow">START WITH DATA</span><h3>载入一个示例</h3></div><p>示例会替换当前数据，载入后可以继续编辑。</p></div><div class="sample-list"><button v-for="sample in samples" :key="sample.id" type="button" :class="{ active: activeSample === sample.id }" @click="applySample(sample.id)"><span>{{ sample.title }}</span><small>{{ sample.hint }}</small></button></div></section>
 
     <section class="workspace-grid">
-      <article class="data-card"><header class="card-header"><div><span class="eyebrow">STRUCTURED DATA</span><h3>数据输入</h3></div><div class="header-actions"><button type="button" @click="fileInput?.click()"><el-icon><UploadFilled /></el-icon>导入</button><button type="button" @click="downloadData">导出</button><input ref="fileInput" type="file" accept=".csv,.tsv,.txt,.json" hidden @change="importData"></div></header><div class="mode-tabs" aria-label="数据输入方式"><button type="button" :class="{ active: dataMode === 'grid' }" @click="changeMode('grid')">可视表格</button><button type="button" :class="{ active: dataMode === 'table' }" @click="changeMode('table')">CSV / TSV</button><button type="button" :class="{ active: dataMode === 'json' }" @click="changeMode('json')">JSON</button></div><ChartDataGrid v-if="dataMode === 'grid'" v-model="dataText" :min-columns="gridColumns" :aria-label="`${workbenchTitle}可视数据表格`" @update:model-value="activeSample = ''" /><textarea v-else v-model="dataText" spellcheck="false" :aria-label="`${workbenchTitle}数据输入`" @input="activeSample = ''"></textarea><div class="format-hint"><span>{{ formatHint }}</span><b>{{ stats.count }} 条有效记录</b></div><div v-if="allErrors.length" class="validation-box" role="alert"><strong>有 {{ allErrors.length }} 处需要检查</strong><ul><li v-for="error in allErrors.slice(0, 4)" :key="error">{{ error }}</li></ul></div><div v-else class="validation-box success"><strong>数据结构有效</strong><span>修改数据后，预览和统计会自动更新。</span></div></article>
+      <article class="data-card"><header class="card-header"><div><span class="eyebrow">STRUCTURED DATA</span><h3>数据输入</h3></div><div class="header-actions"><el-button :icon="UploadFilled" @click="fileInput?.click()">导入</el-button><el-button @click="downloadData">导出</el-button><input ref="fileInput" type="file" accept=".csv,.tsv,.txt,.json" hidden @change="importData"></div></header><div class="mode-tabs" aria-label="数据输入方式"><button type="button" :class="{ active: dataMode === 'grid' }" @click="changeMode('grid')">可视表格</button><button type="button" :class="{ active: dataMode === 'table' }" @click="changeMode('table')">CSV / TSV</button><button type="button" :class="{ active: dataMode === 'json' }" @click="changeMode('json')">JSON</button></div><ChartDataGrid v-if="dataMode === 'grid'" v-model="dataText" :min-columns="gridColumns" :aria-label="`${workbenchTitle}可视数据表格`" @update:model-value="activeSample = ''" /><textarea v-else v-model="dataText" spellcheck="false" :aria-label="`${workbenchTitle}数据输入`" @input="activeSample = ''"></textarea><div class="format-hint"><span>{{ formatHint }}</span><b>{{ stats.count }} 条有效记录</b></div><div v-if="allErrors.length" class="validation-box" role="alert"><strong>有 {{ allErrors.length }} 处需要检查</strong><ul><li v-for="error in allErrors.slice(0, 4)" :key="error">{{ error }}</li></ul></div><div v-else class="validation-box success"><strong>数据结构有效</strong><span>修改数据后，预览和统计会自动更新。</span></div></article>
 
-      <article class="preview-card"><header class="card-header"><div><span class="eyebrow">LIVE PREVIEW</span><h3>实时预览</h3></div><div class="header-actions"><button type="button" aria-label="复制 ECharts 配置" @click="copy(JSON.stringify(option, null, 2))"><el-icon><CopyDocument /></el-icon>复制配置</button><button type="button" class="primary" @click="downloadPng"><el-icon><Download /></el-icon>导出 PNG</button></div></header><div class="chart-shell" :style="{ height: `${chartHeight}px` }"><div ref="chartElement" class="chart-canvas" role="img" :aria-label="`${workbenchTitle}实时预览，共 ${stats.count} 条记录`"></div><div v-if="!stats.count" class="chart-empty">输入有效数据后，这里会显示图表</div></div><div class="preview-summary"><span><i></i>实时同步</span><span>{{ stats.count }} 条记录</span><span>{{ stats.series }} 个系列 / 维度组</span><span>峰值 {{ formatNumber(stats.max) }}</span></div></article>
+      <article class="preview-card"><header class="card-header"><div><span class="eyebrow">LIVE PREVIEW</span><h3>实时预览</h3></div><div class="header-actions"><el-button :icon="CopyDocument" aria-label="复制 ECharts 配置" @click="copy(JSON.stringify(option, null, 2))">复制配置</el-button><el-button type="primary" :icon="Download" @click="downloadPng">导出 PNG</el-button></div></header><div class="chart-shell" :style="{ height: `${chartHeight}px` }"><div ref="chartElement" class="chart-canvas" role="img" :aria-label="`${workbenchTitle}实时预览，共 ${stats.count} 条记录`"></div><div v-if="!stats.count" class="chart-empty">输入有效数据后，这里会显示图表</div></div><div class="preview-summary"><span><i></i>实时同步</span><span>{{ stats.count }} 条记录</span><span>{{ stats.series }} 个系列 / 维度组</span><span>峰值 {{ formatNumber(stats.max) }}</span></div></article>
     </section>
 
-    <section class="config-card"><header class="card-header"><div><span class="eyebrow">PRO SETTINGS</span><h3>专业配置</h3><p>通用排版与当前图表的专属参数集中在这里。</p></div><button type="button" class="reset-button" @click="resetWorkbench"><el-icon><Refresh /></el-icon>恢复默认</button></header><div class="config-grid">
+    <section class="config-card"><header class="card-header"><div><span class="eyebrow">PRO SETTINGS</span><h3>专业配置</h3><p>通用排版与当前图表的专属参数集中在这里。</p></div><el-button class="reset-button" :icon="Refresh" @click="resetWorkbench">恢复默认</el-button></header><div class="config-grid">
       <label class="field"><span>主标题</span><input v-model="settings.title" type="text" maxlength="40"></label><label class="field"><span>副标题</span><input v-model="settings.subtitle" type="text" maxlength="60"></label>
       <div class="field"><span>标题位置</span><div class="segmented"><button v-for="item in [{ value: 'left', label: '左' }, { value: 'center', label: '中' }, { value: 'right', label: '右' }]" :key="item.value" type="button" :class="{ active: settings.titlePosition === item.value }" @click="settings.titlePosition = item.value as AdvancedChartSettings['titlePosition']">{{ item.label }}</button></div></div>
       <div class="field"><span>图形样式</span><div class="segmented"><button v-for="item in variants" :key="item.value" type="button" :class="{ active: settings.variant === item.value }" @click="settings.variant = item.value">{{ item.label }}</button></div></div>
@@ -286,26 +286,6 @@ function choosePalette(item: typeof CHART_PALETTES[number]) { currentPaletteId.v
   display: flex;
   flex-wrap: wrap;
   gap:7px
-}
-.header-actions button,.reset-button {
-  display: inline-flex;
-  min-height: 36px;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 0 11px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-text-body);
-  font-size: 12px;
-  font-weight: 850;
-  cursor:pointer
-}
-.header-actions button.primary {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--c-on-accent)
 }
 .mode-tabs {
   display: grid;
@@ -576,15 +556,10 @@ textarea:focus {
   background: color-mix(in srgb,var(--accent),#0f172a 76%);
   color: var(--c-on-accent)
 }
-:global(html.dark .advanced-page .header-actions button),:global(html.dark .advanced-page .reset-button),:global(html.dark .advanced-page .palette-list button),:global(html.dark .advanced-page .field input[type=text]),:global(html.dark .advanced-page .field input[type=number]),:global(html.dark .advanced-page .field select),:global(html.dark .advanced-page .color-field input) {
+:global(html.dark .advanced-page .palette-list button),:global(html.dark .advanced-page .field input[type=text]),:global(html.dark .advanced-page .field input[type=number]),:global(html.dark .advanced-page .field select),:global(html.dark .advanced-page .color-field input) {
   border-color: var(--c-border-strong);
   background: var(--c-surface-subtle);
   color: var(--c-text-primary)
-}
-:global(html.dark .advanced-page .header-actions button.primary) {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--c-on-accent)
 }
 :global(html.dark .advanced-page .mode-tabs button.active),:global(html.dark .advanced-page .segmented button.active) {
   background: #334155;
@@ -647,7 +622,7 @@ textarea:focus {
   .header-actions {
     width:100%
   }
-  .header-actions button {
+  .header-actions :deep(.el-button) {
     flex:1
   }
   textarea {

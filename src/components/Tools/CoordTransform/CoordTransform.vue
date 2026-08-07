@@ -441,9 +441,9 @@ onUnmounted(() => {
           <div><strong>五种结果自动联动</strong><p>{{ summaryText }}</p></div>
         </div>
         <div class="status-actions">
-          <button @click="copyAllCoordinates">复制全部</button>
-          <button @click="downloadCurrentJson">导出 JSON</button>
-          <button class="muted" @click="clearCoordinates">清空</button>
+          <el-button @click="copyAllCoordinates">复制全部</el-button>
+          <el-button @click="downloadCurrentJson">导出 JSON</el-button>
+          <el-button @click="clearCoordinates">清空</el-button>
         </div>
       </div>
 
@@ -455,7 +455,7 @@ onUnmounted(() => {
           </header>
           <div class="quick-locations">
             <span>快速定位</span>
-            <button v-for="location in quickLocations" :key="location.name" @click="useQuickLocation(location)">{{ location.name }}</button>
+            <el-button v-for="location in quickLocations" :key="location.name" size="small" @click="useQuickLocation(location)">{{ location.name }}</el-button>
           </div>
           <div v-if="state.isOnline" class="map-stage"><div ref="mapContainerRef" class="map-container"></div></div>
           <div v-else class="map-offline">
@@ -475,7 +475,7 @@ onUnmounted(() => {
             <section v-for="item in systemMeta" :key="item.key" class="system-card" :class="{ active: activeSystem === item.key }">
               <div class="system-heading">
                 <button class="system-name" @click="activeSystem = item.key"><span>{{ item.tag }}</span><div><strong>{{ item.label }}</strong><small>{{ item.desc }}</small></div></button>
-                <button class="copy-button" :disabled="!state.current" @click="copyPair(item.key)">复制</button>
+                <el-button size="small" class="copy-button" :disabled="!state.current" @click="copyPair(item.key)">复制</el-button>
               </div>
               <div class="coordinate-fields">
                 <label><span>{{ item.primaryLabel }}</span><el-input v-model="state.forms[item.key].primary" :placeholder="item.primaryPlaceholder" @focus="activeSystem = item.key" @input="updateFromInputs(item.key)" /></label>
@@ -503,13 +503,13 @@ onUnmounted(() => {
           </label>
           <label class="batch-editor"><span>每行一个坐标</span><el-input v-model="batchInput" type="textarea" :rows="12" resize="vertical" placeholder="名称,经度,纬度&#10;天安门,116.397428,39.909230" /></label>
           <div class="format-hint"><strong>可直接粘贴 Excel / WPS</strong><p>表头会自动忽略，以 # 开头的行视为注释，单次最多处理 500 个坐标点。</p></div>
-          <div class="batch-actions"><button class="primary" :disabled="!batchInput.trim()" @click="runBatchConversion">开始批量转换</button><button @click="clearBatch">清空</button></div>
+          <div class="batch-actions"><el-button type="primary" :disabled="!batchInput.trim()" @click="runBatchConversion">开始批量转换</el-button><el-button @click="clearBatch">清空</el-button></div>
         </article>
 
         <article class="batch-result-card">
           <header class="section-header result-header">
             <div><span>CONVERSION RESULT</span><h3>转换结果</h3><p>{{ batchResults.length ? `已生成 ${batchResults.length} 个坐标点的五系对照` : '转换后可查看结果并导出完整 CSV。' }}</p></div>
-            <button class="export-button" :disabled="!batchResults.length" @click="downloadBatchCsv">导出 CSV</button>
+            <el-button class="export-button" type="primary" :disabled="!batchResults.length" @click="downloadBatchCsv">导出 CSV</el-button>
           </header>
           <div v-if="batchErrors.length" class="batch-errors"><strong>{{ batchErrors.length }} 行未转换</strong><p v-for="error in batchErrors.slice(0, 4)" :key="error.line">第 {{ error.line }} 行：{{ error.message }}</p><small v-if="batchErrors.length > 4">另有 {{ batchErrors.length - 4 }} 条错误，可修改后重新转换。</small></div>
           <div v-if="batchResults.length" class="result-table-wrap">
@@ -522,7 +522,7 @@ onUnmounted(() => {
                   <td>{{ formatCoordinateValue('gcj02', result.coordinates.gcj02.lng) }}<br>{{ formatCoordinateValue('gcj02', result.coordinates.gcj02.lat) }}</td>
                   <td>{{ formatCoordinateValue('bd09', result.coordinates.bd09.lng) }}<br>{{ formatCoordinateValue('bd09', result.coordinates.bd09.lat) }}</td>
                   <td>{{ formatCoordinateValue('mercator', result.coordinates.mercator.x) }}<br>{{ formatCoordinateValue('mercator', result.coordinates.mercator.y) }}</td>
-                  <td><button @click="locateBatchResult(result)">在地图查看</button></td>
+                  <td><el-button size="small" @click="locateBatchResult(result)">在地图查看</el-button></td>
                 </tr>
               </tbody>
             </table>
@@ -657,20 +657,6 @@ onUnmounted(() => {
   gap: 8px;
   flex-wrap:wrap
 }
-.status-actions button,.batch-actions button,.export-button {
-  padding: 9px 13px;
-  border: 1px solid #cfdbe8;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  font-size: 13px;
-  color:#42516a
-}
-.status-actions button:hover,.batch-actions button:hover {
-  border-color:#78a9f4
-}
-.status-actions .muted {
-  color:#8794a7
-}
 .single-layout,.batch-layout {
   display: grid;
   grid-template-columns: minmax(0,1.12fr) minmax(420px,.88fr);
@@ -712,14 +698,6 @@ onUnmounted(() => {
 .quick-locations span {
   font-size: 13px;
   color:#718096
-}
-.quick-locations button {
-  padding: 6px 11px;
-  border: 1px solid #d8e2ed;
-  border-radius: var(--radius-full);
-  background: white;
-  font-size: 13px;
-  color:#536176
 }
 .map-stage {
   overflow: hidden;
@@ -911,20 +889,8 @@ onUnmounted(() => {
   line-height: 1.6;
   color:#6c7d91
 }
-.batch-actions .primary,.export-button {
-  border-color: #3478f6;
-  background: #3478f6;
-  color: var(--c-on-accent)
-}
-.batch-actions button {
-  padding:10px 15px
-}
 .result-header {
   align-items:center
-}
-.export-button:disabled,.batch-actions button:disabled {
-  opacity: .45;
-  cursor:not-allowed
 }
 .batch-errors strong {
   display:block
@@ -1032,7 +998,7 @@ onUnmounted(() => {
 .dark .section-header p,.dark .status-strip p {
   color:#a7b4c6
 }
-.dark .mode-tabs button,.dark .status-actions button,.dark .quick-locations button {
+.dark .mode-tabs button {
   border-color: #38475c;
   background: #172033;
   color:#d4deeb
@@ -1108,7 +1074,7 @@ onUnmounted(() => {
   .status-actions {
     width:100%
   }
-  .status-actions button {
+  .status-actions :deep(.el-button) {
     flex:1
   }
   .map-card,.converter-card,.batch-input-card,.batch-result-card {

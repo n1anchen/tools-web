@@ -246,21 +246,21 @@ onUnmounted(() => {
     <section class="preview-card">
       <header class="preview-heading">
         <div><span class="eyebrow">LIVE BADGE PREVIEW</span><h3>最终效果预览</h3><p>{{ state.status }}</p></div>
-        <div class="export-actions"><button type="button" aria-label="复制双栏徽标 PNG" :disabled="state.loading || state.exporting" @click="copyImage"><el-icon><CopyDocument /></el-icon>复制 PNG</button><button type="button" class="primary" aria-label="下载双栏徽标 PNG" :disabled="state.loading || state.exporting" @click="downloadImage"><el-icon><Download /></el-icon>下载图片</button></div>
+        <div class="export-actions"><el-button :icon="CopyDocument" aria-label="复制双栏徽标 PNG" :disabled="state.loading || state.exporting" @click="copyImage">复制 PNG</el-button><el-button type="primary" :icon="Download" aria-label="下载双栏徽标 PNG" :disabled="state.loading || state.exporting" @click="downloadImage">下载图片</el-button></div>
       </header>
       <div class="canvas-stage">
         <canvas ref="canvasRef" role="img" aria-label="双栏徽标预览" />
         <div v-if="state.loading" class="loading-overlay"><el-icon class="is-loading"><Loading /></el-icon><span>{{ state.status }}</span></div>
-        <div v-else-if="state.error" class="loading-overlay error"><span>{{ state.error }}</span><button type="button" @click="drawLogo">重新渲染</button></div>
+        <div v-else-if="state.error" class="loading-overlay error"><span>{{ state.error }}</span><el-button type="danger" @click="drawLogo">重新渲染</el-button></div>
       </div>
       <div class="preview-meta"><span>{{ shapeLabel }}</span><span>{{ backgroundLabel }}</span><span>{{ exportDimensions.width }} × {{ exportDimensions.height }} px</span><span>PNG · 本地生成</span></div>
     </section>
 
     <div class="workspace-grid">
       <section class="control-card">
-        <header class="card-heading"><div><span class="eyebrow">WORDMARK LAYOUT</span><h3>文字与版式</h3></div><button type="button" aria-label="恢复默认徽标设置" @click="resetStudio"><el-icon><Refresh /></el-icon>重置</button></header>
+        <header class="card-heading"><div><span class="eyebrow">WORDMARK LAYOUT</span><h3>文字与版式</h3></div><el-button :icon="Refresh" aria-label="恢复默认徽标设置" @click="resetStudio">重置</el-button></header>
         <div class="text-grid"><label><span>左侧文字</span><el-input v-model="state.leftText" maxlength="18" aria-label="徽标左侧文字" /></label><label><span>色块文字</span><el-input v-model="state.rightText" maxlength="18" aria-label="徽标色块文字" /></label></div>
-        <div class="text-presets"><span>快速文案</span><div><button v-for="preset in textPresets" :key="preset.label" type="button" @click="applyText(preset)">{{ preset.label }}</button></div></div>
+        <div class="text-presets"><span>快速文案</span><div><el-button v-for="preset in textPresets" :key="preset.label" size="small" @click="applyText(preset)">{{ preset.label }}</el-button></div></div>
         <label class="option-field"><span>画布形状</span><el-radio-group v-model="state.bgShape"><el-radio-button v-for="item in shapeOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <label class="option-field"><span>图片背景</span><el-radio-group v-model="state.backgroundMode"><el-radio-button v-for="item in backgroundOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <div class="slider-setting"><label><span>标题字号</span><strong>{{ state.fontSize }} px</strong></label><el-slider v-model="state.fontSize" :min="64" :max="180" :step="4" /></div>
@@ -269,7 +269,7 @@ onUnmounted(() => {
 
       <aside class="appearance-card">
         <header class="card-heading"><div><span class="eyebrow">COLOR & EXPORT</span><h3>配色与导出</h3></div></header>
-        <div class="theme-presets"><button v-for="preset in themePresets" :key="preset.label" type="button" @click="applyTheme(preset)"><i :style="{ background: `linear-gradient(135deg, ${preset.background} 50%, ${preset.box} 50%)` }"></i><span><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small></span></button></div>
+        <div class="theme-presets"><el-button v-for="preset in themePresets" :key="preset.label" @click="applyTheme(preset)"><i :style="{ background: `linear-gradient(135deg, ${preset.background} 50%, ${preset.box} 50%)` }"></i><span><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small></span></el-button></div>
         <div class="color-grid"><label><span>背景</span><div><el-color-picker v-model="state.backgroundColor" :disabled="state.backgroundMode === 'transparent'" /><code>{{ state.backgroundMode === 'transparent' ? '透明' : state.backgroundColor }}</code></div></label><label><span>色块</span><div><el-color-picker v-model="state.boxColor" /><code>{{ state.boxColor }}</code></div></label><label><span>左侧文字</span><div><el-color-picker v-model="state.leftColor" /><code>{{ state.leftColor }}</code></div></label><label><span>色块文字</span><div><el-color-picker v-model="state.rightColor" /><code>{{ state.rightColor }}</code></div></label></div>
         <label class="resolution-field"><span>导出清晰度</span><el-radio-group v-model="state.scale"><el-radio-button v-for="item in scaleOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <div class="dimension-summary"><span>最终 PNG</span><strong>{{ exportDimensions.width }} × {{ exportDimensions.height }}</strong><small>{{ state.scale === 1 ? '适合网页与聊天' : state.scale === 2 ? '适合高清分享' : '适合大尺寸排版' }}</small></div>
@@ -329,28 +329,6 @@ onUnmounted(() => {
   display: flex;
   gap:7px
 }
-.export-actions button,.card-heading>button {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 8px 10px;
-  border: 1px solid #d4d4d8;
-  border-radius: var(--radius-sm);
-  color: #52525b;
-  background: var(--c-surface);
-  cursor: pointer;
-  font-size:10px
-}
-.export-actions button.primary {
-  border-color: var(--accent);
-  color: #18181b;
-  background: var(--accent);
-  font-weight:800
-}
-.export-actions button:disabled {
-  opacity: .4;
-  cursor:not-allowed
-}
 .canvas-stage {
   position: relative;
   display: grid;
@@ -389,14 +367,6 @@ onUnmounted(() => {
   flex-direction: column;
   color:#be123c
 }
-.loading-overlay button {
-  padding: 6px 9px;
-  border: 0;
-  border-radius: var(--radius-xs);
-  color: var(--c-on-accent);
-  background: #e11d48;
-  cursor:pointer
-}
 .preview-meta {
   display: flex;
   flex-wrap: wrap;
@@ -421,9 +391,6 @@ onUnmounted(() => {
 }
 .card-heading {
   margin-bottom:17px
-}
-.card-heading>button {
-  padding:6px 8px
 }
 .text-grid {
   display: grid;
@@ -450,14 +417,9 @@ onUnmounted(() => {
   flex-wrap: wrap;
   gap:6px
 }
-.text-presets button {
+.text-presets :deep(.el-button) {
+  height: auto;
   padding: 6px 8px;
-  border: 1px solid #e4e4e7;
-  border-radius: var(--radius-full);
-  color: #71717a;
-  background: #fafafa;
-  cursor: pointer;
-  font-size:9px
 }
 .option-field,.resolution-field {
   display: block;
@@ -501,16 +463,16 @@ onUnmounted(() => {
   grid-template-columns: 1fr 1fr;
   gap:7px
 }
-.theme-presets button {
+.theme-presets :deep(.el-button) {
+  width: 100%;
+  height: auto;
+  padding: 8px;
+  white-space: normal;
+}
+.theme-presets :deep(.el-button > span) {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px;
-  border: 1px solid #e4e4e7;
-  border-radius: var(--radius-sm);
-  background: #fafafa;
-  text-align: left;
-  cursor:pointer
 }
 .theme-presets i {
   flex: 0 0 29px;
@@ -595,11 +557,6 @@ onUnmounted(() => {
 :global(html.dark .split-logo-page .loading-overlay) {
   background:rgba(24,24,27,.82)
 }
-:global(html.dark .split-logo-page .export-actions button),:global(html.dark .split-logo-page .card-heading>button),:global(html.dark .split-logo-page .text-presets button),:global(html.dark .split-logo-page .theme-presets button) {
-  border-color: #3f3f46;
-  color: #d4d4d8;
-  background:#18181b
-}
 :global(html.dark .split-logo-page .preview-meta span) {
   color: #d4d4d8;
   background:#18181b
@@ -635,7 +592,7 @@ onUnmounted(() => {
   .export-actions {
     width:100%
   }
-  .export-actions button {
+  .export-actions :deep(.el-button) {
     flex: 1;
     justify-content:center
   }

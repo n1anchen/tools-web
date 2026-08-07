@@ -127,7 +127,7 @@ function downloadDiff() {
 
     <section class="command-card">
       <div class="sample-list"><span>载入示例</span><button v-for="sample in samples" :key="sample.title" type="button" @click="applySample(sample)"><strong>{{ sample.title }}</strong><small>{{ sample.note }}</small></button></div>
-      <div class="command-actions"><button type="button" aria-label="交换两侧文本" @click="swapTexts"><el-icon><Refresh /></el-icon>交换两侧</button><button type="button" class="danger" aria-label="清空两侧文本" @click="clearTexts"><el-icon><Delete /></el-icon>清空</button></div>
+      <div class="command-actions"><el-button :icon="Refresh" aria-label="交换两侧文本" @click="swapTexts">交换两侧</el-button><el-button type="danger" :icon="Delete" aria-label="清空两侧文本" @click="clearTexts">清空</el-button></div>
     </section>
 
     <section class="rule-card">
@@ -138,12 +138,12 @@ function downloadDiff() {
 
     <section class="input-grid">
       <article class="text-card original">
-        <header><div><span>ORIGINAL</span><h3>原始版本</h3><small>{{ leftLines }} 行 · {{ leftText.length }} 字符</small></div><div><button type="button" aria-label="导入原始文本" @click="triggerImport('left')"><el-icon><FolderOpened /></el-icon>导入</button><button type="button" aria-label="复制原始文本" :disabled="!leftText" @click="copy(leftText)"><el-icon><CopyDocument /></el-icon>复制</button></div></header>
+        <header><div><span>ORIGINAL</span><h3>原始版本</h3><small>{{ leftLines }} 行 · {{ leftText.length }} 字符</small></div><div><el-button :icon="FolderOpened" aria-label="导入原始文本" @click="triggerImport('left')">导入</el-button><el-button :icon="CopyDocument" aria-label="复制原始文本" :disabled="!leftText" @click="copy(leftText)">复制</el-button></div></header>
         <input ref="leftInputRef" type="file" hidden tabindex="-1" aria-hidden="true" accept=".txt,.md,.json,.xml,.html,.css,.js,.ts,.csv,text/*" @change="importText($event, 'left')">
         <el-input v-model="leftText" type="textarea" :rows="14" resize="vertical" placeholder="粘贴原始版本，或导入文本文件…" aria-label="原始版本文本" />
       </article>
       <article class="text-card revised">
-        <header><div><span>REVISED</span><h3>修改版本</h3><small>{{ rightLines }} 行 · {{ rightText.length }} 字符</small></div><div><button type="button" aria-label="导入修改文本" @click="triggerImport('right')"><el-icon><FolderOpened /></el-icon>导入</button><button type="button" aria-label="复制修改文本" :disabled="!rightText" @click="copy(rightText)"><el-icon><CopyDocument /></el-icon>复制</button></div></header>
+        <header><div><span>REVISED</span><h3>修改版本</h3><small>{{ rightLines }} 行 · {{ rightText.length }} 字符</small></div><div><el-button :icon="FolderOpened" aria-label="导入修改文本" @click="triggerImport('right')">导入</el-button><el-button :icon="CopyDocument" aria-label="复制修改文本" :disabled="!rightText" @click="copy(rightText)">复制</el-button></div></header>
         <input ref="rightInputRef" type="file" hidden tabindex="-1" aria-hidden="true" accept=".txt,.md,.json,.xml,.html,.css,.js,.ts,.csv,text/*" @change="importText($event, 'right')">
         <el-input v-model="rightText" type="textarea" :rows="14" resize="vertical" placeholder="粘贴修改版本，或导入文本文件…" aria-label="修改版本文本" />
       </article>
@@ -152,7 +152,7 @@ function downloadDiff() {
     <section class="result-card">
       <header class="result-heading">
         <div><span class="eyebrow">DIFF RESULT</span><h3>差异结果</h3><p>忽略规则会先规范化文本，再生成下方结果</p></div>
-        <div class="result-actions"><el-radio-group v-model="viewMode"><el-radio-button value="side-by-side">并排</el-radio-button><el-radio-button value="unified">混合</el-radio-button><el-radio-button value="line-by-line">逐行</el-radio-button></el-radio-group><button type="button" :disabled="!hasInput" aria-label="复制统一差异文本" @click="copy(unifiedText)"><el-icon><CopyDocument /></el-icon>复制差异</button><button type="button" :disabled="!hasInput" aria-label="导出差异文件" @click="downloadDiff"><el-icon><Download /></el-icon>导出 .diff</button></div>
+        <div class="result-actions"><el-radio-group v-model="viewMode"><el-radio-button value="side-by-side">并排</el-radio-button><el-radio-button value="unified">混合</el-radio-button><el-radio-button value="line-by-line">逐行</el-radio-button></el-radio-group><el-button :icon="CopyDocument" :disabled="!hasInput" aria-label="复制统一差异文本" @click="copy(unifiedText)">复制差异</el-button><el-button :icon="Download" :disabled="!hasInput" aria-label="导出差异文件" @click="downloadDiff">导出 .diff</el-button></div>
       </header>
 
       <div class="summary-strip"><div class="added"><span>新增</span><strong>+{{ summary.additions }}</strong></div><div class="removed"><span>删除</span><strong>-{{ summary.removals }}</strong></div><div><span>未变化</span><strong>{{ summary.unchanged }}</strong></div><div><span>左右行数</span><strong>{{ summary.oldLines }} / {{ summary.newLines }}</strong></div></div>
@@ -233,28 +233,6 @@ function downloadDiff() {
 .sample-list small {
   color: var(--c-text-muted);
   font-size:12px
-}
-.command-actions button,.text-card header button,.result-actions button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  min-height: 36px;
-  padding: 0 11px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-text-body);
-  font-size: 13px;
-  font-weight: 750;
-  cursor:pointer
-}
-.command-actions button.danger {
-  color:#dc2626
-}
-.command-actions button:disabled,.text-card header button:disabled,.result-actions button:disabled {
-  cursor: not-allowed;
-  opacity:.45
 }
 .rule-card {
   display: grid;
@@ -498,7 +476,7 @@ function downloadDiff() {
 :global(html.dark .diff-page h3) {
   color:#f8fafc
 }
-:global(html.dark .diff-page .sample-list button),:global(html.dark .diff-page .command-actions button),:global(html.dark .diff-page .text-card header button),:global(html.dark .diff-page .result-actions button) {
+:global(html.dark .diff-page .sample-list button) {
   border-color: var(--c-border-strong);
   background: var(--c-surface-subtle);
   color: var(--c-text-primary)
@@ -573,6 +551,9 @@ function downloadDiff() {
     display: grid;
     grid-template-columns:1fr 1fr
   }
+  .command-actions :deep(.el-button) {
+    width:100%
+  }
   .rule-card,.text-card,.result-card {
     padding:15px
   }
@@ -591,7 +572,7 @@ function downloadDiff() {
   .text-card header>div:last-child {
     width:100%
   }
-  .text-card header button {
+  .text-card header :deep(.el-button) {
     flex:1
   }
   .text-card :deep(.el-textarea__inner) {
@@ -600,6 +581,9 @@ function downloadDiff() {
   .result-actions {
     display: grid;
     grid-template-columns:1fr 1fr
+  }
+  .result-actions :deep(.el-button) {
+    width:100%
   }
   .result-actions :deep(.el-radio-group) {
     grid-column: 1/-1;

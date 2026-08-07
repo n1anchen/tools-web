@@ -264,7 +264,7 @@ onBeforeUnmount(() => {
     </nav>
 
     <section v-if="activeMode === 'encode'" class="workbench-card">
-      <div class="step-heading"><div><span>STEP 1</span><h3>准备两张素材图</h3></div><div class="step-actions"><button :disabled="!canEncode" @click="swapImages">交换两张图</button><button v-if="innerImage || coverImage" @click="clearEncode">清空素材</button></div></div>
+      <div class="step-heading"><div><span>STEP 1</span><h3>准备两张素材图</h3></div><div class="step-actions"><el-button :disabled="!canEncode" @click="swapImages">交换两张图</el-button><el-button v-if="innerImage || coverImage" @click="clearEncode">清空素材</el-button></div></div>
       <div class="source-grid">
         <article class="source-card">
           <div class="source-title"><span class="source-number inner">1</span><div><strong>隐藏图</strong><small>作为合成图的暗部信息</small></div></div>
@@ -298,7 +298,7 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="mix-section">
-        <div class="step-heading"><div><span>STEP 2</span><h3>选择混合纹理</h3></div><button class="reset-button" @click="resetEncodeConfig">恢复默认</button></div>
+        <div class="step-heading"><div><span>STEP 2</span><h3>选择混合纹理</h3></div><el-button class="reset-button" @click="resetEncodeConfig">恢复默认</el-button></div>
         <div class="preset-grid">
           <button v-for="preset in encodePresets" :key="preset.name" @click="applyEncodePreset(preset)"><strong>{{ preset.name }}</strong><span>{{ preset.description }}</span></button>
         </div>
@@ -317,12 +317,12 @@ onBeforeUnmount(() => {
           <div v-if="!encodeResult" class="empty-output"><span>合</span><strong>上传两张图片后自动生成</strong><p>输出尺寸以隐藏图为准，表面图会居中裁切。</p></div>
           <div v-if="encodeLoading" class="processing">正在重新混合…</div>
         </div>
-        <div class="output-footer"><div><span>PNG 无损输出</span><strong>{{ encodeDimensions }}</strong></div><button :disabled="!encodeResult" @click="downloadCanvas(encodeCanvasRef, 'mirage_tank', innerFile)">下载合成图</button></div>
+        <div class="output-footer"><div><span>PNG 无损输出</span><strong>{{ encodeDimensions }}</strong></div><el-button type="primary" :disabled="!encodeResult" @click="downloadCanvas(encodeCanvasRef, 'mirage_tank', innerFile)">下载合成图</el-button></div>
       </div>
     </section>
 
     <section v-else class="workbench-card decode-workbench">
-      <div class="step-heading"><div><span>STEP 1</span><h3>上传需要显形的坦克图</h3></div><button v-if="decodeImage" class="reset-button" @click="clearDecode">清空图片</button></div>
+      <div class="step-heading"><div><span>STEP 1</span><h3>上传需要显形的坦克图</h3></div><el-button v-if="decodeImage" class="reset-button" @click="clearDecode">清空图片</el-button></div>
       <div class="decode-grid">
         <article class="decode-source">
           <button class="decode-upload" :class="{ filled: decodeImage }" @click="decodeInputRef?.click()">
@@ -334,7 +334,7 @@ onBeforeUnmount(() => {
         </article>
 
         <article class="decode-settings">
-          <div class="settings-title"><div><span>STEP 2</span><h3>调整显形参数</h3></div><button :disabled="!decodeSource" @click="autoTuneDecode">自动估算</button></div>
+          <div class="settings-title"><div><span>STEP 2</span><h3>调整显形参数</h3></div><el-button :disabled="!decodeSource" @click="autoTuneDecode">自动估算</el-button></div>
           <label><span>亮部阈值下限</span><strong>{{ decodeConfig.lowerThreshold }}</strong><input v-model.number="decodeConfig.lowerThreshold" type="range" min="0" max="255" /></label>
           <label><span>亮部阈值上限</span><strong>{{ decodeConfig.higherThreshold }}</strong><input v-model.number="decodeConfig.higherThreshold" type="range" min="0" max="255" /></label>
           <label><span>结果对比度</span><strong>{{ decodeConfig.contrast }}</strong><input v-model.number="decodeConfig.contrast" type="range" min="-255" max="255" step="5" /></label>
@@ -350,7 +350,7 @@ onBeforeUnmount(() => {
           <div v-if="!decodeResult" class="empty-output"><span>像</span><strong>结果会显示在这里</strong><p>上传图片后可实时调整阈值与对比度。</p></div>
           <div v-if="decodeLoading" class="processing">正在显形…</div>
         </div>
-        <div class="output-footer"><div><span>当前结果</span><strong>{{ decodeDimensions }}</strong></div><button :disabled="!decodeResult" @click="downloadCanvas(decodeCanvasRef, 'decoded', decodeFile)">下载显形图</button></div>
+        <div class="output-footer"><div><span>当前结果</span><strong>{{ decodeDimensions }}</strong></div><el-button type="primary" :disabled="!decodeResult" @click="downloadCanvas(decodeCanvasRef, 'decoded', decodeFile)">下载显形图</el-button></div>
       </div>
     </section>
 
@@ -450,20 +450,6 @@ onBeforeUnmount(() => {
 .step-actions {
   display: flex;
   gap: 6px;
-}
-.step-actions button,.reset-button,.settings-title button {
-  border: 1px solid #d7dfe7;
-  border-radius: var(--radius-xs);
-  padding: 7px 10px;
-  background: var(--c-surface);
-  color: #52708c;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.step-actions button:disabled,.settings-title button:disabled {
-  opacity: .4;
-  cursor: not-allowed;
 }
 .source-grid {
   display: grid;
@@ -783,20 +769,6 @@ onBeforeUnmount(() => {
   color: #4c5966;
   font-size: 13px;
 }
-.output-footer button {
-  border: 0;
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  background: var(--accent);
-  color: var(--c-on-accent);
-  font-size: 14px;
-  font-weight: 750;
-  cursor: pointer;
-}
-.output-footer button:disabled {
-  opacity: .4;
-  cursor: not-allowed;
-}
 .decode-grid {
   display: grid;
   grid-template-columns: minmax(0,1fr) minmax(320px,.75fr);
@@ -917,7 +889,7 @@ onBeforeUnmount(() => {
   border-color: #40515f;
   background: #1d2b37;
 }
-:global(.dark) .image-slot,:global(.dark) .decode-upload,:global(.dark) .method-select button,:global(.dark) .step-actions button,:global(.dark) .reset-button,:global(.dark) .settings-title button {
+:global(.dark) .image-slot,:global(.dark) .decode-upload,:global(.dark) .method-select button {
   border-color: #465662;
   background: #172430;
   color: #bbc7cf;
@@ -964,7 +936,7 @@ onBeforeUnmount(() => {
   .step-actions {
     width: 100%;
   }
-  .step-actions button {
+  .step-actions :deep(.el-button) {
     flex: 1;
   }
   .preview-tabs {
@@ -997,7 +969,7 @@ onBeforeUnmount(() => {
     align-items: stretch;
     flex-direction: column;
   }
-  .output-footer button {
+  .output-footer :deep(.el-button) {
     width: 100%;
   }
 }

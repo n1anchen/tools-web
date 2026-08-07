@@ -648,7 +648,7 @@ function copyResult(result: Result) {
     <section class="search-card">
       <div class="search-heading">
         <div><span>VERB INPUT</span><h3>输入一个动词形式</h3></div>
-        <button v-if="input || hasAnalyzed" class="text-button" @click="clear">清空</button>
+        <el-button v-if="input || hasAnalyzed" class="text-button" @click="clear">清空</el-button>
       </div>
       <div class="search-shell">
         <span class="search-mark">動</span>
@@ -660,13 +660,13 @@ function copyResult(result: Result) {
           placeholder="例如：食べました、書いて、勉強できる、来ます"
           @keyup.enter="runAnalysis"
         />
-        <button :disabled="isEmpty" @click="runAnalysis">分析活用</button>
+        <el-button type="primary" :disabled="isEmpty" @click="runAnalysis">分析活用</el-button>
       </div>
       <p class="search-tip">支持辞书形、ます形、て形、た形、否定、可能、被动、使役等常见形式。</p>
 
       <div class="quick-inputs">
-        <div><span>典型示例</span><button v-for="sample in ['食べました', '書いて', '話せます', '勉強できる', '来ない']" :key="sample" @click="fillSample(sample)">{{ sample }}</button></div>
-        <div v-if="recentInputs.length"><span>最近分析</span><button v-for="item in recentInputs" :key="item" @click="fillSample(item)">{{ item }}</button></div>
+        <div><span>典型示例</span><el-button v-for="sample in ['食べました', '書いて', '話せます', '勉強できる', '来ない']" :key="sample" size="small" @click="fillSample(sample)">{{ sample }}</el-button></div>
+        <div v-if="recentInputs.length"><span>最近分析</span><el-button v-for="item in recentInputs" :key="item" size="small" @click="fillSample(item)">{{ item }}</el-button></div>
       </div>
     </section>
 
@@ -700,7 +700,7 @@ function copyResult(result: Result) {
           </div>
           <div class="result-actions">
             <span :class="['confidence-badge', activeResult.confidence >= 90 ? 'high' : 'medium']">{{ confidenceLabel(activeResult.confidence) }} · {{ activeResult.confidence }}%</span>
-            <button @click="copyResult(activeResult)">复制全部</button>
+            <el-button @click="copyResult(activeResult)">复制全部</el-button>
           </div>
         </div>
 
@@ -716,7 +716,7 @@ function copyResult(result: Result) {
           <article v-for="row in visibleRows" :key="row.label" class="form-card">
             <div class="form-card-heading">
               <div><strong>{{ row.label }}</strong><span>{{ rowDescription(row.label) }}</span></div>
-              <button @click="copyRow(row)">复制</button>
+              <el-button text @click="copyRow(row)">复制</el-button>
             </div>
             <div class="form-values">
               <button v-for="value in row.values" :key="value" :class="valueClass(value)" @click="copy(value)">{{ value }}</button>
@@ -836,21 +836,6 @@ function copyResult(result: Result) {
   font-size: 17px;
   font-family: "Hiragino Sans","Yu Gothic",sans-serif;
 }
-.search-shell>button {
-  flex: none;
-  border: 0;
-  border-radius: var(--radius-sm);
-  padding: 12px 17px;
-  background: var(--accent);
-  color: var(--c-on-accent);
-  font-size: 14px;
-  font-weight: 750;
-  cursor: pointer;
-}
-.search-shell>button:disabled {
-  opacity: .42;
-  cursor: not-allowed;
-}
 .search-tip {
   margin: 8px 2px 0;
   color: #898493;
@@ -874,20 +859,6 @@ function copyResult(result: Result) {
   color: #777184;
   font-size: 13px;
   font-weight: 700;
-}
-.quick-inputs button {
-  border: 1px solid #dedbe7;
-  border-radius: var(--radius-xs);
-  padding: 6px 10px;
-  background: var(--c-surface);
-  color: #5d5768;
-  font-size: 14px;
-  cursor: pointer;
-}
-.quick-inputs button:hover {
-  border-color: #a996d7;
-  color: #6549aa;
-  background: #faf8ff;
 }
 .notice-card {
   display: flex;
@@ -1033,16 +1004,6 @@ function copyResult(result: Result) {
 .confidence-badge.high {
   background: #e7f7ef;
   color: #287555;
-}
-.result-actions button {
-  border: 1px solid #d8d0e8;
-  border-radius: var(--radius-xs);
-  padding: 7px 10px;
-  background: var(--c-surface);
-  color: #684da9;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
 }
 .matched-banner {
   display: flex;
@@ -1272,7 +1233,7 @@ function copyResult(result: Result) {
   border-color: #41495a;
   background: #202b3d;
 }
-:global(.dark) .quick-inputs button,:global(.dark) .candidate-panel>button.active,:global(.dark) .result-actions button,:global(.dark) .form-card,:global(.dark) .form-tabs button.active,:global(.dark) .form-chip,:global(.dark) .reference-grid div {
+:global(.dark) .candidate-panel>button.active,:global(.dark) .form-card,:global(.dark) .form-tabs button.active,:global(.dark) .form-chip,:global(.dark) .reference-grid div {
   border-color: #465063;
   background: #202c3f;
   color: #c7becd;

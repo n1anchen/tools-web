@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
-import { FullScreen, VideoPause } from '@element-plus/icons-vue'
+import { VideoPause } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import ToolHero from '@/components/Layout/ToolHero/ToolHero.vue'
 import ToolGuide from '@/components/Layout/ToolGuide/ToolGuide.vue'
@@ -160,7 +160,7 @@ onUnmounted(() => {
   <div class="barrage-page flex flex-col mt-3 flex-1">
     <ToolHero summary="先在页面里看清，再举起你的大屏">
       <template #actions>
-        <button type="button" class="hero-fullscreen-btn" :disabled="!messages.length" @click="startDisplay"><el-icon><FullScreen /></el-icon><span><strong>进入全屏展示</strong><small>ESC 或按钮退出</small></span></button>
+        <el-button type="primary" class="hero-fullscreen-btn" :disabled="!messages.length" @click="startDisplay"><span><strong>进入全屏展示</strong><small>ESC 或按钮退出</small></span></el-button>
       </template>
     </ToolHero>
 
@@ -252,24 +252,9 @@ onUnmounted(() => {
   letter-spacing:.16em
 }
 .hero-fullscreen-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   min-width: 176px;
+  height: auto;
   padding: 13px 15px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-md);
-  color: #be123c;
-  background: var(--c-surface);
-  cursor: pointer;
-  box-shadow:0 10px 25px rgba(15,23,42,.16)
-}
-.hero-fullscreen-btn:disabled {
-  opacity: .5;
-  cursor:not-allowed
-}
-.hero-fullscreen-btn>.el-icon {
-  font-size:22px
 }
 .hero-fullscreen-btn span,.hero-fullscreen-btn strong,.hero-fullscreen-btn small {
   display: block;
@@ -661,11 +646,6 @@ onUnmounted(() => {
     opacity: 1;
     transform:scale(1.04)
   }
-}
-:global(html.dark .barrage-page .hero-fullscreen-btn) {
-  border-color: #40516a;
-  background: rgba(15,23,42,.55);
-  color:#fecdd3
 }
 :global(html.dark .barrage-page .preview-card),:global(html.dark .barrage-page .control-card),:global(html.dark .barrage-page .appearance-card) {
   border-color: var(--c-border);

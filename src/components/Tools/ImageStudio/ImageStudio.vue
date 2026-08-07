@@ -949,9 +949,9 @@ onBeforeUnmount(() => {
 
         <div class="panel-heading sub"><span>HISTORY</span><h3>历史记录</h3></div>
         <div class="history-row">
-          <button type="button" :disabled="!canUndo" @click="undo"><el-icon :size="13"><RefreshLeft /></el-icon> 撤销</button>
-          <button type="button" :disabled="!canRedo" @click="redo"><el-icon :size="13"><RefreshRight /></el-icon> 重做</button>
-          <button type="button" class="danger" :disabled="!hasImage" @click="resetWorkspace"><el-icon :size="13"><Refresh /></el-icon> 重置</button>
+          <el-button :icon="RefreshLeft" :disabled="!canUndo" @click="undo">撤销</el-button>
+          <el-button :icon="RefreshRight" :disabled="!canRedo" @click="redo">重做</el-button>
+          <el-button type="danger" :icon="Refresh" :disabled="!hasImage" @click="resetWorkspace">重置</el-button>
         </div>
       </aside>
 
@@ -960,10 +960,10 @@ onBeforeUnmount(() => {
         <div class="canvas-toolbar">
           <div class="tool-status"><span :class="{ active: hasSelection }"></span><strong>{{ selectionLabel }}</strong></div>
           <div class="selected-tools" :class="{ disabled: !hasSelection }">
-            <button type="button" title="复制" @click="duplicateSelected"><el-icon :size="13"><CopyDocument /></el-icon> 复制</button>
-            <button type="button" title="上移一层" @click="bringForward"><el-icon :size="13"><Top /></el-icon> 上移</button>
-            <button type="button" title="下移一层" @click="sendBackward"><el-icon :size="13"><Bottom /></el-icon> 下移</button>
-            <button type="button" class="danger" title="删除" @click="deleteSelected"><el-icon :size="13"><Delete /></el-icon> 删除</button>
+            <el-button :icon="CopyDocument" title="复制" @click="duplicateSelected">复制</el-button>
+            <el-button :icon="Top" title="上移一层" @click="bringForward">上移</el-button>
+            <el-button :icon="Bottom" title="下移一层" @click="sendBackward">下移</el-button>
+            <el-button type="danger" :icon="Delete" title="删除" @click="deleteSelected">删除</el-button>
           </div>
         </div>
 
@@ -971,14 +971,14 @@ onBeforeUnmount(() => {
         <div v-if="hasImage && activeTool !== 'select'" class="context-bar">
           <template v-if="activeTool === 'transform'">
             <div class="ctx-group">
-              <button type="button" title="左转 90°" @click="rotate(-90)"><el-icon :size="14"><RefreshLeft /></el-icon> 90°</button>
-              <button type="button" title="右转 90°" @click="rotate(90)"><el-icon :size="14"><RefreshRight /></el-icon> 90°</button>
-              <button type="button" title="旋转 180°" @click="rotate(180)">180°</button>
-              <label class="angle-field">角度<input v-model.number="rotationInput" type="number" min="1" max="359" /><button type="button" @click="rotate(rotationInput)">应用</button></label>
+              <el-button :icon="RefreshLeft" title="左转 90°" @click="rotate(-90)">90°</el-button>
+              <el-button :icon="RefreshRight" title="右转 90°" @click="rotate(90)">90°</el-button>
+              <el-button title="旋转 180°" @click="rotate(180)">180°</el-button>
+              <label class="angle-field">角度<input v-model.number="rotationInput" type="number" min="1" max="359" /><el-button @click="rotate(rotationInput)">应用</el-button></label>
             </div>
             <div class="ctx-group">
-              <button type="button" @click="flip('x')"><el-icon :size="14"><Switch /></el-icon> 水平翻转</button>
-              <button type="button" @click="flip('y')"><el-icon :size="14" class="flip-v"><Switch /></el-icon> 垂直翻转</button>
+              <el-button @click="flip('x')"><el-icon :size="14"><Switch /></el-icon>水平翻转</el-button>
+              <el-button @click="flip('y')"><el-icon :size="14" class="flip-v"><Switch /></el-icon>垂直翻转</el-button>
             </div>
             <span class="ctx-tip">旋转与翻转作用于整张画布（含标注）</span>
           </template>
@@ -986,8 +986,8 @@ onBeforeUnmount(() => {
           <template v-else-if="activeTool === 'crop'">
             <span class="ctx-tip">拖动裁剪框四角调整范围，确认后按该区域裁剪</span>
             <div class="ctx-group">
-              <button type="button" class="primary" @click="applyCrop"><el-icon :size="14"><Check /></el-icon> 应用裁剪</button>
-              <button type="button" @click="exitCropMode"><el-icon :size="14"><Close /></el-icon> 取消</button>
+              <el-button type="primary" :icon="Check" @click="applyCrop">应用裁剪</el-button>
+              <el-button :icon="Close" @click="exitCropMode">取消</el-button>
             </div>
           </template>
 
@@ -1002,7 +1002,7 @@ onBeforeUnmount(() => {
               <button v-for="s in SHAPES" :key="s.id" type="button" :class="{ active: shapeType === s.id }" @click="shapeType = s.id">{{ s.label }}</button>
             </div>
             <label class="field"><span>颜色</span><input v-model="shapeColor" type="color" /></label>
-            <button type="button" class="primary" @click="addShape">＋ 添加{{ shapeLabel }}</button>
+            <el-button type="primary" @click="addShape">＋ 添加{{ shapeLabel }}</el-button>
           </template>
 
           <template v-else-if="activeTool === 'text'">
@@ -1010,7 +1010,7 @@ onBeforeUnmount(() => {
             <label class="field"><span>字号</span><input v-model.number="textSize" type="number" min="8" max="200" /></label>
             <label class="field"><span>颜色</span><input v-model="textColor" type="color" /></label>
             <button type="button" :class="{ active: textBold }" title="粗体" @click="textBold = !textBold">B</button>
-            <button type="button" class="primary" @click="addText">＋ 添加文字</button>
+            <el-button type="primary" @click="addText">＋ 添加文字</el-button>
           </template>
 
           <template v-else-if="activeTool === 'emoji'">
@@ -1061,7 +1061,7 @@ onBeforeUnmount(() => {
         <label>格式<select v-model="exportFormat"><option value="png">PNG</option><option value="jpeg">JPG</option><option value="webp">WebP</option></select></label>
         <label v-if="exportFormat !== 'png'">质量<select v-model.number="exportQuality"><option :value="1">100%</option><option :value="0.92">92%</option><option :value="0.8">80%</option><option :value="0.6">60%</option></select></label>
         <span>{{ sizeLabel }}</span>
-        <button type="button" :disabled="!hasImage" @click="download">下载图片</button>
+        <el-button :disabled="!hasImage" @click="download">下载图片</el-button>
       </div>
     </section>
 
@@ -1194,25 +1194,8 @@ onBeforeUnmount(() => {
   gap: 6px;
   margin-top: 10px;
 }
-.history-row button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  padding: 8px 4px;
-  border: 1px solid #dcdde4;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: #5d5865;
-  font-size: 13px;
-  cursor: pointer;
-}
-.history-row button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-.history-row button.danger {
-  color: #bd4953;
+.history-row :deep(.el-button) {
+  width: 100%;
 }
 .canvas-panel {
   min-width: 0;
@@ -1260,23 +1243,6 @@ onBeforeUnmount(() => {
   pointer-events: none;
   opacity: 0.38;
 }
-.selected-tools button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  min-width: 34px;
-  height: 30px;
-  border: 1px solid #dcdde4;
-  border-radius: var(--radius-xs);
-  background: var(--c-surface);
-  color: #5d5865;
-  font-size: 13px;
-  cursor: pointer;
-}
-.selected-tools button.danger {
-  color: #bd4953;
-}
 .context-bar {
   display: flex;
   align-items: center;
@@ -1292,36 +1258,8 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 5px;
 }
-.context-bar button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  height: 30px;
-  padding: 0 10px;
-  border: 1px solid #dcdde4;
-  border-radius: var(--radius-xs);
-  background: var(--c-surface);
-  color: #5d5865;
-  font-size: 13px;
-  cursor: pointer;
-}
 .context-bar .flip-v {
   transform: rotate(90deg);
-}
-.context-bar button:hover {
-  border-color: #a996d8;
-}
-.context-bar button.active {
-  border-color: #c5b9e5;
-  background: #f1ecfd;
-  color: #684cae;
-  font-weight: 700;
-}
-.context-bar button.primary {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--c-on-accent);
 }
 .context-bar .field {
   display: flex;
@@ -1592,12 +1530,12 @@ onBeforeUnmount(() => {
 .dark .empty-glyph {
   color: #a8b4c5;
 }
-.dark .upload-btn, .dark .tool-grid button, .dark .history-row button, .dark .selected-tools button, .dark .context-bar button, .dark .empty-stage {
+.dark .upload-btn, .dark .tool-grid button, .dark .empty-stage {
   border-color: #465061;
   background: #1b2739;
   color: #c9c1ce;
 }
-.dark .tool-grid button.active, .dark .context-bar button.active {
+.dark .tool-grid button.active {
   border-color: #6a5aa8;
   background: #2a2440;
   color: #c9b8f5;

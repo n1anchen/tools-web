@@ -101,10 +101,10 @@ function handleKeydown(event: KeyboardEvent, rowIndex: number, columnIndex: numb
     <div class="grid-toolbar">
       <div><strong>像 Excel 一样编辑</strong><span>选中单元格后，可直接粘贴 Excel / WPS 中复制的区域</span></div>
       <div class="grid-actions">
-        <button type="button" @click="addRow">＋ 行</button>
-        <button type="button" @click="addColumn">＋ 列</button>
-        <button type="button" :disabled="(cells[0]?.length ?? 0) <= minColumns" @click="removeColumn">－ 末列</button>
-        <button type="button" @click="trimBlankRows">整理</button>
+        <el-button @click="addRow">＋ 行</el-button>
+        <el-button @click="addColumn">＋ 列</el-button>
+        <el-button :disabled="(cells[0]?.length ?? 0) <= minColumns" @click="removeColumn">－ 末列</el-button>
+        <el-button @click="trimBlankRows">整理</el-button>
       </div>
     </div>
     <div class="grid-scroll">
@@ -160,25 +160,6 @@ function handleKeydown(event: KeyboardEvent, rowIndex: number, columnIndex: numb
   display: flex;
   flex: none;
   gap:5px
-}
-.grid-actions button {
-  min-height: 30px;
-  padding: 0 8px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-xs);
-  background: var(--c-surface);
-  color: var(--c-text-body);
-  font-size: 12px;
-  font-weight: 800;
-  cursor:pointer
-}
-.grid-actions button:hover {
-  border-color: var(--accent);
-  color:var(--accent)
-}
-.grid-actions button:disabled {
-  cursor: not-allowed;
-  opacity:.4
 }
 .grid-scroll {
   height: 260px;
@@ -323,11 +304,6 @@ td input:focus {
 :global(html.dark .grid-toolbar strong) {
   color: var(--c-text-primary)
 }
-:global(html.dark .grid-actions button) {
-  border-color: var(--c-border-strong);
-  background: var(--c-surface-subtle);
-  color: var(--c-text-secondary)
-}
 :global(html.dark .grid-editor th),:global(html.dark .grid-editor td) {
   border-color: var(--c-border)
 }
@@ -357,8 +333,8 @@ td input:focus {
     width: 100%;
     grid-template-columns:repeat(4,1fr)
   }
-  .grid-actions button {
-    padding:0 4px
+  .grid-actions :deep(.el-button) {
+    width:100%
   }
   .grid-scroll {
     height:250px

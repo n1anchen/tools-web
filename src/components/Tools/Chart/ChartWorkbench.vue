@@ -199,8 +199,8 @@ function changePrimaryColor(event: Event) {
         <header class="card-header">
           <div><span class="eyebrow">DATA SOURCE</span><h3>数据输入</h3></div>
           <div class="header-actions">
-            <button type="button" @click="fileInput?.click()"><el-icon><UploadFilled /></el-icon>导入</button>
-            <button type="button" @click="downloadData">导出</button>
+            <el-button :icon="UploadFilled" @click="fileInput?.click()">导入</el-button>
+            <el-button @click="downloadData">导出</el-button>
             <input ref="fileInput" type="file" accept=".csv,.tsv,.txt,.json" hidden @change="importData">
           </div>
         </header>
@@ -224,8 +224,8 @@ function changePrimaryColor(event: Event) {
         <header class="card-header">
           <div><span class="eyebrow">LIVE PREVIEW</span><h3>实时预览</h3></div>
           <div class="header-actions">
-            <button type="button" aria-label="复制 ECharts 配置" @click="copy(JSON.stringify(option, null, 2))"><el-icon><CopyDocument /></el-icon>复制配置</button>
-            <button type="button" class="primary" @click="downloadPng"><el-icon><Download /></el-icon>导出 PNG</button>
+            <el-button :icon="CopyDocument" aria-label="复制 ECharts 配置" @click="copy(JSON.stringify(option, null, 2))">复制配置</el-button>
+            <el-button type="primary" :icon="Download" @click="downloadPng">导出 PNG</el-button>
           </div>
         </header>
         <div class="chart-shell" :style="{ height: `${chartHeight}px` }">
@@ -244,7 +244,7 @@ function changePrimaryColor(event: Event) {
     <section class="config-card">
       <header class="card-header">
         <div><span class="eyebrow">CHART SETTINGS</span><h3>图表配置</h3><p>所有调整都会直接反映在上方预览中。</p></div>
-        <button type="button" class="reset-button" @click="resetWorkbench"><el-icon><Refresh /></el-icon>恢复默认</button>
+        <el-button class="reset-button" :icon="Refresh" @click="resetWorkbench">恢复默认</el-button>
       </header>
       <div class="config-grid">
         <label class="field"><span>主标题</span><input v-model="settings.title" type="text" maxlength="40"></label>
@@ -415,30 +415,6 @@ function changePrimaryColor(event: Event) {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap:7px
-}
-.header-actions button,.reset-button {
-  display: inline-flex;
-  min-height: 36px;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 0 11px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-text-body);
-  font-size: 12px;
-  font-weight: 850;
-  cursor:pointer
-}
-.header-actions button:hover,.reset-button:hover {
-  border-color: var(--accent);
-  color:var(--accent)
-}
-.header-actions button.primary {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--c-on-accent)
 }
 .mode-tabs {
   display: grid;
@@ -730,7 +706,7 @@ function changePrimaryColor(event: Event) {
   background: color-mix(in srgb,var(--accent),#0f172a 76%);
   color: var(--c-on-accent)
 }
-:global(html.dark .chart-page .header-actions button),:global(html.dark .chart-page .reset-button),:global(html.dark .chart-page .palette-list>button),:global(html.dark .chart-page .custom-color),:global(html.dark .chart-page .field input[type="text"]),:global(html.dark .chart-page .field select) {
+:global(html.dark .chart-page .palette-list>button),:global(html.dark .chart-page .custom-color),:global(html.dark .chart-page .field input[type="text"]),:global(html.dark .chart-page .field select) {
   border-color: var(--c-border-strong);
   background: var(--c-surface-subtle);
   color: var(--c-text-primary)
@@ -814,7 +790,7 @@ function changePrimaryColor(event: Event) {
     width: 100%;
     justify-content:flex-start
   }
-  .header-actions button {
+  .header-actions :deep(.el-button) {
     flex:1
   }
   .data-card textarea {

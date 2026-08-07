@@ -210,18 +210,14 @@ onUnmounted(() => {
           <p>{{ state.status }}</p>
         </div>
         <div class="export-actions">
-          <button type="button" aria-label="复制金属冲击标题 PNG" :disabled="state.loading || state.exporting" @click="copyImage">
-            <el-icon><CopyDocument /></el-icon>复制 PNG
-          </button>
-          <button type="button" class="primary" aria-label="下载金属冲击标题 PNG" :disabled="state.loading || state.exporting" @click="downloadImage">
-            <el-icon><Download /></el-icon>下载图片
-          </button>
+          <el-button :icon="CopyDocument" aria-label="复制金属冲击标题 PNG" :disabled="state.loading || state.exporting" @click="copyImage">复制 PNG</el-button>
+          <el-button type="primary" :icon="Download" aria-label="下载金属冲击标题 PNG" :disabled="state.loading || state.exporting" @click="downloadImage">下载图片</el-button>
         </div>
       </header>
       <div class="canvas-stage" :class="{ transparent: state.bgColor === 'transparent' }">
         <canvas ref="canvasRef" width="1500" height="290" role="img" aria-label="金属冲击标题预览" />
         <div v-if="state.loading" class="loading-overlay"><el-icon class="is-loading"><Loading /></el-icon><span>{{ state.status }}</span></div>
-        <div v-else-if="state.error" class="loading-overlay error"><span>{{ state.error }}</span><button type="button" @click="renderCanvas">重新渲染</button></div>
+        <div v-else-if="state.error" class="loading-overlay error"><span>{{ state.error }}</span><el-button type="danger" @click="renderCanvas">重新渲染</el-button></div>
         <div class="drag-hint"><el-icon><Rank /></el-icon>拖动下排标题调整位置</div>
       </div>
       <div class="preview-meta">
@@ -234,7 +230,7 @@ onUnmounted(() => {
       <section class="control-card">
         <header class="card-heading">
           <div><span class="eyebrow">TITLE COMPOSITION</span><h3>文字与构图</h3></div>
-          <button type="button" aria-label="恢复金属标题默认设置" @click="resetStudio"><el-icon><Refresh /></el-icon>重置</button>
+          <el-button :icon="Refresh" aria-label="恢复金属标题默认设置" @click="resetStudio">重置</el-button>
         </header>
 
         <div class="text-grid">
@@ -245,9 +241,9 @@ onUnmounted(() => {
         <div class="preset-block">
           <span>场景预设</span>
           <div class="preset-grid">
-            <button v-for="preset in textPresets" :key="preset.label" type="button" @click="applyPreset(preset)">
+            <el-button v-for="preset in textPresets" :key="preset.label" @click="applyPreset(preset)">
               <strong>{{ preset.label }}</strong><small>{{ preset.note }}</small>
-            </button>
+            </el-button>
           </div>
         </div>
 
@@ -258,7 +254,7 @@ onUnmounted(() => {
           <label><span>副标题水平位置</span><strong>X {{ state.bottomPosition }}</strong></label>
           <el-slider v-model="state.bottomPosition" :min="40" :max="1000" :step="5" aria-label="副标题水平位置" />
         </div>
-        <button type="button" class="soft-action" @click="resetPosition">副标题回到推荐位置</button>
+        <el-button class="soft-action" @click="resetPosition">副标题回到推荐位置</el-button>
       </section>
 
       <aside class="export-card">
@@ -328,29 +324,6 @@ onUnmounted(() => {
 .export-actions {
   display: flex;
   gap:10px
-}
-.export-actions button,.card-heading>button,.soft-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-text-body);
-  min-height: 38px;
-  padding: 0 14px;
-  font-weight: 700;
-  cursor:pointer
-}
-.export-actions button.primary {
-  border-color: #dc2626;
-  background: #dc2626;
-  color: var(--c-on-accent)
-}
-.export-actions button:disabled {
-  cursor: not-allowed;
-  opacity:.55
 }
 .canvas-stage {
   position: relative;
@@ -435,10 +408,6 @@ onUnmounted(() => {
 .card-heading {
   margin-bottom:20px
 }
-.card-heading>button {
-  min-height: 34px;
-  padding:0 10px
-}
 .text-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -463,21 +432,17 @@ onUnmounted(() => {
   gap: 9px;
   margin-top:9px
 }
-.preset-grid button {
+.preset-grid :deep(.el-button) {
+  width: 100%;
+  height: auto;
+  padding: 11px 12px;
+  white-space: normal;
+}
+.preset-grid :deep(.el-button > span) {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 3px;
-  padding: 11px 12px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface-subtle);
-  color: var(--c-text-strong);
-  text-align: left;
-  cursor:pointer
-}
-.preset-grid button:hover {
-  border-color: #f59e0b;
-  background:#fffbeb
 }
 .preset-grid small {
   color: var(--c-text-muted)
@@ -513,9 +478,6 @@ onUnmounted(() => {
 .soft-action {
   width: 100%;
   margin-top: 4px;
-  border-color: #fecaca;
-  background: #fff7ed;
-  color:#b91c1c
 }
 .summary-list {
   display: grid;
@@ -590,11 +552,6 @@ onUnmounted(() => {
 .dark .preview-heading p,.dark .text-grid label>span,.dark .option-field>span,.dark .preset-block>span {
   color: var(--c-text-muted)
 }
-.dark .export-actions button,.dark .card-heading>button {
-  border-color: #475569;
-  background: #0f172a;
-  color:#cbd5e1
-}
 .dark .canvas-stage {
   background-color:#0f172a
 }
@@ -613,14 +570,10 @@ onUnmounted(() => {
   background: #0f172a;
   color:#cbd5e1
 }
-.dark .preset-grid button,.dark .summary-list div,.dark .privacy-note {
+.dark .summary-list div,.dark .privacy-note {
   border-color: #334155;
   background: #0f172a;
   color: var(--c-text-muted)
-}
-.dark .preset-grid button:hover {
-  border-color: #f59e0b;
-  background:#292314
 }
 .dark .summary-list {
   border-color: #334155;
@@ -628,11 +581,6 @@ onUnmounted(() => {
 }
 .dark .summary-list strong,.dark .privacy-note strong {
   color:#e2e8f0
-}
-.dark .soft-action {
-  border-color: #7f1d1d;
-  background: #291414;
-  color:#fecaca
 }
 @media(max-width:900px) {
   .workspace-grid {
@@ -655,7 +603,7 @@ onUnmounted(() => {
   .export-actions {
     width:100%
   }
-  .export-actions button {
+  .export-actions :deep(.el-button) {
     flex:1
   }
   .canvas-stage {

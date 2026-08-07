@@ -290,7 +290,7 @@ onBeforeUnmount(clearAll)
       </article>
 
       <aside class="settings-card">
-        <header class="card-heading"><div><span class="eyebrow">COMPOSER SETTINGS</span><h3>拼接设置</h3></div><button v-if="images.length" class="text-button danger" type="button" @click="clearAll">清空全部</button></header>
+        <header class="card-heading"><div><span class="eyebrow">COMPOSER SETTINGS</span><h3>拼接设置</h3></div><el-button v-if="images.length" text type="danger" @click="clearAll">清空全部</el-button></header>
 
         <div
           class="add-zone"
@@ -303,7 +303,7 @@ onBeforeUnmount(clearAll)
         >
           <el-icon><UploadFilled /></el-icon><div><strong>{{ images.length ? '继续添加图片' : '拖入或选择图片' }}</strong><span>PNG / JPEG / WebP · 最多 {{ MAX_IMAGES }} 张</span></div><el-icon><Plus /></el-icon>
         </div>
-        <button v-if="!images.length" class="demo-button" type="button" :disabled="loadingFiles" @click="loadDemo"><el-icon><Picture /></el-icon>{{ loadingFiles ? '正在生成示例…' : '载入三帧台词示例' }}</button>
+        <el-button v-if="!images.length" class="demo-button" :icon="Picture" :disabled="loadingFiles" @click="loadDemo">{{ loadingFiles ? '正在生成示例…' : '载入三帧台词示例' }}</el-button>
 
         <div v-if="images.length" class="image-list">
           <div class="list-title"><span>{{ images.length }} 张图片</span><small>拖拽或使用箭头排序</small></div>
@@ -322,7 +322,7 @@ onBeforeUnmount(clearAll)
             <span class="rank"><el-icon><Rank /></el-icon>{{ String(index + 1).padStart(2, '0') }}</span>
             <img :src="item.url" :alt="item.name">
             <div class="item-name"><strong>{{ item.name }}</strong><span>{{ item.img.naturalWidth }} × {{ item.img.naturalHeight }}</span></div>
-            <div class="item-actions"><button type="button" :disabled="index === 0" title="上移" @click="moveImage(index, -1)"><el-icon><ArrowUp /></el-icon></button><button type="button" :disabled="index === images.length - 1" title="下移" @click="moveImage(index, 1)"><el-icon><ArrowDown /></el-icon></button><button type="button" title="移除" @click="removeImage(index)"><el-icon><Delete /></el-icon></button></div>
+            <div class="item-actions"><el-button size="small" :icon="ArrowUp" :disabled="index === 0" title="上移" @click="moveImage(index, -1)" /><el-button size="small" :icon="ArrowDown" :disabled="index === images.length - 1" title="下移" @click="moveImage(index, 1)" /><el-button size="small" :icon="Delete" title="移除" @click="removeImage(index)" /></div>
           </div>
         </div>
 
@@ -453,16 +453,6 @@ onBeforeUnmount(clearAll)
   color: var(--c-text-strong);
   font-size:12px
 }
-.text-button {
-  border: 0;
-  background: none;
-  color: var(--c-text-secondary);
-  cursor: pointer;
-  font-size:11px
-}
-.text-button.danger {
-  color:#ef4444
-}
 .add-zone {
   display: flex;
   align-items: center;
@@ -502,18 +492,8 @@ onBeforeUnmount(clearAll)
   font-size:10px
 }
 .demo-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
   width: 100%;
   margin-bottom: 15px;
-  padding: 9px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-sm);
-  color: var(--c-text-secondary);
-  background: var(--c-surface);
-  cursor:pointer
 }
 .image-list {
   margin-bottom:18px
@@ -582,30 +562,6 @@ onBeforeUnmount(clearAll)
 .item-actions {
   display: flex;
   gap:2px
-}
-.item-actions button {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: 0;
-  border-radius: 6px;
-  color: var(--c-text-secondary);
-  background: transparent;
-  cursor:pointer
-}
-.item-actions button:hover {
-  color: var(--c-primary);
-  background:var(--c-primary-100)
-}
-.item-actions button:last-child:hover {
-  color: #ef4444;
-  background:#fee2e2
-}
-.item-actions button:disabled {
-  opacity: .25;
-  cursor:not-allowed
 }
 .field-group {
   margin-bottom:15px
@@ -745,7 +701,7 @@ onBeforeUnmount(clearAll)
   background-color: var(--c-surface-subtle);
   background-image:linear-gradient(45deg,#1e293b 25%,transparent 25%),linear-gradient(-45deg,#1e293b 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#1e293b 75%),linear-gradient(-45deg,transparent 75%,#1e293b 75%)
 }
-:global(html.dark .stitch-page .canvas-meta),:global(html.dark .stitch-page .canvas-meta div),:global(html.dark .stitch-page .demo-button),:global(html.dark .stitch-page .image-item),:global(html.dark .stitch-page .mode-grid button) {
+:global(html.dark .stitch-page .canvas-meta),:global(html.dark .stitch-page .canvas-meta div),:global(html.dark .stitch-page .image-item),:global(html.dark .stitch-page .mode-grid button) {
   border-color: var(--c-border)
 }
 :global(html.dark .stitch-page .canvas-meta strong),:global(html.dark .stitch-page .item-name strong) {
@@ -754,7 +710,7 @@ onBeforeUnmount(clearAll)
 :global(html.dark .stitch-page .add-zone),:global(html.dark .stitch-page .caption-box) {
   background:var(--c-primary-900)
 }
-:global(html.dark .stitch-page .demo-button),:global(html.dark .stitch-page .image-item),:global(html.dark .stitch-page .mode-grid button),:global(html.dark .stitch-page .export-box) {
+:global(html.dark .stitch-page .image-item),:global(html.dark .stitch-page .mode-grid button),:global(html.dark .stitch-page .export-box) {
   color: var(--c-text-muted);
   background:var(--c-surface-subtle)
 }
@@ -806,10 +762,6 @@ onBeforeUnmount(clearAll)
   }
   .image-item .rank .el-icon {
     display:none
-  }
-  .item-actions button {
-    width: 27px;
-    height:27px
   }
   .feature-strip {
     grid-template-columns:1fr

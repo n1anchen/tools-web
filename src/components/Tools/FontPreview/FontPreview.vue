@@ -238,7 +238,7 @@ onBeforeUnmount(() => {
         <div><span class="eyebrow">LIVE TYPE SPECIMEN</span><h3>{{ selectedFont.label }}</h3><p>{{ previewFontFamily }}</p></div>
         <div class="preview-actions">
           <el-radio-group v-model="settings.viewMode" aria-label="字体预览模式"><el-radio-button v-for="item in viewOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group>
-          <button type="button" aria-label="复制当前排版 CSS" @click="copyCss"><el-icon><CopyDocument /></el-icon>复制 CSS</button>
+          <el-button :icon="CopyDocument" aria-label="复制当前排版 CSS" @click="copyCss">复制 CSS</el-button>
         </div>
       </header>
 
@@ -258,17 +258,17 @@ onBeforeUnmount(() => {
       <section class="control-card">
         <header class="card-heading">
           <div><span class="eyebrow">SPECIMEN SETTINGS</span><h3>样文与排版</h3></div>
-          <button type="button" aria-label="恢复字体标本默认设置" @click="resetWorkbench"><el-icon><Refresh /></el-icon>重置</button>
+          <el-button :icon="Refresh" aria-label="恢复字体标本默认设置" @click="resetWorkbench">重置</el-button>
         </header>
 
         <label class="textarea-field"><span>预览文本</span><el-input v-model="previewText" type="textarea" :rows="4" maxlength="500" show-word-limit resize="vertical" aria-label="字体预览文本" /></label>
-        <div class="sample-presets"><span>样文预设</span><div><button v-for="preset in samplePresets" :key="preset.label" type="button" @click="applySample(preset)"><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small></button></div></div>
+        <div class="sample-presets"><span>样文预设</span><div><el-button v-for="preset in samplePresets" :key="preset.label" @click="applySample(preset)"><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small></el-button></div></div>
 
         <div class="font-source-field">
           <label><span>字体来源</span><el-select v-model="selectedFontId" filterable aria-label="选择预览字体"><el-option-group label="随时可用"><el-option v-for="font in builtinFonts" :key="font.id" :label="font.label" :value="font.id" /></el-option-group><el-option-group v-if="customFontName" label="上传字体"><el-option :label="customFontName" value="custom-upload" /></el-option-group><el-option-group v-if="fontFamilies.length" label="本机字体"><el-option v-for="font in fontFamilies" :key="font.family" :label="font.family" :value="`local:${font.family}`" /></el-option-group></el-select></label>
           <div class="source-actions">
-            <button type="button" aria-label="打开本地字体文件" @click="openFontFile"><el-icon><Upload /></el-icon>打开字体文件</button>
-            <button type="button" aria-label="读取浏览器可访问的本机字体" :disabled="!isLocalFontSupported || loadingFonts" @click="readLocalFonts"><el-icon><Monitor /></el-icon>{{ loadingFonts ? '正在读取…' : '读取本机字体' }}</button>
+            <el-button :icon="Upload" aria-label="打开本地字体文件" @click="openFontFile">打开字体文件</el-button>
+            <el-button :icon="Monitor" aria-label="读取浏览器可访问的本机字体" :disabled="!isLocalFontSupported || loadingFonts" @click="readLocalFonts">{{ loadingFonts ? '正在读取…' : '读取本机字体' }}</el-button>
           </div>
           <p v-if="!isLocalFontSupported" class="support-note">当前浏览器不能枚举本机字体，但内置字体栈和字体文件上传仍可正常使用。</p>
         </div>
@@ -293,15 +293,15 @@ onBeforeUnmount(() => {
           <div><strong>{{ metrics.characters }}</strong><span>字符</span></div><div><strong>{{ metrics.hanCharacters }}</strong><span>汉字</span></div>
           <div><strong>{{ metrics.latinLetters }}</strong><span>拉丁字母</span></div><div><strong>{{ metrics.digits }}</strong><span>数字</span></div>
         </div>
-        <div class="css-card"><div><span>可复用 CSS</span><button type="button" aria-label="复制字体 CSS 代码" @click="copyCss"><el-icon><CopyDocument /></el-icon></button></div><pre>{{ cssSnippet }}</pre></div>
-        <button type="button" class="browse-action" aria-label="打开或收起本机字体浏览器" :disabled="!fontFamilies.length" @click="toggleFontBrowser"><el-icon><FolderOpened /></el-icon>{{ showAllFonts ? '收起字体浏览器' : `浏览本机字体${fontFamilies.length ? ` · ${fontFamilies.length}` : ''}` }}</button>
+        <div class="css-card"><div><span>可复用 CSS</span><el-button text :icon="CopyDocument" aria-label="复制字体 CSS 代码" @click="copyCss" /></div><pre>{{ cssSnippet }}</pre></div>
+        <el-button class="browse-action" type="primary" plain :icon="FolderOpened" aria-label="打开或收起本机字体浏览器" :disabled="!fontFamilies.length" @click="toggleFontBrowser">{{ showAllFonts ? '收起字体浏览器' : `浏览本机字体${fontFamilies.length ? ` · ${fontFamilies.length}` : ''}` }}</el-button>
         <div class="privacy-note"><strong>隐私说明</strong><span>字体文件与本机字体信息只保留在当前浏览器页面，不会上传。</span></div>
       </aside>
     </div>
 
     <section v-if="showAllFonts" class="font-browser-card">
       <header class="preview-heading"><div><span class="eyebrow">LOCAL FONT BROWSER</span><h3>本机字体对比</h3><p>{{ filteredLocalFonts.length }} / {{ fontFamilies.length }} 个字体家族</p></div><el-input v-model="searchQuery" clearable placeholder="搜索字体名称" aria-label="搜索本机字体" /></header>
-      <div class="font-list"><button v-for="font in filteredLocalFonts" :key="font.family" type="button" :class="{ active: selectedFontId === `local:${font.family}` }" @click="selectLocalFont(font.family)"><span>{{ font.family }}</span><strong :style="{ fontFamily: `${quoteFontFamily(font.family)}, sans-serif`, fontWeight: settings.fontWeight, fontStyle: settings.fontStyle }">{{ firstPreviewLine }}</strong></button></div>
+      <div class="font-list"><el-button v-for="font in filteredLocalFonts" :key="font.family" :type="selectedFontId === `local:${font.family}` ? 'primary' : 'default'" @click="selectLocalFont(font.family)"><span>{{ font.family }}</span><strong :style="{ fontFamily: `${quoteFontFamily(font.family)}, sans-serif`, fontWeight: settings.fontWeight, fontStyle: settings.fontStyle }">{{ firstPreviewLine }}</strong></el-button></div>
       <div v-if="!filteredLocalFonts.length" class="empty-state">没有匹配的本机字体</div>
     </section>
 
@@ -357,20 +357,6 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   gap:9px
-}
-.preview-actions>button,.card-heading>button,.source-actions button,.browse-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: 38px;
-  padding: 0 13px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-text-body);
-  font-weight: 750;
-  cursor:pointer
 }
 .specimen-stage {
   min-height: 240px;
@@ -430,10 +416,6 @@ onBeforeUnmount(() => {
 .card-heading {
   margin-bottom:20px
 }
-.card-heading>button {
-  min-height: 34px;
-  padding:0 10px
-}
 .textarea-field,.font-source-field label {
   display: flex;
   flex-direction: column;
@@ -453,21 +435,17 @@ onBeforeUnmount(() => {
   gap: 8px;
   margin-top:9px
 }
-.sample-presets button {
+.sample-presets :deep(.el-button) {
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  white-space: normal;
+}
+.sample-presets :deep(.el-button > span) {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 3px;
-  padding: 10px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface-subtle);
-  color: var(--c-text-strong);
-  text-align: left;
-  cursor:pointer
-}
-.sample-presets button:hover {
-  border-color: var(--c-primary-400);
-  background:#eef2ff
 }
 .sample-presets small {
   color: var(--c-text-muted)
@@ -481,10 +459,6 @@ onBeforeUnmount(() => {
   display: flex;
   gap: 9px;
   margin-top:10px
-}
-.source-actions button:disabled,.browse-action:disabled {
-  cursor: not-allowed;
-  opacity:.5
 }
 .support-note {
   margin: 9px 0 0;
@@ -578,11 +552,9 @@ onBeforeUnmount(() => {
   font-size: 11px;
   font-weight:800
 }
-.css-card button {
-  border: 0;
-  background: transparent;
+.css-card :deep(.el-button) {
   color: var(--c-primary-200);
-  cursor:pointer
+  padding: 0;
 }
 .css-card pre {
   margin: 0;
@@ -595,9 +567,6 @@ onBeforeUnmount(() => {
 .browse-action {
   width: 100%;
   margin-top: 14px;
-  border-color: var(--c-primary-200);
-  background: #eef2ff;
-  color:var(--c-primary-700)
 }
 .privacy-note {
   display: flex;
@@ -625,23 +594,17 @@ onBeforeUnmount(() => {
   padding-right: 4px;
   overflow:auto
 }
-.font-list button {
+.font-list :deep(.el-button) {
+  width: 100%;
+  height: auto;
+  padding: 15px;
+  white-space: normal;
+}
+.font-list :deep(.el-button > span) {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
-  min-width: 0;
-  padding: 15px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-md);
-  background: var(--c-surface-subtle);
-  color: var(--c-text-body);
-  text-align: left;
-  cursor:pointer
-}
-.font-list button.active {
-  border-color: var(--c-primary-500);
-  background: #eef2ff;
-  box-shadow:0 0 0 2px rgba(99,102,241,.12)
 }
 .font-list span {
   font:700 11px/1.2 ui-monospace,monospace
@@ -668,11 +631,6 @@ onBeforeUnmount(() => {
 .dark .preview-heading p,.dark .textarea-field>span,.dark .font-source-field label>span,.dark .sample-presets>span,.dark .appearance-row label>span {
   color: var(--c-text-muted)
 }
-.dark .preview-actions>button,.dark .card-heading>button,.dark .source-actions button {
-  border-color: #475569;
-  background: #0f172a;
-  color:#cbd5e1
-}
 .dark .specimen-stage,.dark .waterfall-stage {
   border-color:#475569
 }
@@ -680,13 +638,9 @@ onBeforeUnmount(() => {
   background: #312e81;
   color:var(--c-primary-200)
 }
-.dark .sample-presets button,.dark .metric-grid div,.dark .privacy-note,.dark .font-list button {
+.dark .metric-grid div,.dark .privacy-note {
   border-color: #334155;
   background:#0f172a
-}
-.dark .sample-presets button:hover,.dark .font-list button.active {
-  border-color: var(--c-primary-400);
-  background:#22224e
 }
 .dark .font-source-field {
   border-color:#334155
@@ -696,11 +650,6 @@ onBeforeUnmount(() => {
 }
 .dark .privacy-note strong,.dark .font-list strong {
   color:#e2e8f0
-}
-.dark .browse-action {
-  border-color: var(--c-primary-700);
-  background: #312e81;
-  color:var(--c-primary-100)
 }
 @media(max-width:980px) {
   .workspace-grid {
@@ -736,7 +685,7 @@ onBeforeUnmount(() => {
   .preview-actions :deep(.el-radio-button__inner) {
     width: 100%;
   }
-  .preview-actions>button {
+  .preview-actions :deep(.el-button) {
     flex:1
   }
   .specimen-stage {
@@ -749,7 +698,7 @@ onBeforeUnmount(() => {
   .source-actions {
     flex-direction:column
   }
-  .source-actions button {
+  .source-actions :deep(.el-button) {
     width:100%
   }
   .font-browser-card .preview-heading :deep(.el-input) {

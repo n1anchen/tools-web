@@ -361,7 +361,7 @@ function copyPreview() {
       <div class="import-layout">
         <div class="drop-zone" :class="{ dragging }" @dragenter.prevent="dragging = true" @dragover.prevent @dragleave.prevent="dragging = false" @drop.prevent="handleDrop">
           <el-icon><UploadFilled /></el-icon><div><strong>拖入表格数据文件</strong><span>最大 25 MB · 文件全程留在本机</span></div>
-          <button type="button" @click="fileInput?.click()">选择文件</button>
+          <el-button @click="fileInput?.click()">选择文件</el-button>
           <input ref="fileInput" type="file" accept=".xlsx,.xls,.xlsm,.xlsb,.ods,.csv,.tsv,.json,.jsonl,.ndjson" hidden @change="handleFileInput">
         </div>
         <div class="source-summary">
@@ -372,7 +372,7 @@ function copyPreview() {
     </section>
 
     <section class="editor-card">
-      <div class="section-title"><div><span class="eyebrow">02 · INPUT & EDIT</span><h3>粘贴数据并转换，或直接编辑表格</h3><p>CSV / TSV、JSON 与可视表格是对等入口，切换时自动解析并同步当前数据。</p></div><div class="sheet-actions"><button type="button" aria-label="新建工作表" @click="addSheet"><el-icon><Plus /></el-icon>新建</button><button type="button" aria-label="复制当前工作表" @click="duplicateSheet"><el-icon><DocumentAdd /></el-icon>复制</button><button type="button" aria-label="重命名当前工作表" @click="startRename()"><el-icon><EditPen /></el-icon>重命名</button><button type="button" class="danger" aria-label="删除当前工作表" @click="removeSheet"><el-icon><Delete /></el-icon>删除</button></div></div>
+      <div class="section-title"><div><span class="eyebrow">02 · INPUT & EDIT</span><h3>粘贴数据并转换，或直接编辑表格</h3><p>CSV / TSV、JSON 与可视表格是对等入口，切换时自动解析并同步当前数据。</p></div><div class="sheet-actions"><el-button :icon="Plus" aria-label="新建工作表" @click="addSheet">新建</el-button><el-button :icon="DocumentAdd" aria-label="复制当前工作表" @click="duplicateSheet">复制</el-button><el-button :icon="EditPen" aria-label="重命名当前工作表" @click="startRename()">重命名</el-button><el-button type="danger" :icon="Delete" aria-label="删除当前工作表" @click="removeSheet">删除</el-button></div></div>
       <div class="editor-mode-tabs" aria-label="数据输入方式">
         <button type="button" :class="{ active: editorMode === 'delimited' }" @click="changeEditorMode('delimited')"><strong>CSV / TSV</strong><span>粘贴分隔文本</span></button>
         <button type="button" :class="{ active: editorMode === 'json' }" @click="changeEditorMode('json')"><strong>JSON</strong><span>对象、数组或 JSON Lines</span></button>
@@ -381,9 +381,9 @@ function copyPreview() {
       <div class="sheet-tabs" aria-label="工作表选择">
         <button v-for="sheet in sheets" :key="sheet.id" type="button" :class="{ active: sheet.id === activeSheetId }" @click="selectSheet(sheet.id)"><el-icon><FolderOpened /></el-icon>{{ sheet.name }}<span>{{ analyzeSheet(sheet.rows, firstRowHeader).rows }}</span></button>
       </div>
-      <div v-if="editingSheetId" class="rename-bar"><label>工作表名称<input v-model="editingSheetName" maxlength="31" autofocus @keydown.enter="commitRename" @keydown.esc="editingSheetId = ''"></label><button type="button" @click="commitRename">保存</button><button type="button" @click="editingSheetId = ''">取消</button></div>
+      <div v-if="editingSheetId" class="rename-bar"><label>工作表名称<input v-model="editingSheetName" maxlength="31" autofocus @keydown.enter="commitRename" @keydown.esc="editingSheetId = ''"></label><el-button size="small" @click="commitRename">保存</el-button><el-button size="small" @click="editingSheetId = ''">取消</el-button></div>
       <div v-if="editorMode !== 'grid'" class="source-editor">
-        <header><div><strong>{{ editorMode === 'json' ? '粘贴 JSON 数据' : '粘贴 CSV / TSV 数据' }}</strong><span>{{ editorMode === 'json' ? '支持对象数组、二维数组、多数据集对象与 JSON Lines' : '自动识别逗号、Tab、分号和管道符，支持带引号字段' }}</span></div><button type="button" @click="convertSourceToGrid">转换为可视表格</button></header>
+        <header><div><strong>{{ editorMode === 'json' ? '粘贴 JSON 数据' : '粘贴 CSV / TSV 数据' }}</strong><span>{{ editorMode === 'json' ? '支持对象数组、二维数组、多数据集对象与 JSON Lines' : '自动识别逗号、Tab、分号和管道符，支持带引号字段' }}</span></div><el-button type="primary" @click="convertSourceToGrid">转换为可视表格</el-button></header>
         <textarea v-model="sourceText" :aria-label="editorMode === 'json' ? 'JSON 数据输入' : 'CSV 或 TSV 数据输入'" spellcheck="false" :placeholder="editorMode === 'json' ? '[{ &quot;name&quot;: &quot;示例&quot;, &quot;value&quot;: 12 }]' : '名称,数值\n示例,12'"></textarea>
         <footer :class="{ error: sourceError }"><span v-if="sourceError" role="alert">{{ sourceError }}</span><span v-else>{{ sourceLines }} 行 · {{ sourceText.length.toLocaleString() }} 个字符</span><small>点击转换后进入表格，也可以直接切换到另一种格式继续互转</small></footer>
       </div>
@@ -516,21 +516,6 @@ function copyPreview() {
   color: var(--c-text-secondary);
   font-size:12px
 }
-.drop-zone button,.sheet-actions button,.rename-bar button {
-  min-height: 34px;
-  padding: 0 12px;
-  border: 1px solid #dbe3ef;
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-text-strong);
-  font-size: 12px;
-  font-weight: 800;
-  cursor:pointer
-}
-.drop-zone button {
-  border-color: var(--accent);
-  color:var(--accent)
-}
 .source-summary {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -580,19 +565,6 @@ function copyPreview() {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap:6px
-}
-.sheet-actions button {
-  display: flex;
-  align-items: center;
-  gap:5px
-}
-.sheet-actions button:hover {
-  border-color: var(--accent);
-  color:var(--accent)
-}
-.sheet-actions button.danger:hover {
-  border-color: #ef4444;
-  color:#dc2626
 }
 .editor-mode-tabs {
   display: grid;
@@ -719,18 +691,6 @@ function copyPreview() {
   margin-top: 3px;
   color: var(--c-text-secondary);
   font-size:11px
-}
-.source-editor header button {
-  flex: none;
-  min-height: 34px;
-  padding: 0 13px;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: var(--accent);
-  color: var(--c-on-accent);
-  font-size: 12px;
-  font-weight: 850;
-  cursor:pointer
 }
 .source-editor textarea {
   display: block;
@@ -966,7 +926,7 @@ function copyPreview() {
   border-color: var(--c-border);
   background:#172033
 }
-:global(html.dark .source-summary select),:global(html.dark .option-grid input),:global(html.dark .option-grid select),:global(html.dark .rename-bar input),:global(html.dark .option-grid label),:global(html.dark .format-tabs button),:global(html.dark .sheet-actions button),:global(html.dark .rename-bar button),:global(html.dark .editor-mode-tabs button.active) {
+:global(html.dark .source-summary select),:global(html.dark .option-grid input),:global(html.dark .option-grid select),:global(html.dark .rename-bar input),:global(html.dark .option-grid label),:global(html.dark .format-tabs button),:global(html.dark .editor-mode-tabs button.active) {
   border-color: var(--c-border-strong);
   background: var(--c-surface-subtle);
   color: var(--c-text-secondary)
@@ -1041,10 +1001,9 @@ function copyPreview() {
     width: 100%;
     justify-content:flex-start
   }
-  .sheet-actions button {
+  .sheet-actions :deep(.el-button) {
     flex: 1;
     justify-content: center;
-    padding:0 7px
   }
   .editor-mode-tabs button {
     padding: 9px 7px;
@@ -1057,7 +1016,7 @@ function copyPreview() {
     align-items: flex-start;
     flex-direction:column
   }
-  .source-editor header button {
+  .source-editor header :deep(.el-button) {
     width:100%
   }
   .source-editor textarea {

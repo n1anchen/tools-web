@@ -149,7 +149,7 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
     <section class="workspace-card">
       <div class="section-heading">
         <div><span class="eyebrow">01 · SOURCE</span><h3>选择来源并输入内容</h3><p>来源类型必须与输入内容一致；MD5 不可逆，因此只出现在结果区。</p></div>
-        <button type="button" class="ghost-button" @click="clearAll">清空内容</button>
+        <el-button plain type="primary" @click="clearAll">清空内容</el-button>
       </div>
 
       <div class="source-tabs" aria-label="来源编码类型">
@@ -161,10 +161,10 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
       <div class="source-editor" :class="{ error: errorMessage }">
         <header><div><strong>{{ sourceEncoder.label }}输入</strong><span>{{ schemeInfo[sourceEncoder.key].detail }}</span></div><span>{{ sourceLength }} 字符</span></header>
         <textarea v-model="sourceText" :aria-label="`${sourceEncoder.label}来源文本`" spellcheck="false" :placeholder="sourceEncoder.prefix ? `${sourceEncoder.prefix}……` : '输入或粘贴需要转换的内容'" @input="scheduleConvert"></textarea>
-        <footer><span v-if="errorMessage" role="alert">{{ errorMessage }}</span><span v-else>停止输入约 0.3 秒后自动更新，也可以立即转换并记入历史。</span><button type="button" :disabled="converting || !sourceText.trim()" @click="convert(true)">{{ converting ? '转换中…' : '立即转换' }}</button></footer>
+        <footer><span v-if="errorMessage" role="alert">{{ errorMessage }}</span><span v-else>停止输入约 0.3 秒后自动更新，也可以立即转换并记入历史。</span><el-button type="primary" :disabled="converting || !sourceText.trim()" :loading="converting" @click="convert(true)">{{ converting ? '转换中…' : '立即转换' }}</el-button></footer>
       </div>
 
-      <div class="example-row"><span>载入示例</span><button v-for="(example, index) in examples" :key="example" type="button" @click="useExample(example)">示例 {{ index + 1 }} · {{ example.slice(0, 12) }}</button></div>
+      <div class="example-row"><span>载入示例</span><el-button v-for="(example, index) in examples" :key="example" size="small" @click="useExample(example)">示例 {{ index + 1 }} · {{ example.slice(0, 12) }}</el-button></div>
     </section>
 
     <section class="result-card">
@@ -174,7 +174,7 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
           <header><div><strong>{{ item.label }}</strong><span>{{ item.info.summary }}</span></div><em :class="{ irreversible: item.readonly }">{{ item.info.tag }}</em></header>
           <textarea v-if="!item.singleLine" :value="item.value" :aria-label="`${item.label}转换结果`" readonly spellcheck="false" :placeholder="errorMessage ? '等待有效输入' : '转换结果将在这里显示'"></textarea>
           <input v-else :value="item.value" :aria-label="`${item.label}转换结果`" readonly placeholder="从明文计算 MD5">
-          <footer><span>{{ item.length }} 字符<template v-if="item.ratio"> · {{ item.ratio.toFixed(2) }}×</template></span><button type="button" :disabled="!item.value" @click="copy(item.value)">复制结果</button></footer>
+          <footer><span>{{ item.length }} 字符<template v-if="item.ratio"> · {{ item.ratio.toFixed(2) }}×</template></span><el-button text :disabled="!item.value" @click="copy(item.value)">复制结果</el-button></footer>
         </article>
       </div>
     </section>
@@ -187,7 +187,7 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
         </div>
       </div>
       <aside class="history-panel">
-        <header><div><span class="eyebrow">RECENT</span><strong>本次转换历史</strong></div><button v-if="history.length" type="button" @click="history = []">清空</button></header>
+        <header><div><span class="eyebrow">RECENT</span><strong>本次转换历史</strong></div><el-button v-if="history.length" text @click="history = []">清空</el-button></header>
         <div v-if="history.length" class="history-list">
           <button v-for="item in history" :key="item.id" type="button" @click="restoreHistory(item)"><span>{{ item.sourceLabel }} · {{ item.time }}</span><strong>{{ item.plainPreview }}</strong></button>
         </div>
@@ -243,17 +243,6 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   color: var(--c-text-secondary);
   font-size: 13px;
   line-height:1.65
-}
-.ghost-button {
-  min-height: 36px;
-  padding: 0 14px;
-  border: 1px solid var(--c-primary-300);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface);
-  color: var(--c-primary-700);
-  font-size: 12px;
-  font-weight: 800;
-  cursor:pointer
 }
 .source-tabs {
   display: grid;
@@ -352,21 +341,6 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   color: #be123c;
   background:#fff1f2
 }
-.source-editor footer button {
-  min-height: 34px;
-  padding: 0 15px;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: var(--accent);
-  color: var(--c-on-accent);
-  font-size: 12px;
-  font-weight: 850;
-  cursor:pointer
-}
-.source-editor footer button:disabled {
-  cursor: not-allowed;
-  opacity:.5
-}
 .example-row {
   display: flex;
   align-items: center;
@@ -379,16 +353,6 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   color: var(--c-text-secondary);
   font-size: 12px;
   font-weight:800
-}
-.example-row button {
-  flex: none;
-  padding: 7px 10px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-full);
-  background: #fafafa;
-  color: var(--c-text-body);
-  font-size: 12px;
-  cursor:pointer
 }
 .result-grid {
   display: grid;
@@ -463,18 +427,6 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 .result-grid article>footer {
   color: var(--c-text-secondary);
   font-size:12px
-}
-.result-grid footer button {
-  border: 0;
-  background: transparent;
-  color: var(--c-primary);
-  font-size: 12px;
-  font-weight: 850;
-  cursor:pointer
-}
-.result-grid footer button:disabled {
-  color: var(--c-text-muted);
-  cursor:not-allowed
 }
 .guide-card {
   display: grid;
@@ -626,7 +578,7 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   border-color: var(--c-border);
   background:#172033
 }
-:global(html.dark .source-tabs button.active),:global(html.dark .history-list button),:global(html.dark .ghost-button),:global(html.dark .example-row button),:global(html.dark .source-editor header),:global(html.dark .source-editor footer) {
+:global(html.dark .source-tabs button.active),:global(html.dark .history-list button),:global(html.dark .source-editor header),:global(html.dark .source-editor footer) {
   border-color: var(--c-border-strong);
   background: var(--c-surface-subtle);
   color:var(--c-primary-300)
@@ -675,11 +627,11 @@ onBeforeUnmount(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   .section-heading {
     flex-direction:column
   }
-  .source-editor header,.source-editor footer {
+  .source-editor footer {
     align-items: flex-start;
     flex-direction:column
   }
-  .source-editor footer button {
+  .source-editor footer :deep(.el-button) {
     width:100%
   }
   .result-grid,.scheme-grid {
