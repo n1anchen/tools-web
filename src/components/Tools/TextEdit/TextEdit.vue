@@ -253,7 +253,7 @@ onBeforeUnmount(() => {
     </div>
 
     <section class="source-card">
-      <header class="source-heading"><div><span class="eyebrow">DELIVERY SOURCE</span><h3>交付源码</h3><p>随编辑器实时更新，可复制 HTML 或提取纯文本</p></div><div class="source-actions"><el-segmented v-model="outputMode" :options="outputOptions" /><button type="button" aria-label="复制当前富文本交付内容" :disabled="!outputValue" @click="copy(outputValue)"><el-icon><CopyDocument /></el-icon>复制当前内容</button></div></header>
+      <header class="source-heading"><div><span class="eyebrow">DELIVERY SOURCE</span><h3>交付源码</h3><p>随编辑器实时更新，可复制 HTML 或提取纯文本</p></div><div class="source-actions"><el-radio-group v-model="outputMode"><el-radio-button v-for="item in outputOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group><button type="button" aria-label="复制当前富文本交付内容" :disabled="!outputValue" @click="copy(outputValue)"><el-icon><CopyDocument /></el-icon>复制当前内容</button></div></header>
       <pre aria-label="富文本交付源码">{{ displayOutput || '开始编辑后，这里会出现可交付的源码。' }}</pre>
       <div class="delivery-actions"><button type="button" aria-label="导出富文本的纯文本内容" :disabled="!hasContent" @click="exportText"><el-icon><Download /></el-icon>导出纯文本</button><button type="button" class="danger" aria-label="新建空白富文本内容" @click="clearDocument"><el-icon><Delete /></el-icon>新建空白内容</button></div>
     </section>
@@ -455,8 +455,14 @@ onBeforeUnmount(() => {
   display: flex;
   gap:8px
 }
-.source-actions :deep(.el-segmented) {
+.source-actions :deep(.el-radio-group) {
   min-width:210px
+}
+.source-actions :deep(.el-radio-button) {
+  flex: 1;
+}
+.source-actions :deep(.el-radio-button__inner) {
+  width: 100%;
 }
 .source-card pre {
   box-sizing: border-box;
@@ -580,9 +586,15 @@ onBeforeUnmount(() => {
     display: grid;
     width:100%
   }
-  .source-actions :deep(.el-segmented) {
+  .source-actions :deep(.el-radio-group) {
     min-width: 0;
     width:100%
+  }
+  .source-actions :deep(.el-radio-button) {
+    flex: 1;
+  }
+  .source-actions :deep(.el-radio-button__inner) {
+    width: 100%;
   }
   .delivery-actions {
     display: grid;

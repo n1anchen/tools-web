@@ -237,7 +237,7 @@ function clearInput() {
         <header class="card-heading"><div><span class="eyebrow">CONVERSION INSIGHT</span><h3>换算摘要</h3></div><el-icon><TrendCharts /></el-icon></header>
         <div class="summary-result"><span>{{ inputValue || '—' }} {{ sourceDefinition?.symbol }}</span><b>=</b><strong>{{ formattedResult }} <small>{{ targetDefinition?.symbol }}</small></strong></div>
         <div class="summary-grid"><div><span>基准单位</span><strong>{{ activeCategory.baseName }}</strong></div><div><span>换算后基准值</span><strong>{{ baseSummary }}</strong></div><div><span>源单位体系</span><strong>{{ sourceDefinition?.system || '—' }}</strong></div><div><span>目标单位体系</span><strong>{{ targetDefinition?.system || '—' }}</strong></div></div>
-        <div class="precision-setting"><label>显示精度 <strong>{{ precision }} 位有效数字</strong></label><el-segmented v-model="precision" :options="[{ label: '4 位', value: 4 }, { label: '10 位', value: 10 }, { label: '14 位', value: 14 }]" /></div>
+        <div class="precision-setting"><label>显示精度 <strong>{{ precision }} 位有效数字</strong></label><el-radio-group v-model="precision"><el-radio-button :value="4">4 位</el-radio-button><el-radio-button :value="10">10 位</el-radio-button><el-radio-button :value="14">14 位</el-radio-button></el-radio-group></div>
         <div class="definition-notes"><article v-for="(note, index) in activeCategory.notes" :key="note"><b>0{{ index + 1 }}</b><p>{{ note }}</p></article></div>
       </aside>
     </section>
@@ -632,8 +632,14 @@ function clearInput() {
 .precision-setting label strong {
   color:var(--accent)
 }
-.precision-setting :deep(.el-segmented) {
-  width:100%
+.precision-setting :deep(.el-radio-group) {
+  width: 100%;
+}
+.precision-setting :deep(.el-radio-button) {
+  flex: 1;
+}
+.precision-setting :deep(.el-radio-button__inner) {
+  width: 100%;
 }
 .definition-notes {
   display: grid;

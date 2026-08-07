@@ -57,13 +57,10 @@ function useSample(sample: typeof samples[number]) {
     <section class="workspace-card">
       <SectionHeading :icon="Document" title="HTML 实体转换" description="安全处理标签、引号、与号以及数字实体" tone="pink">
         <template #actions>
-          <el-segmented
-            v-model="mode"
-            :options="[
-              { label: 'HTML → 实体', value: 'encode' },
-              { label: '实体 → 文本', value: 'decode' },
-            ]"
-          />
+          <el-radio-group v-model="mode">
+            <el-radio-button value="encode">HTML → 实体</el-radio-button>
+            <el-radio-button value="decode">实体 → 文本</el-radio-button>
+          </el-radio-group>
         </template>
       </SectionHeading>
 

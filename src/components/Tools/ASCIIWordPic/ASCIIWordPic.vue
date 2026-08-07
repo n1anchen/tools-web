@@ -167,7 +167,7 @@ onUnmounted(() => {
 
         <div class="setting-grid">
           <label><span>字体风格</span><el-select v-model="font" filterable aria-label="字体风格"><el-option v-for="item in fonts" :key="item" :label="item" :value="item" /></el-select></label>
-          <label><span>字符间距</span><el-segmented v-model="horizontalLayout" :options="layoutOptions" /></label>
+          <label><span>字符间距</span><el-radio-group v-model="horizontalLayout"><el-radio-button v-for="item in layoutOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         </div>
 
         <div class="slider-setting">
@@ -328,8 +328,14 @@ onUnmounted(() => {
   color: var(--c-text-secondary);
   font-size:10px
 }
-.setting-grid :deep(.el-segmented) {
-  width:100%
+.setting-grid :deep(.el-radio-group) {
+  width: 100%;
+}
+.setting-grid :deep(.el-radio-button) {
+  flex: 1;
+}
+.setting-grid :deep(.el-radio-button__inner) {
+  width: 100%;
 }
 .slider-setting {
   margin-top:14px

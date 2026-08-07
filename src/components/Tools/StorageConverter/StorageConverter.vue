@@ -105,13 +105,10 @@ function copyAll() {
         </label>
         <label class="field-block">
           <span>换算标准</span>
-          <el-segmented
-            v-model="standard"
-            :options="[
-              { label: '二进制 1024', value: 'binary' },
-              { label: '十进制 1000', value: 'decimal' },
-            ]"
-          />
+          <el-radio-group v-model="standard">
+            <el-radio-button value="binary">二进制 1024</el-radio-button>
+            <el-radio-button value="decimal">十进制 1000</el-radio-button>
+          </el-radio-group>
         </label>
       </div>
 
@@ -218,7 +215,13 @@ function copyAll() {
 
 .field-block :deep(.el-input),
 .field-block :deep(.el-select),
-.field-block :deep(.el-segmented) {
+.field-block :deep(.el-radio-group) {
+  width: 100%;
+}
+.field-block :deep(.el-radio-button) {
+  flex: 1;
+}
+.field-block :deep(.el-radio-button__inner) {
   width: 100%;
 }
 

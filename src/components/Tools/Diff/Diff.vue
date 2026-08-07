@@ -133,7 +133,7 @@ function downloadDiff() {
     <section class="rule-card">
       <div><span class="eyebrow">COMPARE RULES</span><h3>对比规则</h3></div>
       <div class="rule-options"><el-checkbox v-model="ignoreWhitespace">忽略空白差异</el-checkbox><el-checkbox v-model="ignoreCase">忽略大小写</el-checkbox><el-checkbox v-model="ignoreBlankLines">忽略空行</el-checkbox></div>
-      <label><span>高亮精度</span><el-segmented v-model="highlightLevel" :options="[{ label: '字符级', value: 'char' }, { label: '词组级', value: 'word' }]" /></label>
+      <label><span>高亮精度</span><el-radio-group v-model="highlightLevel"><el-radio-button value="char">字符级</el-radio-button><el-radio-button value="word">词组级</el-radio-button></el-radio-group></label>
     </section>
 
     <section class="input-grid">
@@ -152,7 +152,7 @@ function downloadDiff() {
     <section class="result-card">
       <header class="result-heading">
         <div><span class="eyebrow">DIFF RESULT</span><h3>差异结果</h3><p>忽略规则会先规范化文本，再生成下方结果</p></div>
-        <div class="result-actions"><el-segmented v-model="viewMode" :options="[{ label: '并排', value: 'side-by-side' }, { label: '混合', value: 'unified' }, { label: '逐行', value: 'line-by-line' }]" /><button type="button" :disabled="!hasInput" aria-label="复制统一差异文本" @click="copy(unifiedText)"><el-icon><CopyDocument /></el-icon>复制差异</button><button type="button" :disabled="!hasInput" aria-label="导出差异文件" @click="downloadDiff"><el-icon><Download /></el-icon>导出 .diff</button></div>
+        <div class="result-actions"><el-radio-group v-model="viewMode"><el-radio-button value="side-by-side">并排</el-radio-button><el-radio-button value="unified">混合</el-radio-button><el-radio-button value="line-by-line">逐行</el-radio-button></el-radio-group><button type="button" :disabled="!hasInput" aria-label="复制统一差异文本" @click="copy(unifiedText)"><el-icon><CopyDocument /></el-icon>复制差异</button><button type="button" :disabled="!hasInput" aria-label="导出差异文件" @click="downloadDiff"><el-icon><Download /></el-icon>导出 .diff</button></div>
       </header>
 
       <div class="summary-strip"><div class="added"><span>新增</span><strong>+{{ summary.additions }}</strong></div><div class="removed"><span>删除</span><strong>-{{ summary.removals }}</strong></div><div><span>未变化</span><strong>{{ summary.unchanged }}</strong></div><div><span>左右行数</span><strong>{{ summary.oldLines }} / {{ summary.newLines }}</strong></div></div>
@@ -601,9 +601,15 @@ function downloadDiff() {
     display: grid;
     grid-template-columns:1fr 1fr
   }
-  .result-actions :deep(.el-segmented) {
+  .result-actions :deep(.el-radio-group) {
     grid-column: 1/-1;
     width:100%
+  }
+  .result-actions :deep(.el-radio-button) {
+    flex: 1;
+  }
+  .result-actions :deep(.el-radio-button__inner) {
+    width: 100%;
   }
   .summary-strip {
     grid-template-columns:1fr 1fr

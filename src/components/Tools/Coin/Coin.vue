@@ -77,15 +77,12 @@ onBeforeUnmount(() => {
 
         <label class="count-field">
           <span>连续抛掷次数</span>
-          <el-segmented
-            v-model="tossCount"
-            :options="[
-              { label: '1 次', value: 1 },
-              { label: '3 次', value: 3 },
-              { label: '5 次', value: 5 },
-              { label: '10 次', value: 10 },
-            ]"
-          />
+          <el-radio-group v-model="tossCount">
+            <el-radio-button :value="1">1 次</el-radio-button>
+            <el-radio-button :value="3">3 次</el-radio-button>
+            <el-radio-button :value="5">5 次</el-radio-button>
+            <el-radio-button :value="10">10 次</el-radio-button>
+          </el-radio-group>
         </label>
 
         <div class="fairness-note">
@@ -197,7 +194,13 @@ onBeforeUnmount(() => {
   display: block;
   margin-top: 18px;
 }
-.count-field :deep(.el-segmented) {
+.count-field :deep(.el-radio-group) {
+  width: 100%;
+}
+.count-field :deep(.el-radio-button) {
+  flex: 1;
+}
+.count-field :deep(.el-radio-button__inner) {
   width: 100%;
 }
 .fairness-note {

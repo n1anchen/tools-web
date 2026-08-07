@@ -11,6 +11,8 @@ import './styles/tailwind.css'
 //element-plus css
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
+//element-plus 设计语言统一覆盖（切换器胶囊圆角 + 主色挂钩 --c-primary），须置于 element-plus 样式之后
+import './styles/element-plus.css'
 //pinia
 import pinia from './store'
 const app = createApp(App)

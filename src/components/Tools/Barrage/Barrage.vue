@@ -185,8 +185,8 @@ onUnmounted(() => {
         <div class="preset-section"><span>场景预设</span><div><button v-for="preset in presets" :key="preset.label" type="button" @click="applyPreset(preset)"><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small></button></div></div>
 
         <div class="mode-grid">
-          <label><span>展示模式</span><el-segmented v-model="state.mode" :options="modeOptions" /></label>
-          <label><span>滚动方向</span><el-segmented v-model="state.direction" :options="directionOptions" :disabled="state.mode !== 'scroll'" /></label>
+          <label><span>展示模式</span><el-radio-group v-model="state.mode"><el-radio-button v-for="item in modeOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
+          <label><span>滚动方向</span><el-radio-group v-model="state.direction" :disabled="state.mode !== 'scroll'"><el-radio-button v-for="item in directionOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         </div>
 
         <div class="slider-setting" :class="{ disabled: state.mode !== 'scroll' }"><label><span>滚动速度</span><strong>{{ state.speed }} px/s</strong></label><el-slider v-model="state.speed" :min="40" :max="260" :step="10" :disabled="state.mode !== 'scroll'" /></div>
@@ -446,8 +446,14 @@ onUnmounted(() => {
   color: var(--c-text-secondary);
   font-size:10px
 }
-.mode-grid :deep(.el-segmented) {
-  width:100%
+.mode-grid :deep(.el-radio-group) {
+  width: 100%;
+}
+.mode-grid :deep(.el-radio-button) {
+  flex: 1;
+}
+.mode-grid :deep(.el-radio-button__inner) {
+  width: 100%;
 }
 .slider-setting {
   margin-top:14px

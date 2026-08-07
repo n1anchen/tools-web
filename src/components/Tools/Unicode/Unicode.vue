@@ -53,13 +53,10 @@ function useSample(sample: typeof samples[number]) {
     <section class="workspace-card">
       <SectionHeading :icon="Connection" title="Unicode 编码转换" description="支持 JavaScript 转义、Unicode 码点和 Emoji" tone="blue">
         <template #actions>
-          <el-segmented
-            v-model="mode"
-            :options="[
-              { label: '文本 → Unicode', value: 'encode' },
-              { label: 'Unicode → 文本', value: 'decode' },
-            ]"
-          />
+          <el-radio-group v-model="mode">
+            <el-radio-button value="encode">文本 → Unicode</el-radio-button>
+            <el-radio-button value="decode">Unicode → 文本</el-radio-button>
+          </el-radio-group>
         </template>
       </SectionHeading>
 

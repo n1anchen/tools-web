@@ -86,13 +86,10 @@ function useExample(value: string) {
         <SectionHeading :icon="Link" title="选择处理方式" description="组件模式会编码保留字符，完整 URL 模式保留路径结构" tone="blue" />
 
         <div class="mode-controls">
-          <el-segmented
-            v-model="mode"
-            :options="[
-              { label: 'URL 编码', value: 'encode' },
-              { label: 'URL 解码', value: 'decode' },
-            ]"
-          />
+          <el-radio-group v-model="mode">
+            <el-radio-button value="encode">URL 编码</el-radio-button>
+            <el-radio-button value="decode">URL 解码</el-radio-button>
+          </el-radio-group>
           <el-radio-group v-model="scope">
             <el-radio-button value="component">参数 / 文本</el-radio-button>
             <el-radio-button value="url">完整 URL</el-radio-button>
@@ -401,7 +398,6 @@ function useExample(value: string) {
     flex-direction: column;
   }
 
-  .mode-controls :deep(.el-segmented),
   .mode-controls :deep(.el-radio-group) {
     width: 100%;
   }

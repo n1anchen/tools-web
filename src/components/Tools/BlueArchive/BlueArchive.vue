@@ -197,7 +197,7 @@ onUnmounted(() => {
         <div class="text-grid"><label><span>左侧蓝字</span><el-input v-model="state.textL" maxlength="18" aria-label="左侧蓝色文字" /></label><label><span>右侧深色字</span><el-input v-model="state.textR" maxlength="18" aria-label="右侧深色文字" /></label></div>
         <div class="preset-section"><span>标题预设</span><div><button v-for="preset in presets" :key="preset.label" type="button" @click="applyPreset(preset)"><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small></button></div></div>
 
-        <label class="option-field"><span>画布形状</span><el-segmented v-model="state.bgShape" :options="shapeOptions" /></label>
+        <label class="option-field"><span>画布形状</span><el-radio-group v-model="state.bgShape"><el-radio-button v-for="item in shapeOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <div class="background-row"><div><strong>透明背景</strong><span>适合叠加到海报、视频或头像中</span></div><el-switch v-model="state.transparent" aria-label="切换透明背景" /></div>
       </section>
 
@@ -207,7 +207,7 @@ onUnmounted(() => {
         <div class="slider-setting"><label><span>光环垂直位置</span><strong>Y {{ state.graphY }}</strong></label><el-slider v-model="state.graphY" :min="-80" :max="80" /></div>
         <button type="button" class="halo-reset" @click="resetHalo">光环回到默认位置</button>
 
-        <label class="resolution-field"><span>导出清晰度</span><el-segmented v-model="state.scale" :options="scaleOptions" /></label>
+        <label class="resolution-field"><span>导出清晰度</span><el-radio-group v-model="state.scale"><el-radio-button v-for="item in scaleOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <div class="dimension-summary"><span>最终 PNG</span><strong>{{ dimensions.width }} × {{ dimensions.height }}</strong><small>{{ state.scale === 1 ? '适合网页与聊天' : state.scale === 2 ? '适合高清分享' : '适合大尺寸排版' }}</small></div>
       </aside>
     </div>
@@ -417,8 +417,17 @@ onUnmounted(() => {
   display: block;
   margin-top:16px
 }
-.option-field :deep(.el-segmented),.resolution-field :deep(.el-segmented) {
-  width:100%
+.option-field :deep(.el-radio-group),
+.resolution-field :deep(.el-radio-group) {
+  width: 100%;
+}
+.option-field :deep(.el-radio-button),
+.resolution-field :deep(.el-radio-button) {
+  flex: 1;
+}
+.option-field :deep(.el-radio-button__inner),
+.resolution-field :deep(.el-radio-button__inner) {
+  width: 100%;
 }
 .background-row {
   display: flex;

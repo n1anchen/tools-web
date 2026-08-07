@@ -251,8 +251,8 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <label class="option-field"><span>副标题来源</span><el-segmented v-model="state.textType" :options="textTypeOptions" /></label>
-        <label class="option-field"><span>图片背景</span><el-segmented v-model="state.bgColor" :options="backgroundOptions" /></label>
+        <label class="option-field"><span>副标题来源</span><el-radio-group v-model="state.textType"><el-radio-button v-for="item in textTypeOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
+        <label class="option-field"><span>图片背景</span><el-radio-group v-model="state.bgColor"><el-radio-button v-for="item in backgroundOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
 
         <div class="slider-setting">
           <label><span>副标题水平位置</span><strong>X {{ state.bottomPosition }}</strong></label>
@@ -268,7 +268,7 @@ onUnmounted(() => {
           <div><span>基础画布</span><strong>{{ baseDimensions.width }} × {{ baseDimensions.height }}</strong></div>
           <div><span>副标题位置</span><strong>X {{ state.bottomPosition }}</strong></div>
         </div>
-        <label class="option-field"><span>导出清晰度</span><el-segmented v-model="state.scale" :options="scaleOptions" /></label>
+        <label class="option-field"><span>导出清晰度</span><el-radio-group v-model="state.scale"><el-radio-button v-for="item in scaleOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <div class="export-summary">
           <span>最终 PNG</span><strong>{{ exportDimensions.width }} × {{ exportDimensions.height }}</strong><small>{{ state.scale === 1 ? '适合即时分享' : state.scale === 2 ? '适合高清发布' : '适合后期排版' }}</small>
         </div>
@@ -485,8 +485,14 @@ onUnmounted(() => {
 .option-field {
   margin-top:18px
 }
-.option-field :deep(.el-segmented) {
-  width:100%
+.option-field :deep(.el-radio-group) {
+  width: 100%;
+}
+.option-field :deep(.el-radio-button) {
+  flex: 1;
+}
+.option-field :deep(.el-radio-button__inner) {
+  width: 100%;
 }
 .slider-setting {
   margin-top:19px

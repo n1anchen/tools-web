@@ -261,8 +261,8 @@ onUnmounted(() => {
         <header class="card-heading"><div><span class="eyebrow">WORDMARK LAYOUT</span><h3>文字与版式</h3></div><button type="button" aria-label="恢复默认徽标设置" @click="resetStudio"><el-icon><Refresh /></el-icon>重置</button></header>
         <div class="text-grid"><label><span>左侧文字</span><el-input v-model="state.leftText" maxlength="18" aria-label="徽标左侧文字" /></label><label><span>色块文字</span><el-input v-model="state.rightText" maxlength="18" aria-label="徽标色块文字" /></label></div>
         <div class="text-presets"><span>快速文案</span><div><button v-for="preset in textPresets" :key="preset.label" type="button" @click="applyText(preset)">{{ preset.label }}</button></div></div>
-        <label class="option-field"><span>画布形状</span><el-segmented v-model="state.bgShape" :options="shapeOptions" /></label>
-        <label class="option-field"><span>图片背景</span><el-segmented v-model="state.backgroundMode" :options="backgroundOptions" /></label>
+        <label class="option-field"><span>画布形状</span><el-radio-group v-model="state.bgShape"><el-radio-button v-for="item in shapeOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
+        <label class="option-field"><span>图片背景</span><el-radio-group v-model="state.backgroundMode"><el-radio-button v-for="item in backgroundOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <div class="slider-setting"><label><span>标题字号</span><strong>{{ state.fontSize }} px</strong></label><el-slider v-model="state.fontSize" :min="64" :max="180" :step="4" /></div>
         <div class="compact-sliders"><div class="slider-setting"><label><span>色块留白</span><strong>{{ state.paddingX }} px</strong></label><el-slider v-model="state.paddingX" :min="8" :max="48" /></div><div class="slider-setting"><label><span>色块圆角</span><strong>{{ state.radius }} px</strong></label><el-slider v-model="state.radius" :min="0" :max="36" /></div></div>
       </section>
@@ -271,7 +271,7 @@ onUnmounted(() => {
         <header class="card-heading"><div><span class="eyebrow">COLOR & EXPORT</span><h3>配色与导出</h3></div></header>
         <div class="theme-presets"><button v-for="preset in themePresets" :key="preset.label" type="button" @click="applyTheme(preset)"><i :style="{ background: `linear-gradient(135deg, ${preset.background} 50%, ${preset.box} 50%)` }"></i><span><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small></span></button></div>
         <div class="color-grid"><label><span>背景</span><div><el-color-picker v-model="state.backgroundColor" :disabled="state.backgroundMode === 'transparent'" /><code>{{ state.backgroundMode === 'transparent' ? '透明' : state.backgroundColor }}</code></div></label><label><span>色块</span><div><el-color-picker v-model="state.boxColor" /><code>{{ state.boxColor }}</code></div></label><label><span>左侧文字</span><div><el-color-picker v-model="state.leftColor" /><code>{{ state.leftColor }}</code></div></label><label><span>色块文字</span><div><el-color-picker v-model="state.rightColor" /><code>{{ state.rightColor }}</code></div></label></div>
-        <label class="resolution-field"><span>导出清晰度</span><el-segmented v-model="state.scale" :options="scaleOptions" /></label>
+        <label class="resolution-field"><span>导出清晰度</span><el-radio-group v-model="state.scale"><el-radio-button v-for="item in scaleOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <div class="dimension-summary"><span>最终 PNG</span><strong>{{ exportDimensions.width }} × {{ exportDimensions.height }}</strong><small>{{ state.scale === 1 ? '适合网页与聊天' : state.scale === 2 ? '适合高清分享' : '适合大尺寸排版' }}</small></div>
       </aside>
     </div>
@@ -463,8 +463,17 @@ onUnmounted(() => {
   display: block;
   margin-top:15px
 }
-.option-field :deep(.el-segmented),.resolution-field :deep(.el-segmented) {
-  width:100%
+.option-field :deep(.el-radio-group),
+.resolution-field :deep(.el-radio-group) {
+  width: 100%;
+}
+.option-field :deep(.el-radio-button),
+.resolution-field :deep(.el-radio-button) {
+  flex: 1;
+}
+.option-field :deep(.el-radio-button__inner),
+.resolution-field :deep(.el-radio-button__inner) {
+  width: 100%;
 }
 .slider-setting {
   margin-top:14px

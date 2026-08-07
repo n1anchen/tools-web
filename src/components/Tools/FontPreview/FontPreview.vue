@@ -237,7 +237,7 @@ onBeforeUnmount(() => {
       <header class="preview-heading">
         <div><span class="eyebrow">LIVE TYPE SPECIMEN</span><h3>{{ selectedFont.label }}</h3><p>{{ previewFontFamily }}</p></div>
         <div class="preview-actions">
-          <el-segmented v-model="settings.viewMode" :options="viewOptions" aria-label="字体预览模式" />
+          <el-radio-group v-model="settings.viewMode" aria-label="字体预览模式"><el-radio-button v-for="item in viewOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group>
           <button type="button" aria-label="复制当前排版 CSS" @click="copyCss"><el-icon><CopyDocument /></el-icon>复制 CSS</button>
         </div>
       </header>
@@ -281,7 +281,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="appearance-row">
-          <label><span>字体样式</span><el-segmented v-model="settings.fontStyle" :options="styleOptions" /></label>
+          <label><span>字体样式</span><el-radio-group v-model="settings.fontStyle"><el-radio-button v-for="item in styleOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
           <label><span>文字颜色</span><div><el-color-picker v-model="settings.fontColor" /><code>{{ settings.fontColor.toUpperCase() }}</code></div></label>
           <label><span>纸张颜色</span><div><el-color-picker v-model="settings.backgroundColor" /><code>{{ settings.backgroundColor.toUpperCase() }}</code></div></label>
         </div>
@@ -532,8 +532,14 @@ onBeforeUnmount(() => {
   color: var(--c-text-secondary);
   font-size:11px
 }
-.appearance-row :deep(.el-segmented) {
-  width:100%
+.appearance-row :deep(.el-radio-group) {
+  width: 100%;
+}
+.appearance-row :deep(.el-radio-button) {
+  flex: 1;
+}
+.appearance-row :deep(.el-radio-button__inner) {
+  width: 100%;
 }
 .metric-grid {
   display: grid;
@@ -721,8 +727,14 @@ onBeforeUnmount(() => {
     width: 100%;
     flex-wrap:wrap
   }
-  .preview-actions :deep(.el-segmented) {
+  .preview-actions :deep(.el-radio-group) {
     flex:1
+  }
+  .preview-actions :deep(.el-radio-button) {
+    flex: 1;
+  }
+  .preview-actions :deep(.el-radio-button__inner) {
+    width: 100%;
   }
   .preview-actions>button {
     flex:1

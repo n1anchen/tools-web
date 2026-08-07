@@ -264,7 +264,7 @@ onUnmounted(() => themeObserver?.disconnect())
         <label class="text-field"><span>字幕文本</span><el-input v-model="state.text" type="textarea" :rows="4" maxlength="160" show-word-limit placeholder="输入字幕，支持手动换行" aria-label="梗图字幕文本" /></label>
         <div class="text-presets"><span>快速文案</span><div><button v-for="text in textPresets" :key="text" type="button" @click="state.text = text">{{ text }}</button></div></div>
         <div class="style-presets"><span>视觉模板</span><div><button v-for="preset in stylePresets" :key="preset.label" type="button" @click="applyStyle(preset)"><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small></button></div></div>
-        <div class="segment-grid"><label><span>字幕位置</span><el-segmented v-model="state.placement" :options="placementOptions" /></label><label><span>字幕背景</span><el-segmented v-model="state.bgMode" :options="backgroundOptions" /></label></div>
+        <div class="segment-grid"><label><span>字幕位置</span><el-radio-group v-model="state.placement"><el-radio-button v-for="item in placementOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label><label><span>字幕背景</span><el-radio-group v-model="state.bgMode"><el-radio-button v-for="item in backgroundOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label></div>
         <div class="switch-row"><div><strong>自动换行</strong><span>按图片宽度最多排成 5 行</span></div><el-switch v-model="state.autoWrap" aria-label="切换字幕自动换行" /></div>
         <div class="slider-grid"><div class="slider-setting"><label><span>字体大小</span><strong>{{ state.fontSize }} px</strong></label><el-slider v-model="state.fontSize" :min="12" :max="120" /></div><div class="slider-setting"><label><span>上下留白</span><strong>{{ state.captionPadding }} px</strong></label><el-slider v-model="state.captionPadding" :min="0" :max="60" /></div><div class="slider-setting"><label><span>距{{ state.placement === 'bottom' ? '底' : '顶' }}部</span><strong>{{ state.offset }} px</strong></label><el-slider v-model="state.offset" :min="0" :max="maxOffset" :disabled="!hasImage" /></div><div class="slider-setting"><label><span>描边粗细</span><strong>{{ state.stroke ? `${state.strokeWidth} px` : '关闭' }}</strong></label><el-slider v-model="state.strokeWidth" :min="1" :max="12" :disabled="!state.stroke" /></div></div>
         <div class="switch-row"><div><strong>文字描边</strong><span>提升复杂背景下的可读性</span></div><el-switch v-model="state.stroke" aria-label="切换字幕描边" /></div>
@@ -273,8 +273,8 @@ onUnmounted(() => themeObserver?.disconnect())
       <aside class="export-card">
         <header class="card-heading"><div><span class="eyebrow">OUTPUT CONTROL</span><h3>尺寸与导出</h3></div></header>
         <div class="summary-list"><div><span>原图尺寸</span><strong>{{ hasImage ? `${dimensions.naturalWidth} × ${dimensions.naturalHeight}` : '未载入' }}</strong></div><div><span>输出尺寸</span><strong>{{ hasImage ? `${outputDimensions.width} × ${outputDimensions.height}` : '—' }}</strong></div><div><span>字幕行数</span><strong>{{ renderedLines.length }} 行</strong></div></div>
-        <label class="option-field"><span>输出尺寸</span><el-segmented v-model="state.scale" :options="scaleOptions" /></label>
-        <label class="option-field"><span>文件格式</span><el-segmented v-model="state.format" :options="formatOptions" /></label>
+        <label class="option-field"><span>输出尺寸</span><el-radio-group v-model="state.scale"><el-radio-button v-for="item in scaleOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
+        <label class="option-field"><span>文件格式</span><el-radio-group v-model="state.format"><el-radio-button v-for="item in formatOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <div v-if="state.format === 'jpeg'" class="slider-setting quality"><label><span>JPG 品质</span><strong>{{ state.quality }}%</strong></label><el-slider v-model="state.quality" :min="40" :max="100" /></div>
         <div class="export-summary"><span>最终文件</span><strong>{{ hasImage ? `${outputDimensions.width} × ${outputDimensions.height}` : '等待图片' }}</strong><small>{{ formatLabel }}</small></div>
         <button v-if="hasImage" type="button" class="clear-action" aria-label="移除当前梗图图片" @click="clearImage"><el-icon><Picture /></el-icon>移除当前图片</button>
@@ -456,8 +456,17 @@ onUnmounted(() => themeObserver?.disconnect())
   gap: 14px;
   margin-top:18px
 }
-.segment-grid :deep(.el-segmented),.option-field :deep(.el-segmented) {
-  width:100%
+.segment-grid :deep(.el-radio-group),
+.option-field :deep(.el-radio-group) {
+  width: 100%;
+}
+.segment-grid :deep(.el-radio-button),
+.option-field :deep(.el-radio-button) {
+  flex: 1;
+}
+.segment-grid :deep(.el-radio-button__inner),
+.option-field :deep(.el-radio-button__inner) {
+  width: 100%;
 }
 .switch-row {
   display: flex;

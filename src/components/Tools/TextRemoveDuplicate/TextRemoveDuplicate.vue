@@ -55,13 +55,10 @@ function useResultAsInput() {
     <section class="workspace-card">
       <SectionHeading :icon="Filter" title="设置去重规则" description="结果会随输入和规则实时更新，并保持原始顺序" tone="violet">
         <template #actions>
-          <el-segmented
-            v-model="options.mode"
-            :options="[
-              { label: '全局重复行', value: 'global' },
-              { label: '仅连续重复', value: 'adjacent' },
-            ]"
-          />
+          <el-radio-group v-model="options.mode">
+            <el-radio-button value="global">全局重复行</el-radio-button>
+            <el-radio-button value="adjacent">仅连续重复</el-radio-button>
+          </el-radio-group>
         </template>
       </SectionHeading>
 

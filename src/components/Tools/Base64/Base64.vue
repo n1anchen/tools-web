@@ -236,7 +236,7 @@ onBeforeUnmount(revokePreview)
     <template v-if="mode === 'text'">
       <section class="text-toolbar">
         <div><span class="eyebrow">TEXT FLOW</span><h3>文本双向转换</h3></div>
-        <el-segmented v-model="textMode" :options="[{ label: '文本 → Base64', value: 'encode' }, { label: 'Base64 → 文本', value: 'decode' }]" />
+        <el-radio-group v-model="textMode"><el-radio-button value="encode">文本 → Base64</el-radio-button><el-radio-button value="decode">Base64 → 文本</el-radio-button></el-radio-group>
         <el-checkbox v-if="textMode === 'encode'" v-model="urlSafe">生成 Base64 URL</el-checkbox>
         <div class="toolbar-actions"><button type="button" aria-label="将结果作为下一步输入" :disabled="!textOutput" @click="swapTextFlow"><el-icon><Refresh /></el-icon>反向继续</button><button type="button" aria-label="清空文本编解码内容" @click="clearText"><el-icon><Delete /></el-icon>清空</button></div>
       </section>

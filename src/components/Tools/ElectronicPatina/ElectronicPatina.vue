@@ -229,7 +229,7 @@ onUnmounted(() => {
         <div class="preset-grid"><button v-for="preset in patinaPresets" :key="preset.label" type="button" @click="applyPreset(preset)"><strong>{{ preset.label }}</strong><small>{{ preset.note }}</small><span>{{ preset.count }} 次 · {{ preset.quality }}%</span></button></div>
         <div class="slider-setting"><label><span>重复压缩次数</span><strong>{{ compressionCount }} 次</strong></label><el-slider v-model="compressionCount" :min="1" :max="100" :disabled="processing" /></div>
         <div class="slider-setting"><label><span>单轮 JPEG 质量</span><strong>{{ quality }}%</strong></label><el-slider v-model="quality" :min="1" :max="99" :disabled="processing" /></div>
-        <label class="option-field"><span>输出尺寸</span><el-segmented v-model="maxEdge" :options="sizeOptions" :disabled="processing" /></label>
+        <label class="option-field"><span>输出尺寸</span><el-radio-group v-model="maxEdge" :disabled="processing"><el-radio-button v-for="item in sizeOptions" :key="item.value" :value="item.value">{{ item.label }}</el-radio-button></el-radio-group></label>
         <div class="intensity-card"><div><span>预计效果</span><strong>{{ profile.label }}</strong><p>{{ profile.description }}</p></div><div class="intensity-meter"><i :style="{ width: `${profile.score}%` }"></i></div></div>
         <div class="process-actions"><button v-if="!processing" type="button" class="primary" aria-label="开始或重新运行电子包浆处理" :disabled="!originalImage" @click="simulate"><el-icon><VideoPlay /></el-icon>{{ resultImage ? '按当前参数重新处理' : '开始包浆' }}</button><button v-else type="button" class="cancel" aria-label="取消电子包浆处理" @click="cancelProcessing"><el-icon><Close /></el-icon>取消处理</button></div>
       </section>
@@ -500,8 +500,14 @@ onUnmounted(() => {
   font-size: 12px;
   font-weight:800
 }
-.option-field :deep(.el-segmented) {
-  width:100%
+.option-field :deep(.el-radio-group) {
+  width: 100%;
+}
+.option-field :deep(.el-radio-button) {
+  flex: 1;
+}
+.option-field :deep(.el-radio-button__inner) {
+  width: 100%;
 }
 .intensity-card {
   margin-top: 18px;

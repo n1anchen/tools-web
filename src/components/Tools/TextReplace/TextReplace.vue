@@ -49,13 +49,10 @@ function useResultAsInput() {
     <section class="workspace-card">
       <SectionHeading :icon="Search" title="设置查找与替换规则" description="普通文字和正则表达式均支持实时预览" tone="blue">
         <template #actions>
-          <el-segmented
-            v-model="options.scope"
-            :options="[
-              { label: '替换全部', value: 'all' },
-              { label: '仅第一处', value: 'first' },
-            ]"
-          />
+          <el-radio-group v-model="options.scope">
+            <el-radio-button value="all">替换全部</el-radio-button>
+            <el-radio-button value="first">仅第一处</el-radio-button>
+          </el-radio-group>
         </template>
       </SectionHeading>
 
