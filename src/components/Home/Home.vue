@@ -175,7 +175,7 @@ onMounted(() => {
           <p class="text-sm font-medium text-slate-600 dark:text-slate-300">还没有收藏的工具</p>
           <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
             进入任意工具页（除独立工具外），点击右上角的
-            <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-600
+            <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full border border-slate-200 dark:border-slate-600
                          bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs align-middle mx-0.5">
               ☆ 收藏
             </span>
