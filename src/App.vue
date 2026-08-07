@@ -5,7 +5,7 @@ import Floor from '@/components/Layout/Floor/Floor.vue'
 import ToastNotification from '@/components/Common/ToastNotification.vue'
 import PrivacyNotice from '@/components/Common/PrivacyNotice.vue'
 import { useComponentStore } from '@/store/modules/component'
-import { useSettingStore } from '@/store/modules/setting'
+import { useSettingStore, DEFAULT_PRIMARY_COLOR } from '@/store/modules/setting'
 import { provide, onMounted, onUnmounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
@@ -181,6 +181,11 @@ onMounted(async () => {
     document.documentElement.classList.remove('dark')
   }
 
+  // 应用保存的主题色（非默认值时才写 inline style，默认值由 tailwind.css 的 :root 提供）
+  if (settingStore.primaryColor !== DEFAULT_PRIMARY_COLOR) {
+    document.documentElement.style.setProperty('--c-primary', settingStore.primaryColor)
+  }
+
   // 直接通过 URL 进入工具页时默认收起侧边栏（由 VITE_COLLAPSE_SIDEBAR_ON_TOOL_ENTRY 控制）
   // 等待初始路由导航（含不存在路径的重定向）完成后，按最终路径判断；
   // 仅工具页触发，排除首页、About、404 等非工具页（含尾斜杠容错）
@@ -224,7 +229,7 @@ onUnmounted(() => {
     </ToastNotification>
 
     <!-- 版本更新提示 -->
-    <ToastNotification v-model="needRefresh" icon-class="text-blue-500">
+    <ToastNotification v-model="needRefresh" icon-class="text-primary-500">
       <template #icon><el-icon><InfoFilled /></el-icon></template>
       <template #title>自动更新成功</template>
       <template #desc>新版本已后台更新，下次打开生效</template>

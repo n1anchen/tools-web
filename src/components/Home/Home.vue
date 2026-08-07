@@ -126,16 +126,16 @@ onMounted(() => {
     <div class="mt-6 mb-2 flex flex-wrap items-center justify-between gap-3">
       <div class="flex items-center gap-2">
         <span class="text-sm text-slate-500 dark:text-slate-400">本站目前共有</span>
-        <span class="px-2 py-0.5 rounded-full text-sm font-semibold bg-blue-50 text-blue-600 border border-blue-200
-                     dark:bg-blue-900/50 dark:text-blue-400 dark:border-blue-800">{{ totalToolsCount }}</span>
+        <span class="px-2 py-0.5 rounded-full text-sm font-semibold bg-primary-50 text-primary-600 border border-primary-200
+                     dark:bg-[color:color-mix(in_srgb,var(--c-primary-900)_50%,transparent)] dark:text-primary-400 dark:border-primary-800">{{ totalToolsCount }}</span>
         <span class="text-sm text-slate-500 dark:text-slate-400">个工具</span>
       </div>
       <el-button
         size="small"
         :icon="Setting"
-        class="!h-9 !rounded-full !border-blue-200 !bg-blue-600 !px-4 !text-white !shadow-md !shadow-blue-200/70
-               hover:!border-blue-500 hover:!bg-blue-500 hover:!shadow-lg hover:!shadow-blue-200/80
-               dark:!border-blue-500/50 dark:!bg-blue-500 dark:!shadow-blue-950/50 dark:hover:!bg-blue-400"
+        class="!h-9 !rounded-full !border-primary-200 !bg-primary-600 !px-4 !text-white !shadow-md !shadow-[0_4px_6px_-1px_color-mix(in_srgb,var(--c-primary-200)_70%,transparent),0_2px_4px_-2px_color-mix(in_srgb,var(--c-primary-200)_70%,transparent)]
+               hover:!border-primary-500 hover:!bg-primary-500 hover:!shadow-lg hover:!shadow-[0_10px_15px_-3px_color-mix(in_srgb,var(--c-primary-200)_80%,transparent),0_4px_6px_-4px_color-mix(in_srgb,var(--c-primary-200)_80%,transparent)]
+               dark:!border-[color:color-mix(in_srgb,var(--c-primary-500)_50%,transparent)] dark:!bg-primary-500 dark:!shadow-[0_4px_6px_-1px_color-mix(in_srgb,var(--c-primary-900)_50%,transparent),0_2px_4px_-2px_color-mix(in_srgb,var(--c-primary-900)_50%,transparent)] dark:hover:!bg-primary-400"
         @click="resourceManagerVisible = true"
       >
         资源管理
@@ -145,7 +145,7 @@ onMounted(() => {
     <!-- 收藏工具分组 -->
     <div class="mb-8" id="cate_favorites">
       <div class="mt-8 mb-5 flex items-center gap-3">
-        <div class="w-1.5 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+        <div class="w-1.5 h-8 bg-gradient-to-b from-primary-500 to-primary-600 rounded-full"></div>
         <h2 class="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 dark:from-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
           收藏工具
         </h2>
@@ -161,14 +161,14 @@ onMounted(() => {
                   bg-slate-100 dark:bg-slate-800 text-center animate-fade-in
                   cursor-default
                   transition-[transform,box-shadow,border-color,background-color] duration-300
-                  hover:-translate-y-1 hover:shadow-md hover:shadow-blue-100/60 dark:hover:shadow-blue-900/40
-                  hover:border-blue-300 dark:hover:border-blue-500
+                  hover:-translate-y-1 hover:shadow-md hover:shadow-[0_4px_6px_-1px_color-mix(in_srgb,var(--c-primary-100)_60%,transparent),0_2px_4px_-2px_color-mix(in_srgb,var(--c-primary-100)_60%,transparent)] dark:hover:shadow-[0_4px_6px_-1px_color-mix(in_srgb,var(--c-primary-900)_40%,transparent),0_2px_4px_-2px_color-mix(in_srgb,var(--c-primary-900)_40%,transparent)]
+                  hover:border-primary-300 dark:hover:border-primary-500
                   hover:bg-white dark:hover:bg-slate-700/80">
         <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-600 flex items-center justify-center
                     transition-[transform,background-color] duration-300 group-hover:scale-110
-                    group-hover:bg-blue-100 dark:group-hover:bg-blue-900/60">
+                    group-hover:bg-primary-100 dark:group-hover:bg-[color:color-mix(in_srgb,var(--c-primary-900)_60%,transparent)]">
           <Icon size="18">
-            <StarRegular class="text-slate-400 dark:text-slate-500 transition-colors duration-300 group-hover:text-blue-400 dark:group-hover:text-blue-400" />
+            <StarRegular class="text-slate-400 dark:text-slate-500 transition-colors duration-300 group-hover:text-primary-400 dark:group-hover:text-primary-400" />
           </Icon>
         </div>
         <div>
@@ -193,10 +193,10 @@ onMounted(() => {
           :to="!isExternal(item.url) ? item.url : undefined"
           @click="isExternal(item.url) ? showExternalConfirm(item.url, $event) : undefined"
           class="group relative flex flex-col p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700
-                 shadow-sm hover:shadow-lg hover:shadow-blue-100/50 dark:hover:shadow-blue-900/50 hover:border-blue-200 dark:hover:border-blue-700
+                 shadow-sm hover:shadow-lg hover:shadow-[0_10px_15px_-3px_color-mix(in_srgb,var(--c-primary-100)_50%,transparent),0_4px_6px_-4px_color-mix(in_srgb,var(--c-primary-100)_50%,transparent)] dark:hover:shadow-[0_10px_15px_-3px_color-mix(in_srgb,var(--c-primary-900)_50%,transparent),0_4px_6px_-4px_color-mix(in_srgb,var(--c-primary-900)_50%,transparent)] hover:border-primary-200 dark:hover:border-primary-700
                  transition-[transform,box-shadow,border-color] duration-300 translate-y-0 hover:-translate-y-1 overflow-hidden cursor-pointer"
         >
-          <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-50
+          <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary-50 to-primary-50
                       dark:from-slate-700 dark:to-slate-800
                       rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-500"></div>
 
@@ -206,11 +206,11 @@ onMounted(() => {
               <ToolIcon :logo="item.logo" :size="36" />
             </div>
             <div class="flex flex-col ml-2.5 flex-1 min-w-0">
-              <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-200 group-hover:text-blue-600
+              <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-200 group-hover:text-primary-600
                          transition-colors line-clamp-1">{{ item.title }}</h3>
               <div class="flex items-center gap-1.5 mt-0.5">
-                <span class="px-1.5 py-0 rounded-full text-xs font-medium bg-blue-50 text-blue-600 border border-blue-200
-                             dark:bg-blue-900/50 dark:text-blue-400 dark:border-blue-800 truncate max-w-full">
+                <span class="px-1.5 py-0 rounded-full text-xs font-medium bg-primary-50 text-primary-600 border border-primary-200
+                             dark:bg-[color:color-mix(in_srgb,var(--c-primary-900)_50%,transparent)] dark:text-primary-400 dark:border-primary-800 truncate max-w-full">
                   {{ item.cate }}
                 </span>
               </div>
@@ -221,10 +221,10 @@ onMounted(() => {
             <el-text line-clamp="2" class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">{{ item.desc }}</el-text>
           </div>
 
-          <div class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center
+          <div class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-primary-50 dark:bg-[color:color-mix(in_srgb,var(--c-primary-900)_50%,transparent)] flex items-center justify-center
                       opacity-0 group-hover:opacity-100 transform translate-x-1 group-hover:translate-x-0
                       transition-all duration-300">
-            <ArrowRight class="w-3 h-3 text-blue-500 dark:text-blue-400" />
+            <ArrowRight class="w-3 h-3 text-primary-500 dark:text-primary-400" />
           </div>
 
           <!-- 外部工具跳转确认浮层 -->
@@ -235,7 +235,7 @@ onMounted(() => {
                  @click.stop>
               <div class="text-center px-1">
                 <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1">该工具为独立工具</p>
-                <p class="text-xs text-blue-500 break-all leading-relaxed line-clamp-2">{{ item.url }}</p>
+                <p class="text-xs text-primary-500 break-all leading-relaxed line-clamp-2">{{ item.url }}</p>
                 <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">要离开本站吗？</p>
               </div>
               <div class="flex items-center gap-2">
@@ -245,7 +245,7 @@ onMounted(() => {
                   取消
                 </button>
                 <button @click.stop="goExternal(item.url)"
-                        class="px-3 py-1 text-xs rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors">
+                        class="px-3 py-1 text-xs rounded-lg bg-primary-500 text-white hover:bg-primary-600 transition-colors">
                   跳转
                 </button>
               </div>
@@ -259,7 +259,7 @@ onMounted(() => {
     <div v-for="(cate, index) in toolsStore.cates" :key="index" class="mb-8">
       <!-- cate title -->
       <div class="mt-8 mb-5 flex items-center gap-3" :id="'cate_' + cate.id">
-        <div class="w-1.5 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+        <div class="w-1.5 h-8 bg-gradient-to-b from-primary-500 to-primary-600 rounded-full"></div>
         <h2 class="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 dark:from-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
           {{ cate.title }}
         </h2>
@@ -276,11 +276,11 @@ onMounted(() => {
             :to="!isExternal(item.url) ? item.url : undefined"
             @click="isExternal(item.url) ? showExternalConfirm(item.url, $event) : undefined"
             class="group relative flex flex-col p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 
-                   shadow-sm hover:shadow-lg hover:shadow-blue-100/50 dark:hover:shadow-blue-900/50 hover:border-blue-200 dark:hover:border-blue-700
+                   shadow-sm hover:shadow-lg hover:shadow-[0_10px_15px_-3px_color-mix(in_srgb,var(--c-primary-100)_50%,transparent),0_4px_6px_-4px_color-mix(in_srgb,var(--c-primary-100)_50%,transparent)] dark:hover:shadow-[0_10px_15px_-3px_color-mix(in_srgb,var(--c-primary-900)_50%,transparent),0_4px_6px_-4px_color-mix(in_srgb,var(--c-primary-900)_50%,transparent)] hover:border-primary-200 dark:hover:border-primary-700
                    transition-[transform,box-shadow,border-color] duration-300 translate-y-0 hover:-translate-y-1 overflow-hidden cursor-pointer"
           >
             <!-- 装饰背景 -->
-            <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-50 
+            <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary-50 to-primary-50 
                         dark:from-slate-700 dark:to-slate-800
                         rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-500"></div>
             
@@ -291,12 +291,12 @@ onMounted(() => {
               </div>
               <div class="flex flex-col ml-2.5 flex-1 min-w-0">
                 <div class="flex items-center gap-1.5">
-                  <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-200 group-hover:text-blue-600 
+                  <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-200 group-hover:text-primary-600 
                              transition-colors line-clamp-1">{{ item.title }}</h3>
                 </div>
                 <div class="flex items-center gap-1.5 mt-0.5">
-                  <span class="px-1.5 py-0 rounded-full text-xs font-medium bg-blue-50 text-blue-600 border border-blue-200
-                               dark:bg-blue-900/50 dark:text-blue-400 dark:border-blue-800 truncate max-w-full">
+                  <span class="px-1.5 py-0 rounded-full text-xs font-medium bg-primary-50 text-primary-600 border border-primary-200
+                               dark:bg-[color:color-mix(in_srgb,var(--c-primary-900)_50%,transparent)] dark:text-primary-400 dark:border-primary-800 truncate max-w-full">
                     {{ item.cate }}
                   </span>
                 </div>
@@ -308,10 +308,10 @@ onMounted(() => {
             </div>
             
             <!-- 悬停箭头 -->
-            <div class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center
+            <div class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-primary-50 dark:bg-[color:color-mix(in_srgb,var(--c-primary-900)_50%,transparent)] flex items-center justify-center
                         opacity-0 group-hover:opacity-100 transform translate-x-1 group-hover:translate-x-0 
                         transition-all duration-300">
-              <ArrowRight class="w-3 h-3 text-blue-500 dark:text-blue-400" />
+              <ArrowRight class="w-3 h-3 text-primary-500 dark:text-primary-400" />
             </div>
 
             <!-- 外部工具跳转确认浮层 -->
@@ -322,7 +322,7 @@ onMounted(() => {
                    @click.stop>
                 <div class="text-center px-1">
                   <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1">该工具为独立工具</p>
-                  <p class="text-xs text-blue-500 break-all leading-relaxed line-clamp-2">{{ item.url }}</p>
+                    <p class="text-xs text-primary-500 break-all leading-relaxed line-clamp-2">{{ item.url }}</p>
                   <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">要离开本站吗？</p>
                 </div>
                 <div class="flex items-center gap-2">
@@ -332,7 +332,7 @@ onMounted(() => {
                     取消
                   </button>
                   <button @click.stop="goExternal(item.url)"
-                          class="px-3 py-1 text-xs rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors">
+                          class="px-3 py-1 text-xs rounded-lg bg-primary-500 text-white hover:bg-primary-600 transition-colors">
                     跳转
                   </button>
                 </div>

@@ -3,6 +3,7 @@ import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { Bars, AngleRight, AngleLeft, Home, InfoCircle, Github } from '@vicons/fa';
 import { Icon } from '@vicons/utils'
 import ThemeSwitcher from '@/components/ThemeSwitcher/ThemeSwitcher.vue';
+import PrimaryColorPicker from '@/components/Common/PrimaryColorPicker.vue';
 import ToolIcon from '@/components/Common/ToolIcon.vue';
 import { useToolsStore } from '@/store/modules/tools'
 import { useComponentStore } from '@/store/modules/component'
@@ -126,7 +127,7 @@ onBeforeUnmount(() => {
       <!-- 首页图标 -->
       <router-link 
         to="/" 
-        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-all duration-200 group"
+        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary-50 dark:hover:bg-[color:color-mix(in_srgb,var(--c-primary-900)_40%,transparent)] transition-all duration-200 group"
       >
         <Icon size="20">
           <Home class="text-slate-600 dark:text-slate-400 transition-transform" />
@@ -183,7 +184,7 @@ onBeforeUnmount(() => {
         target="_blank"
         rel="noopener noreferrer"
         class="hidden c-sm:w-10 c-sm:h-10 c-sm:flex items-center justify-center rounded-full 
-               hover:bg-blue-50 dark:hover:bg-blue-900/40 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400
+               hover:bg-primary-50 dark:hover:bg-[color:color-mix(in_srgb,var(--c-primary-900)_40%,transparent)] text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400
                transition-all duration-200"
       >
         <Icon size="20">
@@ -203,6 +204,7 @@ onBeforeUnmount(() => {
         </Icon>
       </router-link>
 
+      <PrimaryColorPicker />
       <ThemeSwitcher />
     </div>
   </header>

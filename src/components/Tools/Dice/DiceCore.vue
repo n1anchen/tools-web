@@ -93,7 +93,7 @@ defineExpose({
 	<!-- 骰子组件 -->
 	<button
 		type="button"
-		class="h-[100px] w-[100px] cursor-pointer rounded-[18px] border-0 bg-transparent p-0 focus-visible:outline-[3px] focus-visible:outline-blue-500/35 focus-visible:outline-offset-[3px] disabled:cursor-wait"
+		class="h-[100px] w-[100px] cursor-pointer rounded-[18px] border-0 bg-transparent p-0 focus-visible:outline-[3px] focus-visible:outline-[color:color-mix(in_srgb,var(--c-primary-500)_35%,transparent)] focus-visible:outline-offset-[3px] disabled:cursor-wait"
 		aria-label="单独重掷这个骰子"
 		:disabled="isDicing"
 		@click="throwDice"

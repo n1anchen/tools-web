@@ -9,17 +9,21 @@ export default {
   theme: {
     extend: {
       colors: {
+        /* 品牌主色：映射到 tailwind.css 的 --c-primary 色阶（color-mix 派生），
+           主题色切换只需改 --c-primary；opacity 修饰符（/50 等）由 Tailwind 用 color-mix 处理 */
         primary: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
+          50: 'var(--c-primary-50)',
+          100: 'var(--c-primary-100)',
+          200: 'var(--c-primary-200)',
+          300: 'var(--c-primary-300)',
+          400: 'var(--c-primary-400)',
+          500: 'var(--c-primary-500)',
+          600: 'var(--c-primary)',
+          700: 'var(--c-primary-700)',
+          800: 'var(--c-primary-800)',
+          900: 'var(--c-primary-900)',
+          950: 'var(--c-primary-900)',
+          DEFAULT: 'var(--c-primary)',
         },
       },
       boxShadow: {

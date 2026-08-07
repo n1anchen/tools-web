@@ -39,7 +39,7 @@ import SectionHeading from '@/components/Common/SectionHeading.vue'
         </section>
 
         <section>
-          <SectionHeading :icon="Bug" title="发现了 Bug？" description="帮助我们变得更好" tone="amber" />
+          <SectionHeading :icon="Bug" title="发现了 Bug？" description="帮助我们变得更好" tone="blue" />
           <p class="detail-copy mt-4">
             如果您发现了 Bug，或者某些功能未能按预期工作，请在 GitHub 仓库的
             <el-link href="https://github.com/n1anchen/tools-web/issues/new" target="_blank" type="primary">issues</el-link>

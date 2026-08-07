@@ -128,15 +128,15 @@ onBeforeUnmount(() => {
       <div class="flex flex-col items-center pt-6 pb-4 gap-2">
         <router-link class="flex flex-row items-center group" to="/">
           <img 
-            class="h-14 w-14 rounded-2xl shadow-lg shadow-blue-200/50 dark:shadow-blue-800/50
-                   group-hover:shadow-xl group-hover:shadow-blue-300/50 dark:group-hover:shadow-blue-700/50
+            class="h-14 w-14 rounded-2xl shadow-lg shadow-[0_10px_15px_-3px_color-mix(in_srgb,var(--c-primary-200)_50%,transparent),0_4px_6px_-4px_color-mix(in_srgb,var(--c-primary-200)_50%,transparent)] dark:shadow-[0_10px_15px_-3px_color-mix(in_srgb,var(--c-primary-800)_50%,transparent),0_4px_6px_-4px_color-mix(in_srgb,var(--c-primary-800)_50%,transparent)]
+                   group-hover:shadow-xl group-hover:shadow-[0_20px_25px_-5px_color-mix(in_srgb,var(--c-primary-300)_50%,transparent),0_8px_10px_-6px_color-mix(in_srgb,var(--c-primary-300)_50%,transparent)] dark:group-hover:shadow-[0_20px_25px_-5px_color-mix(in_srgb,var(--c-primary-700)_50%,transparent),0_8px_10px_-6px_color-mix(in_srgb,var(--c-primary-700)_50%,transparent)]
                    transition-all duration-300 group-hover:scale-105" 
             src="@/assets/logo.jpg" 
             :alt="appNet"
           >
           <div class="flex flex-col ml-4">
-            <div class="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 
-                        dark:from-blue-500 dark:to-blue-600
+            <div class="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-700 
+                        dark:from-primary-500 dark:to-primary-600
                         bg-clip-text text-transparent">{{ appName }}</div>
             <div class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{{ appNet }}</div>
           </div>
@@ -146,7 +146,7 @@ onBeforeUnmount(() => {
             :href="`https://github.com/n1anchen/tools-web/commit/${gitCommit}`"
             target="_blank"
             rel="noopener noreferrer"
-            class="hover:text-blue-400 dark:hover:text-blue-500 transition-colors duration-200"
+            class="hover:text-primary-400 dark:hover:text-primary-500 transition-colors duration-200"
             :title="'查看提交: ' + gitCommit"
           >rev.{{ gitCommit }}</a><template v-if="gitCommitTime"> · {{ gitCommitTime }}</template>
         </span>
@@ -171,7 +171,7 @@ onBeforeUnmount(() => {
             <el-sub-menu index="cate">
               <template #title>
                 <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 
+                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 
                               flex items-center justify-center shadow-sm">
                     <Management class="w-4 h-4 text-white" />
                   </div>
@@ -197,7 +197,7 @@ onBeforeUnmount(() => {
             <el-menu-item index="about" @click="gotoAbout" class="menu-item-custom mt-2">
               <template #title>
                 <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 
+                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 
                               flex items-center justify-center shadow-sm">
                     <InfoFilled class="w-4 h-4 text-white" />
                   </div>
@@ -210,7 +210,7 @@ onBeforeUnmount(() => {
       </div>
       
       <!-- 底部装饰背景 -->
-      <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-blue-50/50 to-transparent dark:from-blue-900/20 pointer-events-none"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[color:color-mix(in_srgb,var(--c-primary-50)_50%,transparent)] to-transparent dark:from-[color:color-mix(in_srgb,var(--c-primary-900)_20%,transparent)] pointer-events-none"></div>
 
     </el-scrollbar>
   <!-- </div> -->

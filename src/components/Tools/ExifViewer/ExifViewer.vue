@@ -735,8 +735,8 @@ onUnmounted(() => {
       <div
         class="exif-upload relative flex flex-col items-center justify-center w-full h-36 rounded-xl border-2 border-dashed cursor-pointer transition-all select-none mb-4"
         :class="isDragging
-          ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20'
-          : 'border-slate-300 dark:border-slate-600 hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700/50'"
+          ? 'border-primary-400 bg-primary-50 dark:bg-[color:color-mix(in_srgb,var(--c-primary-900)_20%,transparent)]'
+          : 'border-slate-300 dark:border-slate-600 hover:border-primary-400 hover:bg-primary-50 dark:hover:bg-slate-700/50'"
         @dragover="onDragOver"
         @dragleave="onDragLeave"
         @drop="onDrop"
@@ -744,17 +744,17 @@ onUnmounted(() => {
       >
         <input ref="fileInputRef" type="file" accept="image/*" class="hidden" @change="onFileChange" />
         <div class="flex flex-col items-center gap-1 pointer-events-none">
-          <svg class="w-10 h-10 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-10 h-10 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
               d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
           </svg>
-          <span class="text-sm font-medium text-blue-500 dark:text-blue-400">点击或拖拽图片到此处</span>
+          <span class="text-sm font-medium text-primary-500 dark:text-primary-400">点击或拖拽图片到此处</span>
           <span class="text-xs text-slate-400 dark:text-slate-500">支持 JPEG、HEIC、PNG、TIFF、WEBP 等格式</span>
         </div>
       </div>
 
       <!-- 加载态 -->
-      <div v-if="isLoading" class="flex items-center justify-center py-12 gap-3 text-blue-500">
+      <div v-if="isLoading" class="flex items-center justify-center py-12 gap-3 text-primary-500">
         <svg class="animate-spin w-6 h-6" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
@@ -792,7 +792,7 @@ onUnmounted(() => {
               :style="orientationStyle ? { transform: orientationStyle } : {}" />
             <!-- 旋转角标 -->
             <span v-if="orientation !== 1"
-              class="absolute bottom-1 right-1 bg-blue-500/80 text-white text-[10px] px-1.5 py-0.5 rounded-full leading-tight">
+              class="absolute bottom-1 right-1 bg-[color:color-mix(in_srgb,var(--c-primary-500)_80%,transparent)] text-white text-[10px] px-1.5 py-0.5 rounded-full leading-tight">
               {{ orientationLabel }}
             </span>
           </div>

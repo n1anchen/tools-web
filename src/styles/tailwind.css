@@ -18,7 +18,7 @@
   --c-text-secondary: #64748b; /* 次级 */
   --c-text-muted: #94a3b8;     /* 弱化/占位 */
   /* 品牌 */
-  --c-primary: #2563eb;
+  --c-primary: #5882ff;
   /* 主色阶：由 --c-primary 用 color-mix 派生，主色切换只改 --c-primary 一个值（后期主题色功能） */
   --c-primary-50: color-mix(in srgb, #ffffff 94%, var(--c-primary));
   --c-primary-100: color-mix(in srgb, #ffffff 88%, var(--c-primary));

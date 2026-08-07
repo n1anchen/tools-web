@@ -109,7 +109,7 @@ const statusTagType = (status?: ManagedResourceStatus) => {
     <!-- 自定义标题：图标 + 主标题 + 副标题（与 PrivacyNotice 弹窗风格一致） -->
     <template #header>
       <div class="flex items-center gap-3 px-1">
-        <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex-shrink-0">
+        <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-primary-100 dark:bg-[color:color-mix(in_srgb,var(--c-primary-900)_40%,transparent)] text-primary-600 dark:text-primary-400 flex-shrink-0">
           <Icon size="17"><Hdd /></Icon>
         </span>
         <div>
@@ -120,8 +120,8 @@ const statusTagType = (status?: ManagedResourceStatus) => {
     </template>
 
     <div class="flex flex-col gap-3" v-loading="loading">
-      <div class="flex items-start justify-between gap-3 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3
-                  dark:border-blue-900/70 dark:bg-blue-950/40">
+      <div class="flex items-start justify-between gap-3 rounded-xl border border-primary-100 bg-primary-50 px-4 py-3
+                  dark:border-[color:color-mix(in_srgb,var(--c-primary-900)_70%,transparent)] dark:bg-[color:color-mix(in_srgb,var(--c-primary-900)_40%,transparent)]">
         <div>
           <div class="text-sm font-semibold text-slate-800 dark:text-slate-100">离线资源缓存</div>
           <div class="mt-1 text-xs leading-relaxed text-slate-500 dark:text-slate-400">

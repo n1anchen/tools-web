@@ -10,8 +10,8 @@ const router = useRouter()
   <div class="flex flex-col items-center justify-center flex-1 px-4 py-20 text-center">
     <!-- 404 主视觉：大号渐变数字 + 模糊装饰圆 -->
     <div class="relative select-none">
-      <div class="pointer-events-none absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-100/70 blur-2xl dark:bg-blue-900/30" />
-      <div class="relative bg-gradient-to-b from-blue-500 to-blue-700 bg-clip-text text-8xl font-black leading-none tracking-tight text-transparent dark:from-blue-400 dark:to-blue-600 sm:text-9xl">
+      <div class="pointer-events-none absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:color-mix(in_srgb,var(--c-primary-100)_70%,transparent)] blur-2xl dark:bg-[color:color-mix(in_srgb,var(--c-primary-900)_30%,transparent)]" />
+      <div class="relative bg-gradient-to-b from-primary-500 to-primary-700 bg-clip-text text-8xl font-black leading-none tracking-tight text-transparent dark:from-primary-400 dark:to-primary-600 sm:text-9xl">
         404
       </div>
     </div>
