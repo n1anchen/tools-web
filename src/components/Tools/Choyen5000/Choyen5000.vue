@@ -437,6 +437,9 @@ onUnmounted(() => {
   height: auto;
   padding: 11px 12px;
   white-space: normal;
+  /* 修复：EP 默认 .el-button + .el-button { margin-left:12px } 会让 grid 中除第一个外的按钮右移，
+     导致按钮列不对齐（第一个按钮看起来偏左）；grid 布局下应取消该外边距 */
+  margin-left: 0;
 }
 .preset-grid :deep(.el-button > span) {
   display: flex;
