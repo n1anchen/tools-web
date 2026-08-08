@@ -30,7 +30,7 @@ const scrollToTop = () => {
   <Transition name="back-to-top">
     <button
       v-show="visible"
-      class="fixed z-[999] flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border-none bg-[linear-gradient(135deg,#3b82f6,#2563eb)] shadow-[0_4px_14px_rgba(59,130,246,0.45)] outline-none transition-[transform,box-shadow] duration-200 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:-translate-y-[3px] hover:shadow-[0_8px_20px_rgba(59,130,246,0.55)] active:translate-y-0 active:scale-[0.93] active:shadow-[0_2px_8px_rgba(59,130,246,0.35)]"
+      class="fixed z-[999] flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border-none bg-gradient-to-br from-primary-500 to-primary-700 shadow-[0_4px_14px_color-mix(in_srgb,var(--c-primary)_45%,transparent)] outline-none transition-[transform,box-shadow] duration-200 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:-translate-y-[3px] hover:shadow-[0_8px_20px_color-mix(in_srgb,var(--c-primary)_55%,transparent)] active:translate-y-0 active:scale-[0.93] active:shadow-[0_2px_8px_color-mix(in_srgb,var(--c-primary)_35%,transparent)]"
       :style="{ right: `${right}px`, bottom: `${bottom}px` }"
       aria-label="回到顶部"
       @click="scrollToTop"
