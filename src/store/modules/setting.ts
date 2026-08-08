@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
-/** 默认品牌主色（OKLCH L=0.80 C=0.10 Hue=265°，与色条/预设色同色彩空间） */
-export const DEFAULT_PRIMARY_COLOR = '#5882ff'
+/** 默认品牌主色（OKLCH L=0.80 C=0.10 Hue=240°，与色条/预设色同色彩空间） */
+export const DEFAULT_PRIMARY_COLOR = '#3791ef'
 
 const loadDarkMode = () => {
   try {

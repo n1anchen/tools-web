@@ -2,95 +2,181 @@
 import { computed, type Component } from 'vue'
 import { Icon } from '@vicons/utils'
 import {
+  Apps,
+  Armchair,
+  ArrowsShuffle,
+  Barcode,
+  Binary,
   Bolt,
-  BoxOpen,
-  Bullseye,
-  CalendarAlt,
+  Box,
+  Braces,
+  BrandCss3,
+  BrandHtml5,
+  BrandJavascript,
+  Calendar,
+  CalendarStats,
+  CalendarTime,
   Camera,
+  Certificate,
+  ChartBar,
+  ChartCandle,
+  ChartDots,
   ChartLine,
+  ChartPie,
   Clock,
   Cloud,
-  CommentDots,
-  Css3,
+  Code,
+  Coin,
+  ColorPicker,
+  Crop,
+  CurrencyYen,
   Database,
+  DeviceFloppy,
+  Dice,
+  Droplet,
   Edit,
-  EyeDropper,
-  FileExcel,
+  FileCode,
+  FilesOff,
   Filter,
-  Fire,
-  Font,
-  Hdd,
-  Html5,
-  Icons,
-  Image,
-  Images,
-  Js,
+  Fingerprint,
+  Flame,
+  Gauge,
+  GitCompare,
+  Globe,
+  GridDots,
+  Help,
+  Hierarchy2,
+  Hourglass,
+  IdBadge,
   Key,
+  Keyboard,
   Language,
-  LayerGroup,
+  LayersIntersect,
+  LayoutGrid,
+  LetterA,
+  LetterCase,
   Link,
   Lock,
-  MapMarkedAlt,
+  MapPin,
   Markdown,
+  MessageCircle,
+  Messages,
+  MoodHappy,
+  MoodSmile,
   Music,
-  NetworkWired,
-  Play,
-  ProjectDiagram,
-  Search,
-  Smile,
-  SortAmountDown,
-  Stamp,
-  TachometerAlt,
-  ThLarge,
+  Photo,
+  PlayerPlay,
+  Qrcode,
+  QuestionMark,
+  Replace,
+  Ruler,
+  Ruler2,
+  Scale,
+  Share,
+  SortDescending,
+  Square,
+  Stack2,
+  Table,
+  Target,
+  Temperature,
+  Terminal,
   Tools,
-} from '@vicons/fa'
+  Typography,
+  Wand,
+  WaveSine,
+  World,
+  Calculator,
+} from '@vicons/tabler'
 
-const faIcons: Record<string, Component> = {
+const iconMap: Record<string, Component> = {
+  Apps,
+  Armchair,
+  ArrowsShuffle,
+  Barcode,
+  Binary,
   Bolt,
-  BoxOpen,
-  Bullseye,
-  CalendarAlt,
+  Box,
+  Braces,
+  BrandCss3,
+  BrandHtml5,
+  BrandJavascript,
+  Calendar,
+  CalendarStats,
+  CalendarTime,
   Camera,
+  Certificate,
+  ChartBar,
+  ChartCandle,
+  ChartDots,
   ChartLine,
+  ChartPie,
   Clock,
   Cloud,
-  CommentDots,
-  Css3,
+  Code,
+  Coin,
+  ColorPicker,
+  Crop,
+  CurrencyYen,
   Database,
+  DeviceFloppy,
+  Dice,
+  Droplet,
   Edit,
-  EyeDropper,
-  FileExcel,
+  FileCode,
+  FilesOff,
   Filter,
-  Fire,
-  Font,
-  Hdd,
-  Html5,
-  Icons,
-  Image,
-  Images,
-  Js,
+  Fingerprint,
+  Flame,
+  Gauge,
+  GitCompare,
+  Globe,
+  GridDots,
+  Help,
+  Hierarchy2,
+  Hourglass,
+  IdBadge,
   Key,
+  Keyboard,
   Language,
-  LayerGroup,
+  LayersIntersect,
+  LayoutGrid,
+  LetterA,
+  LetterCase,
   Link,
   Lock,
-  MapMarkedAlt,
+  MapPin,
   Markdown,
+  MessageCircle,
+  Messages,
+  MoodHappy,
+  MoodSmile,
   Music,
-  NetworkWired,
-  Play,
-  ProjectDiagram,
-  Search,
-  Smile,
-  SortAmountDown,
-  Stamp,
-  TachometerAlt,
-  ThLarge,
+  Photo,
+  PlayerPlay,
+  Qrcode,
+  QuestionMark,
+  Replace,
+  Ruler,
+  Ruler2,
+  Scale,
+  Share,
+  SortDescending,
+  Square,
+  Stack2,
+  Table,
+  Target,
+  Temperature,
+  Terminal,
   Tools,
+  Typography,
+  Wand,
+  WaveSine,
+  World,
+  Calculator,
 }
 
 const props = withDefaults(defineProps<{
-  /** 图标：图片路径（以 / 或 http 开头）或 @vicons/fa 图标名（如 "Download"） */
+  /** 图标：图片路径（以 / 或 http 开头）或 @vicons/tabler 图标名（如 "Download"） */
   logo: string
   /** 图标尺寸（px），默认 36 */
   size?: number
@@ -106,17 +192,17 @@ const isImageUrl = computed(() => {
   return props.logo.startsWith('/') || props.logo.startsWith('http')
 })
 
-/** 是否为 @vicons/fa 图标名 */
+/** 是否为 @vicons/tabler 图标名 */
 const isIconName = computed(() => {
   return props.logo !== '' && !isImageUrl.value
 })
 
-/** 同步获取 @vicons/fa 图标组件，避免 defineAsyncComponent 导致的闪烁 */
-const faIconComponent = computed<Component | null>(() => {
+/** 同步获取 @vicons/tabler 图标组件，避免 defineAsyncComponent 导致的闪烁 */
+const iconComponent = computed<Component | null>(() => {
   if (!isIconName.value) return null
-  const comp = faIcons[props.logo]
+  const comp = iconMap[props.logo]
   if (!comp) {
-    console.warn(`[ToolIcon] @vicons/fa 中未找到图标: "${props.logo}"`)
+    console.warn(`[ToolIcon] @vicons/tabler 中未找到图标: "${props.logo}"`)
     return null
   }
   return comp
@@ -126,14 +212,14 @@ const iconSize = computed(() => Math.round(props.size * 0.6))
 </script>
 
 <template>
-  <!-- @vicons/fa 图标 -->
+  <!-- @vicons/tabler 图标 -->
   <div
-    v-if="isIconName && faIconComponent"
+    v-if="isIconName && iconComponent"
     :class="['flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 dark:from-slate-700 dark:to-slate-600', rounded]"
     :style="{ width: size + 'px', height: size + 'px', minWidth: size + 'px', minHeight: size + 'px' }"
   >
     <Icon :size="iconSize" class="text-primary-500 dark:text-primary-400">
-      <component :is="faIconComponent" />
+      <component :is="iconComponent" />
     </Icon>
   </div>
 

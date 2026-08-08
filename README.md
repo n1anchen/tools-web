@@ -50,7 +50,7 @@
 | 构建 | Vite 5 |
 | 样式 | Tailwind CSS 3.4（主色调 `blue-*`，暗色 `dark:` 前缀） |
 | UI 库 | Element Plus 2.14（组件按需引入） |
-| 图标 | `@vicons/fa`（模板中用 `<Icon>` 组件渲染，`tools.ts` 的 `logo` 字段写图标名字符串） |
+| 图标 | `@vicons/tabler`（模板中用 `<Icon>` 组件渲染，`tools.ts` 的 `logo` 字段写图标名字符串） |
 | 状态管理 | Pinia（`src/store/modules/`） |
 | 路由 | Vue Router 4 |
 | 图表 | ECharts 6 + echarts-wordcloud |

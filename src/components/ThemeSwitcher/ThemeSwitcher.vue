@@ -20,7 +20,7 @@
 import { useSettingStore } from '@/store/modules/setting'
 import { storeToRefs } from 'pinia'
 import { inject } from 'vue'
-import { Sun as SunIcon, Moon as MoonIcon } from '@vicons/fa'
+import { Sun as SunIcon, Moon as MoonIcon } from '@vicons/tabler'
 import { Icon } from '@vicons/utils'
 
 const settingStore = useSettingStore()

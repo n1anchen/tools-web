@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Delete, Download, Refresh } from '@element-plus/icons-vue'
 import { Icon } from '@vicons/utils'
-import { Hdd } from '@vicons/fa'
+import { Server } from '@vicons/tabler'
 import {
   MANAGED_RESOURCE_GROUPS,
   cacheManagedResourceGroup,
@@ -110,7 +110,7 @@ const statusTagType = (status?: ManagedResourceStatus) => {
     <template #header>
       <div class="flex items-center gap-3 px-1">
         <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-primary-100 dark:bg-[color:color-mix(in_srgb,var(--c-primary-900)_40%,transparent)] text-primary-600 dark:text-primary-400 flex-shrink-0">
-          <Icon size="17"><Hdd /></Icon>
+          <Icon size="17"><Server /></Icon>
         </span>
         <div>
           <p class="text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight">资源管理</p>

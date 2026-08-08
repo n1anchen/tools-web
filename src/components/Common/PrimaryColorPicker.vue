@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { colord } from 'colord'
-import { Palette, Undo } from '@vicons/fa'
+import { Palette, Rotate } from '@vicons/tabler'
 import { Icon } from '@vicons/utils'
 import { useSettingStore } from '@/store/modules/setting'
 import { storeToRefs } from 'pinia'
@@ -12,8 +12,8 @@ const { primaryColor } = storeToRefs(settingStore)
 
 /** 预设品牌色的 OKLCH 色相（与彩虹色条同参数，动态生成 hex，保证与滑条颜色完全一致） */
 const PRESET_HUES = [
-  { name: '蓝色', hue: 265 },
-  { name: '靛蓝', hue: 240 },
+  { name: '蓝色', hue: 240 },
+  { name: '靛蓝', hue: 265 },
   { name: '紫色', hue: 280 },
   { name: '青色', hue: 190 },
   { name: '绿色', hue: 155 },
@@ -55,7 +55,7 @@ const applyHex = (value: string) => {
   if (normalized) {
     applyColor(normalized)
   } else {
-    ElMessage.warning('请输入有效的十六进制颜色（如 #5882ff）')
+    ElMessage.warning('请输入有效的十六进制颜色（如 #3791ef）')
     hexDraft.value = settingStore.primaryColor
   }
 }
@@ -148,7 +148,7 @@ const applyHue = (value: string) => {
           class="flex items-center gap-1 text-xs text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
           @click="resetColor"
         >
-          <Icon size="12"><Undo /></Icon>
+          <Icon size="12"><Rotate /></Icon>
           恢复默认
         </button>
       </div>

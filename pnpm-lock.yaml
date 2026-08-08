@@ -18,7 +18,7 @@ importers:
       '@element-plus/icons-vue':
         specifier: ^2.3.2
         version: 2.3.2(vue@3.5.40(typescript@5.9.3))
-      '@vicons/fa':
+      '@vicons/tabler':
         specifier: ^0.13.0
         version: 0.13.0
       '@vicons/utils':
@@ -1622,8 +1622,8 @@ packages:
   '@vavt/util@2.1.2':
     resolution: {integrity: sha512-L3UbSJthJwr3wq0x93O5TrCepimrmVZaIl2ciZbeL18G5++gBhJXNhcH7RcVk/6rr3SavWOvwhig0mqRLoR7dw==}
 
-  '@vicons/fa@0.13.0':
-    resolution: {integrity: sha512-BFcDewcT78fSn4Y/fOgqlswbLUEW3+qJK2iJiNtgmkMzadBVpDXhNyVKsYM3V2uKPvDUrZT0JCWDWVRCiBXJZA==}
+  '@vicons/tabler@0.13.0':
+    resolution: {integrity: sha512-AykuhiqjszkIoAL/7knIFm6RDOBS1ZmQdJfQ+RNLEah0fVsxykUFCfMBSNZh8lOzC85EtdD1k5g/sv5GYk0Ohg==}
 
   '@vicons/utils@0.1.4':
     resolution: {integrity: sha512-OHI19qVNN6i+uPQ+Y3f2s0dUxwsYnOCcKBW7XOU4yXXO1aU3ZoKpblCc3+4N0qmgoJs5rWKRAaMisipqEXJwAg==}
@@ -5174,7 +5174,7 @@ snapshots:
 
   '@vavt/util@2.1.2': {}
 
-  '@vicons/fa@0.13.0': {}
+  '@vicons/tabler@0.13.0': {}
 
   '@vicons/utils@0.1.4(vue@3.5.40(typescript@5.9.3))':
     dependencies:

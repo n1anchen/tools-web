@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, computed, nextTick, ref, onBeforeUnmount } from 'vue';
 import { ArrowRight, Setting } from '@element-plus/icons-vue'
-import { StarRegular } from '@vicons/fa'
+import { Star } from '@vicons/tabler'
 import { Icon } from '@vicons/utils'
 import ToolIcon from '@/components/Common/ToolIcon.vue'
 import BackToTop from '@/components/Common/BackToTop.vue'
@@ -168,7 +168,7 @@ onMounted(() => {
                     transition-[transform,background-color] duration-300 group-hover:scale-110
                     group-hover:bg-primary-100 dark:group-hover:bg-[color:color-mix(in_srgb,var(--c-primary-900)_60%,transparent)]">
           <Icon size="18">
-            <StarRegular class="text-slate-400 dark:text-slate-500 transition-colors duration-300 group-hover:text-primary-400 dark:group-hover:text-primary-400" />
+            <Star class="text-slate-400 dark:text-slate-500 transition-colors duration-300 group-hover:text-primary-400 dark:group-hover:text-primary-400" />
           </Icon>
         </div>
         <div>

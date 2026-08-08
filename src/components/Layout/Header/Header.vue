@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
-import { Bars, AngleRight, AngleLeft, Home, InfoCircle, Github } from '@vicons/fa';
+import { Menu2, ChevronRight, ChevronLeft, Home, InfoCircle, BrandGithub } from '@vicons/tabler';
 import { Icon } from '@vicons/utils'
 import ThemeSwitcher from '@/components/ThemeSwitcher/ThemeSwitcher.vue';
 import PrimaryColorPicker from '@/components/Common/PrimaryColorPicker.vue';
@@ -98,7 +98,7 @@ onBeforeUnmount(() => {
         class="w-10 h-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200 hidden c-sm:flex c-md:hidden c-xs:flex"
       >
         <Icon size="20">
-          <Bars class="text-slate-600 dark:text-slate-400" />
+          <Menu2 class="text-slate-600 dark:text-slate-400" />
         </Icon>
       </button>
 
@@ -110,7 +110,7 @@ onBeforeUnmount(() => {
           class="hidden c-md:flex w-10 h-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200"
         >
           <Icon size="20">
-            <AngleLeft class="text-slate-600 dark:text-slate-400" />
+            <ChevronLeft class="text-slate-600 dark:text-slate-400" />
           </Icon>
         </button>
         <button 
@@ -119,7 +119,7 @@ onBeforeUnmount(() => {
           class="hidden c-md:flex w-10 h-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200"
         >
           <Icon size="20">
-            <AngleRight class="text-slate-600 dark:text-slate-400" />
+            <ChevronRight class="text-slate-600 dark:text-slate-400" />
           </Icon>
         </button>
       </Transition>
@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
                transition-all duration-200"
       >
         <Icon size="20">
-          <Github />
+          <BrandGithub />
         </Icon>
       </a>
 

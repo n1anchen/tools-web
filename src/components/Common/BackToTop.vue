@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { AngleUp } from '@vicons/fa'
+import { ChevronUp } from '@vicons/tabler'
 
 const props = withDefaults(defineProps<{
   threshold?: number
@@ -35,7 +35,7 @@ const scrollToTop = () => {
       aria-label="回到顶部"
       @click="scrollToTop"
     >
-      <el-icon :size="18" color="white"><AngleUp /></el-icon>
+      <el-icon :size="18" color="white"><ChevronUp /></el-icon>
     </button>
   </Transition>
 </template>

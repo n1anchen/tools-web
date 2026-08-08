@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Bug, Code, Info } from '@vicons/fa'
+import { Bug, Code, InfoCircle } from '@vicons/tabler'
 import { Icon } from '@vicons/utils'
 import SectionHeading from '@/components/Common/SectionHeading.vue'
 </script>
@@ -9,7 +9,7 @@ import SectionHeading from '@/components/Common/SectionHeading.vue'
     <!-- 页头：仿 ToolHero 渐变 hero -->
     <section class="about-hero">
       <div class="about-hero-icon">
-        <Icon size="22"><Info /></Icon>
+        <Icon size="22"><InfoCircle /></Icon>
       </div>
       <div class="about-hero-copy">
         <span class="about-eyebrow">ABOUT THIS TOOLBOX</span>
@@ -22,7 +22,7 @@ import SectionHeading from '@/components/Common/SectionHeading.vue'
     <div class="mt-4 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800 sm:p-8">
       <div class="flex flex-col gap-9">
         <section>
-          <SectionHeading :icon="Info" title="项目简介" description="关于 Tools-Web" />
+          <SectionHeading :icon="InfoCircle" title="项目简介" description="关于 Tools-Web" />
           <p class="detail-copy mt-4">
             <el-link href="https://github.com/n1anchen/tools-web" target="_blank" type="primary">Tools-Web</el-link>
             是一款免费开源的轻量在线工具箱，包含开发、文本、媒体、图表、生活、查询等实用工具。如果对您有帮助，请将其分享给您的朋友，并且添加到收藏夹中！顺便再点个 ⭐️ 吧！
