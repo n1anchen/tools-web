@@ -14,6 +14,12 @@
   border-radius: var(--radius-full);
 }
 
+/* --- 行内链接 el-link：EP 默认 inline-flex + vertical-align:middle，
+ * 行内文字链接与正文基线错位（视觉上偏低/偏高）；改为 baseline 与正文同一基线 --- */
+.el-link {
+  vertical-align: baseline;
+}
+
 /* --- 普通按钮 el-button：全局胶囊圆角（与 round 主按钮 / CopyButton 一致）---
  * circle 按钮（.is-circle）仍为 50%；工具内 scoped 自定义圆角以 scoped 为准。 */
 .el-button {
