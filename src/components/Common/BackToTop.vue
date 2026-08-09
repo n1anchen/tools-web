@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { ChevronUp } from '@vicons/tabler'
+import { ChevronUp } from '@nicons/fa'
 
 const props = withDefaults(defineProps<{
   threshold?: number

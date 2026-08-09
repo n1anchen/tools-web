@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Delete, Download, Refresh } from '@element-plus/icons-vue'
 import { Icon } from '@vicons/utils'
-import { Server } from '@vicons/tabler'
+import { Server } from '@nicons/fa'
 import {
   MANAGED_RESOURCE_GROUPS,
   cacheManagedResourceGroup,

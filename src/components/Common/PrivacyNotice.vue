@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Icon } from '@vicons/utils'
-import { Lock, AlertTriangle, Archive, GitFork } from '@vicons/tabler'
+import { Lock, TriangleExclamation, BoxArchive, CodeFork } from '@nicons/fa'
 
 const STORAGE_KEY = 'privacy_notice'
 
@@ -75,7 +75,7 @@ const handleNeverShow = () => {
       <!-- 独立工具免责 -->
       <div class="flex gap-3 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/40">
         <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500 text-white flex-shrink-0 mt-0.5 shadow-sm">
-          <Icon size="14"><AlertTriangle /></Icon>
+          <Icon size="14"><TriangleExclamation /></Icon>
         </span>
         <div class="min-w-0">
           <p class="font-semibold text-amber-700 dark:text-amber-300 mb-0.5">独立工具免责声明</p>
@@ -86,7 +86,7 @@ const handleNeverShow = () => {
       <!-- PWA 离线缓存 -->
       <div class="flex gap-3 p-3 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/40">
         <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-green-500 text-white flex-shrink-0 mt-0.5 shadow-sm">
-          <Icon size="14"><Archive /></Icon>
+          <Icon size="14"><BoxArchive /></Icon>
         </span>
         <div class="min-w-0">
           <p class="font-semibold text-green-700 dark:text-green-300 mb-0.5">离线缓存说明</p>
@@ -97,7 +97,7 @@ const handleNeverShow = () => {
       <!-- 开源免费 -->
       <div class="flex gap-3 p-3 rounded-xl bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800/40">
         <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-purple-500 text-white flex-shrink-0 mt-0.5 shadow-sm">
-          <Icon size="14"><GitFork /></Icon>
+          <Icon size="14"><CodeFork /></Icon>
         </span>
         <div class="min-w-0">
           <p class="font-semibold text-purple-700 dark:text-purple-300 mb-0.5">完全开源免费</p>

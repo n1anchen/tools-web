@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, computed, nextTick, ref, onBeforeUnmount } from 'vue';
 import { ArrowRight, Setting } from '@element-plus/icons-vue'
-import { Star } from '@vicons/tabler'
+import { Star } from '@nicons/fa'
 import { Icon } from '@vicons/utils'
 import ToolIcon from '@/components/Common/ToolIcon.vue'
 import BackToTop from '@/components/Common/BackToTop.vue'

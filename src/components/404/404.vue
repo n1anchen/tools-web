@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { Compass } from '@vicons/tabler'
+import { Compass } from '@nicons/fa'
 import { Icon } from '@vicons/utils'
 
 const router = useRouter()

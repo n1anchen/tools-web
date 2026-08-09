@@ -11,7 +11,7 @@ export function getToolsCate() {
         {
           id: 0,
           title: 'it-tools工具集',
-          logo: 'Tools',
+          logo: 'ScrewdriverWrench',
           desc: '各种IT相关的小工具，基于sharevb/it-tools构建',
           url: 'https://it-tools.nianchen.top',
           cateId: 0,
@@ -20,7 +20,7 @@ export function getToolsCate() {
         {
           id: 0,
           title: '智能排座工具',
-          logo: 'Armchair',
+          logo: 'Couch',
           desc: '智能排座工具，根据人员名单自动生成排座图，支持拖拽操作',
           url: 'https://seat.nianchen.top',
           cateId: 0,
@@ -29,7 +29,7 @@ export function getToolsCate() {
         {
           id: 0,
           title: 'xicons图标库预览',
-          logo: 'Apps',
+          logo: 'TableCells',
           desc: 'xicons图标库前端页面，方便查看、搜索和选择图标',
           url: 'https://xicons.nianchen.top',
           cateId: 0,
@@ -45,7 +45,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '字体在线预览',
-          logo: 'Typography',
+          logo: 'Font',
           desc: '内置常用字体栈可直接试用，也可载入字体文件或授权读取本机字体；在真实段落与字号瀑布中比较字形、密度和节奏。',
           url: '/fontpreview/',
           cateId: 1,
@@ -72,7 +72,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'JSON 工作台',
-          logo: 'Braces',
+          logo: 'Code',
           desc: '安全格式化、压缩、递归排序和字符串转义分开处理，避免一个按钮悄悄破坏数据。',
           url: '/json/',
           cateId: 1,
@@ -81,7 +81,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'JavaScript 工作台',
-          logo: 'BrandJavascript',
+          logo: 'Js',
           desc: '格式化和发布压缩都由 Terser 解析，目标语法、模块模式、变量改名和 Console 策略由你明确控制。',
           url: '/jsformat/',
           cateId: 1,
@@ -90,7 +90,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'HTML / XML 工作台',
-          logo: 'BrandHtml5',
+          logo: 'Html5',
           desc: '在格式化、结构校验和保守压缩之间切换，预格式文本、脚本与样式块不会被意外改写。',
           url: '/htmlformat/',
           cateId: 1,
@@ -99,7 +99,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'CSS 工作台',
-          logo: 'BrandCss3',
+          logo: 'Css3',
           desc: '格式化负责审阅，CSSO 负责语法解析和优化压缩；结果、体积收益与错误诊断都清晰可见。',
           url: '/cssformat/',
           cateId: 1,
@@ -108,7 +108,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '富文本与 HTML 工作台',
-          logo: 'Edit',
+          logo: 'Pen',
           desc: '使用可视化工具栏编排正文，同时获得干净的 HTML 和纯文本；支持模板、导入、本地草稿与多格式导出。',
           url: '/textedit/',
           cateId: 1,
@@ -133,7 +133,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '文本对比',
-          logo: 'GitCompare',
+          logo: 'CodeCompare',
           desc: '并排核对两个版本，按字符或词组高亮；支持忽略规则、文件导入、交换文本和差异导出。',
           url: '/diff/',
           cateId: 2,
@@ -142,7 +142,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '字数统计',
-          logo: 'LetterCase',
+          logo: 'TextHeight',
           desc: '在线统计字符串的字数、段落、标点符号数量',
           url: '/wordcount/',
           cateId: 2,
@@ -151,7 +151,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '文本去重',
-          logo: 'FilesOff',
+          logo: 'Clone',
           desc: '可以删除或去除文本或字符串中的重复行',
           url: '/textremoveduplicate/',
           cateId: 2,
@@ -160,7 +160,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'ASCII 字形生成器',
-          logo: 'LetterA',
+          logo: 'A',
           desc: '21 种本地字体、宽度与字距实时可调；确认效果后可复制或下载纯文本，不上传输入内容。',
           url: '/asciiwordpic/',
           cateId: 2,
@@ -196,7 +196,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '文本替换',
-          logo: 'Replace',
+          logo: 'Repeat',
           desc: '在线文本查找替换工具，支持普通文本和正则表达式，实时预览替换结果',
           url: '/textreplace/',
           cateId: 2,
@@ -205,7 +205,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '词频统计',
-          logo: 'SortDescending',
+          logo: 'ArrowDownAZ',
           desc: '在线词频统计工具，分析文本中各词出现频率，适合关键词提取和文本分析',
           url: '/wordfrequency/',
           cateId: 2,
@@ -230,7 +230,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'URL编码/解码',
-          logo: 'World',
+          logo: 'Globe',
           desc: 'URL在线编码解码工具（UrlEncode编码 和 UrlDecode解码）',
           url: '/urlencode/',
           cateId: 3,
@@ -248,7 +248,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '时间戳转换',
-          logo: 'CalendarTime',
+          logo: 'Clock',
           desc: '在线时间戳转换工具以及获取当前时间戳',
           url: '/timetran/',
           cateId: 3,
@@ -275,7 +275,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '正则测试工具',
-          logo: 'Code',
+          logo: 'TextSlash',
           desc: '实时高亮、捕获组拆解、替换预览和准确的错误定位。',
           url: '/reg/',
           cateId: 3,
@@ -320,7 +320,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '常用进制转换',
-          logo: 'Binary',
+          logo: 'SquareBinary',
           desc: '在线进制转换工具,可在2到64进制之间相互转换',
           url: '/scaletran/',
           cateId: 3,
@@ -338,7 +338,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'Color 选择器',
-          logo: 'ColorPicker',
+          logo: 'Palette',
           desc: '统一转换常用颜色格式、生成 50–900 色阶，并用 WCAG 对比度判断正文、大号文字和 UI 图形是否清晰。',
           url: '/colorpicker/',
           cateId: 3,
@@ -356,7 +356,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '地图坐标系互转',
-          logo: 'MapPin',
+          logo: 'MapLocationDot',
           desc: '五种坐标系单点与批量互转，支持地图选点、Excel 粘贴、逐行校验及 CSV/JSON 导出',
           url: '/coordtransform/',
           cateId: 3,
@@ -365,7 +365,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'IP 计算器',
-          logo: 'Share',
+          logo: 'NetworkWired',
           desc: '输入 IP/CIDR，即时计算网段、主机范围与地址属性，也可继续拆分子网。',
           url: '/ipcalc/',
           cateId: 3,
@@ -399,7 +399,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '单位换算',
-          logo: 'Ruler2',
+          logo: 'RulerCombined',
           desc: '覆盖公制、市制、英美制、航海、工程和温标；结果实时计算，并明确标注近似值与定义来源。',
           url: '/unit/',
           cateId: 4,
@@ -426,7 +426,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '重量单位转换',
-          logo: 'Scale',
+          logo: 'ScaleBalanced',
           desc: '支持公制、中国市制、常衡制和金衡制，并区分日常盎司与金衡盎司',
           url: '/weight/',
           cateId: 4,
@@ -444,7 +444,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '温度单位转换',
-          logo: 'Temperature',
+          logo: 'TemperatureHalf',
           desc: '摄氏、华氏、开尔文、列氏和兰氏实时互转，并检查绝对零度边界',
           url: '/temperature/',
           cateId: 4,
@@ -462,7 +462,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '能量单位转换',
-          logo: 'Flame',
+          logo: 'Fire',
           desc: '覆盖 Wh、J、cal、BTU 与电子伏特，可处理电能、机械能和热量换算',
           url: '/heat/',
           cateId: 4,
@@ -480,7 +480,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '存储单位换算',
-          logo: 'DeviceFloppy',
+          logo: 'HardDrive',
           desc: '在线数据存储单位换算工具，支持 bit、B、KB、MB、GB、TB、PB、EB 互转',
           url: '/storageconverter/',
           cateId: 4,
@@ -505,7 +505,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '在线图片处理',
-          logo: 'Photo',
+          logo: 'Image',
           desc: '裁剪、旋转、翻转、画笔、形状、文字、Emoji 标注与滤镜调整，图片只在浏览器本地处理。',
           url: '/signimage/',
           cateId: 5,
@@ -523,7 +523,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '电子包浆模拟器',
-          logo: 'Wand',
+          logo: 'WandMagicSparkles',
           desc: '通过多轮 JPEG 压缩、色度偏移和像素抖动生成做旧效果；用预设快速开始，也可以精确控制损伤程度。',
           url: '/electronicpatina/',
           cateId: 5,
@@ -532,7 +532,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '表情包配字',
-          logo: 'MessageCircle',
+          logo: 'Comment',
           desc: '载入图片后实时调整字幕、位置与描边，自动换行并输出适合聊天、社交平台和二次创作的成品。',
           url: '/memecaption/',
           cateId: 5,
@@ -541,7 +541,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '图片拼接',
-          logo: 'Stack2',
+          logo: 'BoxesStacked',
           desc: '纵向、横向与影视台词三种工作流实时预览；桌面可拖拽排序，手机也能用上下按钮精确调整顺序。',
           url: '/imgstitch/',
           cateId: 5,
@@ -559,7 +559,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'ICO图标工具',
-          logo: 'GridDots',
+          logo: 'Grip',
           desc: '按网站、Windows 或应用场景生成图标套件，支持裁切调校、多图层 ICO、单图下载与 ZIP 交付',
           url: '/icotool/',
           cateId: 5,
@@ -568,7 +568,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '传图取色',
-          logo: 'Droplet',
+          logo: 'EyeDropper',
           desc: '像素级取色、主色提取与格式转换均在本地完成，图片不会上传。',
           url: '/imagecolorpicker/',
           cateId: 5,
@@ -577,7 +577,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '图片水印',
-          logo: 'Certificate',
+          logo: 'Stamp',
           desc: '单点与平铺水印实时预览，描边、阴影、透明度和导出质量全部在浏览器本地完成。',
           url: '/imagewatermark/',
           cateId: 5,
@@ -620,7 +620,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '光棱坦克工厂',
-          logo: 'LayersIntersect',
+          logo: 'LayerGroup',
           desc: '两张图片在像素层交错混合，也可以把已有坦克图中的隐藏内容重新显现。',
           url: '/miragetank/',
           cateId: 6,
@@ -629,7 +629,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '接头霸王',
-          logo: 'MoodSmile',
+          logo: 'FaceSmile',
           desc: '内置角色贴纸，也支持上传自定义素材；画布可缩放、旋转、翻转和调整图层。',
           url: '/head-sticker/',
           cateId: 6,
@@ -638,7 +638,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '谜语人',
-          logo: 'Help',
+          logo: 'CircleQuestion',
           desc: '选择任意可逆方案作为来源，自动解码后生成佛曰、如是我闻、兽语、Base64、Base32 与 MD5 对照结果。',
           url: '/riddleman/',
           cateId: 6,
@@ -647,7 +647,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '反应速度测试',
-          logo: 'Clock',
+          logo: 'Stopwatch',
           desc: '多轮采样、抢跑检测、稳定度与个人最佳，让偶然的一次点击变成更可信的结果。',
           url: '/reactiontest/',
           cateId: 6,
@@ -663,7 +663,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '柱状图 / 横向柱状图',
-          logo: 'ChartBar',
+          logo: 'ChartColumn',
           desc: '粘贴表格或 JSON 数据，实时切换纵向与横向布局，统一完成标签、坐标轴、配色和高清导出。',
           url: '/bar/',
           cateId: 8,
@@ -689,7 +689,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '散点图',
-          logo: 'ChartDots',
+          logo: 'ChartSimple',
           desc: '输入 X、Y 与可选名称，实时观察数据分布，支持标准点与强调气泡两种表现和轴标题配置。',
           url: '/scatter/',
           cateId: 8,
@@ -707,7 +707,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '雷达图',
-          logo: 'Target',
+          logo: 'Crosshairs',
           desc: '使用宽表录入维度与多个系列，自动计算或指定各维度最大值，并切换多边形、圆形与填充强度。',
           url: '/radar/',
           cateId: 8,
@@ -725,7 +725,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '热力图',
-          logo: 'Flame',
+          logo: 'Fire',
           desc: '按 X、Y 分类和数值录入数据，自动生成矩阵与视觉色阶，支持颜色端点、数值标签和圆角单元格。',
           url: '/heatmap/',
           cateId: 8,
@@ -734,7 +734,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'K线图',
-          logo: 'ChartCandle',
+          logo: 'ChartColumn',
           desc: '录入日期与 OHLC 数据，逐行验证价格关系，自定义涨跌色并通过缩放条浏览较长序列。',
           url: '/candlestick/',
           cateId: 8,
@@ -743,7 +743,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '堆叠柱 / 堆叠面积线',
-          logo: 'ChartBar',
+          logo: 'ChartColumn',
           desc: '使用多系列宽表生成堆叠柱状图或堆叠面积线，支持图例、总量标签、主题配色和高清导出。',
           url: '/stack/',
           cateId: 8,
@@ -752,7 +752,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '矩形树图',
-          logo: 'LayoutGrid',
+          logo: 'TableCellsLarge',
           desc: '用斜线描述任意层级，自动构建父子树、计算叶节点占比，并通过面包屑与钻取层级浏览复杂结构。',
           url: '/treemap/',
           cateId: 8,
@@ -761,7 +761,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '桑基图',
-          logo: 'Hierarchy2',
+          logo: 'Sitemap',
           desc: '逐行录入来源、目标与流量，自动提取节点，并在绘制前检查重复连接、自环与有向环路。',
           url: '/sankey/',
           cateId: 8,
@@ -804,7 +804,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '生成随机数',
-          logo: 'ArrowsShuffle',
+          logo: 'Shuffle',
           desc: '可定制范围内进行随机数字，可用于抽奖、点名等用途',
           url: '/random/',
           cateId: 9,
@@ -813,7 +813,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '帮我决定',
-          logo: 'QuestionMark',
+          logo: 'CircleQuestion',
           desc: '选择困难，难以决定，今天吃什么，现在做什么，自定义选项都给你安排的明明白白',
           url: '/decision/',
           cateId: 9,
@@ -822,7 +822,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '抛硬币',
-          logo: 'Coin',
+          logo: 'Coins',
           desc: '在线抛硬币，选择困难那么交给硬币来帮你选择吧',
           url: '/coin/',
           cateId: 9,
@@ -856,7 +856,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '延迟退休计算器',
-          logo: 'CalendarStats',
+          logo: 'CalendarDays',
           desc: '根据出生年月和人员类别计算改革后法定退休年龄、退休年月、延迟月数及弹性退休区间',
           url: '/retirement/',
           cateId: 10,
@@ -872,7 +872,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '数字转金额大写',
-          logo: 'CurrencyYen',
+          logo: 'YenSign',
           desc: '在线数字一键转换成人民币大写，中文大写转换数字',
           url: '/numbertochinese/',
           cateId: 7,
@@ -881,7 +881,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '手持弹幕',
-          logo: 'Messages',
+          logo: 'Comments',
           desc: '支持多条内容、滚动/常亮/呼吸模式、方向与对比度检查；全屏失败时也会自动使用沉浸式覆盖层。',
           url: '/barrage/',
           cateId: 7,
@@ -890,7 +890,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: '摩斯电码',
-          logo: 'WaveSine',
+          logo: 'Signal',
           desc: '支持英文、数字、常用标点与中文编码，输入后即时转换。',
           url: '/morse/',
           cateId: 7,
@@ -899,7 +899,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'M3U8 播放器',
-          logo: 'PlayerPlay',
+          logo: 'CirclePlay',
           desc: '解析清单、切换清晰度、查看缓冲与错误建议，适合播放和排查 HLS 直播或点播地址。',
           url: '/m3u8player/',
           cateId: 7,
@@ -908,7 +908,7 @@ export function getToolsCate() {
         {
           id: 1,
           title: 'Emoji 大全',
-          logo: 'MoodHappy',
+          logo: 'FaceLaugh',
           desc: '按场景分类浏览，也可以搜索中文名称、Emoji 本身或 Unicode 编码。收藏和最近使用仅保存在当前浏览器。',
           url: '/emoji/',
           cateId: 7,

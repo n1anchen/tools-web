@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
-    "@vicons/tabler": "^0.13.0",
+    "@nicons/fa": "^0.14.0",
     "@vicons/utils": "^0.1.4",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",

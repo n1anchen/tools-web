@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { colord } from 'colord'
-import { Palette, Rotate } from '@vicons/tabler'
+import { Palette, Rotate } from '@nicons/fa'
 import { Icon } from '@vicons/utils'
 import { useSettingStore } from '@/store/modules/setting'
 import { storeToRefs } from 'pinia'

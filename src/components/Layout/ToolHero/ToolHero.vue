@@ -2,7 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Setting, StarFilled } from '@element-plus/icons-vue'
-import { Star } from '@vicons/tabler'
+import { Star, StarRegular } from '@nicons/fa'
 import { Icon } from '@vicons/utils'
 import { useRoute } from 'vue-router'
 import ToolIcon from '@/components/Common/ToolIcon.vue'
@@ -91,7 +91,7 @@ onBeforeUnmount(() => {
           :aria-label="favorited ? '取消收藏' : '收藏工具'"
           @click="toggleFavorite"
         >
-          <Icon size="15"><Star v-if="favorited" class="fill-current" /><Star v-else /></Icon>
+          <Icon size="15"><Star v-if="favorited" /><StarRegular v-else /></Icon>
           {{ favorited ? '已收藏' : '收藏工具' }}
         </button>
       </div>

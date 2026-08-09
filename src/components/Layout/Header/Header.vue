@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
-import { Menu2, ChevronRight, ChevronLeft, Home, InfoCircle, BrandGithub } from '@vicons/tabler';
+import { Bars, ChevronRight, ChevronLeft, House, CircleInfo, Github } from '@nicons/fa';
 import { Icon } from '@vicons/utils'
 import ThemeSwitcher from '@/components/ThemeSwitcher/ThemeSwitcher.vue';
 import PrimaryColorPicker from '@/components/Common/PrimaryColorPicker.vue';
@@ -98,7 +98,7 @@ onBeforeUnmount(() => {
         class="w-10 h-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200 hidden c-sm:flex c-md:hidden c-xs:flex"
       >
         <Icon size="20">
-          <Menu2 class="text-slate-600 dark:text-slate-400" />
+          <Bars class="text-slate-600 dark:text-slate-400" />
         </Icon>
       </button>
 
@@ -130,7 +130,7 @@ onBeforeUnmount(() => {
         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary-50 dark:hover:bg-[color:color-mix(in_srgb,var(--c-primary-900)_40%,transparent)] transition-all duration-200 group"
       >
         <Icon size="20">
-          <Home class="text-slate-600 dark:text-slate-400 transition-transform" />
+          <House class="text-slate-600 dark:text-slate-400 transition-transform" />
         </Icon>
       </router-link>
       
@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
                transition-all duration-200"
       >
         <Icon size="20">
-          <BrandGithub />
+          <Github />
         </Icon>
       </a>
 
@@ -200,7 +200,7 @@ onBeforeUnmount(() => {
                transition-all duration-200"
       >
         <Icon size="20">
-          <InfoCircle />
+          <CircleInfo />
         </Icon>
       </router-link>
 

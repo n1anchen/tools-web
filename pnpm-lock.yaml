@@ -18,9 +18,9 @@ importers:
       '@element-plus/icons-vue':
         specifier: ^2.3.2
         version: 2.3.2(vue@3.5.40(typescript@5.9.3))
-      '@vicons/tabler':
-        specifier: ^0.13.0
-        version: 0.13.0
+      '@nicons/fa':
+        specifier: ^0.14.0
+        version: 0.14.0
       '@vicons/utils':
         specifier: ^0.1.4
         version: 0.1.4(vue@3.5.40(typescript@5.9.3))
@@ -1240,6 +1240,9 @@ packages:
   '@marijn/find-cluster-break@1.0.3':
     resolution: {integrity: sha512-FY+MKLBoTsLNJF/eLWaOsXGdz6uh3Iu1axjPf6TUq92IYumcTcXWHoS747JARLkcdlJ/Waiaxc5wQfFO8jC6NA==}
 
+  '@nicons/fa@0.14.0':
+    resolution: {integrity: sha512-cV/J+mz6/EMFJRhz+H3FzpnIQip7KBFY+KnFvkQWdKByEWBO4mghGv8YKgn8E+wkNLtDvHdCRpjSHj4pqLVoHA==}
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -1621,9 +1624,6 @@ packages:
 
   '@vavt/util@2.1.2':
     resolution: {integrity: sha512-L3UbSJthJwr3wq0x93O5TrCepimrmVZaIl2ciZbeL18G5++gBhJXNhcH7RcVk/6rr3SavWOvwhig0mqRLoR7dw==}
-
-  '@vicons/tabler@0.13.0':
-    resolution: {integrity: sha512-AykuhiqjszkIoAL/7knIFm6RDOBS1ZmQdJfQ+RNLEah0fVsxykUFCfMBSNZh8lOzC85EtdD1k5g/sv5GYk0Ohg==}
 
   '@vicons/utils@0.1.4':
     resolution: {integrity: sha512-OHI19qVNN6i+uPQ+Y3f2s0dUxwsYnOCcKBW7XOU4yXXO1aU3ZoKpblCc3+4N0qmgoJs5rWKRAaMisipqEXJwAg==}
@@ -4879,6 +4879,8 @@ snapshots:
 
   '@marijn/find-cluster-break@1.0.3': {}
 
+  '@nicons/fa@0.14.0': {}
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -5173,8 +5175,6 @@ snapshots:
   '@vavt/markdown-theme@5.0.2': {}
 
   '@vavt/util@2.1.2': {}
-
-  '@vicons/tabler@0.13.0': {}
 
   '@vicons/utils@0.1.4(vue@3.5.40(typescript@5.9.3))':
     dependencies:
