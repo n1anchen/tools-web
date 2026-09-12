@@ -1,8 +1,11 @@
 import type { ToolsReqData } from '@/components/Tools/tools.type.ts'
+import { filterToolCategories, parseExcludedTools } from '@/utils/toolExclusions'
+
+const excludedTools = parseExcludedTools(import.meta.env.VITE_EXCLUDED_TOOLS)
 
 //获取tools分类与对应的工具
 export function getToolsCate() {
-  return [
+  return filterToolCategories([
     {
       id: 0,
       title: '独立工具',
@@ -916,7 +919,7 @@ export function getToolsCate() {
         }
       ]
     }
-  ]
+  ], excludedTools)
 }
 
 //工具list

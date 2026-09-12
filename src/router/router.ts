@@ -1,4 +1,6 @@
 //对外暴露配置路由(常量路由)
+import { filterToolRoutes, parseExcludedTools } from '../utils/toolExclusions'
+
 export const constantRoute = [
   //首页
   {
@@ -870,3 +872,8 @@ export const constantRoute = [
     name: 'Any',
   },
 ]
+
+/** Return the route table for the current build profile. */
+export function getEnabledRoutes(excludedToolsValue: string | undefined) {
+  return filterToolRoutes(constantRoute, parseExcludedTools(excludedToolsValue))
+}

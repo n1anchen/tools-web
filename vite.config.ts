@@ -5,12 +5,7 @@ import sitemap from 'vite-plugin-sitemap'
 import path from 'path'
 import { execSync } from 'child_process'
 import { copyAssetsPlugin } from './scripts/vite-copy-assets-plugin.js'
-import { constantRoute } from './src/router/router'
-
-// 提取所有有效路由路径（排除 /404、通配符重定向以及首页 /，首页由插件自动扫描 index.html 处理）
-const sitemapRoutes = constantRoute
-  .filter(r => !r.path.includes(':') && r.path !== '/404' && r.path !== '/')
-  .map(r => r.path)
+import { getEnabledRoutes } from './src/router/router'
 
 // 获取 git 提交号（7 位）
 let gitCommitHash = 'unknown'
@@ -27,6 +22,10 @@ try {
 // https://vitejs.dev/config/
 export default defineConfig(({command, mode}) => {
   const env = loadEnv(mode, process.cwd())
+  // 使用与前端工具列表相同的排除规则生成 sitemap。
+  const sitemapRoutes = getEnabledRoutes(env.VITE_EXCLUDED_TOOLS)
+    .filter(r => !r.path.includes(':') && r.path !== '/404' && r.path !== '/')
+    .map(r => r.path)
   const proxy = env.VITE_APP_BASE_API && env.VITE_SERVE
     ? {
         [env.VITE_APP_BASE_API]: {

@@ -194,6 +194,16 @@ scripts/                   # 构建辅助脚本（copy-assets 等）
 - 下载功能统一用 `autoDown()`（`src/utils/file.ts`）
 - 大块逻辑拆到 `src/utils/` 或 `src/composables/`，保持组件文件聚焦
 
+### 构建时排除工具
+
+通过 `VITE_EXCLUDED_TOOLS` 传入逗号分隔的工具 URL slug：
+
+```dotenv
+VITE_EXCLUDED_TOOLS = 'md5,m3u8player,emoji'
+```
+
+工具 slug 是卡片 `url` 去掉首尾斜杠后的小写路径，例如 `/hashcalculator/` 对应 `hashcalculator`。独立的外部工具可使用域名第一段，例如 `it-tools`。排除规则会同时应用到首页、顶部搜索、收藏恢复、Vue 路由和 sitemap；排除后没有工具的分类也会被隐藏。
+
 ## 测试
 
 ```bash

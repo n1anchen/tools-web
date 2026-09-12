@@ -1,6 +1,6 @@
 //通过vue-router插件实现模板路由配置
 import { createRouter, createWebHistory } from 'vue-router'
-import { constantRoute } from './router'
+import { getEnabledRoutes } from './router'
 import { getTools } from '@/components/Tools/tools.ts'
 import { isSameFamily } from '@/utils/routeTransition'
 import NProgress from 'nprogress'
@@ -12,7 +12,7 @@ NProgress.configure({ showSpinner: false, minimum: 0.2, speed: 300 })
 //创建路由器
 const router = createRouter({
   history: createWebHistory(),
-  routes: constantRoute,
+  routes: getEnabledRoutes(import.meta.env.VITE_EXCLUDED_TOOLS),
   //滚动行为
   scrollBehavior(to, from) {
     // 首页由组件自行控制滚动（用于恢复离开时的位置）
