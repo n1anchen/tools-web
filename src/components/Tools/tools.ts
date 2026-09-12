@@ -552,6 +552,15 @@ export function getToolsCate() {
         },
         {
           id: 1,
+          title: '动图制作',
+          logo: 'CirclePlay',
+          desc: '批量图片、ZIP 与精灵图统一整理成时间轴，逐帧调整节奏并导出 GIF、PNG、APNG 或 PNG 素材序列。',
+          url: '/animationmaker/',
+          cateId: 5,
+          cate: '图片处理',
+        },
+        {
+          id: 1,
           title: '图片 EXIF 查看',
           logo: 'Camera',
           desc: '集中检查拍摄参数、设备、时间与位置，并可导出元数据或生成去除 EXIF 的副本。',

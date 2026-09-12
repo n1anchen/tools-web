@@ -674,6 +674,15 @@ export const constantRoute = [
     }
   },
   {
+    path: '/animationmaker',
+    component: () => import('@/components/Tools/AnimationMaker/AnimationMaker.vue'),
+    name: 'animationmaker',
+    meta: {
+      keywords: '动图制作,GIF制作,动画PNG,APNG,精灵图切割,PNG序列,逐帧动画',
+      description: '导入图片、ZIP 或精灵图，排序并设置逐帧延时，实时预览后导出 GIF、PNG、APNG 或素材 PNG 序列',
+    }
+  },
+  {
     path: '/riddleman',
     component: () => import('@/components/Tools/RiddleMan/RiddleMan.vue'),
     name: 'riddleman',
