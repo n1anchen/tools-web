@@ -26,7 +26,8 @@ export function copyAssetsPlugin() {
       server.watcher.add([
         'node_modules/figlet/fonts/*.flf',
         'node_modules/ace-builds/src-noconflict/worker-*.js',
-        'node_modules/kuromoji/dict/*.dat.gz'
+        'node_modules/kuromoji/dict/*.dat.gz',
+        'node_modules/spessasynth_lib/dist/spessasynth_processor.min.js'
       ])
     }
   }

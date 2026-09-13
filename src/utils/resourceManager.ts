@@ -1,4 +1,4 @@
-export type ManagedResourceId = 'kuromoji-dict' | 'ace-workers' | 'figlet-fonts' | 'remote-fonts'
+export type ManagedResourceId = 'kuromoji-dict' | 'ace-workers' | 'figlet-fonts' | 'midi-soundfont' | 'remote-fonts'
 
 interface ManagedResourceGroup {
   id: ManagedResourceId
@@ -106,6 +106,17 @@ export const MANAGED_RESOURCE_GROUPS: ManagedResourceGroup[] = [
     preferenceKey: 'toolResourceCacheFigletFonts',
     cacheable: true,
     defaultEnabled: true,
+  },
+  {
+    id: 'midi-soundfont',
+    title: 'MIDI 通用音色库',
+    description: 'MIDI 播放器使用的 GeneralUser GS 音色，首次播放时也会自动按需缓存。',
+    cacheName: 'midi-soundfont',
+    urls: ['/midi/soundfonts/GeneralUserGS.sf3'],
+    estimatedBytes: 8_423_728,
+    preferenceKey: 'toolResourceCacheMidiSoundfont',
+    cacheable: true,
+    defaultEnabled: false,
   },
   {
     id: 'remote-fonts',

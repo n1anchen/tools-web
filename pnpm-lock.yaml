@@ -117,6 +117,12 @@ importers:
       qrcode-vue3:
         specifier: ^1.7.1
         version: 1.7.1
+      spessasynth_core:
+        specifier: ^4.3.22
+        version: 4.3.22
+      spessasynth_lib:
+        specifier: ^4.3.14
+        version: 4.3.14
       sql-formatter:
         specifier: ^15.8.0
         version: 15.8.0
@@ -3291,12 +3297,21 @@ packages:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
     deprecated: Please use @jridgewell/sourcemap-codec instead
 
+  spessasynth_core@4.3.22:
+    resolution: {integrity: sha512-qP6NkcZLmTLIs9fCUh2IhZRkd3Junwu8ppD4K0l/0R+Lo4P48d4Rbe8YQ8RlEYyRKFz8HcPM75sXYVQLAb7k4A==}
+
+  spessasynth_lib@4.3.14:
+    resolution: {integrity: sha512-M3In44Erc0OPlbLwOrPoqnMiva0nbh7LCbGfNTi21JV+NMN/B4sun2d8HR17J/dSGp+PEQnJ0ZkujnWEHWfi4Q==}
+
   sql-formatter@15.8.0:
     resolution: {integrity: sha512-HnjdRHlSsO4Ap2erB5YXAvWggrnk/S4TezUn8zmpq9J/hEKn9+6gGaqiKPyDtI10Xf4zJmHYPREGjMjZmmP1fg==}
     hasBin: true
 
   ssr-window@3.0.0:
     resolution: {integrity: sha512-q+8UfWDg9Itrg0yWK7oe5p/XRCJpJF9OBtXfOPgSJl+u3Xd5KI328RUEvUqSMVM9CiQUEf1QdBzJMkYGErj9QA==}
+
+  stb-vorbis@0.0.6:
+    resolution: {integrity: sha512-CyvjJEGROIdnuZknwFvdOfMIO1ssUxO2OawsXCR3IlbJ8z2IMBjDe8FDxFJqBfLgf1ZOdqvoHAYx3Xk8q9rbbg==}
 
   stop-iteration-iterator@1.1.0:
     resolution: {integrity: sha512-eLoXW/DHyl62zxY4SCaIgnRhuMr6ri4juEYARS8E6sCEqzKpOiE521Ucofdx+KnDZl5xmvGYaaKCk5FEOxJCoQ==}
@@ -7040,12 +7055,22 @@ snapshots:
 
   sourcemap-codec@1.4.8: {}
 
+  spessasynth_core@4.3.22:
+    dependencies:
+      stb-vorbis: 0.0.6
+
+  spessasynth_lib@4.3.14:
+    dependencies:
+      spessasynth_core: 4.3.22
+
   sql-formatter@15.8.0:
     dependencies:
       argparse: 2.0.1
       nearley: 2.20.1
 
   ssr-window@3.0.0: {}
+
+  stb-vorbis@0.0.6: {}
 
   stop-iteration-iterator@1.1.0:
     dependencies:

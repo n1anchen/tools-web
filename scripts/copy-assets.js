@@ -119,6 +119,24 @@ async function copyKuromojiDict() {
 }
 
 /**
+ * 复制 SpessaSynth AudioWorklet。Worklet 必须以独立 URL 加载，不能跟随页面脚本打包。
+ */
+async function copySpessaSynthWorklet() {
+  const sourcePath = path.join(projectRoot, 'node_modules/spessasynth_lib/dist/spessasynth_processor.min.js')
+  const targetDir = path.join(projectRoot, 'public/worklets')
+  const targetPath = path.join(targetDir, 'spessasynth_processor.min.js')
+
+  if (!await fs.pathExists(sourcePath)) {
+    console.warn('⚠️  SpessaSynth Worklet 不存在，跳过复制')
+    return
+  }
+
+  await fs.ensureDir(targetDir)
+  await fs.copy(sourcePath, targetPath)
+  console.log('✓ 复制: spessasynth_processor.min.js')
+}
+
+/**
  * 主复制函数
  */
 export async function copyAssets() {
@@ -128,7 +146,8 @@ export async function copyAssets() {
     await Promise.all([
       copyFigletFonts(),
       copyAceWorkers(),
-      copyKuromojiDict()
+      copyKuromojiDict(),
+      copySpessaSynthWorklet()
     ])
     
     console.log('✅ 所有资源文件复制完成!')

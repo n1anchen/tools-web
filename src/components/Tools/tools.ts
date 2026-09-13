@@ -919,6 +919,15 @@ export function getToolsCate() {
         },
         {
           id: 1,
+          title: 'MIDI 播放器',
+          logo: 'Music',
+          desc: '导入或选择示例 MIDI，用钢琴卷帘和音符瀑布查看每个乐器通道，并支持静音、独奏与播放列表。',
+          url: '/midiplayer/',
+          cateId: 7,
+          cate: '其他工具',
+        },
+        {
+          id: 1,
           title: 'Emoji 大全',
           logo: 'FaceLaugh',
           desc: '按场景分类浏览，也可以搜索中文名称、Emoji 本身或 Unicode 编码。收藏和最近使用仅保存在当前浏览器。',

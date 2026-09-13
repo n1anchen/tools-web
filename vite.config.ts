@@ -169,6 +169,16 @@ export default defineConfig(({command, mode}) => {
               }
             },
             {
+              // MIDI 音色库：首次播放时加载，之后离线复用
+              urlPattern: /^\/midi\/soundfonts\/.*\.(sf2|sf3|dls)$/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'midi-soundfont',
+                expiration: { maxEntries: 3, maxAgeSeconds: 60 * 60 * 24 * 365 },
+                cacheableResponse: { statuses: [0, 200] }
+              }
+            },
+            {
               // public 目录下的图片文件
               urlPattern: /\.(png|jpg|jpeg|svg|gif|webp)$/i,
               handler: 'CacheFirst',
@@ -222,6 +232,7 @@ export default defineConfig(({command, mode}) => {
               'pinia'
             ],
             'charts': ['echarts'],
+            'midi-engine': ['spessasynth_core', 'spessasynth_lib'],
             // 压缩相关库
             'minifiers': [
               'csso',

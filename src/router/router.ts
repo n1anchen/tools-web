@@ -836,6 +836,15 @@ export const constantRoute = [
     }
   },
   {
+    path: '/midiplayer',
+    component: () => import('@/components/Tools/MidiPlayer/MidiPlayer.vue'),
+    name: 'midiplayer',
+    meta: {
+      keywords: 'MIDI播放器,在线MIDI播放,钢琴卷帘,音符瀑布,MIDI通道,乐器轨道',
+      description: '在浏览器本地播放 MIDI 文件，以钢琴卷帘和音符瀑布查看每个乐器通道，并支持静音、独奏与播放列表。',
+    }
+  },
+  {
     path: '/emoji',
     component: () => import('@/components/Tools/Emoji/Emoji.vue'),
     name: 'emoji',
