@@ -4,10 +4,14 @@ import { Icon } from '@vicons/utils'
 import { Lock, TriangleExclamation, BoxArchive, CodeFork } from '@nicons/fa'
 
 const STORAGE_KEY = 'privacy_notice'
+// 默认展示以保持既有行为；部署时可通过 VITE_PRIVACY_NOTICE_SHOW='false' 关闭。
+const privacyNoticeEnabled = import.meta.env.VITE_PRIVACY_NOTICE_SHOW !== 'false'
 
 const visible = ref(false)
 
 onMounted(() => {
+  if (!privacyNoticeEnabled) return
+
   const stored = localStorage.getItem(STORAGE_KEY)
   if (!stored) {
     visible.value = true
